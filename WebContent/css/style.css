@@ -1,0 +1,100 @@
+*{
+    box-sizing: border-box;
+    margin: 0;
+}
+
+
+@font-face {
+    font-family: Baloo Da;
+    src: url(../res/fonts/Baloo-Da/BalooDa2-ExtraBold.ttf);
+}
+
+@font-face {
+    font-family: BarlowBold;
+    src: url(../res/fonts/Barlow/Barlow-Bold.ttf)
+}
+
+@font-face {
+    font-family: BarlowMed;
+    src: url(../res/fonts/Barlow/Barlow-Medium.ttf);
+}
+
+body {
+    font-family: BarlowMed;
+    background-image: url(../res/images/background-home.png);
+    background-size: cover;
+    height: fit-content;
+}
+
+#bootstrap-override .nav-bar {
+    padding: 5px;
+    padding-top: 10px;
+    background-color: white;
+}
+
+
+#bootstrap-override .content-join-trip, .row {
+    background-color: #8dd1c7;
+}
+
+#bootstrap-override .results {
+    padding-left: 30px;
+    padding-right: 30px;
+}
+
+#bootstrap-override .page-header, .search-bar {
+    padding: 30px;
+    display: flex;
+}
+
+#bootstrap-override .page-state, h2 {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-family: BarlowBold;
+}
+
+#bootstrap-override #logo {
+    font-family: Baloo Da;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-left: 20px;
+    height: 65px;
+    font-size: 40px;
+}
+
+#bootstrap-override #custom-btn {
+    margin-left: 20px;
+    background-color: #8d8741;
+    border-color: #8d8741;
+    margin-right: 20px;
+}
+
+#bootstrap-override .form-control {
+    border-radius: 5px;
+    max-width: 200px;
+}
+
+.price-tag {
+    display: flex;
+}
+
+.price-tag h5 {
+    margin-right: 10px;
+    margin-bottom: 20px;
+}
+
+#bootstrap-override .card, .card-body, .card-img-top{
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+}
+
+#bootstrap-override .card-body img {
+    width: 10%;
+}
+
+#bootstrap-override .card-body #custom-btn {
+    margin-left: 90px;
+}
