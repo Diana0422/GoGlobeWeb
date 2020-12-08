@@ -20,7 +20,7 @@
 	<script src="js/bootstrap.min.js"></script> 
 	
 </head>
-<body>
+<body id="login-body">
         <div class="login-wrapper">
             <div class="login-box">
                 <h1 id="Login-text">Login</h1>

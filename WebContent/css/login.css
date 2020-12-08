@@ -1,5 +1,5 @@
 @font-face{
-    font-family: Baloo Da;
+    font-family: BalooDa;
     src: url(../res/fonts/Baloo-Da/BalooDa2-Bold.ttf);
 }
 
@@ -13,9 +13,9 @@ html, body{
 }
 
 
-body{
+#login-body{
     height: 100vh;
-    font-family: Barlow Med;
+    font-family: BarlowMed;
 }
 
 .login-wrapper{
