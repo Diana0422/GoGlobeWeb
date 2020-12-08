@@ -1,10 +1,10 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
     
-<!-- dichiarazione e instanziazione di un userBean -->
+<!-- declaration and initialization of a register bean -->
 <jsp:useBean id="registerBean" scope="request" class="bean.RegistrationBean" />
 
-<!-- mappare gli attributi di un oggetto sui campi della form -->
+<!-- map attributes of the bean from the form fields -->
 <jsp:setProperty name="registerBean" property="*"/>
     
 <!DOCTYPE html>

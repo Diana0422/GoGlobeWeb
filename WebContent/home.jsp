@@ -1,5 +1,9 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
+    
+<!-- declaration of a  register bean -->
+<jsp:useBean id="registerBean" scope="request" class="bean.RegistrationBean"/>
+    
 <!DOCTYPE html>
 <html>
 <head>
@@ -15,10 +19,10 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.min.js"></script>
 </head>
 <body id="bootstrap-override">
-	<!-- navbar -->
+	<!-- navigation bar -->
     <nav class="navbar navbar-expand-sm navbar-light bg-light sticky-top">
         <a href="#" id="logo" class="navbar-brand">GoGlobe</a>
-        <!--toggler per piccoli schermi-->
+        <!--toggler for shorter screens -->
         <button class="navbar-toggler" data-toggle="collapse" data-target="#navbarMenu">
             <span class="navbar-toggler-icon"></span>
         </button>
@@ -39,6 +43,17 @@
             </ul>
         </div>
     </nav>
+    
+    <!-- Welcome tag -->
+    <div class="welcome">
+    	<h1>Welcome <jsp:getProperty name="registerBean" property="name"/> <jsp:getProperty property="surname" name="registerBean"/></h1>
+<%
+		System.out.println(registerBean.getName());
+		System.out.println(registerBean.getSurname());
+%>
+    </div>
+    
+    
 
 </body>
 </html>
