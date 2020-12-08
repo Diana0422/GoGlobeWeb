@@ -15,7 +15,7 @@
 	<meta charset="UTF-8">
 	<title>Login</title>
 	<link href="bootstrap-css/bootstrap.css" rel="stylesheet">
-		<link href="css/Login.css" rel="stylesheet">
+	<link href="css/login.css" rel="stylesheet">
 	<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
 	<script src="js/bootstrap.min.js"></script>
 </head>
