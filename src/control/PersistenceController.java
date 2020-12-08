@@ -8,15 +8,15 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import model.User;
 
-public class DBController {
+public class PersistenceController {
 	
-	public static DBController INSTANCE = null;
+	public static PersistenceController INSTANCE = null;
 	
-	private DBController() {}
+	private PersistenceController() {}
 	
-	public static DBController getInstance() {
+	public static PersistenceController getInstance() {
 		if (INSTANCE == null) {
-			INSTANCE = new DBController();
+			INSTANCE = new PersistenceController();
 		}
 		
 		return INSTANCE;

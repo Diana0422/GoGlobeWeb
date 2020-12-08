@@ -10,7 +10,6 @@ public class LoginBean {
 	protected String cognome;
 	
 	public LoginBean() {
-//		System.out.println("Ciao sono una loginBean");
 	}
 	
 	
@@ -41,15 +40,10 @@ public class LoginBean {
 	
 	public boolean validate(){
 		if (username == null || username == "" || password==null || password == "") {
-//			System.out.println("Guarda sono pezzo di merda");
 			return false;
 		}
-		
-//		System.out.println(username);
-//		System.out.println(password);
 
 		LoginBean utenteTrovato = LoginController.getInstance().login(username, password);
-//		System.out.println(utenteTrovato!=null);
 		return utenteTrovato != null;
 		
 	}

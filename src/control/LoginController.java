@@ -29,7 +29,6 @@ public class LoginController {
 			loginBean.setNome("Lorenzo");
 			loginBean.setCognome("Tanzi");
 		}else {
-//			System.out.println("GUARDA EH, SICURO FACCIO IL CONTROLLO MALE");
 			loginBean = null;
 		}
 		return loginBean;
