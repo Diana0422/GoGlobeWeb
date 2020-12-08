@@ -55,7 +55,7 @@ body {
     font-family: BarlowBold;
 }
 
-#bootstrap-override #logo {
+#bootstrap-override #logo, #bootstrap-override-home #logo {
     font-family: Baloo Da;
     display: flex;
     align-items: center;
@@ -97,4 +97,46 @@ body {
 
 #bootstrap-override .card-body #custom-btn {
     margin-left: 90px;
+}
+
+/* home.jsp */
+#bootstrap-override-home {
+    background-image: url(../res/images/japan-kyoto-toji-pagoda.jpg);
+}
+
+.welcome {
+    margin: 40px;
+    font-family: BarlowBold;
+    color: white;
+    text-align: center;
+}
+
+#bootstrap-override-home .get-started h2 {
+    text-align: left;
+    max-width: fit-content;
+}
+
+.join, .plan {
+    background-color: white;
+    padding: 5%;
+    border-radius: 5px;
+    display: flex;
+    max-width: 50%;
+    margin: 30px;
+    justify-content: space-between;
+    box-shadow: 2px 2px 20px #2e3c46;
+}
+
+.join h3, .plan h3 {
+    text-align: center;
+    margin-right: 10%;
+}
+
+.plan button {
+    padding-left: 28px;
+    text-align: center;
+}
+
+#home-hr {
+    max-width: 60%;
 }

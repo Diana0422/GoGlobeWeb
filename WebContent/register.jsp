@@ -1,10 +1,10 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
     
-<!-- dichiarazione e instanziazione di un userBean -->
+<!-- declaration and initialization of a register bean -->
 <jsp:useBean id="registerBean" scope="request" class="bean.RegistrationBean" />
 
-<!-- mappare gli attributi di un oggetto sui campi della form -->
+<!-- map attributes of the bean from the form fields -->
 <jsp:setProperty name="registerBean" property="*"/>
     
 <!DOCTYPE html>
@@ -36,13 +36,10 @@
                     <a class="nav-link" href="#" style="margin: 12px;">Home</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link active" href="#" style="margin: 12px;">Trips</a>
+                    <a class="nav-link" href="#" style="margin: 12px;">Trips</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="#" style="margin: 12px;">Profile</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#" style="margin: 12px;">Log Out</a>
+                    <a class="nav-link active" href="#" style="margin: 12px;">Log In</a>
                 </li>
             </ul>
         </div>
@@ -52,7 +49,7 @@
     if (request.getParameter("signin") != null) {
         if (registerBean.validate()) {
 %>
-        	<jsp:forward page="RiassuntoRegistrazione.jsp"/>
+        	<jsp:forward page="home.jsp"/>
 <%
         } else {
         	System.out.println("No data.\n");
