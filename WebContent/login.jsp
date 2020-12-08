@@ -17,7 +17,8 @@
 	<link href="bootstrap-css/bootstrap.css" rel="stylesheet">
 	<link href="css/login.css" rel="stylesheet">
 	<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-	<script src="js/bootstrap.min.js"></script>
+	<script src="js/bootstrap.min.js"></script> 
+	
 </head>
 <body>
         <div class="login-wrapper">
@@ -61,7 +62,7 @@
                         
                         <!-- No account, sign up -->
                         <p>Don't have an account? 
-                            <a href="Registration.jsp" id="signup" name="signup" >Sign Up</a>
+                            <a href="Registration.jsp" id="signup">Sign Up</a>
                         </p>
                     </div>
                   </form>
