@@ -2,7 +2,7 @@
     pageEncoding="ISO-8859-1"%>
     
 <!-- declaration of a  register bean -->
-<jsp:useBean id="registerBean" scope="request" class="bean.RegistrationBean"/>
+<jsp:useBean id="registerBean" scope="request" class="logic.bean.RegistrationBean"/>
     
 <!DOCTYPE html>
 <html>
@@ -53,6 +53,13 @@
         <div class="join">
             <h3>Join an organized trip with other people</h3>
             <button type="submit" name="jointrip" class="btn btn-primary">Join a Trip</button>
+          	<%
+          		if (request.getParameter("jointrip") != null) {
+          			%>
+          			<jsp:forward page="joinTrip.html"/>
+          			<%
+          		}
+          	%>
         </div>
         <div class="plan">
             <h3>Plan your personal trip and share with the community</h3>

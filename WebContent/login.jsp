@@ -3,7 +3,7 @@
 <!-- Dichiarazione e istanziazione di un loginBean -->
 <!-- class="NomePackage.Nomeclasse -->
 
-<jsp:useBean id="loginBean" scope="request" class="bean.LoginBean"/>
+<jsp:useBean id="loginBean" scope="request" class="logic.bean.LoginBean"/>
 
 <!-- Mappare gli attributi di un oggetto sui campi della form -->
 <jsp:setProperty name="loginBean" property="*"/>
