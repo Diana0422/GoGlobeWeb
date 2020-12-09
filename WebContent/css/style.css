@@ -21,38 +21,12 @@
 
 body {
     font-family: BarlowMed;
-    background-image: url(../res/images/background-home.png);
-    background-size: cover;
-    height: fit-content;
 }
 
 #bootstrap-override .nav-bar {
     padding: 5px;
     padding-top: 10px;
     background-color: white;
-}
-
-
-#bootstrap-override .content-join-trip, .row {
-    background-color: #8dd1c7;
-}
-
-#bootstrap-override .results {
-    padding-left: 30px;
-    padding-right: 30px;
-}
-
-#bootstrap-override .page-header, .search-bar {
-    padding: 30px;
-    display: flex;
-}
-
-#bootstrap-override .page-state, h2 {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: white;
-    font-family: BarlowBold;
 }
 
 #bootstrap-override #logo, #bootstrap-override-home #logo {
@@ -75,26 +49,4 @@ body {
 #bootstrap-override .form-control {
     border-radius: 5px;
     max-width: 200px;
-}
-
-.price-tag {
-    display: flex;
-}
-
-.price-tag h5 {
-    margin-right: 10px;
-    margin-bottom: 20px;
-}
-
-#bootstrap-override .card, .card-body, .card-img-top{
-    border-top-left-radius: 10px;
-    border-top-right-radius: 10px;
-}
-
-#bootstrap-override .card-body img {
-    width: 10%;
-}
-
-#bootstrap-override .card-body #custom-btn {
-    margin-left: 90px;
 }
