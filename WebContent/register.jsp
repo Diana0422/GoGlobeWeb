@@ -2,7 +2,7 @@
     pageEncoding="ISO-8859-1"%>
     
 <!-- declaration and initialization of a register bean -->
-<jsp:useBean id="registerBean" scope="request" class="bean.RegistrationBean" />
+<jsp:useBean id="registerBean" scope="request" class="logic.bean.RegistrationBean" />
 
 <!-- map attributes of the bean from the form fields -->
 <jsp:setProperty name="registerBean" property="*"/>
@@ -44,21 +44,6 @@
             </ul>
         </div>
     </nav>
-    
-    	 <%
-    if (request.getParameter("signin") != null) {
-        if (registerBean.validate()) {
-%>
-        	<jsp:forward page="home.jsp"/>
-<%
-        } else {
-        	System.out.println("No data.\n");
-%>
-			<p style="color: red">wrong data</p>
-<%
-        }
-    }
-%>
 
     <!-- content -->
     <div class="content-register">
@@ -67,9 +52,24 @@
             <!-- registration form -->
             <div class="registration-form">
                 <form  action="register.jsp" name="myform" method="POST">
+                <%
+    				if (request.getParameter("signin") != null) {
+        					if (registerBean.validate()) {
+							%>
+        						<jsp:forward page="home.jsp"/>
+							<%
+        					} else {
+        						System.out.println("No data.\n");
+							%>
+								<p style="color: red">This user is already registered.</p>
+							<%
+        					}
+    				}
+				%>
                     <div class="form-row">
                         <h1>Register</h1>
                     </div>
+                    
                     <!-- email and password -->
                     <div class="form-row">
                         <div class="form-group col-md-6">
