@@ -1,7 +1,9 @@
-package bean;
+package logic.bean;
 
-import control.RegistrationController;
-import model.User;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+
+import logic.control.RegistrationController;
 
 public class RegistrationBean {
 	private String email;
@@ -64,9 +66,17 @@ public class RegistrationBean {
 			return false;
 		}
 		
-		User user = RegistrationController.getInstance().register(email, password, name, surname, age);
-		System.out.println(user);
-		return user != null;
+		try {
+			return RegistrationController.getInstance().register(email, password, name, surname, age);
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return false;
+		
 		
 	}
 	

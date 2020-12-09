@@ -1,4 +1,4 @@
-package model;
+package logic.model;
 
 public enum TripCategory {
 	Culture, Adventure, Relax, Nightlife;
