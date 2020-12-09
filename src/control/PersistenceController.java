@@ -1,5 +1,6 @@
 package control;
 
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -25,72 +26,90 @@ public class PersistenceController {
 		return INSTANCE;
 	}
 	
-	@SuppressWarnings({ "unchecked", "resource" })
+
 	public boolean saveUserOnFile(User user) throws IOException, FileNotFoundException {
 		// Saves an instance of a user in file
-		FileOutputStream fos = null;
-		ObjectOutputStream oos = null;
-		FileInputStream fis = null;
-		ObjectInputStream ois = null;
+		File f = new File("C:\\Users\\Utente\\git\\GoGlobeWeb\\src\\users.txt");
 		Vector<User> objects;
-		Vector<User> object = new Vector<User>();
-		byte[] buffer = new byte[1024];
-		try { 
-			fis = new FileInputStream("C:\\Users\\Utente\\eclipse-workspace\\ISPWProject20-21\\src\\db\\users.bin");
-			ois = new ObjectInputStream(fis);
-			fos = new FileOutputStream("C:\\Users\\Utente\\eclipse-workspace\\ISPWProject20-21\\src\\db\\users.bin");
-			oos = new ObjectOutputStream(fos);
 			
-			int bytesRead = ois.read(buffer);
-			
-			if (bytesRead == -1) {
-				object.add(new User("dummy", "dummy", 0, "dummy", "dummy"));
-				oos.writeObject(object);
+		objects = readFromFile(f);
+		System.out.println("Objects: "+objects);
+		for (int i=0; i<objects.size(); i++) {
+			if (objects.get(i).getEmail().equals(user.getEmail())) {
+				System.out.println("User already registered.");
+				return false;
+			}
+		}
+		
+		objects.add(user);
+		if (writeUsersToFile(f, objects)) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+	
+	
+	@SuppressWarnings({ "resource", "unchecked" })
+	public Vector<User> readFromFile(File f) {
+		Vector<User> empty = new Vector<User>();
+		try {
+			FileInputStream fis = new FileInputStream(f);
+			if (fis.available() != 0) {
+				System.out.println("FileInputStream is available.");
+				ObjectInputStream ois = new ObjectInputStream(fis);
+				
+//				if (ois.available() != 0) {
+					System.out.println("ObjectInputStream is available.\n");
+					Vector<User> deserialization = (Vector<User>) ois.readObject();
+					System.out.println(deserialization);
+					fis.close();
+					ois.close();
+					return deserialization;
+//				} else {
+//					System.out.println("No data to read from file.\n");
+//					empty.add(new User("", "", 0, "", ""));
+//					return empty;
+//				}
+			} else {
+				System.out.println("FileInputStream not available:");
+				System.out.println("No data to read from file.\n");
+				empty.add(new User("", "", 0, "", ""));
+				return empty;
 			}
 			
-			objects = (Vector<User>) ois.readObject();
-			System.out.println("Objects in persistency: " +objects);
-				
-			boolean found = false;		
-			for (int i=0; i<objects.size(); i++) {
-				if (objects.get(i).getEmail().equals(user.getEmail())) {
-					System.out.println("User already registered.");
-					found=true;
-					return false;
-				}
-			}
-				
-			if (found == false) {
-				// Add new user as registered
-				System.out.println("Add new user as registered.");
-				objects.add(user);
-				fos = new FileOutputStream("C:\\Users\\Utente\\git\\GoGlobeWeb\\src\\db\\users.bin");		
-				oos = new ObjectOutputStream(fos);
-				oos.writeObject(objects);
-				return true;
-			}
-				
-			fis.close();
-			ois.close();
-			fos.close();
-			oos.close();
-			
-		} catch (FileNotFoundException e1) {
+		} catch (FileNotFoundException e) {
 			// TODO Auto-generated catch block
-			e1.printStackTrace();
-			throw e1;
+			e.printStackTrace();
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-			throw e;
 		} catch (ClassNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		} finally {
-			fos.close();
-			oos.close();
 		}
-		return false;
+		return null;
+	}
+	
+	
+	public boolean writeUsersToFile(File f, Vector<User> objects) {
+		try {
+			FileOutputStream fos = new FileOutputStream(f);
+			ObjectOutputStream oos = new ObjectOutputStream(fos);
+			oos.writeObject(objects);
+			oos.close();
+			fos.close();
+			return true;
+			
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return false;
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return false;
+		}
 	}
 	
 	public User searchUserByEmail(String email) {
@@ -99,7 +118,7 @@ public class PersistenceController {
 		ObjectInputStream ois = null;
 		User user = null;
 		try {
-			fis = new FileInputStream("users.dat");
+			fis = new FileInputStream("C:\\Users\\Utente\\git\\GoGlobeWeb\\src\\db\\users.bin");
 			ois = new ObjectInputStream(fis);
 			user = (User) ois.readObject();
 			while (!user.getEmail().equals(email)) {
