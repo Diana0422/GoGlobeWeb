@@ -1,13 +1,9 @@
 body {
-    font-family: BarlowMed;
-    background-image: linear-gradient(to top, rgba(245, 249, 252, 0), rgba(8, 27, 61, 0.73)),url(../res/images/japan-kyoto-toji-pagoda.jpg);
+	font-family: BarlowMed;
+    background-image: linear-gradient(to top, rgba(245, 249, 252, 0), rgba(8, 27, 61, 0.73)), url(../res/images/japan-kyoto-toji-pagoda.jpg);
     background-size: cover;
     height: fit-content;
 }
-
-/*#bootstrap-override .content-join-trip, .row {
-    background-color: #8dd1c7;
-}*/
 
 #bootstrap-override .results {
     padding-left: 30px;
