@@ -1,5 +1,8 @@
 package control;
 
+import java.io.FileNotFoundException;
+import java.io.IOException;
+
 import model.User;
 
 public class RegistrationController {
@@ -16,10 +19,10 @@ public class RegistrationController {
 		return INSTANCE;
 	}
 	
-	public synchronized User register(String email, String password, String name, String surname, int age) {
+	public synchronized boolean register(String email, String password, String name, String surname, int age) throws FileNotFoundException, IOException {
 		User user;
 		user = new User(name, surname, age, email, password);
-		return user;
+		return PersistenceController.getInstance().saveUserOnFile(user);
 	}
 	
 }
