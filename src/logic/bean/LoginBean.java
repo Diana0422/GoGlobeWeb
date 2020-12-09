@@ -1,6 +1,6 @@
-package bean;
+package logic.bean;
 
-import control.LoginController;
+import logic.control.LoginController;
 
 public class LoginBean {
 	

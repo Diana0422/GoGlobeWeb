@@ -1,9 +1,9 @@
-package bean;
+package logic.bean;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
 
-import control.RegistrationController;
+import logic.control.RegistrationController;
 
 public class RegistrationBean {
 	private String email;

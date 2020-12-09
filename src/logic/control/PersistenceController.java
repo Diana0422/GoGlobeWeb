@@ -1,4 +1,4 @@
-package control;
+package logic.control;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -9,7 +9,7 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.Vector;
 
-import model.User;
+import logic.model.User;
 
 public class PersistenceController {
 	

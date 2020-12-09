@@ -1,9 +1,9 @@
-package control;
+package logic.control;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
 
-import model.User;
+import logic.model.User;
 
 public class RegistrationController {
 	

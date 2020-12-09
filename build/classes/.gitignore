@@ -1,4 +1,5 @@
-/bean/
+/logic/
 /control/
-/db/
-/model/
+/bean/
+/dummy/
+/test/

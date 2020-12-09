@@ -1,4 +1,4 @@
-package model;
+package logic.model;
 
 public class Request {
 	private int id;
