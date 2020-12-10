@@ -8,8 +8,6 @@
 <!-- Mappare gli attributi di un oggetto sui campi della form -->
 <jsp:setProperty name="loginBean" property="*"/>
 
-
-
 <html>
 <head>
 	<meta charset="UTF-8">
