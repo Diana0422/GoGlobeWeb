@@ -21,6 +21,7 @@
 
 body {
     font-family: BarlowMed;
+    background-image: url(../res/images/japan-kyoto-toji-pagoda.jpg);
 }
 
 #bootstrap-override .nav-bar {

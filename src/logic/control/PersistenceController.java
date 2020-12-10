@@ -9,6 +9,7 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.Vector;
 
+import logic.model.Trip;
 import logic.model.User;
 
 public class PersistenceController {
@@ -26,13 +27,107 @@ public class PersistenceController {
 		return INSTANCE;
 	}
 	
+	
+	/* TRIP METHODS */
+	
+	public boolean saveTripOnFile(Trip trip) {
+		// Saves a trip on a back-end file
+		File f = new File("C:\\Users\\Utente\\git\\GoGlobeWeb\\src\\trips.txt");
+		Vector<Trip> objects;
+		
+		objects = readTripFromFile(f);
+		System.out.println("Objects: "+objects);
+		for (int i=0; i<objects.size(); i++) {
+			if (objects.get(i).getId() == trip.getId()) {
+				System.out.println("Trip already saved to back-end.");
+				return false;
+			}
+		}
+		
+		objects.add(trip);
+		if (writeTripsToFile(f, objects)) {
+			System.out.println("Trip saved on back-end file.");
+			return true;
+		} else {
+			return false;
+		}
+	}
+	
+	
+	
+	@SuppressWarnings({ "unchecked", "resource" })
+	public Vector<Trip> readTripFromFile(File f) {
+		// Reads a list of trips from the back-end file
+		Vector<Trip> empty = new Vector<Trip>();
+		FileInputStream fis;
+		
+		try {
+			fis = new FileInputStream(f);
+			if (fis.available() != 0) {
+				System.out.println("FileInputStream is available.");
+				ObjectInputStream ois = new ObjectInputStream(fis);
+				
+				System.out.println("ObjectInputStream is available.\n");
+				Vector<Trip> deserialization = (Vector<Trip>) ois.readObject();
+				System.out.println(deserialization);
+				fis.close();
+				ois.close();
+				return deserialization;
 
+			} else {
+				System.out.println("FileInputStream not available:");
+				System.out.println("No data to read from file.\n");
+				empty.add(new Trip(0,"", "", 0, null, null));
+				return empty;
+			}
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return null;
+		} catch (ClassNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return null;
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return null;
+		}
+		
+	}
+	
+	
+	public boolean writeTripsToFile(File f, Vector<Trip> objects) {
+		// Writes a list of trips to the back-end file
+		try {
+			FileOutputStream fos = new FileOutputStream(f);
+			ObjectOutputStream oos = new ObjectOutputStream(fos);
+			oos.writeObject(objects);
+			oos.close();
+			fos.close();
+			return true;
+			
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return false;
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return false;
+		}
+		
+	}
+	
+	
+	/* USER METHODS */
+	
 	public boolean saveUserOnFile(User user) throws IOException, FileNotFoundException {
 		// Saves an instance of a user in file
 		File f = new File("C:\\Users\\Utente\\git\\GoGlobeWeb\\src\\users.txt");
 		Vector<User> objects;
 			
-		objects = readFromFile(f);
+		objects = readUserFromFile(f);
 		System.out.println("Objects: "+objects);
 		for (int i=0; i<objects.size(); i++) {
 			if (objects.get(i).getEmail().equals(user.getEmail())) {
@@ -51,7 +146,7 @@ public class PersistenceController {
 	
 	
 	@SuppressWarnings({ "resource", "unchecked" })
-	public Vector<User> readFromFile(File f) {
+	public Vector<User> readUserFromFile(File f) {
 		Vector<User> empty = new Vector<User>();
 		try {
 			FileInputStream fis = new FileInputStream(f);
@@ -59,18 +154,13 @@ public class PersistenceController {
 				System.out.println("FileInputStream is available.");
 				ObjectInputStream ois = new ObjectInputStream(fis);
 				
-//				if (ois.available() != 0) {
-					System.out.println("ObjectInputStream is available.\n");
-					Vector<User> deserialization = (Vector<User>) ois.readObject();
-					System.out.println(deserialization);
-					fis.close();
-					ois.close();
-					return deserialization;
-//				} else {
-//					System.out.println("No data to read from file.\n");
-//					empty.add(new User("", "", 0, "", ""));
-//					return empty;
-//				}
+				System.out.println("ObjectInputStream is available.\n");
+				Vector<User> deserialization = (Vector<User>) ois.readObject();
+				System.out.println(deserialization);
+				fis.close();
+				ois.close();
+				return deserialization;
+
 			} else {
 				System.out.println("FileInputStream not available:");
 				System.out.println("No data to read from file.\n");
@@ -112,34 +202,6 @@ public class PersistenceController {
 		}
 	}
 	
-	public User searchUserByEmail(String email) {
-		// Gets an instance of a user in file
-		FileInputStream fis = null;
-		ObjectInputStream ois = null;
-		User user = null;
-		try {
-			fis = new FileInputStream("C:\\Users\\Utente\\git\\GoGlobeWeb\\src\\db\\users.bin");
-			ois = new ObjectInputStream(fis);
-			user = (User) ois.readObject();
-			while (!user.getEmail().equals(email)) {
-				user = (User) ois.readObject();
-			}
-			fis.close();
-			ois.close();
-			return user;
-		} catch (FileNotFoundException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (ClassNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		return null;
-	}
-	
 	public static void initializeFile(String filename) {
 		FileOutputStream fos = null;
 		ObjectOutputStream oos = null;
@@ -161,6 +223,13 @@ public class PersistenceController {
 			e.printStackTrace();
 		}
 		
+	}
+	
+	
+	public static void main(String [] args) {
+//		Trip trip = new Trip(1,"Japanese Temples", "C:\\Users\\Utente\\git\\GoGlobeWeb\\WebContent\\res\\images\\kyoto", 2300, null, null);
+		Trip trip2 = new Trip(2,"Provence and surroundings", "C:\\Users\\Utente\\git\\GoGlobeWeb\\WebContent\\res\\images\\provence", 2300, null, null);
+		PersistenceController.getInstance().saveTripOnFile(trip2);
 	}
 }
 	
