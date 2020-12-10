@@ -19,10 +19,10 @@ private static SelectTripPreferencesController INSTANCE;
 	
 	public boolean validateForm(String tripName, String Category1, String Category2, String departureDate, String returnDate){
 			
+		boolean res = validateDates();
 		
 		
-		
-		return true;
+		return res;
 	}
 	
 	private boolean validateDates() {
