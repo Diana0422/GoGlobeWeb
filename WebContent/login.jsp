@@ -2,6 +2,7 @@
 
 <!-- Dichiarazione e istanziazione di un loginBean -->
 <!-- class="NomePackage.Nomeclasse -->
+<!--  id è il nome della variabile che andiamo ad istanziare -->
 
 <jsp:useBean id="loginBean" scope="request" class="logic.bean.LoginBean"/>
 

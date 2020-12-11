@@ -9,15 +9,15 @@ public class SelectTripPreferencesBean {
 //	private Date returnDate = new Date();
 	private String departureDate;
 	private String returnDate;
-	private String Category1;
-	private String Category2;
+	private String category1;
+	private String category2;
 	
 	public SelectTripPreferencesBean(){
 		
 	}
 	
 	public boolean validateForm() {
-		return SelectTripPreferencesController.getInstance().validateForm(tripName, Category1, Category2, departureDate, returnDate);	
+		return SelectTripPreferencesController.getInstance().validateForm(tripName, category1, category2, departureDate, returnDate);	
 	}
 
 	public String getTripName() {
@@ -45,10 +45,6 @@ public class SelectTripPreferencesBean {
 //		this.returnDate = returnDate;
 //	}
 
-	public String getCategory1() {
-		return Category1;
-	}
-
 	public String getDepartureDate() {
 		return departureDate;
 	}
@@ -64,17 +60,21 @@ public class SelectTripPreferencesBean {
 	public void setReturnDate(String returnDate) {
 		this.returnDate = returnDate;
 	}
+	
+	public String getCategory1() {
+		return category1;
+	}
 
 	public void setCategory1(String category1) {
-		Category1 = category1;
+		this.category1 = category1;
 	}
 
 	public String getCategory2() {
-		return Category2;
+		return category2;
 	}
 
 	public void setCategory2(String category2) {
-		Category2 = category2;
+		this.category2 = category2;
 	}
 
 }

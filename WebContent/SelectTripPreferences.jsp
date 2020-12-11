@@ -2,6 +2,15 @@
     pageEncoding="UTF-8"%>
    <jsp:useBean id="selectTripPreferencesBean" scope="request" 	class="logic.bean.SelectTripPreferencesBean"/>
    
+   <jsp:setProperty name="selectTripPreferencesBean" property="*"/>
+   
+<% 
+   if (request.getParameter("back-btn")!= null){
+%>
+	   <jsp:forward page="home.jsp"/>
+<% 
+   }
+%>
    	<!DOCTYPE html>
 <html>
 <head>
@@ -51,7 +60,7 @@
                     <!-- Trip name-->
                     <div class="form-group col-md-6">
                         <label for="inputDepDate" ><h4>Trip Title</h4></label>
-                        <input type="text" class="form-control" name="depDate" id="depDate"
+                        <input type="text" class="form-control" name="tripName" id="tripName"
                         placeholder="Enter trip name...">
                     </div>
                 </div>
@@ -59,21 +68,21 @@
                 <div class="form-row">
                     <div class="form-group col-md-6">
                         <label for="inputDepDate"><h4>Departure Date</h4></label>
-                        <input type="text" class="form-control" name="depDate" id="depDate"
+                        <input type="text" class="form-control" name="departureDate" id="depDate"
                         placeholder="dd/mm/yyyy">
                     </div>
                     <div class="form-group col-md-6">
                         <label for="inputRetDate"><h4>Return Date</h4></label>
-                        <input type="text" class="form-control" name="retDate" id="retDate"
+                        <input type="text" class="form-control" name="returnDate" id="retDate"
                         placeholder="dd/mm/yyyy" >
                     </div>
                 </div>
 
                 <div class="form-row form-categories">              
                     <div class="form-group col-md-6">
-                        <label for="inputGroupSelect01"><h4>Trip category 1</h4></label>
+                        <label for="selectCategory1"><h4>Trip category 1</h4></label>
         
-                        <select class="custom-select" id="inputGroupSelect01">
+                        <select class="custom-select" id="selectCategory1" name="category1">
                             <option selected>Choose...</option>
                             <option value="1">Adventure</option>
                             <option value="2">Relax</option>
@@ -82,9 +91,9 @@
                     </select>
                     </div>  
                     <div class="form-group col-md-6">
-                        <label for="inputGroupSelect01"><h4>Trip category 2</h4></label>
+                        <label for="selectCategory2"><h4>Trip category 2</h4></label>
         
-                        <select class="custom-select" id="inputGroupSelect01">
+                        <select class="custom-select" id="selectCategory2" name="category2">
                             <option selected>Choose...</option>
                             <option value="1">Adventure</option>
                             <option value="2">Relax</option>
@@ -94,8 +103,8 @@
                     </div>
                     
                     <div id="form-btns" class="form-btns">
-                        <button type="submit" class="btn btn-secondary btn-lg">Back</button>
-                        <button type="submit" class="btn btn-primary btn-lg preferences-btn">Next</button>
+                        <button type="submit" class="btn btn-secondary btn-lg" name="back-btn">Back</button>
+                        <button type="submit" class="btn btn-primary btn-lg preferences-btn" name="next-btn">Next</button>
                     </div>
                 </div>
             </form>
