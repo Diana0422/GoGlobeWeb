@@ -226,11 +226,11 @@ public class PersistenceController {
 	}
 	
 	
-//	public static void main(String [] args) {
-////		Trip trip = new Trip(1,"Japanese Temples", "C:\\Users\\Utente\\git\\GoGlobeWeb\\WebContent\\res\\images\\kyoto", 2300, null, null);
-//		Trip trip2 = new Trip(2,"Provence and surroundings", "C:\\Users\\Utente\\git\\GoGlobeWeb\\WebContent\\res\\images\\provence", 2300, null, null);
-//		PersistenceController.getInstance().saveTripOnFile(trip2);
-//	}
+	public static void main(String [] args) {
+//		Trip trip = new Trip(1,"Japanese Temples", "C:\\Users\\Utente\\git\\GoGlobeWeb\\WebContent\\res\\images\\kyoto", 2300, null, null);
+		Trip trip2 = new Trip(4,"Trippissimo", "C:\\Users\\Utente\\git\\GoGlobeWeb\\WebContent\\res\\images\\boh", 500, null, null);
+		PersistenceController.getInstance().saveTripOnFile(trip2);
+	}
 }
 	
 

@@ -1,9 +1,11 @@
-#second-row {
+row {
     margin-top: 30px;
+    margin-bottom: 10px;
 }
 
 .col {
     margin-right: 10px;
+    margin-bottom: 30px;
 }
 
 .card-body, .card-title, .card-text, .more-info  {

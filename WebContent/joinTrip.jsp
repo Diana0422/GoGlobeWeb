@@ -94,143 +94,61 @@
         				if (trips != null) {
         					System.out.println("here2.\n");
         					Iterator<Trip> iter = trips.iterator();
-        							
+        		
+        					int elemsInRow=0;
         					while(iter.hasNext()) {
         						System.out.println("iter has next!");
         						Trip trip = iter.next();
+        						
+        						if (elemsInRow == 0) {
+        	%>
+        		        			<div class="row" style="height: fit-content">
+        	<%
+        						}
+        						if (elemsInRow%3 == 0 && elemsInRow != 0) {
+        	%>
+        							</div>
+        							<div class="row" style="height: fit-content">
+        	<%
+        						}
         						if (!trip.getTitle().equals("")) {
+        							elemsInRow++;
+        							System.out.println("elemsInRow: "+elemsInRow);
         							System.out.println("jsp: trip= "+trip);
         	%>
-            						<p><%= trip.getTitle() %></p>
-            						<p><%= trip.getPrice() %></p>
+            						<!--card element-->
+                					<div class="col" style="margin-bottom: 30px; max-width: 33%">
+                    					<div class="card"> <!-- add attribute text-center to center content in card-->
+                        					<img src="res/images/Avenue-of-the-Baobobs-Madagascar 2.png" class="card-img-top">
+                        					<div class="card-body">
+                            					<h3 class="card-title"><%=trip.getTitle() %></h3>
+                            					<div class="price-tag">
+                                					<h5>Starting price: </h5>
+                                					<h5><%=trip.getPrice() %></h5   >
+                            					</div>
+                            					<img src="res/images/icons8-mountain-50.png" alt="">
+                            					<img src="res/images/icons8-holiday-50.png" alt="">
+                            					<img src="res/images/icons8-greek-pillar-capital-50.png" alt="">
+                            					<img src="res/images/icons8-cocktail-50.png" alt="">
+                            					<input id="custom-btn" type="button" class="btn btn-primary" value="More Info">
+                        					</div>
+                    					</div>
+                    				</div>
             <%
         						}
         					}
         				}
         			}
+        		} else {
+        	%>
+        			<div class="filler" style="padding: 250px"><h2>No trips found.</h2></div>
+        			
+        	<%
         		}
         							
         	%>
-        	
-            <div id=#first-row class="row">
-                <!--card element #1-->
-                <div class="col">
-                    <div class="card"> <!--aggiungere attributo text-center per centrare il contenuto nella card-->
-                        <img src="res/images/Avenue-of-the-Baobobs-Madagascar 2.png" class="card-img-top">
-                        <div class="card-body">
-                            <h3 class="card-title">Trip Title</h3>
-                            <div class="price-tag">
-                                <h5>Starting price: </h5>
-                                <h5>2000€</h5   >
-                            </div>
-                            <img src="res/images/icons8-mountain-50.png" alt="">
-                            <img src="res/images/icons8-holiday-50.png" alt="">
-                            <img src="res/images/icons8-greek-pillar-capital-50.png" alt="">
-                            <img src="res/images/icons8-cocktail-50.png" alt="">
-                            <input id="custom-btn" type="button" class="btn btn-primary" value="More Info">
-                        </div>
-                    </div>
-                </div>
-
-                <!--card element #2-->
-                <div class="col">
-                    <div class="card">
-                        <img src="res/images/Arches-National-Park-Moab 1.png" class="card-img-top">
-                        <div class="card-body">
-                            <h3 class="card-title">Trip Title</h3>
-                            <div class="price-tag">
-                                <h5>Starting price: </h5>
-                                <h5>2000€</h5   >
-                            </div>
-                            <img src="res/images/icons8-mountain-50.png" alt="">
-                            <img src="res/images/icons8-holiday-50.png" alt="">
-                            <img src="res/images/icons8-greek-pillar-capital-50.png" alt="">
-                            <img src="res/images/icons8-cocktail-50.png" alt="">
-                            <input id="custom-btn" type="button" class="btn btn-primary" value="More Info">
-                        </div>
-                    </div>
-                </div>
-
-                <!--card element #3-->
-                <div class="col">
-                    <div class="card">
-                        <img src="res/images/kyoto.png" class="card-img-top">
-                        <div class="card-body">
-                            <h3 class="card-title">Trip Title</h3>
-                            <div class="price-tag">
-                                <h5>Starting price: </h5>
-                                <h5>2000€</h5   >
-                            </div>
-                            <img src="res/images/icons8-mountain-50.png" alt="">
-                            <img src="res/images/icons8-holiday-50.png" alt="">
-                            <img src="res/images/icons8-greek-pillar-capital-50.png" alt="">
-                            <img src="res/images/icons8-cocktail-50.png" alt="">
-                            <input id="custom-btn" type="button" class="btn btn-primary" value="More Info">
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- row2-->
-            <div id="second-row" class="row">
-                <!--card element #4-->
-                <div class="col">
-                    <div class="card">
-                        <img src="res/images/provence.png" class="card-img-top">
-                        <div class="card-body">
-                            <h3 class="card-title">Trip Title</h3>
-                            <div class="price-tag">
-                                <h5>Starting price: </h5>
-                                <h5>2000€</h5   >
-                            </div>
-                            <img src="res/images/icons8-mountain-50.png" alt="">
-                            <img src="res/images/icons8-holiday-50.png" alt="">
-                            <img src="res/images/icons8-greek-pillar-capital-50.png" alt="">
-                            <img src="res/images/icons8-cocktail-50.png" alt="">
-                            <input id="custom-btn" type="button" class="btn btn-primary" value="More Info">
-                        </div>
-                    </div>
-                </div>
-
-                <!--card element #5-->
-                <div class="col">
-                    <div class="card">
-                        <img src="res/images/Arches-National-Park-Moab 1.png" class="card-img-top">
-                        <div class="card-body">
-                            <h3 class="card-title">Trip Title</h3>
-                            <div class="price-tag">
-                                <h5>Starting price: </h5>
-                                <h5>2000€</h5   >
-                            </div>
-                            <img src="res/images/icons8-mountain-50.png" alt="">
-                            <img src="res/images/icons8-holiday-50.png" alt="">
-                            <img src="res/images/icons8-greek-pillar-capital-50.png" alt="">
-                            <img src="res/images/icons8-cocktail-50.png" alt="">
-                            <input id="custom-btn" type="button" class="btn btn-primary" value="More Info">
-                        </div>
-                    </div>
-                </div>
-
-                <!--card element #6-->
-                <div class="col">
-                    <div class="card">
-                        <img src="res/images/Avenue-of-the-Baobobs-Madagascar 2.png" class="card-img-top">
-                        <div class="card-body">
-                            <h3 class="card-title">Trip Title</h3>
-                            <div class="price-tag">
-                                <h5>Starting price: </h5>
-                                <h5>2000€</h5   >
-                            </div>
-                            <img src="res/images/icons8-mountain-50.png" alt="">
-                            <img src="res/images/icons8-holiday-50.png" alt="">
-                            <img src="res/images/icons8-greek-pillar-capital-50.png" alt="">
-                            <img src="res/images/icons8-cocktail-50.png" alt="">
-                            <input id="custom-btn" type="button" class="btn btn-primary" value="More Info">
-                        </div>
-                    </div>
-                </div>
-            </div>
+        	</div>
         </div>
-    </div>
+      </div>
 </body>
 </html>
