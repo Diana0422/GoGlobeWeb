@@ -13,7 +13,7 @@ public class RegistrationBean {
 	private String birthday;
 	private String passwordconf;
 	
-	//UserBean Constructor
+	//RegistrationBean Constructor
 	public RegistrationBean() {
 	}
 	

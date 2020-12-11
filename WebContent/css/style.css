@@ -40,6 +40,14 @@ body {
     font-size: 40px;
 }
 
+#bootstrap-override .page-state, h2 {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-family: BarlowBold;
+}
+
 #bootstrap-override #custom-btn {
     margin-left: 20px;
     background-color: #8d8741;

@@ -1,5 +1,13 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+    
+<!-- declaration of a join trip bean -->
+<jsp:useBean id="joinTripBean" scope="session" class="logic.bean.JoinTripBean"/>
+
+<%@page import="java.util.Vector"%>      <%--Importing all the dependent classes--%>
+<%@page import="java.util.Iterator"%> 
+<%@page import="logic.model.Trip"%> 
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -51,16 +59,59 @@
 
             <!-- search bar-->
             <div class="search-bar">
-                <input type="text" class="form-control" name="search" value="Search trip...">
-                <input id="custom-btn" type="button" class="btn btn-primary" value="Search">
-                <h2 id="or">or</h2>
-                <input id="custom-btn" type="button" class="btn btn-primary" value="Plan trip">
+                <form action="joinTrip.jsp" method="POST" name="search-form">
+                	<input type="text" class="form-control" name="searchVal" placeholder="Search trip...">
+                	<button type="submit" name="search" class="btn btn-primary">Search</button>
+                	
+                	<h2 id="or">or</h2>
+                	<button type="submit" name="plantrip" class="btn btn-primary">Plan Trip</button>
+                	<%
+          				if (request.getParameter("plantrip") != null) {
+          			%>
+          					<jsp:forward page="planTrip.jsp"/>
+          			<%
+          				}
+          			%>
+          			</form>
             </div>
         </div>
 
 
         <!--cards for the results-->
         <div class="results">
+        	
+        	<%
+        		if (request.getParameter("search") != null) {
+        		// Search for trips that match this title TODO
+        	%>
+        	    	<!-- map class attributes to values of the form -->
+					<jsp:setProperty name="joinTripBean" property="searchVal"/>
+			<%
+        			if(joinTripBean.searchTripsByValue()) {
+        				System.out.println("here");
+        				Vector<Trip> trips = joinTripBean.getObjects();
+        				System.out.println("jsp: trips = "+trips);
+        				if (trips != null) {
+        					System.out.println("here2.\n");
+        					Iterator<Trip> iter = trips.iterator();
+        							
+        					while(iter.hasNext()) {
+        						System.out.println("iter has next!");
+        						Trip trip = iter.next();
+        						if (!trip.getTitle().equals("")) {
+        							System.out.println("jsp: trip= "+trip);
+        	%>
+            						<p><%= trip.getTitle() %></p>
+            						<p><%= trip.getPrice() %></p>
+            <%
+        						}
+        					}
+        				}
+        			}
+        		}
+        							
+        	%>
+        	
             <div id=#first-row class="row">
                 <!--card element #1-->
                 <div class="col">

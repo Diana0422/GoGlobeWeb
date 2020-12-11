@@ -3,7 +3,7 @@
     
 <!-- declaration of a  register bean -->
 <jsp:useBean id="registerBean" scope="request" class="logic.bean.RegistrationBean"/>
-    
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -51,19 +51,30 @@
     <!-- get started -->
     <div class="get-started">
         <div class="join">
-            <h3>Join an organized trip with other people</h3>
-            <button type="submit" name="jointrip" class="btn btn-primary">Join a Trip</button>
-          	<%
-          		if (request.getParameter("jointrip") != null) {
-          			%>
-          			<jsp:forward page="joinTrip.html"/>
-          			<%
-          		}
-          	%>
+        	<form action="home.jsp" method="POST">
+        		<h3>Join an organized trip with other people</h3>
+            	<button type="submit" name="jointrip" class="btn btn-primary">Join a Trip</button>
+          		<%
+          			if (request.getParameter("jointrip") != null) {
+          		%>
+          				<jsp:forward page="joinTrip.jsp"/>
+          		<%
+          			}
+          		%>
+        	</form>
         </div>
         <div class="plan">
-            <h3>Plan your personal trip and share with the community</h3>
-            <button type="submit" name="plantrip" class="btn btn-primary">Plan a Trip</button>
+        	<form action="home.jsp" method="POST">
+        		<h3>Plan your personal trip and share with the community</h3>
+            	<button type="submit" name="plantrip" class="btn btn-primary">Plan a Trip</button>
+            	<%
+          			if (request.getParameter("plantrip") != null) {
+          		%>
+          				<jsp:forward page="planTrip.jsp"/>
+          		<%
+          			}
+          		%>
+        	</form>
         </div>
     </div>
     
