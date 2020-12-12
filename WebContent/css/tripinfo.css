@@ -1,0 +1,90 @@
+body {
+    font-family: BarlowMed;
+    background-image: linear-gradient(to top, rgba(245, 249, 252, 0), rgba(8, 27, 61, 0.73)),url(../res/images/japan-kyoto-toji-pagoda.jpg);
+    background-size: cover;
+    height: fit-content;
+}
+
+.trip-info {
+    display: flex;
+    justify-content: space-between;
+}
+
+/* left elements in displayer */
+.infos-left {
+    margin-right: 10%;
+}
+
+.trip-title {
+    margin-bottom: 5%;
+}
+
+.price-tag {
+    display: flex;
+}
+
+.locations {
+    display: flex;
+    margin-bottom: 5%;
+}
+
+h4 {
+    margin-right: 2%;
+}
+
+h5 {
+    display: flex;
+    align-items: center;
+}
+
+h6 {
+    display: flex;
+    align-items: center;
+    margin-left: 2%;
+    margin-right: 2%;
+}
+
+.trip-description {
+    margin-bottom: 10%;
+}
+
+/* right elements in displayer */
+
+.trip-img {
+    margin-bottom: 10%;
+}
+
+ul {
+    padding-left: 0%;
+    list-style: none;
+}
+
+li {
+    display: flex;
+    margin-bottom: 2%;
+}
+
+.category-list h5 {
+    display: flex;
+    align-items: center;
+}
+
+.dates {
+    margin-bottom: 5%;
+}
+
+.departure {
+    display: flex;
+}
+
+.departure h5 {
+    margin-right: 2%;
+}
+
+.return {
+    display: flex;
+}
+
+.return h5 {
+    margin-right: 2%;
+}
