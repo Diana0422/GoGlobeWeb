@@ -59,3 +59,21 @@ body {
     border-radius: 5px;
     max-width: 200px;
 }
+
+/* data display */
+
+.displayer {
+    background-color: white;
+    width: fit-content ;
+    height: fit-content;
+    padding: 59px;
+    margin: 50px;
+    border-radius: 20px;
+} 
+
+/* Image resizing */
+
+img.resize {
+    width:540px; /* you can use % */
+    height: auto;
+}
