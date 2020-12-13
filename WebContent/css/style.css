@@ -64,8 +64,8 @@ body {
 
 .displayer {
     background-color: white;
-    width: fit-content ;
-    height: fit-content;
+    width: auto;
+    height: auto;
     padding: 59px;
     margin: 50px;
     border-radius: 20px;
@@ -74,6 +74,6 @@ body {
 /* Image resizing */
 
 img.resize {
-    width:540px; /* you can use % */
+    width: 450px; /* you can use % */
     height: auto;
 }
