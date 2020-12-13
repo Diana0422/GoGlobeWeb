@@ -1,8 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-   <jsp:useBean id="selectTripPreferencesBean" scope="request" 	class="logic.bean.SelectTripPreferencesBean"/>
+   <jsp:useBean id="planTripBean" scope="request" 	class="logic.bean.PlanTripBean"/>
    
-   <jsp:setProperty name="selectTripPreferencesBean" property="*"/>
+   <jsp:setProperty name="planTripBean" property="*"/>
    
 <% 
    if (request.getParameter("back-btn")!= null){
@@ -11,6 +11,8 @@
 <% 
    }
 %>
+
+
    	<!DOCTYPE html>
 <html>
 <head>
@@ -54,8 +56,20 @@
         <!-- preferences form-->
         <div id="preferences-form">
         	<h2>Insert information about your trip!</h2>
-            <form>
-
+<%
+	if (request.getParameter("next-btn") != null){
+		if (planTripBean.validateForm()){
+%>
+			<jsp:forward page="planTrip.jsp"/>
+<% 
+		}else{
+%>
+			<p style="color: red"><jsp:getProperty name="planTripBean" property="errorMsg"/></p>
+<%
+		}
+	}
+%>
+            <form method="POST">
                 <div class="form-row">
                     <!-- Trip name-->
                     <div class="form-group col-md-6">
@@ -83,22 +97,22 @@
                         <label for="selectCategory1"><h4>Trip category 1</h4></label>
         
                         <select class="custom-select" id="selectCategory1" name="category1">
-                            <option selected>Choose...</option>
-                            <option value="1">Adventure</option>
-                            <option value="2">Relax</option>
-                            <option value="3">Culture</option>
-                            <option value="4">Fun</option>
+                            <option selected value="none">Choose...</option>
+                          	<option value="adventure">Adventure</option>
+                            <option value="relax">Relax</option>
+                            <option value="culture">Culture</option>
+                            <option value="fun">Fun</option>
                     </select>
                     </div>  
                     <div class="form-group col-md-6">
                         <label for="selectCategory2"><h4>Trip category 2</h4></label>
         
                         <select class="custom-select" id="selectCategory2" name="category2">
-                            <option selected>Choose...</option>
-                            <option value="1">Adventure</option>
-                            <option value="2">Relax</option>
-                            <option value="3">Culture</option>
-                            <option value="4">Fun</option>
+                            <option selected value="none">Choose...</option>
+                            <option value="adventure">Adventure</option>
+                            <option value="relax">Relax</option>
+                            <option value="culture">Culture</option>
+                            <option value="fun">Fun</option>
                     </select>
                     </div>
                     
