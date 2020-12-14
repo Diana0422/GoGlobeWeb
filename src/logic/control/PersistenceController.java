@@ -32,7 +32,7 @@ public class PersistenceController {
 	
 	public boolean saveTripOnFile(Trip trip) {
 		// Saves a trip on a back-end file
-		File f = new File("C:\\Users\\Utente\\git\\GoGlobeWeb\\src\\trips.txt");
+		File f = new File("C:\\Users\\dayli\\git\\GoGlobeWeb\\src\\trips.txt");
 		Vector<Trip> objects;
 		
 		objects = readTripFromFile(f);
@@ -77,7 +77,7 @@ public class PersistenceController {
 			} else {
 				System.out.println("FileInputStream not available:");
 				System.out.println("No data to read from file.\n");
-				empty.add(new Trip(0,"", "", 0, null, null));
+				empty.add(new Trip(0,"", "", 0, "", "", "", ""));
 				return empty;
 			}
 		} catch (FileNotFoundException e) {
@@ -124,7 +124,7 @@ public class PersistenceController {
 	
 	public boolean saveUserOnFile(User user) throws IOException, FileNotFoundException {
 		// Saves an instance of a user in file
-		File f = new File("C:\\Users\\Utente\\git\\GoGlobeWeb\\src\\users.txt");
+		File f = new File("C:\\Users\\dayli\\git\\GoGlobeWeb\\src\\users.txt");
 		Vector<User> objects;
 			
 		objects = readUserFromFile(f);
@@ -227,9 +227,9 @@ public class PersistenceController {
 	
 	
 	public static void main(String [] args) {
-//		Trip trip = new Trip(1,"Japanese Temples", "C:\\Users\\Utente\\git\\GoGlobeWeb\\WebContent\\res\\images\\kyoto", 2300, null, null);
-		Trip trip2 = new Trip(4,"Trippissimo", "C:\\Users\\Utente\\git\\GoGlobeWeb\\WebContent\\res\\images\\boh", 500, null, null);
-		PersistenceController.getInstance().saveTripOnFile(trip2);
+		Trip trip = new Trip(1,"Japanese Temples", "C:\\Users\\Utente\\git\\GoGlobeWeb\\WebContent\\res\\images\\kyoto", 2300, "Adventure", "Culture", "22/04/2021", "13/05/2021");
+//		Trip trip2 = new Trip(2,"Trippissimo", "C:\\Users\\Utente\\git\\GoGlobeWeb\\WebContent\\res\\images\\boh", 500, null, null);
+		PersistenceController.getInstance().saveTripOnFile(trip);
 	}
 }
 	

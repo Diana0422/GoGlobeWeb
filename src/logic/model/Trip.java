@@ -2,6 +2,9 @@ package logic.model;
 
 import java.awt.image.BufferedImage;
 import java.io.Serializable;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
@@ -15,16 +18,27 @@ public class Trip implements Serializable {
 	private TripCategory category1;
 	private TripCategory category2;
 	private BufferedImage img;
-	private Date departureDate; //write get and set
-	private Date returnDate;	//write get and set
+	private Date departureDate;
+	private Date returnDate;	
 	private List<Day> days;	
 	
-	public Trip(int id, String title, String imgFilename, int price, TripCategory cat1, TripCategory cat2) {
+	public Trip(int id, String title, String imgFilename, int price, String cat1, String cat2, String departureDate, String returnDate) {
 		this.id = id;
 		this.title = title;
 		this.price = price;
-		this.category1 = cat1;
-		this.category2 = cat2;	
+		this.category1 = TripCategory.valueOf(cat1);
+		this.category2 = TripCategory.valueOf(cat2);
+		
+		DateFormat df = new SimpleDateFormat("dd/mm/yyyy");
+		try {
+			Date dep = df.parse(departureDate);
+			Date ret = df.parse(returnDate);
+			this.departureDate = dep;
+			this.returnDate = ret;
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 	
 	public BufferedImage getImg() {
@@ -81,6 +95,22 @@ public class Trip implements Serializable {
 
 	public void setDays(List<Day> days) {
 		this.days = days;
+	}
+
+	public Date getDepartureDate() {
+		return departureDate;
+	}
+
+	public void setDepartureDate(Date departureDate) {
+		this.departureDate = departureDate;
+	}
+
+	public Date getReturnDate() {
+		return returnDate;
+	}
+
+	public void setReturnDate(Date returnDate) {
+		this.returnDate = returnDate;
 	}
 
 }

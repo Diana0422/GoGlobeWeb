@@ -21,11 +21,7 @@ body {
 
 .price-tag {
     display: flex;
-}
-
-.locations {
-    display: flex;
-    margin-bottom: 5%;
+    margin-bottom: 30%;
 }
 
 h4 {

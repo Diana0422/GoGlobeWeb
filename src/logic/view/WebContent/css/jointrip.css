@@ -48,3 +48,7 @@ body {
 #bootstrap-override .card-body #custom-btn {
     margin-left: 90px;
 }
+
+.form-inline .form-group {
+  margin-right:4px;
+}

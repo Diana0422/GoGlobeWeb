@@ -6,7 +6,7 @@
 
 <%@page import="java.util.Vector"%>      <%--Importing all the dependent classes--%>
 <%@page import="java.util.Iterator"%> 
-<%@page import="logic.model.Trip"%> 
+<%@page import="logic.model.Trip"%>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -59,7 +59,7 @@
 
             <!-- search bar-->
             <div class="search-bar">
-                <form action="joinTrip.jsp" method="POST" name="search-form">
+                <form class="form-inline" action="joinTrip.jsp" method="POST" name="search-form">
                 	<input type="text" class="form-control" name="searchVal" placeholder="Search trip...">
                 	<button type="submit" name="search" class="btn btn-primary">Search</button>
                 	
@@ -78,6 +78,7 @@
 
 
         <!--cards for the results-->
+        <form method="POST">
         <div class="results">
         	
         	<%
@@ -88,17 +89,17 @@
 					<jsp:setProperty name="joinTripBean" property="searchVal"/>
 			<%
         			if(joinTripBean.searchTripsByValue()) {
-        				System.out.println("here");
         				Vector<Trip> trips = joinTripBean.getObjects();
         				System.out.println("jsp: trips = "+trips);
         				if (trips != null) {
-        					System.out.println("here2.\n");
         					Iterator<Trip> iter = trips.iterator();
         		
         					int elemsInRow=0;
+        					Integer idx = 0;
         					while(iter.hasNext()) {
         						System.out.println("iter has next!");
         						Trip trip = iter.next();
+        						idx++;
         						
         						if (elemsInRow == 0) {
         	%>
@@ -117,23 +118,25 @@
         							System.out.println("jsp: trip= "+trip);
         	%>
             						<!--card element-->
-                					<div class="col" style="margin-bottom: 30px; max-width: 33%">
-                    					<div class="card"> <!-- add attribute text-center to center content in card-->
-                        					<img src="res/images/Avenue-of-the-Baobobs-Madagascar 2.png" class="card-img-top">
-                        					<div class="card-body">
-                            					<h3 class="card-title"><%=trip.getTitle() %></h3>
-                            					<div class="price-tag">
-                                					<h5>Starting price: </h5>
-                                					<h5><%=trip.getPrice() %></h5   >
-                            					</div>
-                            					<img src="res/images/icons8-mountain-50.png" alt="">
-                            					<img src="res/images/icons8-holiday-50.png" alt="">
-                            					<img src="res/images/icons8-greek-pillar-capital-50.png" alt="">
-                            					<img src="res/images/icons8-cocktail-50.png" alt="">
-                            					<input id="custom-btn" type="button" class="btn btn-primary" value="More Info">
-                        					</div>
+            							<div class="col" style="margin-bottom: 30px; max-width: 33%">
+                    						<div class="card"> <!-- add attribute text-center to center content in card-->
+                        						<img src="res/images/Avenue-of-the-Baobobs-Madagascar 2.png" class="card-img-top">
+                        						<div class="card-body">
+                            						<h3 class="card-title"><%=trip.getTitle() %></h3>
+                            						<div class="price-tag">
+                                						<h5>Starting price: </h5>
+                                						<h5><%=trip.getPrice() %></h5   >
+                            						</div>
+                            						<img src="res/images/icons8-mountain-50.png" alt="">
+                            						<img src="res/images/icons8-holiday-50.png" alt="">
+                            						<img src="res/images/icons8-greek-pillar-capital-50.png" alt="">
+                            						<img src="res/images/icons8-cocktail-50.png" alt="">
+                   									<button type="submit" name="viewinfo" class="btn btn-primary" value=<%= idx%>>More Info...</button>
+                        						</div>
+                    						</div>
                     					</div>
-                    				</div>
+               
+                    				
             <%
         						}
         					}
@@ -149,6 +152,19 @@
         	%>
         	</div>
         </div>
+        
+        <%
+             if(request.getParameter("viewinfo") != null) {
+            	int tripNum = Integer.parseInt(request.getParameter("viewinfo"));
+             	System.out.println(request.getParameter("viewinfo"));
+             	joinTripBean.setTrip(joinTripBean.getObjects().get(tripNum-1));
+             	System.out.println(joinTripBean.getTrip());
+                %>
+                	<jsp:forward page="tripInfo.jsp"/>
+                <%
+             }
+        %>
+        </form>
       </div>
 </body>
 </html>

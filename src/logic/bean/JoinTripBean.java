@@ -12,6 +12,8 @@ public class JoinTripBean {
 	private String searchVal;
 	
 	private Vector<Trip> objects;
+	private Trip trip;
+	
 	private String title;
 	private int price;
 	private TripCategory category1;
@@ -64,14 +66,28 @@ public class JoinTripBean {
 	public Vector<Trip> getObjects() {
 		return objects;
 	}
+	
 	public void setObjects(Vector<Trip> objects) {
 		this.objects = objects;
+	}
+	
+	public Trip getTrip() {
+		return trip;
+	}
+
+	public void setTrip(Trip trip) {
+		this.trip = trip;
+		this.setTitle(trip.getTitle());
+		this.setPrice(trip.getPrice());
+		this.setImg(trip.getImg());
+		this.setCategory1(trip.getCategory1());
+		this.setCategory2(trip.getCategory2());
 	}
 	
 	public boolean searchTripsByValue() {
 		System.out.println("Search trips by value started.\n");
 		System.out.println("Val: "+ this.getSearchVal());
-		File f = new File("C:\\Users\\Utente\\git\\GoGlobeWeb\\src\\trips.txt");
+		File f = new File("C:\\Users\\dayli\\git\\GoGlobeWeb\\src\\trips.txt");
 		
 		Vector<Trip> trips = PersistenceController.getInstance().readTripFromFile(f);
 		this.setObjects(trips);
@@ -83,4 +99,5 @@ public class JoinTripBean {
 			return true;
 		}
 	}
+	
 }
