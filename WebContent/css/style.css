@@ -79,3 +79,9 @@ img.resize {
     width: 450px; /* you can use % */
     height: auto;
 }
+
+/* Long card displayer */
+
+.long-card h1 {
+    margin-bottom: 15%;
+}
