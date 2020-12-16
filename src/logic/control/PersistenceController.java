@@ -33,9 +33,15 @@ public class PersistenceController {
 	public boolean saveTripOnFile(Trip trip) {
 		// Saves a trip on a back-end file
 		File f = new File("C:\\Users\\dayli\\git\\GoGlobeWeb\\src\\trips.txt");
-		Vector<Trip> objects;
+		Vector<Trip> objects = null;
 		
-		objects = readTripFromFile(f);
+		try {
+			objects = readTripFromFile(f);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
 		System.out.println("Objects: "+objects);
 		for (int i=0; i<objects.size(); i++) {
 			if (objects.get(i).getId() == trip.getId()) {
@@ -55,23 +61,21 @@ public class PersistenceController {
 	
 	
 	
-	@SuppressWarnings({ "unchecked", "resource" })
-	public Vector<Trip> readTripFromFile(File f) {
+	@SuppressWarnings({ "unchecked" })
+	public Vector<Trip> readTripFromFile(File f) throws IOException {
 		// Reads a list of trips from the back-end file
 		Vector<Trip> empty = new Vector<Trip>();
-		FileInputStream fis;
-		
+		FileInputStream fis = null;
+		ObjectInputStream ois = null;
 		try {
 			fis = new FileInputStream(f);
 			if (fis.available() != 0) {
 				System.out.println("FileInputStream is available.");
-				ObjectInputStream ois = new ObjectInputStream(fis);
+				ois = new ObjectInputStream(fis);
 				
 				System.out.println("ObjectInputStream is available.\n");
 				Vector<Trip> deserialization = (Vector<Trip>) ois.readObject();
 				System.out.println(deserialization);
-				fis.close();
-				ois.close();
 				return deserialization;
 
 			} else {
@@ -92,6 +96,9 @@ public class PersistenceController {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 			return null;
+		} finally {
+			fis.close();
+			ois.close();
 		}
 		
 	}
@@ -145,20 +152,20 @@ public class PersistenceController {
 	}
 	
 	
-	@SuppressWarnings({ "resource", "unchecked" })
-	public Vector<User> readUserFromFile(File f) {
+	@SuppressWarnings({ "unchecked" })
+	public Vector<User> readUserFromFile(File f) throws IOException {
 		Vector<User> empty = new Vector<User>();
+		FileInputStream fis = null;
+		ObjectInputStream ois = null;
 		try {
-			FileInputStream fis = new FileInputStream(f);
+			fis = new FileInputStream(f);
 			if (fis.available() != 0) {
 				System.out.println("FileInputStream is available.");
-				ObjectInputStream ois = new ObjectInputStream(fis);
+				ois = new ObjectInputStream(fis);
 				
 				System.out.println("ObjectInputStream is available.\n");
 				Vector<User> deserialization = (Vector<User>) ois.readObject();
 				System.out.println(deserialization);
-				fis.close();
-				ois.close();
 				return deserialization;
 
 			} else {
@@ -177,18 +184,21 @@ public class PersistenceController {
 		} catch (ClassNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+		} finally {
+			fis.close();
+			ois.close();
 		}
 		return null;
 	}
 	
 	
-	public boolean writeUsersToFile(File f, Vector<User> objects) {
+	public boolean writeUsersToFile(File f, Vector<User> objects) throws IOException {
+		FileOutputStream fos = null;
+		ObjectOutputStream oos = null;
 		try {
-			FileOutputStream fos = new FileOutputStream(f);
-			ObjectOutputStream oos = new ObjectOutputStream(fos);
+			fos = new FileOutputStream(f);
+			oos = new ObjectOutputStream(fos);
 			oos.writeObject(objects);
-			oos.close();
-			fos.close();
 			return true;
 			
 		} catch (FileNotFoundException e) {
@@ -199,10 +209,13 @@ public class PersistenceController {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 			return false;
+		} finally {
+			fos.close();
+			oos.close();
 		}
 	}
 	
-	public static void initializeFile(String filename) {
+	public static void initializeFile(String filename) throws IOException {
 		FileOutputStream fos = null;
 		ObjectOutputStream oos = null;
 		Vector<User> object = new Vector<User>();
@@ -213,14 +226,15 @@ public class PersistenceController {
 			fos = new FileOutputStream(filename);
 			oos = new ObjectOutputStream(fos);
 			oos.writeObject(object);
-			oos.close();
-			fos.close();
 		} catch (FileNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+		} finally {
+			fos.close();
+			oos.close();
 		}
 		
 	}

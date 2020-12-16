@@ -39,7 +39,7 @@ public class LoginBean {
 	}
 	
 	public boolean validate(){
-		if (username == null || username == "" || password==null || password == "") {
+		if (username == null || username.equals("") || password==null || password.equals("")) {
 			return false;
 		}
 
