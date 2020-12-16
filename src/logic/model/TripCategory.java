@@ -1,5 +1,5 @@
 package logic.model;
 
 public enum TripCategory {
-	Culture, Adventure, Relax, Fun;
+	Culture, Adventure, Relax, Fun, None;
 }

@@ -4,7 +4,7 @@
 <!-- declaration of a join trip bean -->
 <jsp:useBean id="joinTripBean" scope="session" class="logic.bean.JoinTripBean"/>
 
-<%@page import="java.util.Vector"%>      <%--Importing all the dependent classes--%>
+<%@page import="java.util.List"%>      <%--Importing all the dependent classes--%>
 <%@page import="java.util.Iterator"%> 
 <%@page import="logic.model.Trip"%>
 
@@ -89,7 +89,7 @@
 					<jsp:setProperty name="joinTripBean" property="searchVal"/>
 			<%
         			if(joinTripBean.searchTripsByValue()) {
-        				Vector<Trip> trips = joinTripBean.getObjects();
+        				List<Trip> trips = joinTripBean.getObjects();
         				System.out.println("jsp: trips = "+trips);
         				if (trips != null) {
         					Iterator<Trip> iter = trips.iterator();
