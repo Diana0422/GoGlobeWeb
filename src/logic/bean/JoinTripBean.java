@@ -2,6 +2,7 @@ package logic.bean;
 
 import java.awt.image.BufferedImage;
 import java.io.File;
+import java.io.IOException;
 import java.util.Vector;
 
 import logic.model.TripCategory;
@@ -89,7 +90,13 @@ public class JoinTripBean {
 		System.out.println("Val: "+ this.getSearchVal());
 		File f = new File("C:\\Users\\dayli\\git\\GoGlobeWeb\\src\\trips.txt");
 		
-		Vector<Trip> trips = PersistenceController.getInstance().readTripFromFile(f);
+		Vector<Trip> trips = null;
+		try {
+			trips = PersistenceController.getInstance().readTripFromFile(f);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		this.setObjects(trips);
 
 		if ((trips == null) || (trips.size() == 1)) {
