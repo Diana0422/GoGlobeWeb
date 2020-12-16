@@ -37,26 +37,28 @@ public class PersistenceController {
 		
 		try {
 			objects = readTripFromFile(f);
+			
+			System.err.print("Objects: "+objects);
+			for (int i=0; i<objects.size(); i++) {
+				if (objects.get(i).getId() == trip.getId()) {
+					System.err.print("Trip already saved to back-end.");
+					return false;
+				}
+			}
+			
+			objects.add(trip);
+			if (writeTripsToFile(f, objects)) {
+				System.err.print("Trip saved on back-end file.");
+				return true;
+			} else {
+				return false;
+			}
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		return false;
 		
-		System.out.println("Objects: "+objects);
-		for (int i=0; i<objects.size(); i++) {
-			if (objects.get(i).getId() == trip.getId()) {
-				System.out.println("Trip already saved to back-end.");
-				return false;
-			}
-		}
-		
-		objects.add(trip);
-		if (writeTripsToFile(f, objects)) {
-			System.out.println("Trip saved on back-end file.");
-			return true;
-		} else {
-			return false;
-		}
 	}
 	
 	
@@ -65,22 +67,19 @@ public class PersistenceController {
 	public Vector<Trip> readTripFromFile(File f) throws IOException {
 		// Reads a list of trips from the back-end file
 		Vector<Trip> empty = new Vector<Trip>();
-		FileInputStream fis = null;
-		ObjectInputStream ois = null;
+		FileInputStream fis = new FileInputStream(f);
+		ObjectInputStream ois = new ObjectInputStream(fis);
 		try {
-			fis = new FileInputStream(f);
 			if (fis.available() != 0) {
-				System.out.println("FileInputStream is available.");
-				ois = new ObjectInputStream(fis);
-				
-				System.out.println("ObjectInputStream is available.\n");
+				System.err.print("FileInputStream is available.");
+				System.err.print("ObjectInputStream is available.");
 				Vector<Trip> deserialization = (Vector<Trip>) ois.readObject();
-				System.out.println(deserialization);
+				System.err.print(deserialization);
 				return deserialization;
 
 			} else {
-				System.out.println("FileInputStream not available:");
-				System.out.println("No data to read from file.\n");
+				System.err.println("FileInputStream not available:");
+				System.err.println("No data to read from file.\n");
 				empty.add(new Trip(0,"", "", 0, "", "", "", ""));
 				return empty;
 			}
@@ -104,11 +103,11 @@ public class PersistenceController {
 	}
 	
 	
-	public boolean writeTripsToFile(File f, Vector<Trip> objects) {
+	public boolean writeTripsToFile(File f, Vector<Trip> objects) throws FileNotFoundException, IOException {
 		// Writes a list of trips to the back-end file
+		FileOutputStream fos = new FileOutputStream(f);
+		ObjectOutputStream oos = new ObjectOutputStream(fos);
 		try {
-			FileOutputStream fos = new FileOutputStream(f);
-			ObjectOutputStream oos = new ObjectOutputStream(fos);
 			oos.writeObject(objects);
 			oos.close();
 			fos.close();
@@ -122,6 +121,9 @@ public class PersistenceController {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 			return false;
+		} finally {
+			fos.close();
+			oos.close();
 		}
 		
 	}
@@ -155,25 +157,24 @@ public class PersistenceController {
 	@SuppressWarnings({ "unchecked" })
 	public Vector<User> readUserFromFile(File f) throws IOException {
 		Vector<User> empty = new Vector<User>();
-		FileInputStream fis = null;
 		ObjectInputStream ois = null;
-		try {
-			fis = new FileInputStream(f);
-			if (fis.available() != 0) {
-				System.out.println("FileInputStream is available.");
-				ois = new ObjectInputStream(fis);
-				
+		FileInputStream fis = new FileInputStream(f);
+		if (fis.available() != 0) {
+			System.out.println("FileInputStream is available.");
+			ois = new ObjectInputStream(fis);
+		} else {
+			System.out.println("FileInputStream not available:");
+			System.out.println("No data to read from file.\n");
+			empty.add(new User("", "", 0, "", ""));
+			fis.close();
+			return empty;
+		}
+		
+		try {	
 				System.out.println("ObjectInputStream is available.\n");
 				Vector<User> deserialization = (Vector<User>) ois.readObject();
 				System.out.println(deserialization);
 				return deserialization;
-
-			} else {
-				System.out.println("FileInputStream not available:");
-				System.out.println("No data to read from file.\n");
-				empty.add(new User("", "", 0, "", ""));
-				return empty;
-			}
 			
 		} catch (FileNotFoundException e) {
 			// TODO Auto-generated catch block
@@ -193,11 +194,9 @@ public class PersistenceController {
 	
 	
 	public boolean writeUsersToFile(File f, Vector<User> objects) throws IOException {
-		FileOutputStream fos = null;
-		ObjectOutputStream oos = null;
+		FileOutputStream fos = new FileOutputStream(f);
+		ObjectOutputStream oos = new ObjectOutputStream(fos);
 		try {
-			fos = new FileOutputStream(f);
-			oos = new ObjectOutputStream(fos);
 			oos.writeObject(objects);
 			return true;
 			
@@ -216,15 +215,13 @@ public class PersistenceController {
 	}
 	
 	public static void initializeFile(String filename) throws IOException {
-		FileOutputStream fos = null;
-		ObjectOutputStream oos = null;
+		FileOutputStream fos = new FileOutputStream(filename);
+		ObjectOutputStream oos = new ObjectOutputStream(fos);
 		Vector<User> object = new Vector<User>();
 		
 		User user = new User("dummy", "dummy", 0, "dummy", "dummy");
 		object.add(user);
 		try {
-			fos = new FileOutputStream(filename);
-			oos = new ObjectOutputStream(fos);
 			oos.writeObject(object);
 		} catch (FileNotFoundException e) {
 			// TODO Auto-generated catch block
