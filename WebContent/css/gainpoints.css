@@ -1,17 +1,32 @@
-.content .header {
+.content .header h1{
     margin: 50px;
     font-family: BarlowBold;
 	color: white;
 }
 
-.current-trip {
-    width: max-content;
-}
-
-.current-trip h4 {
+.content .header h3 {
     margin: 50px;
     font-family: BarlowMed;
-	color: white;
+    color: white;
+}
+
+.current-trip {
+    display: flex;
+    margin-top: 100px;
+    max-width:inherit;
+    background-color: lightgray;
+    padding-bottom: 30px;
+}
+
+.long-card {
+    max-width: fit-content;
+}
+
+.current-trip .left-side h4 {
+    padding-top: 50px;
+    margin: 50px;
+    font-family: BarlowMed;
+	color: black;
 }
 
 .departure-date {
@@ -52,4 +67,18 @@
 
 .location {
     margin-bottom: 20%;
+}
+
+.points-status {
+    justify-content: center;
+    align-items: center;
+}
+
+.gain-result {
+    font-family: BarlowBold;
+    font-size: 20%;
+}
+
+.points-status button {
+    margin: 5%;
 }
