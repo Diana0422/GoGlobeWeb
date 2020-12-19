@@ -1,1 +1,1 @@
-# GoGlobeWeb
+# GoGlobe
