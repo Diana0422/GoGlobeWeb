@@ -23,6 +23,7 @@ body {
     font-family: BarlowMed;
     background-image: linear-gradient(to top, rgba(245, 249, 252, 0), rgba(8, 27, 61, 0.73)),url(../res/images/japan-kyoto-toji-pagoda.jpg);
     background-size: cover;
+    background-repeat: no-repeat;
     height: fit-content;
 }
 
@@ -69,7 +70,7 @@ body {
     width: auto;
     height: auto;
     padding: 59px;
-    margin: 50px;
+    margin: 2%;
     border-radius: 20px;
 } 
 
