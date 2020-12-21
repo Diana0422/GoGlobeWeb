@@ -6,6 +6,7 @@
               as the first entry and export the buildfile again. --><project basedir="." default="build" name="ISPWProject20-21">
     <property environment="env"/>
     <property name="ECLIPSE_HOME" value="../../eclipse/jee-2020-09/eclipse/"/>
+    <property name="PATH_TO_FX" value="&quot;C:\Users\dayli\eclipse\JavaFX 11\javafx-sdk-11.0.2\lib&quot;"/>
     <property name="debuglevel" value="source,lines,vars"/>
     <property name="target" value="11"/>
     <property name="source" value="11"/>
@@ -79,6 +80,14 @@
         <path refid="Web App Libraries.libraryclasspath"/>
         <path refid="EAR Libraries.libraryclasspath"/>
     </path>
+    <path id="run.Main (2).classpath">
+        <path refid="ISPWProject20-21.classpath"/>
+        <path refid="JUnit 5.libraryclasspath"/>
+        <path refid="JavaFX 11.userclasspath"/>
+        <path refid="Apache Tomcat v9.0 [Apache Tomcat v9.0].libraryclasspath"/>
+        <path refid="Web App Libraries.libraryclasspath"/>
+        <path refid="EAR Libraries.libraryclasspath"/>
+    </path>
     <path id="run.PersistenceController.classpath">
         <path refid="ISPWProject20-21.classpath"/>
         <path refid="JUnit 5.libraryclasspath"/>
@@ -121,6 +130,12 @@
     <target description="compile project with Eclipse compiler" name="build-eclipse-compiler">
         <property name="build.compiler" value="org.eclipse.jdt.core.JDTCompilerAdapter"/>
         <antcall target="build"/>
+    </target>
+    <target name="Main (2)">
+        <java classname="logic.view.Main" failonerror="true" fork="yes">
+            <jvmarg line="--module-path ${PATH_TO_FX} --add-modules javafx.controls,javafx.fxml"/>
+            <classpath refid="run.Main (2).classpath"/>
+        </java>
     </target>
     <target name="PersistenceController">
         <java classname="logic.control.PersistenceController" failonerror="true" fork="yes">
