@@ -8,6 +8,10 @@ public class Day {
 	private List<String> locations;
 	String plan;
 	
+	public Day() {
+		//Empty constructor is needed for plan trip use case	
+	}
+	
 	public String getName() {
 		return name;
 	}

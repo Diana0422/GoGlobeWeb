@@ -21,6 +21,14 @@ public class Trip implements Serializable {
 	private Date departureDate;
 	private Date returnDate;	
 	private List<Day> days;	
+	private long tripLength;
+	//Meglio lasciare solo id  e List<Days> e incapsulare gli altri attributi in una 
+	//classe associata trip info
+	
+	
+	public Trip() {
+		
+	}
 	
 	public Trip(int id, String title, String imgFilename, int price, String cat1, String cat2, String departureDate, String returnDate) {
 		this.id = id;
@@ -111,6 +119,14 @@ public class Trip implements Serializable {
 
 	public void setReturnDate(Date returnDate) {
 		this.returnDate = returnDate;
+	}
+
+	public long getTripLength() {
+		return tripLength;
+	}
+
+	public void setTripLength(long tripLength) {
+		this.tripLength = tripLength;
 	}
 
 }

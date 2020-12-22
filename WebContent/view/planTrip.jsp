@@ -1,8 +1,16 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-<!DOCTYPE html>
-<html>
+    
+<jsp:useBean id="planTripBean" scope="session" class="logic.bean.PlanTripBean"/>
+<%@page import="java.util.List"%>      
+<%@page import="java.util.Iterator"%> 
+<%@page import="logic.model.Trip"%>
+<%@page import="logic.model.Day"%>
 
+
+
+<!DOCTYPE html>
+<html lang="en">
 <head>
 	<meta charset="UTF-8">
     <title>GoGlobe - Plan Trip</title>
@@ -16,7 +24,7 @@
 <body id="bootstrap-override">
     
 	<!-- navigation bar -->
-    <nav class="navbar navbar-expand-sm navbar-light bg-light sticky-top">
+    <nav class="navbar navbar-expand-sm navbar-light bg-light sticky-top" aria-label="navbar">
         <a href="#" id="logo" class="navbar-brand">GoGlobe</a>
         <!--toggler for shorter screens -->
         <button class="navbar-toggler" data-toggle="collapse" data-target="#navbarMenu">
@@ -39,42 +47,64 @@
             </ul>
         </div>
     </nav>
+    
+    
     <div class="sb-wrapper">
         <!-- SIDEBAR -->
-        <nav id="sidebar">
-            <div class="sb-header">
-            </div>
-            <ul id="sb-elements">
-                <li><button type="button" class="btn btn-colors btn-lg btn-block">Day 1</button></li>
-                <li><button type="button" class="btn btn-outline-dark btn-lg btn-block">+</button></li>
-
-            </ul>
-        </nav>
-
+        <nav id="sidebar" aria-label="sidebar">
+            <form  action="planTrip.jsp" method="POST">	
+            	<div class="sb-header">
+            	
+<% 
+			if (planTripBean.getTripDays() != null){
+				int i = 0;
+				while(i < planTripBean.getTripDays().size()){
+%>				
+	                <button type="submit" class="btn btn-colors btn-lg btn-block" name="daybtn" value=<%= i%> >Day <%= i + 1 %></button>	               	    
+<%
+					i++;
+				}
+			}
+%>
+<%
+if (request.getParameter("daybtn") != null){
+	System.out.println(request.getParameter("daybtn")); 
+}
+%>  
+				
+           		</div> 
+           </form>    
+       </nav>
+	   
         <!-- PAGE CONTENT -->
         <div class="plantrip-content">
             <!-- DAY DESCRIPTION-->
             <div class="day" id="day">
-                <h1>Day 1: Giro dei Templi </h1>
+	            <div class="dayName"> 
+	            	<h1>Day:</h1>  
+	            	<input type="text" name="dayName" id="dayName-input"
+                        placeholder="Enter day name..." maxlength="25">
+	            </div>
                 <div class="stop">
                     <h4 class="location">Kyoto</h4>
                     <div class="day-plan">
-                        <form>
-                            <div class="form-group">
-                                <label for="Day plan">Day plan (max 2000 characters)</label>
-                                <textarea class="form-control" id="day-plan" rows="3" style="resize: none;"></textarea>
-                                <button id="save-btn" type="submit" class="btn btn-primary" >Save Day</button>
-                            </div>
-                         </form>
+                        <div class="form-group">
+                            <label for="Day plan">Day plan (max 2000 characters)</label>
+                            <textarea class="form-control" id="day-plan" rows="3" style="resize: none;"></textarea>
+                            <form method="POST">                        
+                                <button id="save-btn" type="submit" class="btn btn-primary" name="save-btn" >Save Day</button>  
+                                <%  
+                                if (request.getParameter("save-btn") != null){
+                                	System.out.println("mammalamamamamam");
+                                }
+                                %>
+                            </form>
+                        </div>   
                     </div>       
                 </div>
             </div>
         </div>
-  
     </div>
+    
 </body>
-
-
-
- 
 </html>

@@ -1,6 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-   <jsp:useBean id="planTripBean" scope="request" 	class="logic.bean.PlanTripBean"/>
+   <jsp:useBean id="planTripBean" scope="session" 	class="logic.bean.PlanTripBean"/>
    
    <jsp:setProperty name="planTripBean" property="*"/>
    
@@ -13,14 +13,15 @@
 %>
 
 
-   	<!DOCTYPE html>
-<html>
+<!DOCTYPE html>
+<html lang="en">
 <head>
 	<meta charset="UTF-8">
     <title>GoGlobe - Select trip preferences</title>
     
     <link rel="stylesheet" type="text/css" href="../bootstrap-css/bootstrap.css">
     <link rel="stylesheet" href="../css/planTrip.css">
+    <link rel="stylesheet" href = "../css/style.css">
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.min.js"></script>
@@ -55,11 +56,12 @@
     <div id="preferences-bg">
         <!-- preferences form-->
         <div id="preferences-form">
-        	<h2>Insert information about your trip!</h2>
+        <h2>Insert information about your trip!</h2>
 <%
 	if (request.getParameter("next-btn") != null){
 		if (planTripBean.validateForm()){
-%>
+			planTripBean.setPreferences();
+%>			
 			<jsp:forward page="planTrip.jsp"/>
 <% 
 		}else{
@@ -75,7 +77,7 @@
                     <div class="form-group col-md-6">
                         <label for="inputDepDate" ><h4>Trip Title</h4></label>
                         <input type="text" class="form-control" name="tripName" id="tripName"
-                        placeholder="Enter trip name...">
+                        placeholder="Enter trip name..." maxlength="25">
                     </div>
                 </div>
 
