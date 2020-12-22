@@ -72,7 +72,7 @@
           			<%
           				}
           			%>
-          			</form>
+          		</form>
             </div>
         </div>
 
@@ -120,7 +120,7 @@
             						<!--card element-->
             							<div class="col" style="margin-bottom: 30px; max-width: 33%">
                     						<div class="card"> <!-- add attribute text-center to center content in card-->
-                        						<img src="res/images/Avenue-of-the-Baobobs-Madagascar 2.png" class="card-img-top">
+                        						<img src="../res/images/Avenue-of-the-Baobobs-Madagascar 2.png" class="card-img-top">
                         						<div class="card-body">
                             						<h3 class="card-title"><%=trip.getTitle() %></h3>
                             						<div class="price-tag">
@@ -156,7 +156,7 @@
         <%
              if(request.getParameter("viewinfo") != null) {
             	int tripNum = Integer.parseInt(request.getParameter("viewinfo"));
-             	System.out.println(request.getParameter("viewinfo"));
+             	System.out.println("Button pressed: "+request.getParameter("viewinfo"));
              	joinTripBean.setTrip(joinTripBean.getObjects().get(tripNum-1));
              	System.out.println(joinTripBean.getTrip());
                 %>
