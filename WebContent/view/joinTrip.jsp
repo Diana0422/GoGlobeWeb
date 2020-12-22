@@ -68,7 +68,7 @@
                 	<%
           				if (request.getParameter("plantrip") != null) {
           			%>
-          					<jsp:forward page="planTrip.jsp"/>
+          					<jsp:forward page="SelectTripPreferences.jsp"/>
           			<%
           				}
           			%>
