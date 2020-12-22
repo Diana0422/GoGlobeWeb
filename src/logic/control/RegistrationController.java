@@ -31,6 +31,7 @@ public class RegistrationController {
 		} catch (ParseException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+			return false;
 		}
 		user = new User(name, surname, bd, email, password);
 		return PersistenceController.getInstance().saveUserOnFile(user);
