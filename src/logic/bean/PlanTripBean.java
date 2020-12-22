@@ -4,12 +4,17 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 
+import logic.control.PlanTripController;
+import logic.model.Day;
 import logic.model.Trip;
+import logic.model.TripCategory;
 
 public class PlanTripBean {
 	
-	private Trip trip;
+	private static final String DATE_FORMAT = "dd/MM/yyyy";
+	private Trip trip;    
 	private String tripName;
 	private String departureDate;
 	private String returnDate;
@@ -17,24 +22,28 @@ public class PlanTripBean {
 	private String category2;
 	private String errorMsg;
 	
+	
 	public PlanTripBean(){
-		
+		//Bean classes are supposed to have  empty constructors
 	}
 	
+	//Validate all the inputs in the form
 	public boolean validateForm(){
-
-		if (validateData(this.tripName, this.departureDate, this.returnDate, this.category1, this.category2)){
+		
+		Boolean res = validateData(this.tripName, this.departureDate, this.returnDate, this.category1, this.category2);
+		if (Boolean.TRUE.equals(res)){
 			return (validateDates(this.departureDate, this.returnDate) && validateCategories(this.category1, this.category2));
 		}else{
 			return false;
 		}		
 	}
 	
+	//Check if the dates are set correctly
 	private boolean validateDates(String departureDate, String returnDate) {
 			
 		try {
-			Date depDate = new SimpleDateFormat("dd/MM/yyyy").parse(departureDate);
-			Date retDate = new SimpleDateFormat("dd/MM/yyyy").parse(returnDate);
+			Date depDate = new SimpleDateFormat(DATE_FORMAT).parse(departureDate);
+			Date retDate = new SimpleDateFormat(DATE_FORMAT).parse(returnDate);
 			Date currentDate = new Date();
 			
 			if (depDate.before(currentDate)) {
@@ -47,13 +56,13 @@ public class PlanTripBean {
 			}
 				
 		} catch (ParseException e) {
-			this.setErrorMsg("Dates must follow the format dd/MM/yyyy");
+			this.setErrorMsg("Dates must follow the format " + DATE_FORMAT);
 			return false;
 		}			
 		return true;
 	}
 	
-
+	//Check if categories are not equal
 	private boolean validateCategories(String category1, String category2) {
 		
 		
@@ -64,6 +73,7 @@ public class PlanTripBean {
 		return true;
 	}
 	
+	//Check if all the inputs have been inserted 
 	private Boolean validateData(String tripName, String departureDate, String returnDate, String category1, String category2) {
 		
 		if (tripName == null || tripName.equals("")) {
@@ -71,7 +81,7 @@ public class PlanTripBean {
 			return false;		
 		}
 		if (departureDate == null || departureDate.equals("")) {
-			this.setErrorMsg("Insert deprture date");
+			this.setErrorMsg("Insert departure date");
 			return false;	
 		}
 		if (returnDate == null || returnDate.equals("")) {
@@ -89,9 +99,10 @@ public class PlanTripBean {
 		return true;
 	}
 	
+	//Check if dates match the right format
 	private boolean validateDateString(String date) {
 		
-		DateFormat format = new SimpleDateFormat("dd/MM/yyyy");
+		DateFormat format = new SimpleDateFormat(DATE_FORMAT);
 		format.setLenient(false);
 		try {
 			format.parse(date);
@@ -99,6 +110,34 @@ public class PlanTripBean {
 			return false;	
 		}
 		return true;
+	}
+	
+	//Create new trip instance and set 
+	public void setPreferences(){
+		
+		try {
+			Date depDate = new SimpleDateFormat(DATE_FORMAT).parse(departureDate);
+			Date retDate = new SimpleDateFormat(DATE_FORMAT).parse(returnDate);
+			TripCategory categoryValue1 = parseTripCategory(category1);
+			TripCategory categoryValue2 = parseTripCategory(category2);
+
+			this.setTrip(PlanTripController.getInstance().setPreferences(this.tripName, depDate, retDate, categoryValue1, categoryValue2));
+			
+		} catch (ParseException e) {
+			
+			e.printStackTrace();
+		}
+		
+
+	}
+	
+	private TripCategory parseTripCategory(String category) {
+		if (category.equals("Fun")) return TripCategory.Fun;	
+		if (category.equals("Culture")) return TripCategory.Culture;	
+		if (category.equals("Relax")) return TripCategory.Relax;
+		if (category.equals("Adventure")) return TripCategory.Adventure;
+			
+		return TripCategory.None;
 	}
 
 	public String getTripName() {
@@ -155,6 +194,10 @@ public class PlanTripBean {
 
 	public void setErrorMsg(String errorMsg) {
 		this.errorMsg = errorMsg;
+	}
+	
+	public List<Day> getTripDays() {
+		return this.trip.getDays();
 	}
 
 }
