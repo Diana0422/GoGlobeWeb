@@ -158,7 +158,7 @@
             	int tripNum = Integer.parseInt(request.getParameter("viewinfo"));
              	System.out.println("Button pressed: "+request.getParameter("viewinfo"));
              	joinTripBean.setTrip(joinTripBean.getObjects().get(tripNum-1));
-             	System.out.println(joinTripBean.getTrip());
+             	System.out.println(joinTripBean.getObjects().get(tripNum-1));
                 %>
                 	<jsp:forward page="tripInfo.jsp"/>
                 <%

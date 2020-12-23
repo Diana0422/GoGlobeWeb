@@ -50,11 +50,11 @@
     	<div class="trip-info displayer">
         	<div class="infos-left">
             	<div class="trip-title">
-                	<h1><jsp:getProperty property="title" name="joinTripBean"/></h1>
+                	<h1><%= joinTripBean.getTrip().getTitle() %></h1>
             	</div>
             	<div class="price-tag" style="margin-top:10%; margin-bottom: 5%;">
                 	<h4>Starting price:</h4>
-                	<h5><jsp:getProperty property="price" name="joinTripBean"/></h5>
+                	<h5><%= joinTripBean.getTrip().getPrice() %></h5>
             	</div>
             	<h3>Description:</h3>
             	<div class="trip-description">
@@ -70,22 +70,22 @@
             	<div class="dates">
                 	<div class="departure">
                     	<h5>Departure:</h5>
-                    	<h5>dd/mm/yyyy</h5>
+                    	<h5><%= joinTripBean.getTrip().getDepartureDate() %></h5>
                 	</div>
                 	<div class="return">
                     	<h5>Return:</h5>
-                    	<h5>dd/mm/yyyy</h5>
+                    	<h5><%= joinTripBean.getTrip().getReturnDate() %></h5>
                 	</div>
             	</div>
             	<h3>Categories:</h3>
             	<ul class="category-list">
                 	<li class="category1">
                     	<img src="../res/images/icons8-cocktail-50.png">
-                    	<h5><jsp:getProperty property="category1" name="joinTripBean"/></h5>
+                    	<h5><%= joinTripBean.getTrip().getCategory1() %></h5>
                 	</li>
                 	<li class="category2">
                     	<img src="../res/images/icons8-greek-pillar-capital-50.png">
-                    	<h5><jsp:getProperty property="category2" name="joinTripBean"/></h5>
+                    	<h5><%= joinTripBean.getTrip().getCategory2() %></h5>
                 	</li>
             	</ul>
         	</div>
