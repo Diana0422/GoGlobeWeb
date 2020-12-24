@@ -6,6 +6,7 @@ public class Day {
 	
 	private String name;
 	private List<String> locations;
+	private List<Activity> activities;
 	String plan;
 	
 	public Day() {
@@ -34,6 +35,14 @@ public class Day {
 	
 	public void setPlan(String plan) {
 		this.plan = plan;
+	}
+	
+	public List<Activity> getActivities() {
+		return activities;
+	}
+
+	public void setActivities(List<Activity> activities) {
+		this.activities = activities;
 	}
 	
 }
