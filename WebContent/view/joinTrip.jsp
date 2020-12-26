@@ -6,7 +6,7 @@
 
 <%@page import="java.util.List"%>      <%--Importing all the dependent classes--%>
 <%@page import="java.util.Iterator"%> 
-<%@page import="logic.bean.TripBean"%>
+<%@page import="logic.model.Trip"%>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -89,16 +89,16 @@
 					<jsp:setProperty name="joinTripBean" property="searchVal"/>
 			<%
         			if(joinTripBean.searchTripsByValue()) {
-        				List<TripBean> trips = joinTripBean.getObjects();
+        				List<Trip> trips = joinTripBean.getObjects();
         				System.out.println("jsp: trips = "+trips);
         				if (trips != null) {
-        					Iterator<TripBean> iter = trips.iterator();
+        					Iterator<Trip> iter = trips.iterator();
         		
         					int elemsInRow=0;
         					Integer idx = 0;
         					while(iter.hasNext()) {
         						System.out.println("iter has next!");
-        						TripBean trip = iter.next();
+        						Trip trip = iter.next();
         						idx++;
         						
         						if (elemsInRow == 0) {
@@ -158,7 +158,7 @@
             	int tripNum = Integer.parseInt(request.getParameter("viewinfo"));
              	System.out.println("Button pressed: "+request.getParameter("viewinfo"));
              	joinTripBean.setTrip(joinTripBean.getObjects().get(tripNum-1));
-             	System.out.println(joinTripBean.getObjects().get(tripNum-1));
+             	System.out.println(joinTripBean.getTrip());
                 %>
                 	<jsp:forward page="tripInfo.jsp"/>
                 <%

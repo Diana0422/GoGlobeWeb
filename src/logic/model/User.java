@@ -2,7 +2,6 @@ package logic.model;
 
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -16,7 +15,7 @@ public class User implements Serializable {
 	private String surname;
 	private String email;
 	private String password;
-	private Date birthday;
+	private int age;
 	private int points;
 	private String bio;
 	private List<Request> request;
@@ -26,10 +25,10 @@ public class User implements Serializable {
 	
 	
 	// User Constructor
-	public User(String name, String surname, Date birthday, String email, String password) {
+	public User(String name, String surname, int age, String email, String password) {
 		this.name = name;
 		this.surname = surname;
-		this.setBirthday(birthday);
+		this.age = age;
 		this.setEmail(email);
 		this.setPassword(password);
 		
@@ -56,7 +55,15 @@ public class User implements Serializable {
 	public void setSurname(String surname) {
 		this.surname = surname;
 	}
-
+	
+	public int getAge() {
+		return age;
+	}
+	
+	public void setAge(int age) {
+		this.age = age;
+	}
+	
 	public int getPoints() {
 		return points;
 	}
@@ -115,13 +122,5 @@ public class User implements Serializable {
 
 	public void setPassword(String password) {
 		this.password = password;
-	}
-
-	public Date getBirthday() {
-		return birthday;
-	}
-
-	public void setBirthday(Date birthday) {
-		this.birthday = birthday;
 	}
 }

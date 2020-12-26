@@ -77,15 +77,16 @@
     font-size: 50px;
 }
 
-.activity{
-    box-shadow: #bc986a;
-}
-
 .plantrip-content{
-    display: inline-flex;
+	width: 50%;
+    max-width: 50%;
+    display: table;
+	word-wrap: break-word;
+	overflow: scroll;
 }
 
 .plantrip-content .day {
+	display:inline-block;
     align-items: center;
     justify-content: center;
     padding: 20px;
@@ -94,6 +95,7 @@
 .plantrip-content .map{
     min-width: 100px;
     max-width: 100px;
+  
 }
 
 #bootstrap-override .nav-bar {
@@ -121,11 +123,57 @@
     position:absolute;
     }
 
-#day-plan{
-    resize: none;
-    min-width: 600px;
-    min-height: 800px;
+.day{
+	
+    display: table;
+	word-wrap: break-word;
+	overflow: scroll;
+	
+	
 }
+.activity-form{
+	margin-top: 20px;
+	min-width: 100%;
+	padding: 20px;
+    border-radius: 5px;
+	box-shadow: 2px 2px 5px #979ca5;		
+	margin-top: 3%;
+    display:inline-block;
+}
+
+.activity-plan{
+	resize: none;
+    width: 600px;
+    height: 200px;
+}
+
+.activity{
+	
+	display: inline-block;
+	border-radius: 5px;
+	box-shadow: 2px 2px 5px #979ca5;		
+	padding:20px;
+	margin-top: 3%;
+	width:100%;
+	max-width:100%;
+	word-wrap: break-word;
+	overflow: scroll;
+	text-align: left;
+	
+}
+
+.description{
+	width:100%;
+	max-width:100%;
+	word-wrap: break-word;
+}
+
+
+.flex-form-row{
+	display: inline-block;
+}
+
+
 
 /* SELECT PREFERENCES PAGE */
 

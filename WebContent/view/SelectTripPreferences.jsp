@@ -1,7 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-   <jsp:useBean id="planTripBean" scope="session" 	class="logic.bean.PlanTripBean"/>
-   
+   <jsp:useBean id="planTripBean" scope="session" 	class="logic.bean.PlanTripBean"/>  
    <jsp:setProperty name="planTripBean" property="*"/>
    
 <% 
@@ -11,7 +10,6 @@
 <% 
    }
 %>
-
 
 <!DOCTYPE html>
 <html lang="en">
@@ -71,7 +69,7 @@
 		}
 	}
 %>
-            <form method="POST">
+            <form method="POST" action="SelectTripPreferences.jsp">
                 <div class="form-row">
                     <!-- Trip name-->
                     <div class="form-group col-md-6">

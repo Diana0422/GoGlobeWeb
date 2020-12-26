@@ -5,7 +5,6 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
-
 import logic.control.PlanTripController;
 import logic.model.Day;
 import logic.model.Trip;
@@ -21,10 +20,11 @@ public class PlanTripBean {
 	private String category1;
 	private String category2;
 	private String errorMsg;
+	private int planningDay = 0;
 	
 	
 	public PlanTripBean(){
-		//Bean classes are supposed to have  empty constructors
+		//Bean classes are supposed to have empty constructors
 	}
 	
 	//Validate all the inputs in the form
@@ -123,12 +123,17 @@ public class PlanTripBean {
 
 			this.setTrip(PlanTripController.getInstance().setPreferences(this.tripName, depDate, retDate, categoryValue1, categoryValue2));
 			
+			System.out.println("RIASSUNTO DEL VIAGGIO:\n");
+			System.out.println("titolo: " + this.trip.getTitle()+ "\n");
+			System.out.println("lunghezza: " + this.trip.getTripLength() + "giorni\n");
+			for (int i = 0; i < this.trip.getTripLength(); i++) {
+				System.out.println("Giorno 1:" + this.trip.getDays().get(i).getActivities().size() + "attività\n");
+
+			}
 		} catch (ParseException e) {
 			
 			e.printStackTrace();
 		}
-		
-
 	}
 	
 	private TripCategory parseTripCategory(String category) {
@@ -196,8 +201,41 @@ public class PlanTripBean {
 		this.errorMsg = errorMsg;
 	}
 	
+	//GUI CONTROLLER
 	public List<Day> getTripDays() {
 		return this.trip.getDays();
 	}
 
+	public int getPlanningDay() {
+		return planningDay;
+	}
+
+	public void setPlanningDay(int planningDay) {
+		this.planningDay = planningDay;
+	}
+	
+	//GUI CONTROLLER
+	public int getActivitiesNum() {
+		 return this.trip.getDays().get(planningDay).getActivities().size();
+	}
+	
+	
+	public void addActivity(ActivityBean activityBean) {
+		PlanTripController.getInstance().addActivity(this.trip, planningDay, activityBean);
+	}
+	
+	//GUI CONTROLLER
+	public String displayActivityTime(int activityNum) {
+		return this.getTripDays().get(planningDay).getActivities().get(activityNum).getTime();
+	}
+	
+	//GUI CONTROLLER
+	public String displayActivityTitle(int activityNum) {
+		return this.getTripDays().get(planningDay).getActivities().get(activityNum).getTitle();
+	}
+	
+	//GUI CONTROLLER
+	public String displayActivityDescription(int activityNum) {
+		return this.getTripDays().get(planningDay).getActivities().get(activityNum).getDescription();
+	}
 }

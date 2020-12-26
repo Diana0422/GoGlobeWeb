@@ -49,6 +49,11 @@ public class Trip implements Serializable {
 		}
 	}
 	
+	public void addActivity(int day, Activity activity) {
+		this.getDays().get(day).getActivities().add(activity);
+		System.out.println("New activity added to day" + day + "\n");
+	}
+	
 	public BufferedImage getImg() {
 		return img;
 	}

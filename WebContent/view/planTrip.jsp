@@ -2,6 +2,9 @@
     pageEncoding="UTF-8"%>
     
 <jsp:useBean id="planTripBean" scope="session" class="logic.bean.PlanTripBean"/>
+<jsp:useBean id="activityBean" scope="request" class="logic.bean.ActivityBean"/>
+<jsp:setProperty name="activityBean" property="*" />
+
 <%@page import="java.util.List"%>      
 <%@page import="java.util.Iterator"%> 
 <%@page import="logic.model.Trip"%>
@@ -68,7 +71,8 @@
 %>
 <%
 if (request.getParameter("daybtn") != null){
-	System.out.println(request.getParameter("daybtn")); 
+	System.out.println("button pressed: " + request.getParameter("daybtn")); 
+	planTripBean.setPlanningDay(Integer.parseInt(request.getParameter("daybtn")));
 }
 %>  
 				
@@ -80,31 +84,74 @@ if (request.getParameter("daybtn") != null){
         <div class="plantrip-content">
             <!-- DAY DESCRIPTION-->
             <div class="day" id="day">
-	            <div class="dayName"> 
-	            	<h1>Day:</h1>  
-	            	<input type="text" name="dayName" id="dayName-input"
-                        placeholder="Enter day name..." maxlength="25">
-	            </div>
-                <div class="stop">
-                    <h4 class="location">Kyoto</h4>
-                    <div class="day-plan">
-                        <div class="form-group">
-                            <label for="Day plan">Day plan (max 2000 characters)</label>
-                            <textarea class="form-control" id="day-plan" rows="3" style="resize: none;"></textarea>
-                            <form method="POST">                        
-                                <button id="save-btn" type="submit" class="btn btn-primary" name="save-btn" >Save Day</button>  
-                                <%  
-                                if (request.getParameter("save-btn") != null){
-                                	System.out.println("mammalamamamamam");
-                                }
-                                %>
-                            </form>
-                        </div>   
-                    </div>       
-                </div>
-            </div>
-        </div>
-    </div>
+	            
+	            <h1>Day <%= planTripBean.getPlanningDay() + 1 %>:</h1>  
+	            	
+	      
+           
+                <h4 class="location">Kyoto</h4>
+             
+                <div class="day-plan">
+                	<!-- NEW ACTIVITY FORM -->
+                	<form action="planTrip.jsp" method="POST">
+                  		<div class="activity-form">
+<%
+		if (request.getParameter("save-activity-btn") != null){
+			if (activityBean.validateActivity()){
+				planTripBean.addActivity(activityBean);						
+			}else{
+%>
+				<p style="color: red">ERRORE</p>
+<% 
+			}
+		}		                    
+%>
+                        	<div class = "flex-form-row">
+                        		<h4>Title</h4>
+                        		<input type="text" name="title" id="act-title"
+                        		placeholder="Enter activity name" maxlength="15">
+                        	</div>
+                        	<div class = "flex-form-row">
+                        		<h4>h</h4>
+                        		<input type="text" name="time" id="act-time"
+                        		placeholder="hh:mm" maxlength="5">
+                        	</div>
+                        	<div class = "activity-description">
+                        		<h4>Plan</h4>
+                               <textarea class="activity-plan" name="description" style="resize:none;"></textarea>
+                        		
+                        	</div>
+                        	<button type="submit" class="btn btn-colors btn-lg btn-block" name="save-activity-btn"  >Add activity</button>	               	                           	
+                        </div> 
+                    </form>
+                    <div>
+                   	 <!-- ACTIVITIES -->
+ <%
+						int activitiesNum = planTripBean.getActivitiesNum();
+					 	for ( int j = 0; j < activitiesNum; j++){ 
+					 		System.out.println("Activity Found!\n");
+	            			System.out.println("title: " + planTripBean.displayActivityTitle(j) + "\n");
+	            			System.out.println("time: "+ planTripBean.displayActivityTime(j) + "\n");
+	            			System.out.println("description: "+ planTripBean.displayActivityDescription(j) + "\n");
+%>		
+	            			  
+	            			<div class="activity">		
+		            			<h2><%=planTripBean.displayActivityTitle(j) %></h2>
+		            			<h3><%=planTripBean.displayActivityTime(j) %></h3>
+		            			<div class="description">
+		            				<p><%=planTripBean.displayActivityDescription(j)%></p>
+		            			</div>
+		            						            			
+	         				</div>                        
+ <%
+ 	}
+ %>                  
+ 					</div>        
+	            </div>	            
+		     </div>
+		  </div>
+	   </div>
+	  
     
 </body>
 </html>
