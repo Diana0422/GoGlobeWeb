@@ -50,18 +50,18 @@ public class ActivityBean {
 	}
 	
 	private boolean validateTitle(String title) {
-		return (!(title.equals("") || title == null));
+		return (!(title == null || title.equals("")  ));
 		
 	}
 	
 	
 	private boolean validateDescription(String description) {
 		
-		return(!(description.equals("") || description == null));
+		return(!(description == null || description.equals("") ));
 	}
 	
 	private boolean validateTime (String time) {
-		if (time.length() < 5) return false;
+		if (time == null || time.equals("") || time.length() < 5) return false;
 		
 		try {
 			int hour = Integer.parseInt(time.substring(0, 2));
