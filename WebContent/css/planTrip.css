@@ -78,8 +78,9 @@
 }
 
 .plantrip-content{
-	width: 50%;
-    max-width: 50%;
+	width: 500px;
+    max-width: 500px;
+    padding: 20px;
     display: table;
 	word-wrap: break-word;
 	overflow: scroll;
@@ -126,11 +127,18 @@
 .day{
 	
     display: table;
-	word-wrap: break-word;
+	width: 100%;
 	overflow: scroll;
 	
 	
 }
+
+.day #trip-title{
+	margin-bottom: 30px;	
+}
+
+
+
 .activity-form{
 	margin-top: 20px;
 	min-width: 100%;
@@ -154,17 +162,19 @@
 	box-shadow: 2px 2px 5px #979ca5;		
 	padding:20px;
 	margin-top: 3%;
-	width:100%;
-	max-width:100%;
-	word-wrap: break-word;
+	width: inherit;
 	overflow: scroll;
 	text-align: left;
 	
 }
 
 .description{
-	width:100%;
-	max-width:100%;
+	width: inherit;
+	word-wrap: break-word;
+}
+
+.description p{
+	width: 600px;
 	word-wrap: break-word;
 }
 

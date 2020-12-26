@@ -83,13 +83,19 @@ if (request.getParameter("daybtn") != null){
         <!-- PAGE CONTENT -->
         <div class="plantrip-content">
             <!-- DAY DESCRIPTION-->
+            
             <div class="day" id="day">
-	            
-	            <h1>Day <%= planTripBean.getPlanningDay() + 1 %>:</h1>  
-	            	
-	      
-           
-                <h4 class="location">Kyoto</h4>
+	            <h1 id="trip-title"><%= planTripBean.getTripName() %></h1>
+	            <h2>Day <%= planTripBean.getPlanningDay() + 1 %></h2>   
+                <div>
+                	<h3>Location:</h3>
+                	<div class="input-group mb-3">
+					<div class="input-group-prepend">
+					    <span class="input-group-text" id="inputGroup-sizing-default">Location</span>
+					  </div>
+					  <input type="text" class="form-control" aria-label="Default" aria-describedby="inputGroup-sizing-default">
+					</div>
+                </div>
              
                 <div class="day-plan">
                 	<!-- NEW ACTIVITY FORM -->
