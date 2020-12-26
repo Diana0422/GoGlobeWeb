@@ -1,7 +1,8 @@
 package logic.control;
 
-import java.io.FileNotFoundException;
-import java.io.IOException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 import logic.model.User;
 
@@ -19,9 +20,20 @@ public class RegistrationController {
 		return INSTANCE;
 	}
 	
-	public synchronized boolean register(String email, String password, String name, String surname, int age) throws FileNotFoundException, IOException {
+	public synchronized boolean register(String email, String password, String name, String surname, String birthday) {
 		User user;
-		user = new User(name, surname, age, email, password);
+		
+		/*Convert birthday string to real date */
+		SimpleDateFormat formatter = new SimpleDateFormat("dd/mm/yyyy");
+		Date bd = null;
+		try {
+			bd = formatter.parse(birthday);
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return false;
+		}
+		user = new User(name, surname, bd, email, password);
 		return PersistenceController.getInstance().saveUserOnFile(user);
 	}
 	
