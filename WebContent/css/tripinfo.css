@@ -6,12 +6,16 @@ body {
 }
 
 .trip-info {
-    display: flex;
     justify-content: space-between;
 }
 
+.main-content {
+	display: flex;
+	margin-top: 5%;
+}
+
 /* left elements in displayer */
-.infos-left {
+.general-info {
     margin-right: 10%;
 }
 

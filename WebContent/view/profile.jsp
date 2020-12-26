@@ -112,6 +112,9 @@
                     <li class="nav-item">
                         <a class="nav-link" href="#up-trips" data-toggle="tab">Upcoming Trips</a>
                     </li>
+                    <li class="nav-item">
+                    	<a class="nav-link" href="#my-trips" data-toggle="tab">My Trips</a>
+                    </li>
                 </ul>
 
                 <div class="tab-content">
@@ -222,6 +225,10 @@
                         </div>
 
                         <div class="filler center"><h4>No upcoming trips.</h4></div>
+                    </div>
+                    
+                    <div class="tab-pane" role="tabpanel" id="my-trips">
+                    	<div class="filler center"><h4>No trips planned.</h4></div>
                     </div>
                 </div>
             </div>

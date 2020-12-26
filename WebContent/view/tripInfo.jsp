@@ -48,48 +48,86 @@
 
     <div class="container-md">
     	<div class="trip-info displayer">
-        	<div class="infos-left">
-            	<div class="trip-title">
-                	<h1><jsp:getProperty property="title" name="joinTripBean"/></h1>
-            	</div>
-            	<div class="price-tag" style="margin-top:10%; margin-bottom: 5%;">
-                	<h4>Starting price:</h4>
-                	<h5><jsp:getProperty property="price" name="joinTripBean"/></h5>
-            	</div>
-            	<h3>Description:</h3>
-            	<div class="trip-description">
-                	<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam tincidunt ex enim, ac laoreet justo rhoncus eget. Suspendisse potenti. Vivamus eleifend dui ut turpis aliquet tempor. Phasellus consequat tincidunt varius. Aenean rhoncus nunc ut tristique porttitor. Curabitur quis vulputate sem. Nunc eu nunc at urna blandit ornare at sed dolor. Nunc blandit in sem a eleifend. Nulla at odio vulputate nisl fringilla vehicula. In vel est vel dui volutpat placerat sit amet id sem. Suspendisse elit mi vel. </p>
-            	</div>
-            	<button type="submit" name="jointrip" class="btn btn-primary">Join Trip</button>
-        	</div>
-        	<div class="infos-right">
-            	<div class="trip-img">
-                	<img class="resize" src="../res/images/MtFuji.jpg">
-            	</div>
-            	<h3>Dates:</h3>
-            	<div class="dates">
-                	<div class="departure">
-                    	<h5>Departure:</h5>
-                    	<h5>dd/mm/yyyy</h5>
-                	</div>
-                	<div class="return">
-                    	<h5>Return:</h5>
-                    	<h5>dd/mm/yyyy</h5>
-                	</div>
-            	</div>
-            	<h3>Categories:</h3>
-            	<ul class="category-list">
-                	<li class="category1">
-                    	<img src="../res/images/icons8-cocktail-50.png">
-                    	<h5><jsp:getProperty property="category1" name="joinTripBean"/></h5>
-                	</li>
-                	<li class="category2">
-                    	<img src="../res/images/icons8-greek-pillar-capital-50.png">
-                    	<h5><jsp:getProperty property="category2" name="joinTripBean"/></h5>
-                	</li>
-            	</ul>
-        	</div>
+    	
+    		<ul class="nav nav-tabs">
+    			<li class="nav-item">
+    				<a class="nav-link active" href="#general" data-toggle="tab">General Info</a>
+    			</li>
+    			
+    			<!--  one tab for each day of the trip -->
+    			<li class="nav-item">
+    				<a class="nav-link" href="#day1" data-toggle="tab">Day 1</a>
+    			</li>
+    			<li class="nav-item">
+    				<a class="nav-link" href="#day2" data-toggle="tab">Day 2</a>
+    			</li>
+    			<li class="nav-item">
+    				<a class="nav-link" href="#day3" data-toggle="tab">Day 3</a>
+    			</li>
+    		</ul>
+    	
+    	<div class="tab-content">
+    		<div class="tab-pane active" role="tabpanel" id="general">
+    			<div class="main-content">
+    				<div class="general-info">
+            			<div class="trip-title">
+                			<h1><jsp:getProperty property="title" name="joinTripBean"/></h1>
+            			</div>
+            			<div class="price-tag" style="margin-top:10%; margin-bottom: 5%;">
+                			<h4>Starting price:</h4>
+                			<h5><jsp:getProperty property="price" name="joinTripBean"/></h5>
+            			</div>
+            			<h3>Description:</h3>
+            			<div class="trip-description">
+                			<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam tincidunt ex enim, ac laoreet justo rhoncus eget. Suspendisse potenti. Vivamus eleifend dui ut turpis aliquet tempor. Phasellus consequat tincidunt varius. Aenean rhoncus nunc ut tristique porttitor. Curabitur quis vulputate sem. Nunc eu nunc at urna blandit ornare at sed dolor. Nunc blandit in sem a eleifend. Nulla at odio vulputate nisl fringilla vehicula. In vel est vel dui volutpat placerat sit amet id sem. Suspendisse elit mi vel. </p>
+            			</div>
+            			<button type="submit" name="jointrip" class="btn btn-primary">Join Trip</button>
+        			</div>
+        			<div class="infos-right">
+            			<div class="trip-img">
+                			<img class="resize" src="../res/images/MtFuji.jpg">
+            			</div>
+            			<h3>Dates:</h3>
+            			<div class="dates">
+                			<div class="departure">
+                    			<h5>Departure:</h5>
+                    			<h5>dd/mm/yyyy</h5>
+                			</div>
+                			<div class="return">
+                    			<h5>Return:</h5>
+                    			<h5>dd/mm/yyyy</h5>
+                			</div>
+            			</div>
+            			<h3>Categories:</h3>
+            			<ul class="category-list">
+                			<li class="category1">
+                    			<img src="../res/images/icons8-cocktail-50.png">
+                    			<h5><jsp:getProperty property="category1" name="joinTripBean"/></h5>
+                			</li>
+                			<li class="category2">
+                    			<img src="../res/images/icons8-greek-pillar-capital-50.png">
+                    			<h5><jsp:getProperty property="category2" name="joinTripBean"/></h5>
+                			</li>
+            			</ul>
+        			</div>
+    			</div>
+    		</div>
+    		
+    		<div class="tab-pane" role="tabpanel" id="day1">
+    			<div class="filler center"><h4>No days.</h4></div>
+    		</div>
+    		
+    		<div class="tab-pane" role="tabpanel" id="day2">
+    			<div class="filler center"><h4>No days.</h4></div>
+    		</div>
+    		
+    		<div class="tab-pane" role="tabpanel" id="day3">
+    			<div class="filler center"><h4>No days.</h4></div>
+    		</div>
+    		
     	</div>
     </div>
+    		
+   </div>
 </body>
 </html>
