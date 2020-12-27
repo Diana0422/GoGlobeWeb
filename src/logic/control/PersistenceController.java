@@ -41,12 +41,12 @@ public class PersistenceController {
 			objects = (ArrayList<Trip>) readTripFromFile(f);
 			
 			System.out.println("Objects: "+objects);
-			for (int i=0; i<objects.size(); i++) {
-				if (objects.get(i).getId() == trip.getId()) {
-					System.out.println("Trip already saved to back-end.");
-					return false;
-				}
-			}
+//			for (int i=0; i<objects.size(); i++) {
+////				if (objects.get(i).getId() == trip.getId()) {
+////					System.out.println("Trip already saved to back-end.");
+////					return false;
+////				}
+//			}
 			
 			objects.add(trip);
 			if (writeTripsToFile(f, objects)) {
