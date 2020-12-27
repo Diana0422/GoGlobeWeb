@@ -91,7 +91,8 @@ if (request.getParameter("daybtn") != null){
 	             
 <%
 				if (request.getParameter("save-trip-btn") != null){
-					if (planTripBean.saveTrip()){
+					
+					if (true){
 %>
 						<jsp:forward page="home.jsp"/>
 <% 

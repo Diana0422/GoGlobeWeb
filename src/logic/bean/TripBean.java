@@ -2,6 +2,9 @@ package logic.bean;
 
 import java.awt.image.BufferedImage;
 import java.util.Date;
+import java.util.List;
+
+import logic.model.Activity;
 
 public class TripBean {
 	
@@ -11,9 +14,16 @@ public class TripBean {
 	private String category1;
 	private String category2;
 	private BufferedImage img;
-	private Date departureDate;
-	private Date returnDate;	
+	private String departureDate;
+	private String returnDate;	
 	private long tripLength;
+	private List<DayBean> days;
+	
+	
+	public void addActivity(int day, ActivityBean activity) {
+		this.getDays().get(day).getActivities().add(activity);
+		System.out.println("New activity added to day" + day + "\n");
+	}
 	
 	public int getId() {
 		return id;
@@ -63,19 +73,19 @@ public class TripBean {
 		this.img = img;
 	}
 
-	public Date getDepartureDate() {
+	public String getDepartureDate() {
 		return departureDate;
 	}
 
-	public void setDepartureDate(Date departureDate) {
+	public void setDepartureDate(String departureDate) {
 		this.departureDate = departureDate;
 	}
 
-	public Date getReturnDate() {
+	public String getReturnDate() {
 		return returnDate;
 	}
 
-	public void setReturnDate(Date returnDate) {
+	public void setReturnDate(String returnDate) {
 		this.returnDate = returnDate;
 	}
 
@@ -86,4 +96,14 @@ public class TripBean {
 	public void setTripLength(long tripLength) {
 		this.tripLength = tripLength;
 	}
+
+	public List<DayBean> getDays() {
+		return days;
+	}
+
+	public void setDays(List<DayBean> days) {
+		this.days = days;
+	}
+	
+	
 }

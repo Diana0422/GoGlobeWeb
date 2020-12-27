@@ -13,7 +13,8 @@ import logic.model.TripCategory;
 public class PlanTripBean {
 	
 	private static final String DATE_FORMAT = "dd/MM/yyyy";
-	private Trip trip;    
+	//private Trip trip;  
+	private TripBean tripBean;
 	private String tripName;
 	private String departureDate;
 	private String returnDate;
@@ -115,35 +116,19 @@ public class PlanTripBean {
 	//Create new trip instance and set 
 	public void setPreferences(){
 		
-		try {
-			Date depDate = new SimpleDateFormat(DATE_FORMAT).parse(departureDate);
-			Date retDate = new SimpleDateFormat(DATE_FORMAT).parse(returnDate);
-			TripCategory categoryValue1 = parseTripCategory(category1);
-			TripCategory categoryValue2 = parseTripCategory(category2);
+		//this.setTrip(PlanTripController.getInstance().setPreferences(this.tripName, depDate, retDate, categoryValue1, categoryValue2));
+		this.setTripBean(PlanTripController.getInstance().setPreferencesBean(this.tripName, departureDate, returnDate, category1, category2));
 
-			this.setTrip(PlanTripController.getInstance().setPreferences(this.tripName, depDate, retDate, categoryValue1, categoryValue2));
-			
-			System.out.println("RIASSUNTO DEL VIAGGIO:\n");
-			System.out.println("titolo: " + this.trip.getTitle()+ "\n");
-			System.out.println("lunghezza: " + this.trip.getTripLength() + "giorni\n");
-			for (int i = 0; i < this.trip.getTripLength(); i++) {
-				System.out.println("Giorno 1:" + this.trip.getDays().get(i).getActivities().size() + "attività\n");
+		System.out.println("RIASSUNTO DEL VIAGGIO:\n");
+		System.out.println("titolo: " + this.tripBean.getTitle()+ "\n");
+		System.out.println("lunghezza: " + this.tripBean.getTripLength() + "giorni\n");
+		for (int i = 0; i < this.tripBean.getTripLength(); i++) {
+			System.out.println("Giorno 1:" + this.tripBean.getDays().get(i).getActivities().size() + "attività\n");
 
-			}
-		} catch (ParseException e) {
-			
-			e.printStackTrace();
 		}
 	}
 	
-	private TripCategory parseTripCategory(String category) {
-		if (category.equals("Fun")) return TripCategory.Fun;	
-		if (category.equals("Culture")) return TripCategory.Culture;	
-		if (category.equals("Relax")) return TripCategory.Relax;
-		if (category.equals("Adventure")) return TripCategory.Adventure;
-			
-		return TripCategory.None;
-	}
+	
 
 	public String getTripName() {
 		return tripName;
@@ -184,14 +169,6 @@ public class PlanTripBean {
 	public void setCategory2(String category2) {
 		this.category2 = category2;
 	}
-	
-	public Trip getTrip() {
-		return trip;
-	}
-
-	public void setTrip(Trip trip) {
-		this.trip = trip;
-	}
 
 	public String getErrorMsg() {
 		return errorMsg;
@@ -202,8 +179,8 @@ public class PlanTripBean {
 	}
 	
 	//GUI CONTROLLER
-	public List<Day> getTripDays() {
-		return this.trip.getDays();
+	public List<DayBean> getTripDays() {
+		return this.tripBean.getDays();
 	}
 
 	public int getPlanningDay() {
@@ -216,12 +193,12 @@ public class PlanTripBean {
 	
 	//GUI CONTROLLER
 	public int getActivitiesNum() {
-		 return this.trip.getDays().get(planningDay).getActivities().size();
+		 return this.tripBean.getDays().get(planningDay).getActivities().size();
 	}
 	
 	
 	public void addActivity(ActivityBean activityBean) {
-		PlanTripController.getInstance().addActivity(this.trip, planningDay, activityBean);
+		PlanTripController.getInstance().addActivity(this.tripBean, planningDay, activityBean);
 	}
 	
 	//GUI CONTROLLER
@@ -240,6 +217,18 @@ public class PlanTripBean {
 	}
 	
 	public boolean saveTrip() {
-		return PlanTripController.getInstance().saveTrip(this.trip);
+		return PlanTripController.getInstance().saveTrip(this.tripBean);
+	}
+	
+//	public boolean validateTrip() {
+//		return PlanTripController.getInstance().validateTrip(this.trip);
+//	}
+
+	public TripBean getTripBean() {
+		return tripBean;
+	}
+
+	public void setTripBean(TripBean tripBean) {
+		this.tripBean = tripBean;
 	}
 }
