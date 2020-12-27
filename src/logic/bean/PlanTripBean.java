@@ -6,9 +6,6 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 import logic.control.PlanTripController;
-import logic.model.Day;
-import logic.model.Trip;
-import logic.model.TripCategory;
 
 public class PlanTripBean {
 	

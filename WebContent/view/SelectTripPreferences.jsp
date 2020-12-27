@@ -1,6 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-   <jsp:useBean id="planTripBean" scope="session" 	class="logic.bean.PlanTripBean"/>  
+   <jsp:useBean id="planTripBean" scope="session" class="logic.bean.PlanTripBean"/>  
    <jsp:setProperty name="planTripBean" property="*"/>
    
 <% 
@@ -60,6 +60,8 @@
 	if (request.getParameter("next-btn") != null){
 		if (planTripBean.validateForm()){
 			planTripBean.setPreferences();
+			System.out.println(planTripBean.getCategory1());
+			System.out.println(planTripBean.getCategory2());
 %>			
 			<jsp:forward page="planTrip.jsp"/>
 <% 
@@ -99,10 +101,10 @@
         
                         <select class="custom-select" id="selectCategory1" name="category1">
                             <option selected value="none">Choose...</option>
-                          	<option value="adventure">Adventure</option>
-                            <option value="relax">Relax</option>
-                            <option value="culture">Culture</option>
-                            <option value="fun">Fun</option>
+                          	<option value="Adventure">Adventure</option>
+                            <option value="Relax">Relax</option>
+                            <option value="Culture">Culture</option>
+                            <option value="Fun">Fun</option>
                     </select>
                     </div>  
                     <div class="form-group col-md-6">
@@ -110,10 +112,10 @@
         
                         <select class="custom-select" id="selectCategory2" name="category2">
                             <option selected value="none">Choose...</option>
-                            <option value="adventure">Adventure</option>
-                            <option value="relax">Relax</option>
-                            <option value="culture">Culture</option>
-                            <option value="fun">Fun</option>
+                            <option value="Adventure">Adventure</option>
+                            <option value="Relax">Relax</option>
+                            <option value="Culture">Culture</option>
+                            <option value="Fun">Fun</option>
                     </select>
                     </div>
                     

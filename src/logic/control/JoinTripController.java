@@ -1,6 +1,8 @@
 package logic.control;
 
 import java.io.File;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -40,8 +42,13 @@ public class JoinTripController {
 			bean.setCategory1(t.getCategory1().toString());
 			bean.setCategory2(t.getCategory2().toString());
 			bean.setImg(t.getImg());
-			bean.setDepartureDate(t.getDepartureDate());
-			bean.setReturnDate(t.getReturnDate());
+			
+			// Converting Dates to String
+			DateFormat formatter = new SimpleDateFormat("dd/mm/yyyy");
+			String depDateStr = formatter.format(t.getDepartureDate());
+			String retDateStr = formatter.format(t.getReturnDate());
+			bean.setDepartureDate(depDateStr);
+			bean.setReturnDate(retDateStr);
 			bean.setTripLength(t.getTripLength());
 			list.add(bean);
 		}

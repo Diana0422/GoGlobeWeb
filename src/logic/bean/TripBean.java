@@ -1,10 +1,7 @@
 package logic.bean;
 
 import java.awt.image.BufferedImage;
-import java.util.Date;
 import java.util.List;
-
-import logic.model.Activity;
 
 public class TripBean {
 	
