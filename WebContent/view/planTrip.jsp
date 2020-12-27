@@ -56,7 +56,9 @@
         <!-- SIDEBAR -->
         <nav id="sidebar" aria-label="sidebar">
             <form  action="planTrip.jsp" method="POST">	
-            	<div class="sb-header">
+            	<div class="sidebar-header">
+            	
+            	<button type="submit" name="save-trip-btn" class="btn btn-primary btn-lg btn-block">Save Trip</button>
             	
 <% 
 			if (planTripBean.getTripDays() != null){
@@ -86,9 +88,23 @@ if (request.getParameter("daybtn") != null){
             
             <div class="day" id="day">
 	            <h1 id="trip-title"><%= planTripBean.getTripName() %></h1>
+	             
+<%
+				if (request.getParameter("save-trip-btn") != null){
+					if (planTripBean.saveTrip()){
+%>
+						<jsp:forward page="home.jsp"/>
+<% 
+					}else{
+%>
+						<p style="color: red">ERRORE</p>	
+<%				
+					}				
+				}
+%>
 	            <h2>Day <%= planTripBean.getPlanningDay() + 1 %></h2>   
                 <div>
-                	<h3>Location:</h3>
+                	<!-- <h3>Location:</h3> -->
                 	<div class="input-group mb-3">
 					<div class="input-group-prepend">
 					    <span class="input-group-text" id="inputGroup-sizing-default">Location</span>

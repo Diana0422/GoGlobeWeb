@@ -238,4 +238,8 @@ public class PlanTripBean {
 	public String displayActivityDescription(int activityNum) {
 		return this.getTripDays().get(planningDay).getActivities().get(activityNum).getDescription();
 	}
+	
+	public boolean saveTrip() {
+		return PlanTripController.getInstance().saveTrip(this.trip);
+	}
 }

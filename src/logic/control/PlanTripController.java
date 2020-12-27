@@ -65,6 +65,10 @@ public class PlanTripController {
 		Activity newActivity = new Activity(activity.getTitle(), activity.getTime(), activity.getDescription());
 		trip.addActivity(planningDay, newActivity);
 	}
+	
+	public boolean saveTrip(Trip trip) {
+		return PersistenceController.getInstance().saveTripOnFile(trip);
+	}
 }
 
 
