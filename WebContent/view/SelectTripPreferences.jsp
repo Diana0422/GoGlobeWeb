@@ -60,8 +60,6 @@
 	if (request.getParameter("next-btn") != null){
 		if (planTripBean.validateForm()){
 			planTripBean.setPreferences();
-			System.out.println(planTripBean.getCategory1());
-			System.out.println(planTripBean.getCategory2());
 %>			
 			<jsp:forward page="planTrip.jsp"/>
 <% 

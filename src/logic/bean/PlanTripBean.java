@@ -119,6 +119,10 @@ public class PlanTripBean {
 		System.out.println("RIASSUNTO DEL VIAGGIO:\n");
 		System.out.println("titolo: " + this.tripBean.getTitle()+ "\n");
 		System.out.println("lunghezza: " + this.tripBean.getTripLength() + "giorni\n");
+		System.out.println("partenza: "+this.tripBean.getDepartureDate());
+		System.out.println("arrivo: "+this.tripBean.getReturnDate());
+		System.out.println("categoria1: "+this.tripBean.getCategory1());
+		System.out.println("categoria2: "+this.tripBean.getCategory2());
 		for (int i = 0; i < this.tripBean.getTripLength(); i++) {
 			System.out.println("Giorno 1:" + this.tripBean.getDays().get(i).getActivities().size() + "attività\n");
 

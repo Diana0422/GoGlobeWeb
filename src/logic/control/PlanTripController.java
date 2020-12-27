@@ -17,7 +17,7 @@ import logic.model.TripCategory;
 
 public class PlanTripController {
 	
-	private static final String DATE_FORMAT = "dd/MM/yyyy";
+	private static final String DATE_FORMAT = "dd/mm/yyyy";
 
 		
 	private static PlanTripController instance;
@@ -108,6 +108,8 @@ public class PlanTripController {
 				//Setting dates
 				trip.setDepartureDate(depDate);
 				trip.setReturnDate(retDate);
+				System.out.println(trip.getDepartureDate());
+				System.out.println(trip.getReturnDate());
 			} catch (ParseException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();

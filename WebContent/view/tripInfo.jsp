@@ -71,6 +71,7 @@
     			<div class="main-content">
     				<div class="general-info">
             			<div class="trip-title">
+      
                 			<h1><%= joinTripBean.getTrip().getTitle() %></h1>
             			</div>
             			<div class="price-tag" style="margin-top:10%; margin-bottom: 5%;">
