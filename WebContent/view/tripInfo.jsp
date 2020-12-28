@@ -139,7 +139,7 @@
         						ActivityBean activityBean = dayBean.getActivities().get(j);
         						%>
         							<div class="activity">		
-		            					<h2><%= activityBean.getTitle() %></h2>
+		            					<h2 id="activity-title"><%= activityBean.getTitle() %></h2>
 		            					<h3><%= activityBean.getTime() %></h3>
 		            					<div class="description">
 		            						<p><%= activityBean.getDescription() %></p>

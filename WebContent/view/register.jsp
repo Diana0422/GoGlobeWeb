@@ -110,7 +110,7 @@
 
             <!-- Page description -->
             <div class="description">
-                <h2>plan your trip, share it with the community and you are ready to go.</h2>
+                <h2 class="page-state">plan your trip, share it with the community and you are ready to go.</h2>
             </div>
         </div>
     </div>

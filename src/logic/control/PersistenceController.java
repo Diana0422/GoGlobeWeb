@@ -9,7 +9,7 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import java.util.List;
-
+import logic.model.Day;
 import logic.model.Trip;
 import logic.model.User;
 
@@ -30,37 +30,41 @@ public class PersistenceController {
 	}
 	
 	
+	public String toString(Trip trip) {
+		StringBuilder result = new StringBuilder(":");
+		result.append(trip);
+		result.append("(");
+		for(Day d : trip.getDays())
+			result.append(d);
+		result.append(")");
+		return result.toString();
+	}
+	
+	
 	/* TRIP METHODS */
 	
 	public boolean saveTripOnFile(Trip trip) {
 		// Saves a trip on a back-end file
 		File f = new File("C:\\Users\\dayli\\git\\GoGlobeWeb\\src\\trips.txt");
-		ArrayList<Trip> objects = null;
+		ArrayList<Trip> objects = (ArrayList<Trip>) readTripFromFile(f);
 		
-		try {
-			objects = (ArrayList<Trip>) readTripFromFile(f);
-			
-			System.out.println("Objects: "+objects);
-//			for (int i=0; i<objects.size(); i++) {
-////				if (objects.get(i).getId() == trip.getId()) {
-////					System.out.println("Trip already saved to back-end.");
-////					return false;
-////				}
-//			}
-			
-			objects.add(trip);
-			if (writeTripsToFile(f, objects)) {
-				System.out.println("Trip saved on back-end file.");
-				return true;
-			} else {
-				return false;
-			}
+		System.out.println("Objects: "+objects);
+		System.out.println("Serializing instance of trip = "+ this.toString(trip)+ "\n");
+		objects.add(trip);
+		
+		try (ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream("C:\\Users\\dayli\\git\\GoGlobeWeb\\src\\trips.txt"))) {
+			System.out.println("Serializing instance of trip = "+ this.toString(trip)+ "\n");
+			out.writeObject(objects); /*!!!*/
+			return true;
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return false;
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+			return false;
 		}
-		return false;
-		
 	}
 	
 	

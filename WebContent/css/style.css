@@ -43,7 +43,8 @@ body {
     font-size: 40px;
 }
 
-#bootstrap-override .page-state, h2 {
+/* white bold centered text */ 
+#bootstrap-override .page-state {
     display: flex;
     align-items: center;
     justify-content: center;
