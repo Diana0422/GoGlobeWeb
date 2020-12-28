@@ -16,8 +16,6 @@ import logic.model.User;
 public class PersistenceController {
 	
 	private static PersistenceController INSTANCE = null;
-	private static final String PathLorenzo= "/Users/lorenzotanzi/git/GoGlobeWeb/src/trips.txt";
-	private static final String relPath = "src/trips.txt";
 	
 	private PersistenceController() {}
 	
@@ -49,7 +47,7 @@ public class PersistenceController {
 		// Saves a trip on a back-end file
 		String projectPath = System.getProperty("user.dir");
 		System.out.println(projectPath);
-		String filePath = projectPath + "/trips.txt";
+		String filePath = projectPath + "/trips.out";
 		File f = new File(filePath);
 		ArrayList<Trip> objects = (ArrayList<Trip>) readTripFromFile(f);
 		
@@ -87,13 +85,7 @@ public class PersistenceController {
 				List<Trip> deserialization = (ArrayList<Trip>) ois.readObject();
 				System.out.println("Trips found: "+deserialization);
 				return deserialization;
-
-			} /*else {
-				System.out.println("FileInputStream not available:");
-				System.out.println("No data to read from file.\n");
-				empty.add(new Trip(0,"", "", 0, "", "", "", ""));
-				return empty;
-			}*/
+			} 
 		} catch (ClassNotFoundException | IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -105,30 +97,13 @@ public class PersistenceController {
 	}
 	
 	
-	public boolean writeTripsToFile(File f, List<Trip> objects) throws IOException {
-		// Writes a list of trips to the back-end file
-	
-		try (FileOutputStream fos = new FileOutputStream(f);
-			 ObjectOutputStream oos = new ObjectOutputStream(fos)) {
-			oos.writeObject(objects);
-			return true;
-			
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-			return false;
-		}
-		
-	}
-	
-	
 	/* USER METHODS */
 	
 	public boolean saveUserOnFile(User user) {
 		// Saves an instance of a user in file
 		String projectPath = System.getProperty("user.dir");
 		System.out.println(projectPath);
-		String filePath = projectPath + "/users.txt";
+		String filePath = projectPath + "/users.out";
 		File f = new File(filePath);
 		List<User> objects;
 			

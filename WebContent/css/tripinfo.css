@@ -96,3 +96,8 @@ li {
 #activity-title {
 	color: black;
 }
+
+/* Panel titles */
+#panel-title {
+	margin-top: 5%;
+}

@@ -166,3 +166,8 @@ label.star:before {
 	width: 600px;
 	word-wrap: break-word;
 }
+
+/* Fixed height */
+.fixed {
+	height: 760px;
+}

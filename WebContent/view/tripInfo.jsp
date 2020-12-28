@@ -51,8 +51,8 @@
         </div>
     </nav>
 
-    <div class="container-md">
-    	<div class="trip-info displayer">
+    <div class="container-md fixed">
+    	<div class="trip-info displayer fixed">
     	
     		<ul class="nav nav-tabs">
     			<li class="nav-item">
@@ -133,8 +133,11 @@
     				System.out.println(dayBean);
     		%>
     				<div class="tab-pane" role="tabpanel" id=<%= "day"+i+1 %>>
-        				<!-- <div class="filler center"><h4>No days.</h4></div> -->
-        				<%
+    					<h2 id="panel-title">Location: <%= dayBean.getLocation() %></h2>
+    					<h2 id="panel-title">Activities of the day:</h2>
+    					<div class="scrollable">
+    					
+    					<%
         					for (int j=0; j<dayBean.getActivities().size(); j++) {
         						ActivityBean activityBean = dayBean.getActivities().get(j);
         						%>
@@ -148,6 +151,8 @@
         						<% 
         					}
         				%> 
+    					
+    					</div>
         			</div>
         	<% 
 	    		}

@@ -28,7 +28,7 @@ public class JoinTripController {
 		System.out.println("Val: "+ value);
 		String projectPath = System.getProperty("user.dir");
 		System.out.println(projectPath);
-		String filePath = projectPath + "/trips.txt";
+		String filePath = projectPath + "/trips.out";
 		File f = new File(filePath);
 		
 		List<Trip> trips = null;
