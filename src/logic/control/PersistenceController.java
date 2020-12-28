@@ -16,6 +16,8 @@ import logic.model.User;
 public class PersistenceController {
 	
 	private static PersistenceController INSTANCE = null;
+	private static final String PathLorenzo= "/Users/lorenzotanzi/git/GoGlobeWeb/src/trips.txt";
+	private static final String relPath = "src/trips.txt";
 	
 	private PersistenceController() {}
 	
@@ -45,14 +47,17 @@ public class PersistenceController {
 	
 	public boolean saveTripOnFile(Trip trip) {
 		// Saves a trip on a back-end file
-		File f = new File("C:\\Users\\dayli\\git\\GoGlobeWeb\\src\\trips.txt");
+		String projectPath = System.getProperty("user.dir");
+		System.out.println(projectPath);
+		String filePath = projectPath + "/trips.txt";
+		File f = new File(filePath);
 		ArrayList<Trip> objects = (ArrayList<Trip>) readTripFromFile(f);
 		
 		System.out.println("Objects: "+objects);
 		System.out.println("Serializing instance of trip = "+ this.toString(trip)+ "\n");
 		objects.add(trip);
 		
-		try (ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream("C:\\Users\\dayli\\git\\GoGlobeWeb\\src\\trips.txt"))) {
+		try (ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream(filePath))) {
 			System.out.println("Serializing instance of trip = "+ this.toString(trip)+ "\n");
 			out.writeObject(objects); /*!!!*/
 			return true;
@@ -121,7 +126,10 @@ public class PersistenceController {
 	
 	public boolean saveUserOnFile(User user) {
 		// Saves an instance of a user in file
-		File f = new File("C:\\Users\\dayli\\git\\GoGlobeWeb\\src\\users.txt");
+		String projectPath = System.getProperty("user.dir");
+		System.out.println(projectPath);
+		String filePath = projectPath + "/users.txt";
+		File f = new File(filePath);
 		List<User> objects;
 			
 		objects = readUserFromFile(f);

@@ -9,8 +9,7 @@ import logic.control.PlanTripController;
 
 public class PlanTripBean {
 	
-	private static final String DATE_FORMAT = "dd/MM/yyyy";
-	//private Trip trip;  
+	private static final String DATE_FORMAT = "dd/MM/yyyy"; 
 	private TripBean tripBean;
 	private String tripName;
 	private String departureDate;
@@ -113,7 +112,6 @@ public class PlanTripBean {
 	//Create new trip instance and set 
 	public void setPreferences(){
 		
-		//this.setTrip(PlanTripController.getInstance().setPreferences(this.tripName, depDate, retDate, categoryValue1, categoryValue2));
 		this.setTripBean(PlanTripController.getInstance().setPreferencesBean(this.tripName, departureDate, returnDate, category1, category2));
 
 		System.out.println("RIASSUNTO DEL VIAGGIO:\n");
@@ -220,10 +218,6 @@ public class PlanTripBean {
 	public boolean saveTrip() {
 		return PlanTripController.getInstance().saveTrip(this.tripBean);
 	}
-	
-//	public boolean validateTrip() {
-//		return PlanTripController.getInstance().validateTrip(this.trip);
-//	}
 
 	public TripBean getTripBean() {
 		return tripBean;

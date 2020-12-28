@@ -26,7 +26,10 @@ public class JoinTripController {
 	public List<TripBean> searchTrips(String value) {
 		System.out.println("Search trips by value started.\n");
 		System.out.println("Val: "+ value);
-		File f = new File("C:\\Users\\dayli\\git\\GoGlobeWeb\\src\\trips.txt");
+		String projectPath = System.getProperty("user.dir");
+		System.out.println(projectPath);
+		String filePath = projectPath + "/trips.txt";
+		File f = new File(filePath);
 		
 		List<Trip> trips = null;
 		trips = PersistenceController.getInstance().readTripFromFile(f);

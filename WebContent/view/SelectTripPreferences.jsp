@@ -58,6 +58,8 @@
         <h2>Insert information about your trip!</h2>
 <%
 	if (request.getParameter("next-btn") != null){
+		String projectPath = System.getProperty("user.dir");
+		System.out.println(projectPath);
 		if (planTripBean.validateForm()){
 			planTripBean.setPreferences();
 %>			
