@@ -4,11 +4,11 @@
 }
 
 @font-face {
-    src: url(/logic/view/fonts/Barlow/Barlow-Bold.ttf);
+    src: url(fonts/Barlow/Barlow-Bold.ttf);
 }
 
 @font-face {
-    src: url(/logic/view/fonts/Barlow/Barlow-Medium.ttf);
+    src: url(fonts/Barlow/Barlow-Medium.ttf);
 }
 
 #navbar {

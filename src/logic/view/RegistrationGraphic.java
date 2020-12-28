@@ -46,7 +46,7 @@ public class RegistrationGraphic {
 			/* Call the controller to register the user */
 			if (RegistrationController.getInstance().register(email, password, name, surname, birthday)) {
 				Stage primaryStage = new Stage();
-				FXMLLoader loader = new FXMLLoader(getClass().getResource("Home.fxml"));
+				FXMLLoader loader = new FXMLLoader(getClass().getResource("/logic/view/Home.fxml"));
 				Parent root = loader.load();
 				Scene scene = new Scene(root,700,600);
 				scene.getStylesheets().addAll(getClass().getResource("/logic/view/css/application.css").toExternalForm(), getClass().getResource("/logic/view/css/home.css").toExternalForm());

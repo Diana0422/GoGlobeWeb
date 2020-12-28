@@ -57,8 +57,4 @@
          </children>
       </Pane>
    </children>
-   <stylesheets>
-      <URL value="@application.css" />
-      <URL value="@registration.css" />
-   </stylesheets>
 </AnchorPane>
