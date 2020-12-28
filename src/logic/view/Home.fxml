@@ -34,7 +34,7 @@
                   <Font size="18.0" />
                </font>
             </Label>
-            <Button id="btn" layoutX="460.0" layoutY="71.0" mnemonicParsing="false" text="Join a trip">
+            <Button id="btn" layoutX="460.0" layoutY="71.0" mnemonicParsing="false" onAction="#forwardJoinTrip" text="Join a trip">
                <font>
                   <Font size="18.0" />
                </font>
@@ -48,7 +48,7 @@
                   <Font size="18.0" />
                </font>
             </Label>
-            <Button id="btn" layoutX="456.0" layoutY="79.0" mnemonicParsing="false" text="Plan a trip">
+            <Button id="btn" layoutX="456.0" layoutY="79.0" mnemonicParsing="false" onAction="#forwardPlanTrip" text="Plan a trip">
                <font>
                   <Font size="18.0" />
                </font>
@@ -56,8 +56,4 @@
          </children>
       </Pane>
    </children>
-   <stylesheets>
-      <URL value="@css/home.css" />
-      <URL value="@css/application.css" />
-   </stylesheets>
 </AnchorPane>

@@ -135,7 +135,7 @@ public class PersistenceController {
 			} else {
 				System.out.println("FileInputStream not available:");
 				System.out.println("No data to read from file.\n");
-				empty.add(new User("", "", 0, "", ""));
+				empty.add(new User("", "", null, "", ""));
 				return empty;
 			}
 		} catch (FileNotFoundException e1) {
@@ -166,7 +166,7 @@ public class PersistenceController {
 			 ObjectOutputStream oos = new ObjectOutputStream(fos)) {
 			if (type.equals("user")) {
 				List<User> object = new ArrayList<>();
-				User user = new User("dummy", "dummy", 0, "dummy", "dummy");
+				User user = new User("dummy", "dummy", null, "dummy", "dummy");
 				object.add(user);
 				oos.writeObject(object);
 			} else if (type.equals("trip")) {

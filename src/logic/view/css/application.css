@@ -1,14 +1,14 @@
 /* JavaFX CSS - Leave this comment until you have at least create one rule which uses -fx-Property */
 @font-face {
-    src: url(fonts/Baloo-Da/BalooDa2-ExtraBold.ttf);
+    src: url(/logic/view/fonts/Baloo-Da/BalooDa2-ExtraBold.ttf);
 }
 
 @font-face {
-    src: url(fonts/Barlow/Barlow-Bold.ttf);
+    src: url(/logic/view/fonts/Barlow/Barlow-Bold.ttf);
 }
 
 @font-face {
-    src: url(fonts/Barlow/Barlow-Medium.ttf);
+    src: url(/logic/view/fonts/Barlow/Barlow-Medium.ttf);
 }
 
 #navbar {
@@ -26,4 +26,8 @@
 #btn {
 	-fx-background-color: #007bff;
 	-fx-text-fill: white;
+}
+
+#tab-container {
+	-fx-background-color: #ffffff
 }
