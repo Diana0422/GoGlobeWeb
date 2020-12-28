@@ -2,8 +2,9 @@
     pageEncoding="UTF-8"%>
     
 <jsp:useBean id="planTripBean" scope="session" class="logic.bean.PlanTripBean"/>
-<jsp:useBean id="activityBean" scope="request" class="logic.bean.ActivityBean"/>
+<jsp:useBean id="activityBean" scope="request" class="logic.bean.ActivityBean"/> 
 <jsp:setProperty name="activityBean" property="*" />
+<jsp:setProperty name="planTripBean" property="location" />
 
 <%@page import="java.util.List"%>      
 <%@page import="java.util.Iterator"%> 
@@ -92,28 +93,55 @@ if (request.getParameter("daybtn") != null){
 <%
 				if (request.getParameter("save-trip-btn") != null){
 					
-					if (planTripBean.saveTrip()){
+					if (planTripBean.validateTrip()){
+						
+						planTripBean.saveTrip();
 %>
 						<jsp:forward page="home.jsp"/>
 <% 
 					}else{
 %>
+						<!-- VALIDATE TRIP ERROR -->
 						<p style="color: red">ERRORE</p>	
 <%				
 					}				
 				}
 %>
+
 	            <h2>Day <%= planTripBean.getPlanningDay() + 1 %></h2>   
-                <div>
-                	<!-- <h3>Location:</h3> -->
-                	<div class="input-group mb-3">
-					<div class="input-group-prepend">
-					    <span class="input-group-text" id="inputGroup-sizing-default">Location</span>
+  
+ <%		
+		 if (request.getParameter("save-location-btn") != null){
+			 if (planTripBean.validateLocation()){
+				planTripBean.saveLocation();
+			 }
+			}
+ 
+ 		if (planTripBean.checkDay()){
+ 			
+ 
+ %>             
+               	<!--  Location Form -->
+			   <form method="POST" action="planTrip.jsp">
+			   	 <div class="location-form">
+<%
+					
+%>
+				   	  <div class="form-group row">
+					    <label for="inputPassword" class="col-sm-2 col-form-label"><h6>Location</h6></label>
+					    <div class="col-sm-10">
+					      <input  type="text" name="location" class="form-control" id="inputLocation" placeholder="Insert Location...">
+					    </div>
 					  </div>
-					  <input type="text" class="form-control" aria-label="Default" aria-describedby="inputGroup-sizing-default">
-					</div>
-                </div>
-             
+                	<button type="submit" class="btn btn-colors btn-lg btn-block" name="save-location-btn"  >Save Location</button>	               	                           	
+                   </div> 
+               </form>
+               
+ <%
+ 		}else{
+ %>            
+               
+             	<h3>Location: <%=planTripBean.getDayLocation() %></h3>
                 <div class="day-plan">
                 	<!-- NEW ACTIVITY FORM -->
                 	<form action="planTrip.jsp" method="POST">
@@ -166,6 +194,7 @@ if (request.getParameter("daybtn") != null){
 		            			</div>		            			
 	         				</div>                        
  <%
+					 	}
  	}
  %>                  
  					</div>        

@@ -22,6 +22,15 @@ public class TripBean {
 		System.out.println("New activity added to day" + day + "\n");
 	}
 	
+	public boolean validateTrip() {
+		boolean ret = true;
+		for (int i = 0; i < days.size(); i++) {
+			if (days.get(i).getActivities().isEmpty()) ret = false;
+		}
+		//TODO: Aggiungere controllo sulla location		
+		return ret;
+	}
+	
 	public int getId() {
 		return id;
 	}
@@ -101,6 +110,5 @@ public class TripBean {
 	public void setDays(List<DayBean> days) {
 		this.days = days;
 	}
-	
 	
 }
