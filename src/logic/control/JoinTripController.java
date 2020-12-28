@@ -30,8 +30,9 @@ public class JoinTripController {
 		
 		List<Trip> trips = null;
 		trips = PersistenceController.getInstance().readTripFromFile(f);
+		System.out.println("Trips: "+trips);
 		
-		/* Convert List<Trip> into List<TripBean>*/
+		/* Convert List<Trip> into List<TripBean> -- > DA METTERE DENTRO CONVERSION CONTROLLER*/
 		List<TripBean> list = new ArrayList<>();
 		for (int i=0; i<trips.size(); i++) {
 			Trip t = trips.get(i);
@@ -50,9 +51,14 @@ public class JoinTripController {
 			bean.setDepartureDate(depDateStr);
 			bean.setReturnDate(retDateStr);
 			bean.setTripLength(t.getTripLength());
+			
+			// Adding days and activities to the trip bean
+			System.out.println("Trip days: "+t.getDays());
+			bean.setDays(ConversionController.getInstance().convertDayList(t.getDays()));
 			list.add(bean);
 		}
 		
+		System.out.println("Trip Beans: "+list);
 		return list;
 	}
 }

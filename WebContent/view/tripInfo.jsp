@@ -4,6 +4,11 @@
 <!-- declaration of a join trip bean -->
 <jsp:useBean id="joinTripBean" scope="session" class="logic.bean.JoinTripBean"/>
 
+<%@page import="java.util.List"%>      <%--Importing all the dependent classes--%> 
+<%@page import="logic.bean.DayBean"%>
+<%@page import="logic.bean.ActivityBean"%>
+
+
 
 <!DOCTYPE html>
 <html lang="en">
@@ -55,15 +60,22 @@
     			</li>
     			
     			<!--  one tab for each day of the trip -->
-    			<li class="nav-item">
-    				<a class="nav-link" href="#day1" data-toggle="tab">Day 1</a>
-    			</li>
-    			<li class="nav-item">
-    				<a class="nav-link" href="#day2" data-toggle="tab">Day 2</a>
-    			</li>
-    			<li class="nav-item">
-    				<a class="nav-link" href="#day3" data-toggle="tab">Day 3</a>
-    			</li>
+    			<%
+    				List<DayBean> days = joinTripBean.getTrip().getDays();
+					System.out.println(days);
+    					
+    				for (int i=0; i<joinTripBean.getTrip().getTripLength(); i++) {
+    					DayBean dayBean = days.get(i);
+    					System.out.println(dayBean);
+    			%>
+    			
+    				<li class="nav-item">
+    					<a class="nav-link" href=<%= "#day"+i+1 %> data-toggle="tab">Day <%= i+1 %></a>
+    				</li>
+    			
+    			<%
+    				}    			
+    			%>
     		</ul>
     	
     	<div class="tab-content">
@@ -114,21 +126,36 @@
     			</div>
     		</div>
     		
-    		<div class="tab-pane" role="tabpanel" id="day1">
-    			<div class="filler center"><h4>No days.</h4></div>
-    		</div>
+    		<%
     		
-    		<div class="tab-pane" role="tabpanel" id="day2">
-    			<div class="filler center"><h4>No days.</h4></div>
-    		</div>
+    			for (int i=0; i<joinTripBean.getTrip().getTripLength(); i++) {
+    				DayBean dayBean = days.get(i);
+    				System.out.println(dayBean);
+    		%>
+    				<div class="tab-pane" role="tabpanel" id=<%= "day"+i+1 %>>
+        				<!-- <div class="filler center"><h4>No days.</h4></div> -->
+        				<%
+        					for (int j=0; j<dayBean.getActivities().size(); j++) {
+        						ActivityBean activityBean = dayBean.getActivities().get(j);
+        						%>
+        							<div class="activity">		
+		            					<h2><%= activityBean.getTitle() %></h2>
+		            					<h3><%= activityBean.getTime() %></h3>
+		            					<div class="description">
+		            						<p><%= activityBean.getDescription() %></p>
+		            					</div>		            			
+	         						</div> 
+        						<% 
+        					}
+        				%> 
+        			</div>
+        	<% 
+	    		}
     		
-    		<div class="tab-pane" role="tabpanel" id="day3">
-    			<div class="filler center"><h4>No days.</h4></div>
-    		</div>
+    		%>
     		
     	</div>
     </div>
-    		
-   </div>
+</div>
 </body>
 </html>

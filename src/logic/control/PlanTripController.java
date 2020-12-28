@@ -10,8 +10,6 @@ import java.util.concurrent.TimeUnit;
 import logic.bean.ActivityBean;
 import logic.bean.DayBean;
 import logic.bean.TripBean;
-import logic.model.Activity;
-import logic.model.Day;
 import logic.model.Trip;
 import logic.model.TripCategory;
 
@@ -116,38 +114,12 @@ public class PlanTripController {
 			}
 	
 		//Converting and setting Days list (and activities)
-		trip.setDays(convertDayBeanList(tripBean.getDays()));	
+		trip.setDays(ConversionController.getInstance().convertDayBeanList(tripBean.getDays()));	
+		System.out.println("Trip Days: "+trip.getDays());
 
 		return PersistenceController.getInstance().saveTripOnFile(trip);
 	}
-	
-	private List<Day> convertDayBeanList(List<DayBean> dayBeans){
-		List<Day> days = new ArrayList<>();
-		for (int i = 0; i < dayBeans.size(); i++) {
-			Day day = new Day();
-			day.setLocation(dayBeans.get(i).getLocation());
-			day.setActivities(convertActivityBeanList(dayBeans.get(i).getActivities()));
-			days.add(day);
-		}
-		return days;
-	}
-	
-	private List<Activity> convertActivityBeanList(List<ActivityBean> activityBeans){
-		List<Activity> activities = new ArrayList<>();
-		for (int i = 0; i < activityBeans.size(); i++) {
-			String title = activityBeans.get(i).getTitle();
-			String time = activityBeans.get(i).getTime();
-			String description = activityBeans.get(i).getDescription();
-			Activity activity = new Activity(title, time, description);
-			activities.add(activity);			
-		}
-		
-		return activities;
-		
-	}
-	
-	
-	
+
 	
 	private TripCategory parseTripCategory(String category) {
 		if (category.equals("Fun")) return TripCategory.Fun;	

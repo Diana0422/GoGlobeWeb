@@ -163,8 +163,7 @@ if (request.getParameter("daybtn") != null){
 		            			<h3><%=planTripBean.displayActivityTime(j) %></h3>
 		            			<div class="description">
 		            				<p><%=planTripBean.displayActivityDescription(j)%></p>
-		            			</div>
-		            						            			
+		            			</div>		            			
 	         				</div>                        
  <%
  	}

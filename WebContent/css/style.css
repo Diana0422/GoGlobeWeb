@@ -139,3 +139,29 @@ label.star:before {
     content: '\f006';
     font-family: FontAwesome;
 }
+
+
+/* Activity Displayer */
+
+.activity{
+	
+	display: inline-block;
+	border-radius: 5px;
+	box-shadow: 2px 2px 5px #979ca5;		
+	padding:20px;
+	margin-top: 3%;
+	width: inherit;
+	overflow: scroll;
+	text-align: left;
+	
+}
+
+.description{
+	width: inherit;
+	word-wrap: break-word;
+}
+
+.description p{
+	width: 600px;
+	word-wrap: break-word;
+}
