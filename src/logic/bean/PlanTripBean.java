@@ -9,7 +9,7 @@ import logic.control.PlanTripController;
 
 public class PlanTripBean {
 	
-	private static final String DATE_FORMAT = "dd/MM/yyyy"; 
+	private static final String DATE_FORMAT = "dd/mm/yyyy"; 
 	private TripBean tripBean;
 	private String tripName;
 	private String departureDate;
@@ -17,11 +17,22 @@ public class PlanTripBean {
 	private String category1;
 	private String category2;
 	private String errorMsg;
+	private String location;
 	private int planningDay = 0;
 	
 	
 	public PlanTripBean(){
 		//Bean classes are supposed to have empty constructors
+	}       
+	
+	public boolean validateLocation() {
+		return (this.location == null || this.location.equals(""));
+	}
+
+
+
+	public boolean validateTrip() {
+		return this.tripBean.validateTrip();
 	}
 	
 	//Validate all the inputs in the form
@@ -86,7 +97,7 @@ public class PlanTripBean {
 			return false;	
 		}
 		if (!(validateDateString(departureDate) || validateDateString(returnDate))) {
-			this.setErrorMsg("Date format must follow the format dd/MM/yyyy");
+			this.setErrorMsg("Date format must follow the format dd/mm/yyyy");
 			return false;		
 		}	
 		if (category1.equals("none") || category2.equals("none")) {
@@ -225,5 +236,30 @@ public class PlanTripBean {
 
 	public void setTripBean(TripBean tripBean) {
 		this.tripBean = tripBean;
+	}
+	
+	public String getLocation() {
+		return location;
+	}
+
+	public void setLocation(String location) {
+		this.location = location;
+	}
+	
+	
+	
+	public void saveLocation() {
+		System.out.println("SAVING LOCATION: " + this.location);
+		this.tripBean.getDays().get(planningDay).setLocation(location);
+	}
+	
+	public boolean checkDay() {
+		String locationCheck = tripBean.getDays().get(planningDay).getLocation();
+		System.out.println("LOCATION CHECK: " + locationCheck);
+		return (locationCheck == null || locationCheck.equals(""));
+	}	
+	
+	public String getDayLocation() {
+		return this.tripBean.getDays().get(planningDay).getLocation();
 	}
 }
