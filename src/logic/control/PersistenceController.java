@@ -9,7 +9,10 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Logger;
+
 import logic.model.Day;
+import logic.model.ModelClassType;
 import logic.model.Trip;
 import logic.model.User;
 
@@ -22,13 +25,50 @@ public class PersistenceController {
 	public static PersistenceController getInstance() {
 		if (INSTANCE == null) {
 			INSTANCE = new PersistenceController();
-//			PersistenceController.initializeFile("C:\\Users\\dayli\\git\\GoGlobeWeb\\src\\users.txt", "user");
-//			PersistenceController.initializeFile("C:\\Users\\dayli\\git\\GoGlobeWeb\\src\\trips.txt", "trip");
 		}
 		
 		return INSTANCE;
 	}
 	
+	public File getBackendFile(ModelClassType type) {
+		String projectPath = System.getProperty("user.dir");
+		Logger.getGlobal().info(projectPath);
+		
+		switch(type) {
+			case TRIP:
+				return new File(projectPath + "/trips.out");
+			case USER:
+				return new File(projectPath + "/users.out");
+			case REQUEST:
+				return new File(projectPath + "/requests.out");
+			case REVIEW:
+			case PRIZE:
+		}
+		
+		return null;
+	}
+	
+	
+	public static void initializeFile(String filename, String type) {
+		try (FileOutputStream fos = new FileOutputStream(filename);
+			 ObjectOutputStream oos = new ObjectOutputStream(fos)) {
+			if (type.equals("user")) {
+				List<User> object = new ArrayList<>();
+				User user = new User("dummy", "dummy", null, "dummy", "dummy");
+				object.add(user);
+				oos.writeObject(object);
+			} else if (type.equals("trip")) {
+				List<Trip> object = new ArrayList<>();
+				Trip trip = new Trip(0,"", "", 0, "None", "None", "00/00/0000", "00/00/0000");
+				object.add(trip);
+				oos.writeObject(object);
+			}
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+	}
 	
 	public String toString(Trip trip) {
 		StringBuilder result = new StringBuilder(":");
@@ -161,35 +201,6 @@ public class PersistenceController {
 			e.printStackTrace();
 			return false;
 		}
-	}
-	
-	public static void initializeFile(String filename, String type) {
-		try (FileOutputStream fos = new FileOutputStream(filename);
-			 ObjectOutputStream oos = new ObjectOutputStream(fos)) {
-			if (type.equals("user")) {
-				List<User> object = new ArrayList<>();
-				User user = new User("dummy", "dummy", null, "dummy", "dummy");
-				object.add(user);
-				oos.writeObject(object);
-			} else if (type.equals("trip")) {
-				List<Trip> object = new ArrayList<>();
-				Trip trip = new Trip(0,"", "", 0, "None", "None", "00/00/0000", "00/00/0000");
-				object.add(trip);
-				oos.writeObject(object);
-			}
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		
-	}
-	
-	
-	public static void main(String [] args) {
-		Trip trip = new Trip(1,"Japanese Temples", "C:\\Users\\Utente\\git\\GoGlobeWeb\\WebContent\\res\\images\\kyoto", 2300, "Adventure", "Culture", "22/04/2021", "13/05/2021");
-		PersistenceController.getInstance().saveTripOnFile(trip);
-		trip = new Trip(2, "That's Amore", "C:\\Users\\Utente\\git\\GoGlobeWeb\\WebContent\\res\\images\\kyoto", 1500, "Relax", "Fun", "21/03/2021", "29/03/2021");
-		PersistenceController.getInstance().saveTripOnFile(trip);
 	}
 }
 	

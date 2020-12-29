@@ -5,6 +5,8 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import logic.dao.UserDAO;
+import logic.dao.UserDAOFile;
 import logic.model.User;
 
 public class RegistrationController {
@@ -28,7 +30,9 @@ public class RegistrationController {
 		try {
 			birth = formatter.parse(birthday);
 			user = new User(name, surname, birth, email, password);
-			return PersistenceController.getInstance().saveUserOnFile(user);
+			UserDAO dao = new UserDAOFile();
+			return dao.saveUser(user);
+		
 		} catch (ParseException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
