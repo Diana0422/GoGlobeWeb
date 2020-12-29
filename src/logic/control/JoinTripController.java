@@ -45,7 +45,7 @@ public class JoinTripController {
 			bean.setPrice(t.getPrice());
 			bean.setCategory1(t.getCategory1().toString());
 			bean.setCategory2(t.getCategory2().toString());
-			bean.setImg(t.getImg());
+			bean.setImgSrc(t.getImgSrc());
 			
 			// Converting Dates to String
 			DateFormat formatter = new SimpleDateFormat("dd/mm/yyyy");

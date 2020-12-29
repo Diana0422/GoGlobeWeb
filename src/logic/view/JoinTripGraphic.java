@@ -1,17 +1,23 @@
 package logic.view;
 
+import java.io.IOException;
 import java.net.URL;
+import java.util.List;
 import java.util.ResourceBundle;
 
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.geometry.Insets;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
-import logic.model.Trip;
+import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.GridPane;
+import javafx.scene.layout.Region;
+import logic.bean.TripBean;
+import logic.control.JoinTripController;
 
 public class JoinTripGraphic implements Initializable {
 	@FXML
@@ -27,18 +33,66 @@ public class JoinTripGraphic implements Initializable {
 	private Label lblMessage;
 	
 	@FXML
-	private ListView<Trip> tripList;
+    private GridPane cardsLayout;
 	
-	Trip trip1 = new Trip(1, "That's Amore", "", 200, "Adventure", "Relax", "22/04/2020", "22/05/2020");
-	Trip trip2 = new Trip(2, "Japanese Temples", "", 1200, "Adventure", "Culture", "22/04/2020", "22/05/2020");
-//	ObservableList<String> listView = FXCollections.observableArrayList("That's amore", "Japanese Temples", "Trip3", "Trip 4", "Trip 5", "Trip 6", "Trip 7", "Trip 8", "Trip 9", "Trip 10", "Trip 11", "Trip 12");
-	ObservableList<Trip> listView = FXCollections.observableArrayList(trip1, trip2);
+	private List<TripBean> tripBeans;
 	
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
+		this.tripBeans = JoinTripController.getInstance().searchTrips(txtSearch.getText());
+		this.loadGrid(txtSearch.getText(), true);
+	}
+	
+	public void search(ActionEvent event) {
+		loadGrid(txtSearch.getText(), false);
+	}
+	
+	public void loadGrid(String searchVal, boolean skipFilter) {
 		
-		tripList.setItems(listView);
-		tripList.setCellFactory(param -> new TripCardCell());
+		int column = 0;
+		int row = 1;
 		
+		try {
+			for (int i=0; i<this.tripBeans.size(); i++) {
+				
+				if (isFiltered(tripBeans.get(i), searchVal) || skipFilter) {
+					FXMLLoader loader = new FXMLLoader();
+					loader.setLocation(getClass().getResource("/logic/view/TripCard.fxml"));
+						
+					AnchorPane anchor = loader.load();
+						
+					CardGraphic cc = loader.getController();
+					cc.setData(tripBeans.get(i));
+						
+					if (column == 3) {
+						row++;
+						column = 0;
+					}
+						
+					cardsLayout.add(anchor, column++, row);
+					GridPane.setMargin(anchor, new Insets(20));
+						
+					// Set grid height
+					cardsLayout.setMaxHeight(Region.USE_PREF_SIZE);
+					cardsLayout.setPrefHeight(Region.USE_COMPUTED_SIZE);
+					cardsLayout.setMinHeight(Region.USE_COMPUTED_SIZE);
+						
+					// Set grid width
+					cardsLayout.setMaxWidth(Region.USE_PREF_SIZE);
+					cardsLayout.setPrefWidth(Region.USE_COMPUTED_SIZE);
+					cardsLayout.setMinWidth(Region.USE_COMPUTED_SIZE);
+				}
+					
+			}
+				
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+
+	
+	private boolean isFiltered(TripBean bean, String searchVal) {	// Da aggiungere a interfaccia di filtri
+		return (bean.getTitle().toLowerCase().contains(searchVal) || bean.getCategory1().contains(searchVal) || bean.getCategory2().contains(searchVal));
 	}
 }

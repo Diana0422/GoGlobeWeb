@@ -101,9 +101,11 @@ public class PersistenceController {
 	
 	public boolean saveUserOnFile(User user) {
 		// Saves an instance of a user in file
+		
 		String projectPath = System.getProperty("user.dir");
 		System.out.println(projectPath);
 		String filePath = projectPath + "/users.out";
+		
 		File f = new File(filePath);
 		List<User> objects;
 			

@@ -1,6 +1,5 @@
 package logic.model;
 
-import java.awt.image.BufferedImage;
 import java.io.Serializable;
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -17,7 +16,7 @@ public class Trip implements Serializable {
 	private int price;
 	private TripCategory category1;
 	private TripCategory category2;
-	private BufferedImage img;
+	private String imgSrc;
 	private Date departureDate;
 	private Date returnDate;	
 	private List<Day> days;	
@@ -52,14 +51,6 @@ public class Trip implements Serializable {
 	public void addActivity(int day, Activity activity) {
 		this.getDays().get(day).getActivities().add(activity);
 		System.out.println("New activity added to day" + day + "\n");
-	}
-	
-	public BufferedImage getImg() {
-		return img;
-	}
-	
-	public void setImg(BufferedImage img) {
-		this.img = img;
 	}
 	
 	public String getTitle() {
@@ -132,6 +123,14 @@ public class Trip implements Serializable {
 
 	public void setTripLength(long tripLength) {
 		this.tripLength = tripLength;
+	}
+
+	public String getImgSrc() {
+		return imgSrc;
+	}
+
+	public void setImgSrc(String imgSrc) {
+		this.imgSrc = imgSrc;
 	}
 
 }

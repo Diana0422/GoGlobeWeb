@@ -1,6 +1,5 @@
 package logic.bean;
 
-import java.awt.image.BufferedImage;
 import java.util.List;
 
 public class TripBean {
@@ -10,7 +9,7 @@ public class TripBean {
 	private int price;
 	private String category1;
 	private String category2;
-	private BufferedImage img;
+	private String imgSrc;
 	private String departureDate;
 	private String returnDate;	
 	private long tripLength;
@@ -71,14 +70,6 @@ public class TripBean {
 		this.category2 = category2;
 	}
 
-	public BufferedImage getImg() {
-		return img;
-	}
-
-	public void setImg(BufferedImage img) {
-		this.img = img;
-	}
-
 	public String getDepartureDate() {
 		return departureDate;
 	}
@@ -109,6 +100,14 @@ public class TripBean {
 
 	public void setDays(List<DayBean> days) {
 		this.days = days;
+	}
+
+	public String getImgSrc() {
+		return imgSrc;
+	}
+
+	public void setImgSrc(String imgSrc) {
+		this.imgSrc = imgSrc;
 	}
 	
 }
