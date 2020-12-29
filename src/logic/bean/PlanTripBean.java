@@ -26,7 +26,7 @@ public class PlanTripBean {
 	}       
 	
 	public boolean validateLocation() {
-		return (this.location == null || this.location.equals(""));
+		return (!(this.location == null || this.location.equals("")));
 	}
 
 
