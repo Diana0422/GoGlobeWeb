@@ -41,6 +41,10 @@ public class User implements Serializable {
 		this.redeemedPrizes = new ArrayList<Prize>();
 	}
 	
+	public User() {
+		// Empty Constructor
+	}
+
 	public String getName() {
 		return name;
 	}
