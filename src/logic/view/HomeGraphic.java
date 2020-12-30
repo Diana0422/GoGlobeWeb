@@ -36,7 +36,7 @@ public class HomeGraphic {
 		}
 	}
 	
-	public void forwardPlanTrip(ActionEvent event) {
+	public void forwardPlanTrip(java.awt.event.ActionEvent event) {
 
 		try {
 			Stage primaryStage = new Stage();
