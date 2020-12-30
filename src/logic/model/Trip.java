@@ -12,6 +12,7 @@ public class Trip implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	private int id;
+	private boolean shared;
 	private String title;
 	private int price;
 	private TripCategory category1;
@@ -21,6 +22,9 @@ public class Trip implements Serializable {
 	private Date returnDate;	
 	private List<Day> days;	
 	private long tripLength;
+	private String description;
+	private int minAge;
+	private int maxAge;
 	//Meglio lasciare solo id  e List<Days> e incapsulare gli altri attributi in una 
 	//classe associata trip info
 	
@@ -133,4 +137,35 @@ public class Trip implements Serializable {
 		this.imgSrc = imgSrc;
 	}
 
+	public boolean isShared() {
+		return shared;
+	}
+
+	public void setShared(boolean shared) {
+		this.shared = shared;
+	}
+
+	public String getDescription() {
+		return description;
+	}
+
+	public void setDescription(String description) {
+		this.description = description;
+	}
+
+	public int getMinAge() {
+		return minAge;
+	}
+
+	public void setMinAge(int minAge) {
+		this.minAge = minAge;
+	}
+
+	public int getMaxAge() {
+		return maxAge;
+	}
+
+	public void setMaxAge(int maxAge) {
+		this.maxAge = maxAge;
+	}
 }

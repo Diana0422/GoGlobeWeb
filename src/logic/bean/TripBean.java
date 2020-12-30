@@ -5,6 +5,7 @@ import java.util.List;
 public class TripBean {
 	
 	private int id;
+	private boolean shared;
 	private String title;
 	private int price;
 	private String category1;
@@ -14,6 +15,9 @@ public class TripBean {
 	private String returnDate;	
 	private long tripLength;
 	private List<DayBean> days;
+	private String description;
+	private String minAge;
+	private String maxAge;
 	
 	
 	public void addActivity(int day, ActivityBean activity) {
@@ -109,5 +113,38 @@ public class TripBean {
 	public void setImgSrc(String imgSrc) {
 		this.imgSrc = imgSrc;
 	}
+
+	public boolean isShared() {
+		return shared;
+	}
+
+	public void setShared(boolean shared) {
+		this.shared = shared;
+	}
+
+	public String getMinAge() {
+		return minAge;
+	}
+
+	public void setMinAge(String minAge) {
+		this.minAge = minAge;
+	}
+
+	public String getMaxAge() {
+		return maxAge;
+	}
+
+	public void setMaxAge(String maxAge) {
+		this.maxAge = maxAge;
+	}
+
+	public String getDescription() {
+		return description;
+	}
+
+	public void setDescription(String description) {
+		this.description = description;
+	}
+	
 	
 }
