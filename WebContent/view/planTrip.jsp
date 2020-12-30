@@ -61,6 +61,10 @@
             	
             	<button type="submit" name="save-trip-btn" class="btn btn-primary btn-lg btn-block">Save Trip</button>
             	
+            	<div class="separator"> OR </div>
+            	
+            	<button type="submit" name="share-trip-btn" class="btn btn-primary btn-lg btn-block">Share Trip</button>
+            	
 <% 
 			if (planTripBean.getTripDays() != null){
 				int i = 0;
@@ -89,7 +93,8 @@ if (request.getParameter("daybtn") != null){
             
             <div class="day" id="day">
 	            <h1 id="trip-title"><%= planTripBean.getTripName() %></h1>
-	             
+	           
+	           <!--  IF SAVE TRIP IS CLICKED -->  
 <%
 				if (request.getParameter("save-trip-btn") != null){
 					
@@ -98,6 +103,22 @@ if (request.getParameter("daybtn") != null){
 						planTripBean.saveTrip();
 %>
 						<jsp:forward page="home.jsp"/>
+<% 
+					}else{
+%>
+						<!-- VALIDATE TRIP ERROR -->
+						<p style="color: red">ERRORE</p>	
+<%				
+					}				
+				}
+%>
+			<!--  IF SHARE TRIP IS CLICKED -->
+<%
+				if (request.getParameter("share-trip-btn") != null){
+					
+					if (planTripBean.validateTrip()){
+%>
+						<jsp:forward page="shareTrip.jsp"/>
 <% 
 					}else{
 %>

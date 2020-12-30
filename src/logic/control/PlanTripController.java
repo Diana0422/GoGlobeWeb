@@ -64,9 +64,15 @@ public class PlanTripController {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 			return null;
-		}
-		
-			
+		}			
+	}
+	
+	public TripBean setSharingTripPreferences(TripBean tripBean, String minAge, String maxAge, String description) {
+		tripBean.setShared(true);
+		tripBean.setDescription(description);
+		tripBean.setMinAge(minAge);
+		tripBean.setMaxAge(maxAge);	
+		return tripBean;
 	}
 	
 	public long calculateTripLength(Date depDate, Date retDate) {
@@ -116,8 +122,16 @@ public class PlanTripController {
 		//Converting and setting Days list (and activities)
 		trip.setDays(ConversionController.getInstance().convertDayBeanList(tripBean.getDays()));	
 		System.out.println("Trip Days: "+trip.getDays());
+		
+		if (tripBean.isShared()) {
+			trip.setShared(true);
+			trip.setDescription(tripBean.getDescription());
+			trip.setMinAge(Integer.parseInt(tripBean.getMinAge()));
+			trip.setMaxAge(Integer.parseInt(tripBean.getMaxAge()));
+		}
 
 		return PersistenceController.getInstance().saveTripOnFile(trip);
+		
 	}
 
 	

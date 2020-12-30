@@ -18,19 +18,61 @@ public class PlanTripBean {
 	private String category2;
 	private String errorMsg;
 	private String location;
+	private String tripDescription;
+	private String maxAge;
+	private String minAge;
+	private boolean shared;
 	private int planningDay = 0;
-	
-	
+
 	public PlanTripBean(){
 		//Bean classes are supposed to have empty constructors
-	}       
+	}   
 	
+	//Validates all the fields in the share trip view
+	public boolean validateSharingPref() {
+		if (this.tripDescription == null || this.tripDescription.equals("")) {
+			this.setErrorMsg("Error on trip description.");
+			return false;
+		}
+			
+	
+		try {
+			int min = Integer.parseInt(this.minAge);
+			int max = Integer.parseInt(this.maxAge);
+			if (min > max) {
+				this.setErrorMsg("Minimum age must be lesser than maximum age.");
+				return  false;
+			}
+		}catch (NumberFormatException e) {
+			return false;
+		}
+		
+		if (this.minAge == null || this.minAge.equals("")) {
+			this.setErrorMsg("Error on minimum age.");
+			return false;
+		}
+		
+		if (this.maxAge == null || this.maxAge.equals("")) {
+			this.setErrorMsg("Error on maximum age.");
+			return false;
+		}
+		
+		
+	
+		System.out.println("SHARE FORM INFO: ");
+		System.out.println("trip description: " + this.tripDescription);
+		System.out.println("min age: " + this.minAge);
+		System.out.println("max age: " + this.maxAge);
+		return true;
+	}
+	
+	
+	//Validates location string in the Plan trip view
 	public boolean validateLocation() {
 		return (!(this.location == null || this.location.equals("")));
 	}
 
-
-
+	//Validates the whole trip 
 	public boolean validateTrip() {
 		return this.tripBean.validateTrip();
 	}
@@ -125,21 +167,122 @@ public class PlanTripBean {
 		
 		this.setTripBean(PlanTripController.getInstance().setPreferencesBean(this.tripName, departureDate, returnDate, category1, category2));
 
-		System.out.println("RIASSUNTO DEL VIAGGIO:\n");
-		System.out.println("titolo: " + this.tripBean.getTitle()+ "\n");
-		System.out.println("lunghezza: " + this.tripBean.getTripLength() + "giorni\n");
-		System.out.println("partenza: "+this.tripBean.getDepartureDate());
-		System.out.println("arrivo: "+this.tripBean.getReturnDate());
-		System.out.println("categoria1: "+this.tripBean.getCategory1());
-		System.out.println("categoria2: "+this.tripBean.getCategory2());
-		for (int i = 0; i < this.tripBean.getTripLength(); i++) {
-			System.out.println("Giorno 1:" + this.tripBean.getDays().get(i).getActivities().size() + "attività\n");
+//		System.out.println("RIASSUNTO DEL VIAGGIO:\n");
+//		System.out.println("titolo: " + this.tripBean.getTitle()+ "\n");
+//		System.out.println("lunghezza: " + this.tripBean.getTripLength() + "giorni\n");
+//		System.out.println("partenza: "+this.tripBean.getDepartureDate());
+//		System.out.println("arrivo: "+this.tripBean.getReturnDate());
+//		System.out.println("categoria1: "+this.tripBean.getCategory1());
+//		System.out.println("categoria2: "+this.tripBean.getCategory2());
+//		for (int i = 0; i < this.tripBean.getTripLength(); i++) {
+//			System.out.println("Giorno 1:" + this.tripBean.getDays().get(i).getActivities().size() + "attività\n");
+//
+//		}
+	}
+	
+	public void setSharingPreferences() {
+		this.setTripBean(PlanTripController.getInstance().setSharingTripPreferences(this.tripBean, this.minAge, this.maxAge, this.tripDescription));
+	}
+	
+	public void saveLocation() {
+		System.out.println("SAVING LOCATION: " + this.location);
+		this.tripBean.getDays().get(planningDay).setLocation(location);
+	}
+	
+	//Checks if the day has a location 
+	public boolean checkDay() {
+		String locationCheck = tripBean.getDays().get(planningDay).getLocation();
+		System.out.println("LOCATION CHECK: " + locationCheck);
+		return (locationCheck == null || locationCheck.equals(""));
+	}	
+	
+	//Gets the location for the current planning day
+	public String getDayLocation() {
+		return this.tripBean.getDays().get(planningDay).getLocation();
+	}
+	
+	//GUI CONTROLLER
+	public List<DayBean> getTripDays() {
+		return this.tripBean.getDays();
+	}
 
-		}
+	//GUI CONTROLLER
+	public int getActivitiesNum() {
+		 return this.tripBean.getDays().get(planningDay).getActivities().size();
 	}
 	
 	
+	public void addActivity(ActivityBean activityBean) {
+		PlanTripController.getInstance().addActivity(this.tripBean, planningDay, activityBean);
+	}
+	
+	//GUI CONTROLLER
+	public String displayActivityTime(int activityNum) {
+		return this.getTripDays().get(planningDay).getActivities().get(activityNum).getTime();
+	}
+	
+	//GUI CONTROLLER
+	public String displayActivityTitle(int activityNum) {
+		return this.getTripDays().get(planningDay).getActivities().get(activityNum).getTitle();
+	}
+	
+	//GUI CONTROLLER
+	public String displayActivityDescription(int activityNum) {
+		return this.getTripDays().get(planningDay).getActivities().get(activityNum).getDescription();
+	}
+	
+	public boolean saveTrip() {
+		return PlanTripController.getInstance().saveTrip(this.tripBean);
+	}
 
+	public TripBean getTripBean() {
+		return tripBean;
+	}
+
+	public void setTripBean(TripBean tripBean) {
+		this.tripBean = tripBean;
+	}
+	
+	public String getLocation() {
+		return location;
+	}
+
+	public void setLocation(String location) {
+		this.location = location;
+	}
+	
+	public String getTripDescription() {
+		return tripDescription;
+	}
+
+	public void setTripDescription(String tripDescription) {
+		this.tripDescription = tripDescription;
+	}
+
+	public String getMaxAge() {
+		return maxAge;
+	}
+
+	public void setMaxAge(String maxAge) {
+		this.maxAge = maxAge;
+	}
+
+	public String getMinAge() {
+		return minAge;
+	}
+
+	public void setMinAge(String minAge) {
+		this.minAge = minAge;
+	}	
+	
+	public int getPlanningDay() {
+		return planningDay;
+	}
+
+	public void setPlanningDay(int planningDay) {
+		this.planningDay = planningDay;
+	}
+	
 	public String getTripName() {
 		return tripName;
 	}
@@ -188,78 +331,11 @@ public class PlanTripBean {
 		this.errorMsg = errorMsg;
 	}
 	
-	//GUI CONTROLLER
-	public List<DayBean> getTripDays() {
-		return this.tripBean.getDays();
+	public boolean isShared() {
+		return shared;
 	}
 
-	public int getPlanningDay() {
-		return planningDay;
-	}
-
-	public void setPlanningDay(int planningDay) {
-		this.planningDay = planningDay;
-	}
-	
-	//GUI CONTROLLER
-	public int getActivitiesNum() {
-		 return this.tripBean.getDays().get(planningDay).getActivities().size();
-	}
-	
-	
-	public void addActivity(ActivityBean activityBean) {
-		PlanTripController.getInstance().addActivity(this.tripBean, planningDay, activityBean);
-	}
-	
-	//GUI CONTROLLER
-	public String displayActivityTime(int activityNum) {
-		return this.getTripDays().get(planningDay).getActivities().get(activityNum).getTime();
-	}
-	
-	//GUI CONTROLLER
-	public String displayActivityTitle(int activityNum) {
-		return this.getTripDays().get(planningDay).getActivities().get(activityNum).getTitle();
-	}
-	
-	//GUI CONTROLLER
-	public String displayActivityDescription(int activityNum) {
-		return this.getTripDays().get(planningDay).getActivities().get(activityNum).getDescription();
-	}
-	
-	public boolean saveTrip() {
-		return PlanTripController.getInstance().saveTrip(this.tripBean);
-	}
-
-	public TripBean getTripBean() {
-		return tripBean;
-	}
-
-	public void setTripBean(TripBean tripBean) {
-		this.tripBean = tripBean;
-	}
-	
-	public String getLocation() {
-		return location;
-	}
-
-	public void setLocation(String location) {
-		this.location = location;
-	}
-	
-	
-	
-	public void saveLocation() {
-		System.out.println("SAVING LOCATION: " + this.location);
-		this.tripBean.getDays().get(planningDay).setLocation(location);
-	}
-	
-	public boolean checkDay() {
-		String locationCheck = tripBean.getDays().get(planningDay).getLocation();
-		System.out.println("LOCATION CHECK: " + locationCheck);
-		return (locationCheck == null || locationCheck.equals(""));
-	}	
-	
-	public String getDayLocation() {
-		return this.tripBean.getDays().get(planningDay).getLocation();
+	public void setShared(boolean shared) {
+		this.shared = shared;
 	}
 }
