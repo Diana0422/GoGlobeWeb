@@ -7,22 +7,12 @@
 <?import javafx.scene.control.Tab?>
 <?import javafx.scene.control.TabPane?>
 <?import javafx.scene.layout.AnchorPane?>
-<?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
 <AnchorPane prefHeight="600.0" prefWidth="1024.0" stylesheets="@application.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.ManageRequestGraphicControl">
    <children>
-      <Pane id="navbar" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="70.0" prefWidth="1024.0">
-         <children>
-            <Label id="logo" layoutX="39.0" layoutY="18.0" text="GoGlobe">
-               <font>
-                  <Font size="24.0" />
-               </font>
-            </Label>
-         </children>
-      </Pane>
-      <Label layoutX="14.0" layoutY="104.0" prefHeight="35.0" prefWidth="286.0" text="Manage Requests">
+      <Label layoutY="61.0" prefHeight="35.0" prefWidth="286.0" text="Manage Requests">
          <font>
             <Font name="System Bold" size="21.0" />
          </font>
@@ -30,7 +20,7 @@
             <Insets left="30.0" />
          </padding>
       </Label>
-      <TabPane id="tab-pane" layoutY="165.0" prefHeight="435.0" prefWidth="1024.0" tabClosingPolicy="UNAVAILABLE">
+      <TabPane id="tab-pane" layoutY="152.0" prefHeight="448.0" prefWidth="1024.0" tabClosingPolicy="UNAVAILABLE">
         <tabs>
           <Tab id="tab" text="Incoming Requests">
             <content>

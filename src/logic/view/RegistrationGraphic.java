@@ -6,11 +6,9 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
-import javafx.stage.Stage;
 import logic.control.RegistrationController;
 
 public class RegistrationGraphic {
@@ -45,20 +43,16 @@ public class RegistrationGraphic {
 		} else {
 			/* Call the controller to register the user */
 			if (RegistrationController.getInstance().register(email, password, name, surname, birthday)) {
-				Stage primaryStage = new Stage();
+				
 				FXMLLoader loader = new FXMLLoader(getClass().getResource("/logic/view/Home.fxml"));
 				Parent root = loader.load();
-				Scene scene = new Scene(root,700,600);
-				scene.getStylesheets().addAll(getClass().getResource("/logic/view/css/application.css").toExternalForm(), getClass().getResource("/logic/view/css/home.css").toExternalForm());
+				UpperNavbarControl parentCtrl = UpperNavbarControl.getInstance();
+				parentCtrl.addToPane(root);
 				
 				/* Set the label in the home view */
 				String text = "Welcome"+" "+name+" "+surname;
 				HomeGraphic c = loader.getController();
 				c.setLabelText(text);
-				
-				/* Set and show the new scene */
-				primaryStage.setScene(scene);
-				primaryStage.show();
 			} else {
 				lblMessage.setText("User already registered with this email.");
 			}

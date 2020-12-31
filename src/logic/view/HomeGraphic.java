@@ -2,12 +2,12 @@ package logic.view;
 
 import java.io.IOException;
 
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
+import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 
 public class HomeGraphic {
@@ -18,7 +18,9 @@ public class HomeGraphic {
 		lblWelcome.setText(text);
 	}
 	
-	public void forwardJoinTrip(ActionEvent event) {
+	
+	@FXML
+	void forwardJoinTrip(MouseEvent event) {
 		try {
 			Stage primaryStage = new Stage();
 			FXMLLoader loader = new FXMLLoader(getClass().getResource("/logic/view/JoinTrip.fxml"));
@@ -35,9 +37,9 @@ public class HomeGraphic {
 			e1.printStackTrace();
 		}
 	}
-	
-	public void forwardPlanTrip(java.awt.event.ActionEvent event) {
 
+	@FXML
+	void forwardPlanTrip(MouseEvent event) {
 		try {
 			Stage primaryStage = new Stage();
 			FXMLLoader loader = new FXMLLoader(getClass().getResource("/logic/view/JoinTrip.fxml"));

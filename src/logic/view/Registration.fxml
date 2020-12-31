@@ -10,7 +10,7 @@
 <?import javafx.scene.shape.Line?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="550.0" prefWidth="1024.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="logic.view.RegistrationGraphic">
+<AnchorPane id="ui-root" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="550.0" prefWidth="1024.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="logic.view.RegistrationGraphic">
    <children>
       <Pane id="form" layoutX="128.0" layoutY="127.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="315.0" prefWidth="332.0">
          <children>
@@ -47,14 +47,9 @@
             <Font name="System Bold" size="18.0" />
          </font>
       </Label>
-      <Pane id="navbar" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="70.0" prefWidth="1024.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-         <children>
-            <Label id="logo" layoutX="39.0" layoutY="18.0" text="GoGlobe">
-               <font>
-                  <Font size="24.0" />
-               </font>
-            </Label>
-         </children>
-      </Pane>
    </children>
+   <stylesheets>
+      <URL value="@css/application.css" />
+      <URL value="@css/registration.css" />
+   </stylesheets>
 </AnchorPane>
