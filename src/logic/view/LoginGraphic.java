@@ -1,16 +1,10 @@
 package logic.view;
 
-import java.io.IOException;
-
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
-import javafx.stage.Stage;
 import logic.bean.LoginBean;
 
 public class LoginGraphic {
@@ -37,7 +31,6 @@ public class LoginGraphic {
     	System.out.println("PASSWORD: " + pfPassword.getText());
     	if (loginBean.validate()) {
         	UpperNavbarControl.getInstance().loadUI("Home");
-
     	}else {
     		System.out.println("VALIDATE ANDATO MALINO EH");
     	}
