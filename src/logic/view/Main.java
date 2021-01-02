@@ -25,7 +25,10 @@ public class Main extends Application {
 			
 			/* Set the scene */
 			Scene scene = new Scene(root,1024,600);
-			scene.getStylesheets().addAll(getClass().getResource("/logic/view/css/navbar.css").toExternalForm(),getClass().getResource("/logic/view/css/application.css").toExternalForm());
+			scene.getStylesheets().addAll(
+					getClass().getResource("/logic/view/css/navbar.css").toExternalForm(),
+					getClass().getResource("/logic/view/css/login.css").toExternalForm(),
+					getClass().getResource("/logic/view/css/application.css").toExternalForm());
 			primaryStage.setScene(scene);
 			primaryStage.show();
 		} catch(Exception e) {

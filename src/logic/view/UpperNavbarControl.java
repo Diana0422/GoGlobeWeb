@@ -97,6 +97,11 @@ public class UpperNavbarControl implements Initializable {
     void loadRegistration(ActionEvent event) {
     	loadUI("/logic/view/Registration");
     }
+    
+    @FXML 
+    void loadHome(ActionEvent event) {
+    	loadUI("logic/view/Home");
+    }
 
     @FXML
     void loadRequests(ActionEvent event) {
