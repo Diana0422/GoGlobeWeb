@@ -16,7 +16,7 @@
    <top>
       <AnchorPane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
          <children>
-            <AnchorPane id="profile-pane" layoutX="134.0" layoutY="144.0" prefHeight="456.0" prefWidth="1024.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="144.0">
+            <AnchorPane id="profile-pane" layoutX="134.0" layoutY="144.0" prefHeight="456.0" prefWidth="1024.0" style="-fx-background-color: white;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="144.0">
                <children>
                   <TabPane id="tab" layoutX="270.0" layoutY="1.0" prefHeight="455.0" prefWidth="754.0" style="-fx-tab-min-width: 133px;" tabClosingPolicy="UNAVAILABLE">
                     <tabs>
