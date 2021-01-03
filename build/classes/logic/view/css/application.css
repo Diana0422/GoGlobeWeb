@@ -28,6 +28,13 @@
 	-fx-text-fill: white;
 }
 
+#btn:hover {
+	-fx-background-color:rgb(6, 169, 255);
+	background-color:rgb(6, 169, 255);
+	-fx-cursor: hand;
+	cursor: hand;
+}
+
 /* Tab Pane */
 
 #tab-container {

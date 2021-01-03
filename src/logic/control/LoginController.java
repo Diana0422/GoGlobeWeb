@@ -1,6 +1,10 @@
 package logic.control;
 
+import java.util.List;
+
 import logic.bean.LoginBean;
+import logic.dao.UserDAOFile;
+import logic.model.User;
 
 public class LoginController {
 	
@@ -17,20 +21,24 @@ public class LoginController {
 		return INSTANCE;
 	}
 	
-	public LoginBean login(String username, String password){
+	public LoginBean login(String username, String password){ 
+		
 		
 		LoginBean loginBean = new LoginBean();
 		
-		System.out.println(username);
-		System.out.println(password);
-
+		List<User> users = (new UserDAOFile()).getAllUsers();	
 		
-		if (username.equals("lorenzo.tanzi997@gmail.com")  && password.equals("password")){
-			loginBean.setNome("Lorenzo");
-			loginBean.setCognome("Tanzi");
-		}else {
-			loginBean = null;
+		for (int i = 0; i < users.size(); i++) {
+			User tempUser = users.get(i);
+			if (tempUser.getEmail().equals(username) && tempUser.getPassword().equals(password)){
+				
+					loginBean.setNome(tempUser.getName());
+					loginBean.setCognome(tempUser.getSurname());
+					return loginBean;			
+			}	
+			
 		}
+		loginBean = null;
 		return loginBean;
 	}	
 }

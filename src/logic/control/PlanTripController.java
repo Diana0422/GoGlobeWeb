@@ -134,8 +134,7 @@ public class PlanTripController {
 			// Test if correct
 			days.get(i).getDate();
 		}
-		trip.setDays(ConversionController.getInstance().convertDayBeanList(tripBean.getDays()));	
-		Logger.getGlobal().info("Trip Days: "+trip.getDays());
+		trip.setDays(days); 
 		
 		if (tripBean.isShared()) {
 			trip.setShared(true);
