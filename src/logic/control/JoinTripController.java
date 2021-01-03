@@ -1,67 +1,37 @@
 package logic.control;
-
-import java.io.File;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Logger;
 
 import logic.bean.TripBean;
+import logic.dao.TripDAO;
+import logic.dao.TripDAOFile;
 import logic.model.Trip;
  
 public class JoinTripController {
 	
-	private static JoinTripController INSTANCE = null;
+	private static JoinTripController instance = null;
 	
 	private JoinTripController() {}
 	
 	public static JoinTripController getInstance() {
-		if (INSTANCE == null) {
-			INSTANCE = new JoinTripController();
+		if (instance == null) {
+			instance = new JoinTripController();
 		}
 		
-		return INSTANCE;
+		return instance;
 	}
 
 	public List<TripBean> searchTrips(String value) {
-		System.out.println("Search trips by value started.\n");
-		System.out.println("Val: "+ value);
-		String projectPath = System.getProperty("user.dir");
-		System.out.println(projectPath);
-		String filePath = projectPath + "/trips.out";
-		File f = new File(filePath);
+		String logStr = "Search trips by value started.\n";
+		Logger.getGlobal().info(logStr);
+		TripDAO dao = new TripDAOFile();
+		List<Trip> trips = dao.getAllTrips();
 		
-		List<Trip> trips = null;
-		trips = PersistenceController.getInstance().readTripFromFile(f);
-		System.out.println("Trips: "+trips);
+		/* Convert List<Trip> into List<TripBean> */
+		List<TripBean> list = ConversionController.getInstance().convertTripList(trips);
 		
-		/* Convert List<Trip> into List<TripBean> -- > DA METTERE DENTRO CONVERSION CONTROLLER*/
-		List<TripBean> list = new ArrayList<>();
-		for (int i=0; i<trips.size(); i++) {
-			Trip t = trips.get(i);
-			TripBean bean = new TripBean();
-			bean.setId(t.getId());
-			bean.setTitle(t.getTitle());
-			bean.setPrice(t.getPrice());
-			bean.setCategory1(t.getCategory1().toString());
-			bean.setCategory2(t.getCategory2().toString());
-			bean.setImgSrc(t.getImgSrc());
-			
-			// Converting Dates to String
-			DateFormat formatter = new SimpleDateFormat("dd/mm/yyyy");
-			String depDateStr = formatter.format(t.getDepartureDate());
-			String retDateStr = formatter.format(t.getReturnDate());
-			bean.setDepartureDate(depDateStr);
-			bean.setReturnDate(retDateStr);
-			bean.setTripLength(t.getTripLength());
-			
-			// Adding days and activities to the trip bean
-			System.out.println("Trip days: "+t.getDays());
-			bean.setDays(ConversionController.getInstance().convertDayList(t.getDays()));
-			list.add(bean);
-		}
-		
-		System.out.println("Trip Beans: "+list);
+		logStr = "Trip Beans: "+list;
+		Logger.getGlobal().info(logStr);
 		return list;
 	}
 }

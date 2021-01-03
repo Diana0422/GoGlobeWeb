@@ -34,7 +34,7 @@ public class Trip implements Serializable {
 		this.days = new ArrayList<>();
 	}
 	
-	public Trip(int id, String title, String imgFilename, int price, String cat1, String cat2, String departureDate, String returnDate) {
+	public Trip(int id, String title, int price, String cat1, String cat2, String departureDate, String returnDate) {
 		this.id = id;
 		this.title = title;
 		this.price = price;
@@ -55,7 +55,6 @@ public class Trip implements Serializable {
 	
 	public void addActivity(int day, Activity activity) {
 		this.getDays().get(day).getActivities().add(activity);
-		System.out.println("New activity added to day" + day + "\n");
 	}
 	
 	public String getTitle() {

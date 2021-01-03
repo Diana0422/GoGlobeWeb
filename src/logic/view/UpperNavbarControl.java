@@ -105,12 +105,12 @@ public class UpperNavbarControl implements Initializable {
 
     @FXML
     void loadRequests(ActionEvent event) {
-
+    	//TODO
     }
 
     @FXML
     void loadSettings(ActionEvent event) {
-
+    	//TODO
     }
     
     private UpperNavbarControl() {
@@ -141,7 +141,7 @@ public class UpperNavbarControl implements Initializable {
 
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
-		
+		//empty
 	}
 
 }

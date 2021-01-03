@@ -24,7 +24,6 @@ public class ManageRequestGraphic implements Initializable {
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
 		List<Request> inc = new ArrayList<>(incomingRequests());
-		System.out.println(inc);
 		
 		try {
 			for (int i=0; i<inc.size(); i++) {

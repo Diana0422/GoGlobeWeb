@@ -52,10 +52,6 @@ public class ProfileGraphic implements Initializable {
 
     @FXML
     private ImageView ivProfilePic;
-    
-    private List<TripBean> myTripBeans;
-    private List<TripBean> upcomingTripBeans;
-    private List<TripBean> previousTripBeans;
 
 
     
@@ -98,16 +94,12 @@ public class ProfileGraphic implements Initializable {
 			e.printStackTrace();
 		}
 	}
-	
-//	private boolean isFiltered(TripBean bean, String searchVal) {	// Da aggiungere a interfaccia di filtri
-//		return (bean.getTitle().toLowerCase().contains(searchVal) || bean.getCategory1().contains(searchVal) || bean.getCategory2().contains(searchVal));
-//	}
 
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
-		myTripBeans = ProfileController.getInstance().getMyTrips();
-		upcomingTripBeans = ProfileController.getInstance().getUpcomingTrips();
-		previousTripBeans = ProfileController.getInstance().getRecentTrips();
+		List<TripBean> myTripBeans = ProfileController.getInstance().getMyTrips();
+		List<TripBean> upcomingTripBeans = ProfileController.getInstance().getUpcomingTrips();
+		List<TripBean> previousTripBeans = ProfileController.getInstance().getRecentTrips();
 		loadGrid(upcomingGrid, upcomingTripBeans);
 		loadGrid(myTripsGrid, myTripBeans);
 		loadGrid(previousGrid, previousTripBeans);

@@ -22,7 +22,6 @@ public class TripBean {
 	
 	public void addActivity(int day, ActivityBean activity) {
 		this.getDays().get(day).getActivities().add(activity);
-		System.out.println("New activity added to day" + day + "\n");
 	}
 	
 	public boolean validateTrip() {

@@ -1,5 +1,7 @@
 package logic.bean;
 
+import java.util.logging.Logger;
+
 public class ActivityBean {
 	
 	private String time;
@@ -42,9 +44,12 @@ public class ActivityBean {
 	}
 	
 	public boolean validateActivity() {
-		System.out.println("TITLE CHECK:" + validateTitle(this.title));
-		System.out.println("TIME CHECK:" + validateTime(this.time));
-		System.out.println("DESCRIPTION CHECK:" + validateDescription(this.description));
+		String infoStr = "TITLE CHECK:" + validateTitle(this.title);
+		Logger.getGlobal().info(infoStr);
+		infoStr = "TIME CHECK:" + validateTime(this.time);
+		Logger.getGlobal().info(infoStr);
+		infoStr = "DESCRIPTION CHECK:" + validateDescription(this.description);
+		Logger.getGlobal().info(infoStr);
 		
 		return (validateTitle(this.title) && validateTime(this.time) && validateDescription(this.description));
 	}

@@ -108,7 +108,6 @@ public class ConversionController {
 			bean.setTripLength(t.getTripLength());
 			
 			// Adding days and activities to the trip bean
-			System.out.println("Trip days: "+t.getDays());
 			bean.setDays(ConversionController.getInstance().convertDayList(t.getDays()));
 			tripBeans.add(bean);
 		}
@@ -117,11 +116,11 @@ public class ConversionController {
 	}
 	
 	public TripCategory parseTripCategory(String category) {
-		if (category.equals("Fun")) return TripCategory.Fun;	
-		if (category.equals("Culture")) return TripCategory.Culture;	
-		if (category.equals("Relax")) return TripCategory.Relax;
-		if (category.equals("Adventure")) return TripCategory.Adventure;
+		if (category.equals("Fun")) return TripCategory.FUN;	
+		if (category.equals("Culture")) return TripCategory.CULTURE;	
+		if (category.equals("Relax")) return TripCategory.RELAX;
+		if (category.equals("Adventure")) return TripCategory.ADVENTURE;
 			
-		return TripCategory.None;
+		return TripCategory.NONE;
 	}	
 }

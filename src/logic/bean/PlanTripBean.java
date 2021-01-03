@@ -5,6 +5,8 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
+import java.util.logging.Logger;
+
 import logic.control.PlanTripController;
 
 public class PlanTripBean {
@@ -58,11 +60,8 @@ public class PlanTripBean {
 		}
 		
 		
-	
-		System.out.println("SHARE FORM INFO: ");
-		System.out.println("trip description: " + this.tripDescription);
-		System.out.println("min age: " + this.minAge);
-		System.out.println("max age: " + this.maxAge);
+		String logStr = "SHARE FORM INFO: "+"trip description: " + this.tripDescription+" min age: " + this.minAge+" max age: " + this.maxAge;
+		Logger.getGlobal().info(logStr);
 		return true;
 	}
 	
@@ -167,17 +166,11 @@ public class PlanTripBean {
 		
 		this.setTripBean(PlanTripController.getInstance().setPreferencesBean(this.tripName, departureDate, returnDate, category1, category2));
 
-//		System.out.println("RIASSUNTO DEL VIAGGIO:\n");
-//		System.out.println("titolo: " + this.tripBean.getTitle()+ "\n");
-//		System.out.println("lunghezza: " + this.tripBean.getTripLength() + "giorni\n");
-//		System.out.println("partenza: "+this.tripBean.getDepartureDate());
-//		System.out.println("arrivo: "+this.tripBean.getReturnDate());
-//		System.out.println("categoria1: "+this.tripBean.getCategory1());
-//		System.out.println("categoria2: "+this.tripBean.getCategory2());
-//		for (int i = 0; i < this.tripBean.getTripLength(); i++) {
-//			System.out.println("Giorno 1:" + this.tripBean.getDays().get(i).getActivities().size() + "attività\n");
-//
-//		}
+		String logStr = "RIASSUNTO DEL VIAGGIO:\n"+"titolo: " + this.tripBean.getTitle()+ "\n"+"lunghezza: " + this.tripBean.getTripLength() + "giorni\n"+"partenza: "+this.tripBean.getDepartureDate()+"\n"+"arrivo: "+this.tripBean.getReturnDate()+"\n"+"categoria1: "+this.tripBean.getCategory1()+"\n"+"categoria2: "+this.tripBean.getCategory2();
+		for (int i = 0; i < this.tripBean.getTripLength(); i++) {
+			logStr = logStr.concat("Giorno 1:" + this.tripBean.getDays().get(i).getActivities().size() + "attività\n");
+		}
+		Logger.getGlobal().info(logStr);
 	}
 	
 	public void setSharingPreferences() {
@@ -185,14 +178,16 @@ public class PlanTripBean {
 	}
 	
 	public void saveLocation() {
-		System.out.println("SAVING LOCATION: " + this.location);
+		String logStr = "SAVING LOCATION: " + this.location;
+		Logger.getGlobal().info(logStr);
 		this.tripBean.getDays().get(planningDay).setLocation(location);
 	}
 	
 	//Checks if the day has a location 
 	public boolean checkDay() {
 		String locationCheck = tripBean.getDays().get(planningDay).getLocation();
-		System.out.println("LOCATION CHECK: " + locationCheck);
+		String logStr = "LOCATION CHECK: " + locationCheck;
+		Logger.getGlobal().info(logStr);
 		return (locationCheck == null || locationCheck.equals(""));
 	}	
 	

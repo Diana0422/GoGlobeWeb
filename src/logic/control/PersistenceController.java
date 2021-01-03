@@ -25,6 +25,7 @@ public class PersistenceController {
     private static String pass = "adminpass";
     private static String dbUrl = "jdbc:mysql://localhost:3306/goglobedb";
     private static String driverClassName = "com.mysql.jdbc.Driver";
+    private static final String PROJ_PATH = "user.dir";
 	
     private static Connection connection = null;
 	private static PersistenceController instance = null;
@@ -59,7 +60,7 @@ public class PersistenceController {
 	}
 	
 	public File getBackendFile(ModelClassType type) {
-		String projectPath = System.getProperty("user.dir");
+		String projectPath = System.getProperty(PROJ_PATH);
 		Logger.getGlobal().info(projectPath);
 		
 		switch(type) {
@@ -87,7 +88,7 @@ public class PersistenceController {
 				oos.writeObject(object);
 			} else if (type.equals("trip")) {
 				List<Trip> object = new ArrayList<>();
-				Trip trip = new Trip(0,"", "", 0, "None", "None", "00/00/0000", "00/00/0000");
+				Trip trip = new Trip(0,"", 0, "None", "None", "00/00/0000", "00/00/0000");
 				object.add(trip);
 				oos.writeObject(object);
 			}
@@ -113,7 +114,7 @@ public class PersistenceController {
 	
 	public boolean saveTripOnFile(Trip trip) {
 		// Saves a trip on a back-end file
-		String projectPath = System.getProperty("user.dir");
+		String projectPath = System.getProperty(PROJ_PATH);
 		System.out.println(projectPath);
 		String filePath = projectPath + "/trips.out";
 		File f = new File(filePath);
@@ -170,7 +171,7 @@ public class PersistenceController {
 	public boolean saveUserOnFile(User user) {
 		// Saves an instance of a user in file
 		
-		String projectPath = System.getProperty("user.dir");
+		String projectPath = System.getProperty(PROJ_PATH);
 		System.out.println(projectPath);
 		String filePath = projectPath + "/users.out";
 		

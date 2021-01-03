@@ -9,7 +9,6 @@ public class SessionBean {
 	
 	public SessionBean() {
 		// empty constructor
-		System.out.println("initialized session bean");
 	}
 
 	public User getLoggedUser() {

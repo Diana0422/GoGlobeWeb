@@ -149,12 +149,12 @@ public class PlanTripController {
 
 	
 	private TripCategory parseTripCategory(String category) {
-		if (category.equals("Fun")) return TripCategory.Fun;	
-		if (category.equals("Culture")) return TripCategory.Culture;	
-		if (category.equals("Relax")) return TripCategory.Relax;
-		if (category.equals("Adventure")) return TripCategory.Adventure;
+		if (category.equals("Fun")) return TripCategory.FUN;	
+		if (category.equals("Culture")) return TripCategory.CULTURE;	
+		if (category.equals("Relax")) return TripCategory.RELAX;
+		if (category.equals("Adventure")) return TripCategory.ADVENTURE;
 			
-		return TripCategory.None;
+		return TripCategory.NONE;
 	}
 }
 
