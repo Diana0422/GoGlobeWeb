@@ -8,22 +8,24 @@
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
-<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="1024.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="logic.view.ProfileGraphic">
-   <top>
-      <AnchorPane BorderPane.alignment="CENTER">
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="1024.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="logic.view.ProfileGraphic">
+   <children>
+      <AnchorPane>
          <children>
             <AnchorPane id="profile-pane" layoutX="134.0" layoutY="89.0" prefHeight="511.0" prefWidth="1024.0" style="-fx-background-color: white;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="89.0">
                <children>
                   <TabPane id="tab" layoutX="270.0" layoutY="1.0" prefHeight="455.0" prefWidth="754.0" style="-fx-tab-min-width: 133px;" tabClosingPolicy="UNAVAILABLE">
-                    <tabs>
-                      <Tab text="Bio">
-                        <content>
-                          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                     <tabs>
+                        <Tab text="Bio">
+                           <content>
+                              <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                                  <children>
                                     <Label alignment="TOP_LEFT" prefHeight="422.0" prefWidth="754.0" style="-fx-padding: 15px;" text="THIS IS A GOOD LABEL">
                                        <font>
@@ -32,9 +34,9 @@
                                     </Label>
                                  </children>
                               </AnchorPane>
-                        </content>
-                      </Tab>
-                      <Tab text="Reviews">
+                           </content>
+                        </Tab>
+                        <Tab text="Reviews">
                            <content>
                               <ScrollPane prefHeight="200.0" prefWidth="200.0">
                                  <content>
@@ -42,12 +44,16 @@
                                  </content>
                               </ScrollPane>
                            </content>
-                      </Tab>
+                        </Tab>
                         <Tab text="Upcoming Trips">
                            <content>
                               <ScrollPane prefHeight="200.0" prefWidth="200.0">
                                  <content>
-                                    <VBox fx:id="vbUpcomingTrips" prefHeight="422.0" prefWidth="754.0" />
+                                    <GridPane fx:id="upcomingGrid">
+                                       <rowConstraints>
+                                          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                       </rowConstraints>
+                                    </GridPane>
                                  </content>
                               </ScrollPane>
                            </content>
@@ -56,7 +62,11 @@
                            <content>
                               <ScrollPane prefHeight="200.0" prefWidth="200.0">
                                  <content>
-                                    <VBox fx:id="vbPreviousTrips" prefHeight="422.0" prefWidth="754.0" />
+                                    <GridPane fx:id="previousGrid">
+                                       <rowConstraints>
+                                          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                       </rowConstraints>
+                                    </GridPane>
                                  </content>
                               </ScrollPane>
                            </content>
@@ -65,12 +75,16 @@
                            <content>
                               <ScrollPane prefHeight="200.0" prefWidth="200.0">
                                  <content>
-                                    <VBox fx:id="vbMyTrips" prefHeight="422.0" prefWidth="754.0" />
+                                    <GridPane fx:id="myTripsGrid">
+                                       <rowConstraints>
+                                          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                       </rowConstraints>
+                                    </GridPane>
                                  </content>
                               </ScrollPane>
                            </content>
                         </Tab>
-                    </tabs>
+                     </tabs>
                   </TabPane>
                   <Separator layoutX="264.0" layoutY="3.0" orientation="VERTICAL" prefHeight="450.0" prefWidth="5.0" />
                   <Text fx:id="txtNameSurname" layoutX="19.0" layoutY="106.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Nome  Cognome" wrappingWidth="174.21630859375">
@@ -91,11 +105,13 @@
                   <ImageView id="ivAdventureAttitude" fx:id="ivAdventureAttitude" fitHeight="50.0" fitWidth="50.0" layoutX="134.0" layoutY="186.0" pickOnBounds="true" preserveRatio="true">
                      <image>
                         <Image url="@images/icons8-mountain-50.png" />
-                     </image></ImageView>
+                     </image>
+                  </ImageView>
                   <ImageView id="ivRelaxAttitude" fx:id="ivRelaxAttitude" fitHeight="50.0" fitWidth="50.0" layoutX="134.0" layoutY="243.0" pickOnBounds="true" preserveRatio="true">
                      <image>
                         <Image url="@images/icons8-holiday-50.png" />
-                     </image></ImageView>
+                     </image>
+                  </ImageView>
                   <Text layoutX="14.0" layoutY="326.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Traveler rating:">
                      <font>
                         <Font size="18.0" />
@@ -109,15 +125,17 @@
                   <ImageView id="ivFunAttitude" fx:id="ivFunAttitude" fitHeight="50.0" fitWidth="50.0" layoutX="17.0" layoutY="186.0" pickOnBounds="true" preserveRatio="true">
                      <image>
                         <Image url="@images/icons8-cocktail-50.png" />
-                     </image></ImageView>
+                     </image>
+                  </ImageView>
                   <ImageView id="ivCultureAttitude" fx:id="ivCultureAttitude" fitHeight="50.0" fitWidth="50.0" layoutX="17.0" layoutY="243.0" pickOnBounds="true" preserveRatio="true">
                      <image>
                         <Image url="@images/icons8-greek-pillar-capital-50.png" />
-                     </image></ImageView>
+                     </image>
+                  </ImageView>
                </children>
             </AnchorPane>
             <ImageView id="ivProflePicture" fx:id="ivProfilePic" fitHeight="134.0" fitWidth="138.0" layoutX="69.0" layoutY="22.0" pickOnBounds="true" preserveRatio="true" />
          </children>
       </AnchorPane>
-   </top>
-</BorderPane>
+   </children>
+</AnchorPane>
