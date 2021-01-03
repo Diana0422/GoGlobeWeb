@@ -3,6 +3,7 @@
     
 <!-- declaration and initialization of a register bean -->
 <jsp:useBean id="registerBean" scope="request" class="logic.bean.RegistrationBean" />
+<jsp:useBean id="sessionBean" scope="session" class="logic.bean.SessionBean"/>
 
 <!-- map attributes of the bean from the form fields -->
 <jsp:setProperty name="registerBean" property="*"/>
@@ -55,6 +56,8 @@
                 <%
     				if (request.getParameter("signin") != null) {
         					if (registerBean.validate()) {
+        						sessionBean.setName(registerBean.getName());
+        						sessionBean.setSurname(registerBean.getSurname());
 							%>
         						<jsp:forward page="home.jsp"/>
 							<%

@@ -1,4 +1,6 @@
 package logic.bean;
+import java.util.logging.Logger;
+
 import logic.control.RegistrationController;
 
 public class RegistrationBean {
@@ -11,6 +13,7 @@ public class RegistrationBean {
 	
 	//RegistrationBean Constructor
 	public RegistrationBean() {
+		// empty constructor
 	}
 	
 	public String getName() {
@@ -54,7 +57,8 @@ public class RegistrationBean {
 	}
 	
 	public boolean validate() {
-		System.out.println(email+" "+name+" "+surname+" "+password+" "+passwordconf+" "+birthday+" ");
+		String infoStr = email+" "+name+" "+surname+" "+password+" "+passwordconf+" "+birthday+" ";
+		Logger.getGlobal().info(infoStr);
 		
 		// registration values control
 		if (name== null || surname==null || email == null || password == null || birthday == null) {

@@ -5,9 +5,15 @@
 <!--  id è il nome della variabile che andiamo ad istanziare -->
 
 <jsp:useBean id="loginBean" scope="request" class="logic.bean.LoginBean"/>
+<jsp:useBean id="sessionBean" scope="session" class="logic.bean.SessionBean"/>
 
 <!-- Mappare gli attributi di un oggetto sui campi della form -->
 <jsp:setProperty name="loginBean" property="*"/>
+
+<%
+	System.out.println(sessionBean.getName());
+	System.out.println(sessionBean.getSurname());
+%>
 
 <html>
 <head>
@@ -27,6 +33,8 @@
 <%
 	if (request.getParameter("signin") != null){
 		if (loginBean.validate()){
+			sessionBean.setName(loginBean.getNome());
+			sessionBean.setSurname(loginBean.getCognome());
 %>
 	<jsp:forward page="home.jsp"/>
 <%	

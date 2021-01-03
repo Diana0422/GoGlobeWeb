@@ -4,23 +4,22 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-
 import logic.dao.UserDAO;
 import logic.dao.UserDAOFile;
 import logic.model.User;
 
 public class RegistrationController {
 	
-	private static RegistrationController INSTANCE = null;
+	private static RegistrationController instance = null;
 	
 	private RegistrationController() {}
 	
 	public static RegistrationController getInstance() {
-		if (INSTANCE == null) {
-			INSTANCE = new RegistrationController();
+		if (instance == null) {
+			instance = new RegistrationController();
 		}
 		
-		return INSTANCE;
+		return instance;
 	}
 	
 	public synchronized boolean register(String email, String password, String name, String surname, String birthday) {
@@ -31,7 +30,11 @@ public class RegistrationController {
 			birth = formatter.parse(birthday);
 			user = new User(name, surname, birth, email, password);
 			UserDAO dao = new UserDAOFile();
-			return dao.saveUser(user);
+			if (dao.getUser(email) == null) {
+				return dao.saveUser(user);
+			} else {
+				return false;
+			}
 		
 		} catch (ParseException e) {
 			// TODO Auto-generated catch block

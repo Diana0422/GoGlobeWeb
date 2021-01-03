@@ -3,6 +3,11 @@
     
 <!-- declaration of a  register bean -->
 <jsp:useBean id="registerBean" scope="request" class="logic.bean.RegistrationBean"/>
+<jsp:useBean id="sessionBean" scope="session" class="logic.bean.SessionBean"/>
+
+<% System.out.println(sessionBean.getName());
+   System.out.println(sessionBean.getSurname());	
+%>
 
 <!DOCTYPE html>
 <html>
@@ -46,7 +51,7 @@
     
     <!-- Welcome tag -->
     <div class="welcome">
-    	<h1>Welcome <jsp:getProperty name="registerBean" property="name"/> <jsp:getProperty property="surname" name="registerBean"/></h1>
+    	<h1>Welcome <jsp:getProperty name="sessionBean" property="name"/> <jsp:getProperty property="surname" name="sessionBean"/></h1>
     </div>
     <!-- get started -->
     <div class="get-started">

@@ -10,6 +10,7 @@ public class LoginBean {
 	protected String cognome;
 	
 	public LoginBean() {
+		//empty constructor
 	}
 	
 	
@@ -44,6 +45,8 @@ public class LoginBean {
 		}
 
 		LoginBean utenteTrovato = LoginController.getInstance().login(username, password);
+		setNome(utenteTrovato.getNome());
+		setCognome(utenteTrovato.getCognome());
 		return utenteTrovato != null;
 		
 	}

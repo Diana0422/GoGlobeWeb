@@ -31,7 +31,7 @@ public class ParticipationController {
 				userIP = IPFinderAdapterFactory.getInstance().createIPFinderAdapter().getCurrentIP();
 				userPos = PositionAdapterFactory.getInstance().createIPLocationAdapter().getIPCurrentPosition(userIP);
 				Logger.getGlobal().info(userPos);
-				if (!userPos.equals(day.getLocation())) {
+				if (userPos.equals(day.getLocation())) {
 					Logger.getGlobal().log(Level.INFO, "VALID PARTICIPATION. You are participating to this trip.");
 					return true;
 				} else {

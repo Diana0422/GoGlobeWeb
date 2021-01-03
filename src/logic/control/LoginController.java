@@ -8,17 +8,17 @@ import logic.model.User;
 
 public class LoginController {
 	
-	private static LoginController INSTANCE;
+	private static LoginController instance;
 	
 	private LoginController(){
 		
 	}
 	
 	public static synchronized LoginController getInstance() {
-		if (INSTANCE == null) {
-			INSTANCE = new LoginController();
+		if (instance == null) {
+			instance = new LoginController();
 		}
-		return INSTANCE;
+		return instance;
 	}
 	
 	public LoginBean login(String username, String password){ 
