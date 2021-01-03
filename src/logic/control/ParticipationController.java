@@ -2,7 +2,11 @@ package logic.control;
 
 import java.util.Date;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
+import logic.dao.TripDAO;
+import logic.dao.TripDAOFile;
 import logic.model.Day;
 import logic.model.Trip;
 import logic.model.factories.IPFinderAdapterFactory;
@@ -10,8 +14,6 @@ import logic.model.factories.PositionAdapterFactory;
 
 public class ParticipationController {
 	
-	private String userIP;
-	private String userPos;
 	private Date today;
 	
 	public ParticipationController() {
@@ -19,38 +21,35 @@ public class ParticipationController {
 	}
 	
 	public boolean checkParticipation(Trip trip) {
-		// TODO dummy 
-		Date demoDate = new Date();
-		
-		Day d = new Day();
-		d.setDate(new Date());
-		d.setLocation("Rome");
-		
-		trip.getDays().add(d);
-		
+		String userIP;
+		String userPos;
 		List<Day> days = trip.getDays();
 		for (Day day: days) {
-			System.out.println(day);
-			if (day.getDate().compareTo(demoDate) == 0) {
-				System.out.println("Here");
+			Logger.getGlobal().info("Date associated: "+day.getDate());
+			Logger.getGlobal().log(Level.SEVERE, "Date for day saved on persistence is null. PLEASE DEBUG.");
+			if (day.getDate().compareTo(today) == 0) {
 				userIP = IPFinderAdapterFactory.getInstance().createIPFinderAdapter().getCurrentIP();
 				userPos = PositionAdapterFactory.getInstance().createIPLocationAdapter().getIPCurrentPosition(userIP);
-				System.out.println(userPos);
+				Logger.getGlobal().info(userPos);
 				if (!userPos.equals(day.getLocation())) {
-					System.out.println("Participation CHECKED. ok");
+					Logger.getGlobal().log(Level.INFO, "VALID PARTICIPATION. You are participating to this trip.");
 					return true;
 				} else {
-					System.out.println("Participation INVALID. no");
+					Logger.getGlobal().log(Level.INFO, "You are not participating to this trip.");
 					return false;
 				}
 			}
 		}
+		
+		Logger.getGlobal().log(Level.SEVERE, "This trip is not happening today.");
 		return false;
 		
 	}
 	
 	public static void main(String [] args) {
-		Trip trip = new Trip();
+		TripDAO dao = new TripDAOFile();
+		Trip trip = dao.getTrip("I sospiri del mio Cuore");
+		
 		ParticipationController c = new ParticipationController();
 		c.checkParticipation(trip);
 	}

@@ -5,6 +5,8 @@ import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import org.json.JSONObject;
 
@@ -24,15 +26,21 @@ public class IPFindImplementation implements IPLocationAPI {
         HttpResponse<String> response2;
 		try {
 			response2 = HttpClient.newHttpClient().send(request2, HttpResponse.BodyHandlers.ofString());
-			
+				
 			System.out.println("\n"+response2.body());
-	    	
-	    	JSONObject ipInfo = new JSONObject(response2.body());
-	    	return ipInfo.getString("city");
-		} catch (IOException | InterruptedException e) {
+		    	
+		    JSONObject ipInfo = new JSONObject(response2.body());
+		    return ipInfo.getString("city");
+		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			Logger.getGlobal().log(Level.WARNING, "Interrupted IP location routine.", e);
+			Thread.currentThread().interrupt();
+			e.printStackTrace();
 		}
+	
 		return null;
 	}
 

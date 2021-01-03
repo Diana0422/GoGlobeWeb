@@ -3,13 +3,16 @@ package logic.control;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
+import java.util.logging.Logger;
 
 import logic.bean.ActivityBean;
 import logic.bean.DayBean;
 import logic.bean.TripBean;
+import logic.model.Day;
 import logic.model.Trip;
 import logic.model.TripCategory;
 
@@ -81,10 +84,10 @@ public class PlanTripController {
 	}
 	
 	public void addActivity(TripBean tripBean, int planningDay, ActivityBean activity ) {
-		System.out.println("NEW ACTIVITY ESSERE COME:");
-		System.out.println("\ntitle: " + activity.getTitle() );
-		System.out.println("\ntime: " + activity.getTime() );
-		System.out.println("\ndescription: " + activity.getDescription() );
+		Logger.getGlobal().info("\nNEW ACTIVITY ESSERE COME:");
+		Logger.getGlobal().info("title: " + activity.getTitle());
+		Logger.getGlobal().info("time: " + activity.getTime());
+		Logger.getGlobal().info("description: " + activity.getDescription());
 
 		ActivityBean newActivity = new ActivityBean();
 		newActivity.setTitle(activity.getTitle());
@@ -103,7 +106,7 @@ public class PlanTripController {
 		trip.setCategory2(parseTripCategory(tripBean.getCategory2()));
 		
 		//Converting dates
-		Date depDate; 
+		Date depDate = null; 
 		Date retDate;
 	
 			try {
@@ -112,16 +115,27 @@ public class PlanTripController {
 				//Setting dates
 				trip.setDepartureDate(depDate);
 				trip.setReturnDate(retDate);
-				System.out.println(trip.getDepartureDate());
-				System.out.println(trip.getReturnDate());
+				Logger.getGlobal().info("departure date: "+trip.getDepartureDate());
+				Logger.getGlobal().info("return date: "+trip.getReturnDate());
 			} catch (ParseException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 	
-		//Converting and setting Days list (and activities)
+		/*Converting and setting Days list (and activities)*/
+		List<Day> days = ConversionController.getInstance().convertDayBeanList(tripBean.getDays());
+		for (int i=0; i<days.size(); i++) {
+			// Set the date for each day
+			Calendar c = Calendar.getInstance();
+			c.setTime(depDate);
+			c.add(Calendar.DATE, i);
+			days.get(i).setDate(c.getTime());
+			
+			// Test if correct
+			days.get(i).getDate();
+		}
 		trip.setDays(ConversionController.getInstance().convertDayBeanList(tripBean.getDays()));	
-		System.out.println("Trip Days: "+trip.getDays());
+		Logger.getGlobal().info("Trip Days: "+trip.getDays());
 		
 		if (tripBean.isShared()) {
 			trip.setShared(true);

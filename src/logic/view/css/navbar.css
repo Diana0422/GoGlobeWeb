@@ -4,9 +4,9 @@
   -fx-background-color: #CFCFCF;
 }
 
-#custom-btn:pressed {
+/*#custom-btn:pressed {
   -fx-background-color: #9C9C9C;
-}
+}*/
 
 #custom-btn {
   -fx-background-color: #ffffff
