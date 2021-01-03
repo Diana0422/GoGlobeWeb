@@ -1,12 +1,17 @@
 package logic.control;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
 import logic.bean.ActivityBean;
 import logic.bean.DayBean;
+import logic.bean.TripBean;
 import logic.model.Activity;
 import logic.model.Day;
+import logic.model.Trip;
+import logic.model.TripCategory;
 
 public class ConversionController {
 
@@ -82,5 +87,41 @@ public class ConversionController {
 		
 	}
 	
+	public List<TripBean> convertTripList(List<Trip> trips){
+		List<TripBean> tripBeans = new ArrayList<>();
+		for (int i=0; i<trips.size(); i++) {
+			Trip t = trips.get(i);
+			TripBean bean = new TripBean();
+			bean.setId(t.getId());
+			bean.setTitle(t.getTitle());
+			bean.setPrice(t.getPrice());
+			bean.setCategory1(t.getCategory1().toString());
+			bean.setCategory2(t.getCategory2().toString());
+			bean.setImgSrc(t.getImgSrc());
+			
+			// Converting Dates to String
+			DateFormat formatter = new SimpleDateFormat("dd/mm/yyyy");
+			String depDateStr = formatter.format(t.getDepartureDate());
+			String retDateStr = formatter.format(t.getReturnDate());
+			bean.setDepartureDate(depDateStr);
+			bean.setReturnDate(retDateStr);
+			bean.setTripLength(t.getTripLength());
+			
+			// Adding days and activities to the trip bean
+			System.out.println("Trip days: "+t.getDays());
+			bean.setDays(ConversionController.getInstance().convertDayList(t.getDays()));
+			tripBeans.add(bean);
+		}
+		return tripBeans;
+		
+	}
 	
+	public TripCategory parseTripCategory(String category) {
+		if (category.equals("Fun")) return TripCategory.Fun;	
+		if (category.equals("Culture")) return TripCategory.Culture;	
+		if (category.equals("Relax")) return TripCategory.Relax;
+		if (category.equals("Adventure")) return TripCategory.Adventure;
+			
+		return TripCategory.None;
+	}	
 }

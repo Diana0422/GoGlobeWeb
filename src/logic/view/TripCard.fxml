@@ -10,9 +10,9 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="271.0" prefWidth="242.0" style="-fx-background-color: #ffffff; -fx-effect: dropshadow(three-pass-box, grey, 10, 0, 0, 15);;" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="logic.view.CardGraphic">
+<AnchorPane id="form" prefHeight="271.0" prefWidth="242.0" style="-fx-background-color: #ffffff; -fx-effect: dropshadow(three-pass-box, grey, 10, 0, 5, 2) dropshadow(three-pass-box, grey, 10, 0, 5, 2);" stylesheets="@css/application.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="logic.view.CardGraphic">
    <children>
-      <VBox prefHeight="283.0" prefWidth="242.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0">
+      <VBox id="form" prefHeight="283.0" prefWidth="242.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
             <ImageView fx:id="imgTrip" fitHeight="78.0" fitWidth="242.0" pickOnBounds="true" preserveRatio="true" />
             <Label fx:id="lblTitle" alignment="CENTER" contentDisplay="CENTER" prefHeight="38.0" prefWidth="225.0" text="Trip Title" textAlignment="JUSTIFY">

@@ -21,6 +21,8 @@
 
 #form {
 	-fx-background-color: #ffffff;
+	background-color: #fff;
+	-fx-background-radius: 20px;
 }
 
 #btn {
