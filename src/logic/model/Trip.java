@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -30,7 +31,7 @@ public class Trip implements Serializable {
 	
 	
 	public Trip() {
-		
+		this.days = new ArrayList<>();
 	}
 	
 	public Trip(int id, String title, String imgFilename, int price, String cat1, String cat2, String departureDate, String returnDate) {

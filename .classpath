@@ -30,5 +30,23 @@
 	<classpathentry kind="con" path="org.eclipse.jst.j2ee.internal.web.container"/>
 	<classpathentry kind="con" path="org.eclipse.jst.j2ee.internal.module.container"/>
 	<classpathentry kind="lib" path="lib/mysql-connector-java-8.0.22.jar"/>
+	<classpathentry kind="lib" path="lib/json/json.jar"/>
+	<classpathentry kind="lib" path="lib/httpclient/commons-cli-1.4.jar"/>
+	<classpathentry kind="lib" path="lib/httpclient/commons-codec-1.13.jar"/>
+	<classpathentry kind="lib" path="lib/httpclient/httpclient5-5.0.3.jar"/>
+	<classpathentry kind="lib" path="lib/httpclient/httpclient5-cache-5.0.3.jar"/>
+	<classpathentry kind="lib" path="lib/httpclient/httpclient5-fluent-5.0.3.jar"/>
+	<classpathentry kind="lib" path="lib/httpclient/httpclient5-testing-5.0.3.jar"/>
+	<classpathentry kind="lib" path="lib/httpclient/httpclient5-win-5.0.3.jar"/>
+	<classpathentry kind="lib" path="lib/httpclient/httpcore5-5.0.2.jar"/>
+	<classpathentry kind="lib" path="lib/httpclient/httpcore5-h2-5.0.2.jar"/>
+	<classpathentry kind="lib" path="lib/httpclient/httpcore5-reactive-5.0.2.jar"/>
+	<classpathentry kind="lib" path="lib/httpclient/httpcore5-testing-5.0.2.jar"/>
+	<classpathentry kind="lib" path="lib/httpclient/jna-5.2.0.jar"/>
+	<classpathentry kind="lib" path="lib/httpclient/jna-platform-5.2.0.jar"/>
+	<classpathentry kind="lib" path="lib/httpclient/reactive-streams-1.0.2.jar"/>
+	<classpathentry kind="lib" path="lib/httpclient/rxjava-2.2.8.jar"/>
+	<classpathentry kind="lib" path="lib/httpclient/slf4j-api-1.7.25.jar"/>
+	<classpathentry kind="lib" path="lib/httpclient/slf4j-nop-1.7.9.jar"/>
 	<classpathentry kind="output" path="build/classes"/>
 </classpath>

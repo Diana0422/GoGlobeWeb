@@ -7,6 +7,9 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
@@ -18,16 +21,41 @@ import logic.model.User;
 
 public class PersistenceController {
 	
-	private static PersistenceController INSTANCE = null;
+	private static String user = "Diana0422";
+    private static String pass = "adminpass";
+    private static String dbUrl = "jdbc:mysql://localhost:3306/goglobedb";
+    private static String driverClassName = "com.mysql.jdbc.Driver";
+	
+    private static Connection connection = null;
+	private static PersistenceController instance = null;
 	
 	private PersistenceController() {}
 	
 	public static PersistenceController getInstance() {
-		if (INSTANCE == null) {
-			INSTANCE = new PersistenceController();
+		if (instance == null) {
+			instance = new PersistenceController();
 		}
 		
-		return INSTANCE;
+		return instance;
+	}
+	
+	public Connection getConnection() {
+		try {
+			Class.forName(driverClassName);
+		} catch (ClassNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		if (connection == null) {
+			try {
+				connection = DriverManager.getConnection(dbUrl, user, pass);
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+		return connection;
 	}
 	
 	public File getBackendFile(ModelClassType type) {
@@ -201,6 +229,13 @@ public class PersistenceController {
 			e.printStackTrace();
 			return false;
 		}
+	}
+	
+	public static void main(String [] args) {
+		Connection conn;
+		
+		conn = PersistenceController.getInstance().getConnection();
+		System.out.println(conn);
 	}
 }
 	
