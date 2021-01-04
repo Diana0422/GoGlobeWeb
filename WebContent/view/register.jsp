@@ -13,8 +13,9 @@
 <head>
 	<meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>GoGlobe-Register</title>
+    <title>GoGlobe - Register</title>
     
+    <link rel="icon" href="../res/images/favicon.ico">
     <link rel="stylesheet" type="text/css" href="../bootstrap-css/bootstrap.css">
     <link rel="stylesheet" href="../css/style.css">
     <link rel="stylesheet" href="../css/register-style.css">

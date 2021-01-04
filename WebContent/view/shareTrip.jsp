@@ -11,6 +11,7 @@
 	<meta charset="UTF-8">
     <title>GoGlobe - Select trip preferences</title>
     
+    <link rel="icon" href="../res/images/favicon.ico">
     <link rel="stylesheet" type="text/css" href="../bootstrap-css/bootstrap.css">
     <link rel="stylesheet" href="../css/planTrip.css">
     <link rel="stylesheet" href = "../css/style.css">

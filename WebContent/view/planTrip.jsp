@@ -21,6 +21,7 @@
 	<meta charset="UTF-8">
     <title>GoGlobe - Plan Trip</title>
     
+    <link rel="icon" href="../res/images/favicon.ico">
     <link rel="stylesheet" href="../bootstrap-css/bootstrap.css">
     <link rel="stylesheet" href="../css/planTrip.css">
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>

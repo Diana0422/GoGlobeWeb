@@ -18,9 +18,12 @@
 <html>
 <head>
 	<meta charset="UTF-8">
-	<title>Login</title>
+	<title>GoGlobe - Login</title>
+	
+	<link rel="icon" href="../res/images/favicon.ico">
 	<link href="../bootstrap-css/bootstrap.css" rel="stylesheet">
 	<link href="../css/login.css" rel="stylesheet">
+	<link href="../css/style.css" rel="stylesheet">
 	<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
 	<script src="js/bootstrap.min.js"></script> 
 	

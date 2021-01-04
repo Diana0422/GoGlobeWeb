@@ -44,7 +44,7 @@ body {
     background-color: white;
 }
 
-#bootstrap-override #logo, #bootstrap-override-home #logo {
+#bootstrap-override #logo, #bootstrap-override-home #logo, #login-body #logo {
     font-family: Baloo Da;
     display: flex;
     align-items: center;
