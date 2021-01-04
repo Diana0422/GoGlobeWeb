@@ -88,7 +88,7 @@ public class UpperNavbarControl implements Initializable {
     
     @FXML
     void displayPrizes(MouseEvent event) {
-
+    	//TODO
     }
 
     @FXML

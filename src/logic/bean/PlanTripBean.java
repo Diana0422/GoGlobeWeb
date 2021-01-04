@@ -93,13 +93,13 @@ public class PlanTripBean {
 		try {
 			Date depDate = new SimpleDateFormat(DATE_FORMAT).parse(departureDate);
 			Date retDate = new SimpleDateFormat(DATE_FORMAT).parse(returnDate);
-//			Date currentDate = new Date();
+			Date currentDate = new Date();
 			
 			
-//			if (depDate.before(currentDate)) {
-//				this.setErrorMsg("Departure date must be later than current date");
-//				return false;
-//			}
+			if (depDate.before(currentDate)) {
+				this.setErrorMsg("Departure date must be later than current date");
+				return false;
+			}
 			
 			if (retDate.before(depDate)) {
 				this.setErrorMsg("Return date must be later than departure date");

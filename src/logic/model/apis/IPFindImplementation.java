@@ -26,8 +26,9 @@ public class IPFindImplementation implements IPLocationAPI {
         HttpResponse<String> response2;
 		try {
 			response2 = HttpClient.newHttpClient().send(request2, HttpResponse.BodyHandlers.ofString());
-				
-			System.out.println("\n"+response2.body());
+			
+			String logStr = "\n"+response2.body();
+			Logger.getGlobal().info(logStr);
 		    	
 		    JSONObject ipInfo = new JSONObject(response2.body());
 		    return ipInfo.getString("city");

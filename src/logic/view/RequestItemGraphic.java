@@ -8,8 +8,6 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import logic.model.Trip;
-import logic.model.User;
 
 public class RequestItemGraphic implements Initializable {
 
@@ -31,9 +29,9 @@ public class RequestItemGraphic implements Initializable {
     @FXML
     private Label lblAge;
     
-    public void setData(Trip trip, User user) {
-    	lblTitle.setText(trip.getTitle());
-    	lblUser.setText(user.getName()+" "+user.getSurname());
+    public void setData(String tripTitle, String userName, String userSurname) {
+    	lblTitle.setText(tripTitle);
+    	lblUser.setText(userName+" "+userSurname);
     }
     
     public void accept(ActionEvent event) {

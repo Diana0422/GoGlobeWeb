@@ -26,10 +26,13 @@ public class WHOISImplementation implements IPFinderAPI {
 		try {
 			response = HttpClient.newHttpClient().send(request, HttpResponse.BodyHandlers.ofString());
 				
-			System.out.println(response.body());
+			String logStr = response.body();
+			Logger.getGlobal().info(logStr);
 		        
 		    JSONObject json = new JSONObject(response.body());
-		    System.out.println("IP Address: "+json.getString("ip"));
+		    
+		    logStr = "IP Address: "+json.getString("ip");
+		    Logger.getGlobal().info(logStr);
 		    return json.getString("ip");
 		} catch (IOException e) {
 			// TODO Auto-generated catch block

@@ -53,7 +53,7 @@ public class CardGraphic implements Initializable {
 
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
-		
+		// empty method: nothing to do when initialized
 		
 	}
 
