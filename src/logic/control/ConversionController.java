@@ -7,9 +7,11 @@ import java.util.List;
 
 import logic.bean.ActivityBean;
 import logic.bean.DayBean;
+import logic.bean.RequestBean;
 import logic.bean.TripBean;
 import logic.model.Activity;
 import logic.model.Day;
+import logic.model.Request;
 import logic.model.Trip;
 import logic.model.TripCategory;
 
@@ -112,6 +114,24 @@ public class ConversionController {
 			tripBeans.add(bean);
 		}
 		return tripBeans;
+		
+	}
+	
+	
+	public List<RequestBean> convertRequestList(List<Request> requests) {
+		List<RequestBean> requestBeans = new ArrayList<>();
+		
+		for (Request req: requests) {
+			RequestBean bean = new RequestBean();
+			bean.setTripTitle(req.getTarget().getTitle());
+			bean.setSenderName(req.getSender().getName());
+			bean.setSenderSurname(req.getSender().getSurname());
+			bean.setSenderEmail(req.getSender().getEmail());
+			bean.setReceiverEmail(req.getReceiver().getEmail());
+//			bean.setSenderAge(req.getSender().getAge());
+			requestBeans.add(bean);
+		}
+		return requestBeans;
 		
 	}
 	

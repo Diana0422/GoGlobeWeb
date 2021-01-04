@@ -11,7 +11,12 @@ import java.util.logging.Logger;
 
 import logic.bean.ActivityBean;
 import logic.bean.DayBean;
+import logic.bean.SessionBean;
 import logic.bean.TripBean;
+import logic.dao.TripDAO;
+import logic.dao.TripDAOFile;
+import logic.dao.UserDAO;
+import logic.dao.UserDAOFile;
 import logic.model.Day;
 import logic.model.Trip;
 import logic.model.TripCategory;
@@ -96,8 +101,10 @@ public class PlanTripController {
 		tripBean.addActivity(planningDay, newActivity);
 	}
 	
-	public boolean saveTrip(TripBean tripBean) {
+	public boolean saveTrip(TripBean tripBean, SessionBean organizerBean) {
 		Trip trip = new Trip();
+		UserDAO userDao = new UserDAOFile();
+		trip.setOrganizer(userDao.getUser(organizerBean.getEmail()));
 		trip.setTitle(tripBean.getTitle());
 		trip.setTripLength(tripBean.getTripLength());
 		
@@ -143,7 +150,8 @@ public class PlanTripController {
 			trip.setMaxAge(Integer.parseInt(tripBean.getMaxAge()));
 		}
 
-		return PersistenceController.getInstance().saveTripOnFile(trip);
+		TripDAO tripDao = new TripDAOFile();
+		return tripDao.saveTrip(trip);
 		
 	}
 

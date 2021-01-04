@@ -1,5 +1,12 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
+
+<%@page import="java.util.List"%> 
+<%@page import="logic.bean.RequestBean"%>
+<%@page import="logic.control.ManageRequestController"%>
+
+<jsp:useBean id="sessionBean" scope="session" class="logic.bean.SessionBean"/>
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -15,6 +22,7 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.min.js"></script>
 </head>
 <body id="bootstrap-override">
+	
 	<!-- navigation bar -->
     <nav class="navbar navbar-expand-sm navbar-light bg-light sticky-top">
         <a href="#" id="logo" class="navbar-brand">GoGlobe</a>
@@ -25,19 +33,23 @@
         <div class="collapse navbar-collapse" id="navbarMenu">
             <ul class="navbar-nav">  <!--aggiungere alla classe mr-auto se voglio gli elementi cliccabili a sx-->
                 <li class="nav-item">
-                    <a class="nav-link active" href="#" style="margin: 12px;">Home</a>
+                    <a class="nav-link active" href="home" style="margin: 12px;">Home</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="#" style="margin: 12px;">Trips</a>
+                    <a class="nav-link" href="joinTrip" style="margin: 12px;">Trips</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="#" style="margin: 12px;">Profile</a>
+                    <a class="nav-link" href="profile" style="margin: 12px;">Profile</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="manageRequests" style="margin: 12px;">Requests</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="#" style="margin: 12px;">Log Out</a>
                 </li>
             </ul>
         </div>
+        
     </nav>
 
     <!-- tab panels -->
@@ -60,19 +72,39 @@
             <div class="tab-content">
                 <div role="tabpanel" class="tab-pane active" id="incoming">
 
-                    <div class="request displayer">
+				<%
+					List<RequestBean> requests = ManageRequestController.getInstance().getUserIncomingRequests(sessionBean);
+					for (RequestBean req: requests) {
+						%>
+					<div class="request displayer">
                         <div class="request-info">
-                            <h3>Trip Name</h3>
+                            <h3><%= req.getTripTitle() %></h3>
                             <div class="name">
-                                <h5>Name</h5>
-                                <h5>Surname</h5>
+                                <h5><%= req.getSenderName() %></h5>
+                                <h5><%= req.getSenderSurname() %></h5>
                             </div>
                             <h6>Age</h6>
                         </div>
-                        <button type="submit" class="btn btn-primary" name="viewprofile">View Profile</button>
-                        <button type="submit" class="btn btn-success" name="accept">Accept</button>
-                        <button type="submit" class="btn btn-danger" name="decline">Decline</button>
-                    </div>
+                        <form action="manageRequests.jsp" method="POST">
+                        	<button type="submit" class="btn btn-primary" name="viewprofile">View Profile</button>
+                        	<button type="submit" class="btn btn-success" name="accept">Accept</button>
+                        	<button type="submit" class="btn btn-danger" name="decline">Decline</button>
+                        	
+                        	<%
+                        		if (request.getParameter("viewprofile") != null) 
+                        		if (request.getParameter("accept") != null) {
+                        			ManageRequestController.getInstance().acceptRequest(req);
+                        		}
+                        		if (request.getParameter("decline") != null) {
+                        			ManageRequestController.getInstance().declineRequest(req);
+                        		}
+                        	%>
+                        </form>
+                    </div>	
+						<%
+					}
+				
+				%>
 
 
                 </div>

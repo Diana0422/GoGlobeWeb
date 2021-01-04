@@ -26,12 +26,15 @@ public class Trip implements Serializable {
 	private String description;
 	private int minAge;
 	private int maxAge;
+	private User organizer;
+	private List<User> participants;
 	//Meglio lasciare solo id  e List<Days> e incapsulare gli altri attributi in una 
 	//classe associata trip info
 	
 	
 	public Trip() {
 		this.days = new ArrayList<>();
+		this.participants = new ArrayList<>();
 	}
 	
 	public Trip(int id, String title, int price, String cat1, String cat2, String departureDate, String returnDate) {
@@ -167,5 +170,25 @@ public class Trip implements Serializable {
 
 	public void setMaxAge(int maxAge) {
 		this.maxAge = maxAge;
+	}
+
+	public User getOrganizer() {
+		return organizer;
+	}
+
+	public void setOrganizer(User organizer) {
+		this.organizer = organizer;
+	}
+
+	public List<User> getParticipants() {
+		return participants;
+	}
+
+	public void setParticipants(List<User> participants) {
+		this.participants = participants;
+	}
+	
+	public void addParticipant(User participant) {
+		this.participants.add(participant);
 	}
 }

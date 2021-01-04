@@ -24,23 +24,29 @@
 </head>
 <body id="bootstrap-override">
 
-    <!-- navbar -->
+    <!-- navigation bar -->
     <nav class="navbar navbar-expand-sm navbar-light bg-light sticky-top">
         <a href="#" id="logo" class="navbar-brand">GoGlobe</a>
-        <!--toggler per piccoli schermi-->
+        <!--toggler for shorter screens -->
         <button class="navbar-toggler" data-toggle="collapse" data-target="#navbarMenu">
             <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="navbarMenu">
             <ul class="navbar-nav">  <!--aggiungere alla classe mr-auto se voglio gli elementi cliccabili a sx-->
                 <li class="nav-item">
-                    <a class="nav-link" href="#" style="margin: 12px;">Home</a>
+                    <a class="nav-link active" href="home.jsp" style="margin: 12px;">Home</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="#" style="margin: 12px;">Trips</a>
+                    <a class="nav-link" href="joinTrip.jsp" style="margin: 12px;">Trips</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link active" href="#" style="margin: 12px;">Log In</a>
+                    <a class="nav-link" href="profile.jsp" style="margin: 12px;">Profile</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="manageRequests.jsp" style="margin: 12px;">Requests</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#" style="margin: 12px;">Log Out</a>
                 </li>
             </ul>
         </div>
@@ -58,6 +64,7 @@
         					if (registerBean.validate()) {
         						sessionBean.setName(registerBean.getName());
         						sessionBean.setSurname(registerBean.getSurname());
+        						sessionBean.setEmail(registerBean.getEmail());
 							%>
         						<jsp:forward page="home.jsp"/>
 							<%

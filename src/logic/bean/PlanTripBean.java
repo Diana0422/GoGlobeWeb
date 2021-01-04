@@ -228,8 +228,8 @@ public class PlanTripBean {
 		return this.getTripDays().get(planningDay).getActivities().get(activityNum).getDescription();
 	}
 	
-	public boolean saveTrip() {
-		return PlanTripController.getInstance().saveTrip(this.tripBean);
+	public boolean saveTrip(SessionBean session) {
+		return PlanTripController.getInstance().saveTrip(this.tripBean, session);
 	}
 
 	public TripBean getTripBean() {

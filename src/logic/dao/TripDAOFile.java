@@ -69,10 +69,6 @@ public class TripDAOFile implements TripDAO {
 			Logger.getGlobal().info("Serializing instance of trip \n");
 			out.writeObject(trips);
 			return true;
-		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-			return false;
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

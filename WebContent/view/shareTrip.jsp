@@ -2,6 +2,7 @@
     pageEncoding="UTF-8"%>
     
    <jsp:useBean id="planTripBean" scope="session" class="logic.bean.PlanTripBean"/>  
+   <jsp:useBean id="sessionBean" scope="session" class="logic.bean.SessionBean"/>
    <jsp:setProperty name="planTripBean" property="*"/>
    
 <!DOCTYPE html>
@@ -18,6 +19,7 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.min.js"></script>
 </head>
 <body id="selectPreferences-body">
+    
     <!-- navigation bar -->
     <nav class="navbar navbar-expand-sm navbar-light bg-light sticky-top">
         <a href="#" id="logo" class="navbar-brand">GoGlobe</a>
@@ -28,13 +30,16 @@
         <div class="collapse navbar-collapse" id="navbarMenu">
             <ul class="navbar-nav">  <!--aggiungere alla classe mr-auto se voglio gli elementi cliccabili a sx-->
                 <li class="nav-item">
-                    <a class="nav-link active" href="#" style="margin: 12px;">Home</a>
+                    <a class="nav-link active" href="home.jsp" style="margin: 12px;">Home</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="#" style="margin: 12px;">Trips</a>
+                    <a class="nav-link" href="joinTrip.jsp" style="margin: 12px;">Trips</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="#" style="margin: 12px;">Profile</a>
+                    <a class="nav-link" href="profile.jsp" style="margin: 12px;">Profile</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="manageRequests.jsp" style="margin: 12px;">Requests</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="#" style="margin: 12px;">Log Out</a>
@@ -52,7 +57,7 @@
 	if (request.getParameter("share-btn") != null){
 		if (planTripBean.validateSharingPref()){
 			planTripBean.setSharingPreferences();
-			planTripBean.saveTrip();
+			planTripBean.saveTrip(sessionBean);
 			System.out.println("VIAGGIO SALVATO COME CONDIVISO");
 %>		
 			

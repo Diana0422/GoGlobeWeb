@@ -45,8 +45,10 @@ public class LoginBean {
 		}
 
 		LoginBean utenteTrovato = LoginController.getInstance().login(username, password);
-		setNome(utenteTrovato.getNome());
-		setCognome(utenteTrovato.getCognome());
+		if (utenteTrovato != null) {
+			setNome(utenteTrovato.getNome());
+			setCognome(utenteTrovato.getCognome());
+		}
 		return utenteTrovato != null;
 		
 	}

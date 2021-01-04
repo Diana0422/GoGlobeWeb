@@ -3,10 +3,12 @@
     
 <!-- declaration of a join trip bean -->
 <jsp:useBean id="joinTripBean" scope="session" class="logic.bean.JoinTripBean"/>
+<jsp:useBean id="sessionBean" scope="session" class="logic.bean.SessionBean"/>
 
 <%@page import="java.util.List"%>      <%--Importing all the dependent classes--%> 
 <%@page import="logic.bean.DayBean"%>
 <%@page import="logic.bean.ActivityBean"%>
+<%@page import="logic.control.JoinTripController"%>
 
 
 
@@ -26,23 +28,26 @@
 </head>
 <body id="bootstrap-override">
 
-    <!--navigation bar-->
+    <!-- navigation bar -->
     <nav class="navbar navbar-expand-sm navbar-light bg-light sticky-top">
         <a href="#" id="logo" class="navbar-brand">GoGlobe</a>
-        <!--toggler for shorter screens-->
+        <!--toggler for shorter screens -->
         <button class="navbar-toggler" data-toggle="collapse" data-target="#navbarMenu">
             <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="navbarMenu">
             <ul class="navbar-nav">  <!--aggiungere alla classe mr-auto se voglio gli elementi cliccabili a sx-->
                 <li class="nav-item">
-                    <a class="nav-link" href="#" style="margin: 12px;">Home</a>
+                    <a class="nav-link active" href="home.jsp" style="margin: 12px;">Home</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link active" href="#" style="margin: 12px;">Trips</a>
+                    <a class="nav-link" href="joinTrip.jsp" style="margin: 12px;">Trips</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="#" style="margin: 12px;">Profile</a>
+                    <a class="nav-link" href="profile.jsp" style="margin: 12px;">Profile</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="manageRequests.jsp" style="margin: 12px;">Requests</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="#" style="margin: 12px;">Log Out</a>
@@ -94,7 +99,14 @@
             			<div class="trip-description">
                 			<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam tincidunt ex enim, ac laoreet justo rhoncus eget. Suspendisse potenti. Vivamus eleifend dui ut turpis aliquet tempor. Phasellus consequat tincidunt varius. Aenean rhoncus nunc ut tristique porttitor. Curabitur quis vulputate sem. Nunc eu nunc at urna blandit ornare at sed dolor. Nunc blandit in sem a eleifend. Nulla at odio vulputate nisl fringilla vehicula. In vel est vel dui volutpat placerat sit amet id sem. Suspendisse elit mi vel. </p>
             			</div>
-            			<button type="submit" name="jointrip" class="btn btn-primary">Join Trip</button>
+            			<form action="tripInfo.jsp" method="POST">
+            				<button type="submit" name="jointrip" class="btn btn-primary">Join Trip</button>
+            			<%
+            				if (request.getParameter("jointrip") != null ){
+            					JoinTripController.getInstance().joinTrip(joinTripBean.getTrip(), sessionBean);
+            				}
+            			%>
+            			</form>
         			</div>
         			<div class="infos-right">
             			<div class="trip-img">

@@ -6,6 +6,7 @@ public class SessionBean {
 	private User loggedUser;
 	private String name;
 	private String surname;
+	private String email;
 	
 	public SessionBean() {
 		// empty constructor
@@ -35,6 +36,14 @@ public class SessionBean {
 
 	public void setSurname(String surname) {
 		this.surname = surname;
+	}
+
+	public String getEmail() {
+		return email;
+	}
+
+	public void setEmail(String email) {
+		this.email = email;
 	}
 	
 	

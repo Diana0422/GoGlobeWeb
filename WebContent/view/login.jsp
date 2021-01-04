@@ -35,6 +35,7 @@
 		if (loginBean.validate()){
 			sessionBean.setName(loginBean.getNome());
 			sessionBean.setSurname(loginBean.getCognome());
+			sessionBean.setEmail(loginBean.getUsername());
 %>
 	<jsp:forward page="home.jsp"/>
 <%	
@@ -69,7 +70,7 @@
                         
                         <!-- No account, sign up -->
                         <p>Don't have an account? 
-                            <a href="Registration.jsp" id="signup">Sign Up</a>
+                            <a href="register.jsp" id="signup">Sign Up</a>
                         </p>
                     </div>
                   </form>
