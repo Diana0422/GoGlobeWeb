@@ -22,7 +22,10 @@
     
     <!-- navigation bar -->
     <nav class="navbar navbar-expand-sm navbar-light bg-light sticky-top">
-        <a href="#" id="logo" class="navbar-brand">GoGlobe</a>
+        <div class="app">
+            <img id="logo-img" src="../res/images/icons8-around-the-globe-50.png">
+            <a href="#" id="logo" class="navbar-brand">GoGlobe</a>
+        </div>
         <!--toggler for shorter screens -->
         <button class="navbar-toggler" data-toggle="collapse" data-target="#navbarMenu">
             <span class="navbar-toggler-icon"></span>
