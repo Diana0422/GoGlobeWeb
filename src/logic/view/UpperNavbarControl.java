@@ -42,6 +42,9 @@ public class UpperNavbarControl implements Initializable {
 
     @FXML
     private Button btnSettings;
+    
+    @FXML
+    private Button btnPrizes;
 
     @FXML
     private MenuButton menuAccount;
@@ -82,6 +85,11 @@ public class UpperNavbarControl implements Initializable {
     void displaySettings(MouseEvent event) {
     	loadUI("/logic/view/Settings");
     }
+    
+    @FXML
+    void displayPrizes(MouseEvent event) {
+
+    }
 
     @FXML
     void loadLogin(ActionEvent event) {
@@ -101,16 +109,6 @@ public class UpperNavbarControl implements Initializable {
     @FXML 
     void loadHome(ActionEvent event) {
     	loadUI("logic/view/Home");
-    }
-
-    @FXML
-    void loadRequests(ActionEvent event) {
-    	//TODO
-    }
-
-    @FXML
-    void loadSettings(ActionEvent event) {
-    	//TODO
     }
     
     private UpperNavbarControl() {

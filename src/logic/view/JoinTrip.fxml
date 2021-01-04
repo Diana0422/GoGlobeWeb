@@ -11,13 +11,14 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane id="ui-root" prefHeight="600.0" prefWidth="1024.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="logic.view.JoinTripGraphic">
+<AnchorPane id="ui-root" prefHeight="600.0" prefWidth="1336.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="logic.view.JoinTripGraphic">
    <children>
-      <Pane layoutX="19.0" layoutY="45.0" prefHeight="78.0" prefWidth="987.0">
+      <Pane layoutX="19.0" layoutY="14.0" prefHeight="78.0" prefWidth="987.0">
          <children>
-            <Label layoutX="23.0" layoutY="22.0" text="Join a Trip">
+            <Label id="info" layoutX="23.0" layoutY="22.0" text="Join a Trip">
                <font>
                   <Font name="System Bold" size="24.0" />
                </font>
@@ -28,7 +29,7 @@
                   <Font size="14.0" />
                </font>
             </Button>
-            <Label layoutX="424.0" layoutY="22.0" text="or">
+            <Label id="info" layoutX="424.0" layoutY="22.0" text="or">
                <font>
                   <Font name="System Bold" size="24.0" />
                </font>
@@ -45,9 +46,34 @@
             </Label>
          </children>
       </Pane>
-      <HBox layoutY="168.0" prefHeight="432.0" prefWidth="1024.0">
+      <HBox layoutY="106.0" prefHeight="494.0" prefWidth="1336.0">
          <children>
-            <ScrollPane prefHeight="370.0" prefWidth="1032.0">
+            <VBox prefHeight="494.0" prefWidth="214.0" style="-fx-background-color: #ffffff;">
+               <children>
+                  <Label prefHeight="39.0" prefWidth="159.0" text="Filters">
+                     <font>
+                        <Font name="Arial Bold" size="18.0" />
+                     </font>
+                     <VBox.margin>
+                        <Insets />
+                     </VBox.margin>
+                     <padding>
+                        <Insets left="20.0" />
+                     </padding>
+                  </Label>
+                  <VBox prefHeight="455.0" prefWidth="157.0">
+                     <children>
+                        <Button id="custom-btn" mnemonicParsing="false" prefHeight="36.0" prefWidth="159.0" text="A-Z" />
+                        <Button id="custom-btn" mnemonicParsing="false" prefHeight="36.0" prefWidth="159.0" text="Adventure" />
+                        <Button id="custom-btn" mnemonicParsing="false" prefHeight="36.0" prefWidth="159.0" text="Fun" />
+                        <Button id="custom-btn" mnemonicParsing="false" prefHeight="36.0" prefWidth="159.0" text="Relax" />
+                        <Button id="custom-btn" mnemonicParsing="false" prefHeight="36.0" prefWidth="159.0" text="Culture" />
+                        <Button id="custom-btn" mnemonicParsing="false" prefHeight="36.0" prefWidth="159.0" text="Price" />
+                     </children>
+                  </VBox>
+               </children>
+            </VBox>
+            <ScrollPane prefHeight="494.0" prefWidth="1236.0">
                <content>
                   <GridPane fx:id="cardsLayout" alignment="CENTER" blendMode="SRC_ATOP" prefHeight="5.0" prefWidth="6.0" style="-fx-background-color: transparent;">
                      <rowConstraints>

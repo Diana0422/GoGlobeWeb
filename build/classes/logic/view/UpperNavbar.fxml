@@ -12,9 +12,9 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane fx:id="borderpane" prefHeight="41.0" prefWidth="1024.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="logic.view.UpperNavbarControl">
+<BorderPane fx:id="borderpane" prefHeight="41.0" prefWidth="1336.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="logic.view.UpperNavbarControl">
    <top>
-      <AnchorPane id="Navbar" prefHeight="60.0" prefWidth="1024.0" style="-fx-background-color: #ffffff;" BorderPane.alignment="CENTER">
+      <AnchorPane id="Navbar" prefHeight="60.0" prefWidth="1336.0" style="-fx-background-color: #ffffff;" BorderPane.alignment="CENTER">
          <children>
             <HBox prefHeight="60.0" prefWidth="301.0">
                <children>
@@ -33,21 +33,22 @@
                   </Label>
                </children>
             </HBox>
-            <HBox layoutX="373.0" prefHeight="60.0" prefWidth="651.0">
+            <HBox layoutX="373.0" prefHeight="60.0" prefWidth="963.0">
                <children>
                   <Button id="custom-btn" fx:id="btnJoinTrip" mnemonicParsing="false" onMouseClicked="#displayJoinTrip" prefHeight="59.0" prefWidth="94.0" text="Join a trip" />
                   <Button id="custom-btn" fx:id="btnPlanTrip" mnemonicParsing="false" onAction="#loadPlanTripView" onMouseClicked="#displayPlanTrip" prefHeight="59.0" prefWidth="93.0" text="Plan a trip" />
                   <Button id="custom-btn" fx:id="btnProfile" mnemonicParsing="false" onMouseClicked="#displayProfile" prefHeight="59.0" prefWidth="93.0" text="Profile" />
-                  <Button id="custom-btn" fx:id="btnRequests" mnemonicParsing="false" onAction="#loadRequests" onMouseClicked="#displayRequests" prefHeight="59.0" prefWidth="93.0" text="Requests" />
-                  <Button id="custom-btn" fx:id="btnSettings" mnemonicParsing="false" onAction="#loadSettings" onMouseClicked="#displaySettings" prefHeight="59.0" prefWidth="93.0" text="Settings" />
-                  <MenuButton fx:id="menuAccount" mnemonicParsing="false" prefHeight="59.0" prefWidth="104.0" text="Account">
+                  <Button id="custom-btn" fx:id="btnRequests" mnemonicParsing="false" onMouseClicked="#displayRequests" prefHeight="59.0" prefWidth="93.0" text="Requests" />
+                  <Button id="custom-btn" fx:id="btnPrizes" mnemonicParsing="false" onMouseClicked="#displayPrizes" prefHeight="59.0" prefWidth="93.0" text="Prizes" />
+                  <Button id="custom-btn" fx:id="btnSettings" mnemonicParsing="false" onMouseClicked="#displaySettings" prefHeight="59.0" prefWidth="93.0" text="Settings" />
+                  <MenuButton id="custom-btn" fx:id="menuAccount" layoutX="669.0" layoutY="10.0" mnemonicParsing="false" prefHeight="59.0" prefWidth="90.0" text="Account">
                      <items>
+                        <MenuItem fx:id="itemLogin" mnemonicParsing="false" onAction="#loadLogin" text="Login" />
                         <MenuItem fx:id="itemRegister" mnemonicParsing="false" onAction="#loadRegistration" text="Register" />
-                        <MenuItem fx:id="itemLogin" mnemonicParsing="false" onAction="#loadLogin" text="Log In" />
-                        <MenuItem fx:id="itemLogout" mnemonicParsing="false" text="Log Out" />
+                        <MenuItem fx:id="itemLogout" mnemonicParsing="false" text="Logout" />
                      </items>
                      <HBox.margin>
-                        <Insets left="60.0" />
+                        <Insets left="100.0" />
                      </HBox.margin>
                   </MenuButton>
                </children>

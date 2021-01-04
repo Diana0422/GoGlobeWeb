@@ -14,14 +14,13 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="1024.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="logic.view.ProfileGraphic">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="1336.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="logic.view.ProfileGraphic">
    <children>
-      <AnchorPane>
+      <AnchorPane prefHeight="600.0" prefWidth="1336.0">
          <children>
-            <AnchorPane id="profile-pane" layoutX="134.0" layoutY="89.0" prefHeight="511.0" prefWidth="1024.0" style="-fx-background-color: white;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="89.0">
+            <AnchorPane id="profile-pane" layoutY="89.0" prefHeight="511.0" prefWidth="1024.0" style="-fx-background-color: white;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="89.0">
                <children>
-                  <TabPane id="tab" layoutX="270.0" layoutY="1.0" prefHeight="455.0" prefWidth="754.0" style="-fx-tab-min-width: 133px;" tabClosingPolicy="UNAVAILABLE">
+                  <TabPane id="tab" layoutX="270.0" layoutY="1.0" prefHeight="511.0" prefWidth="1066.0" style="-fx-tab-min-width: 133px;" tabClosingPolicy="UNAVAILABLE">
                      <tabs>
                         <Tab text="Bio">
                            <content>
@@ -87,54 +86,58 @@
                      </tabs>
                   </TabPane>
                   <Separator layoutX="264.0" layoutY="3.0" orientation="VERTICAL" prefHeight="450.0" prefWidth="5.0" />
-                  <Text fx:id="txtNameSurname" layoutX="19.0" layoutY="106.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Nome  Cognome" wrappingWidth="174.21630859375">
+                  <Text fx:id="txtNameSurname" layoutX="17.0" layoutY="98.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Nome  Cognome" wrappingWidth="197.21630859375">
                      <font>
                         <Font name="System Bold" size="24.0" />
                      </font>
                   </Text>
-                  <Text fx:id="txtAge" layoutX="19.0" layoutY="134.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Age:">
+                  <Text fx:id="txtAge" layoutX="17.0" layoutY="141.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Age:">
                      <font>
                         <Font size="18.0" />
                      </font>
                   </Text>
-                  <Text layoutX="15.0" layoutY="165.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Travel attitude:">
+                  <Text layoutX="15.0" layoutY="188.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Travel attitude:">
                      <font>
                         <Font size="18.0" />
                      </font>
                   </Text>
-                  <ImageView id="ivAdventureAttitude" fx:id="ivAdventureAttitude" fitHeight="50.0" fitWidth="50.0" layoutX="134.0" layoutY="186.0" pickOnBounds="true" preserveRatio="true">
+                  <ImageView id="ivAdventureAttitude" fx:id="ivAdventureAttitude" fitHeight="50.0" fitWidth="50.0" layoutX="125.0" layoutY="203.0" pickOnBounds="true" preserveRatio="true">
                      <image>
                         <Image url="@images/icons8-mountain-50.png" />
                      </image>
                   </ImageView>
-                  <ImageView id="ivRelaxAttitude" fx:id="ivRelaxAttitude" fitHeight="50.0" fitWidth="50.0" layoutX="134.0" layoutY="243.0" pickOnBounds="true" preserveRatio="true">
+                  <ImageView id="ivRelaxAttitude" fx:id="ivRelaxAttitude" fitHeight="50.0" fitWidth="50.0" layoutX="125.0" layoutY="268.0" pickOnBounds="true" preserveRatio="true">
                      <image>
                         <Image url="@images/icons8-holiday-50.png" />
                      </image>
                   </ImageView>
-                  <Text layoutX="14.0" layoutY="326.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Traveler rating:">
+                  <Text layoutX="15.0" layoutY="354.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Traveler rating:">
                      <font>
                         <Font size="18.0" />
                      </font>
                   </Text>
-                  <Text layoutX="19.0" layoutY="384.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Organizer rating:">
+                  <Text layoutX="17.0" layoutY="412.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Organizer rating:">
                      <font>
                         <Font size="18.0" />
                      </font>
                   </Text>
-                  <ImageView id="ivFunAttitude" fx:id="ivFunAttitude" fitHeight="50.0" fitWidth="50.0" layoutX="17.0" layoutY="186.0" pickOnBounds="true" preserveRatio="true">
+                  <ImageView id="ivFunAttitude" fx:id="ivFunAttitude" fitHeight="50.0" fitWidth="50.0" layoutX="17.0" layoutY="203.0" pickOnBounds="true" preserveRatio="true">
                      <image>
                         <Image url="@images/icons8-cocktail-50.png" />
                      </image>
                   </ImageView>
-                  <ImageView id="ivCultureAttitude" fx:id="ivCultureAttitude" fitHeight="50.0" fitWidth="50.0" layoutX="17.0" layoutY="243.0" pickOnBounds="true" preserveRatio="true">
+                  <ImageView id="ivCultureAttitude" fx:id="ivCultureAttitude" fitHeight="50.0" fitWidth="50.0" layoutX="17.0" layoutY="268.0" pickOnBounds="true" preserveRatio="true">
                      <image>
                         <Image url="@images/icons8-greek-pillar-capital-50.png" />
                      </image>
                   </ImageView>
+                  <ImageView id="ivProflePicture" fx:id="ivProfilePic" fitHeight="134.0" fitWidth="138.0" layoutX="47.0" layoutY="-74.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@images/default-profile.png" />
+                     </image>
+                  </ImageView>
                </children>
             </AnchorPane>
-            <ImageView id="ivProflePicture" fx:id="ivProfilePic" fitHeight="134.0" fitWidth="138.0" layoutX="69.0" layoutY="22.0" pickOnBounds="true" preserveRatio="true" />
          </children>
       </AnchorPane>
    </children>

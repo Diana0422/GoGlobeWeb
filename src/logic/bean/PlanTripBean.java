@@ -93,12 +93,14 @@ public class PlanTripBean {
 		try {
 			Date depDate = new SimpleDateFormat(DATE_FORMAT).parse(departureDate);
 			Date retDate = new SimpleDateFormat(DATE_FORMAT).parse(returnDate);
-			Date currentDate = new Date();
+//			Date currentDate = new Date();
 			
-			if (depDate.before(currentDate)) {
-				this.setErrorMsg("Departure date must be later than current date");
-				return false;
-			}
+			
+//			if (depDate.before(currentDate)) {
+//				this.setErrorMsg("Departure date must be later than current date");
+//				return false;
+//			}
+			
 			if (retDate.before(depDate)) {
 				this.setErrorMsg("Return date must be later than departure date");
 				return false;
@@ -168,7 +170,7 @@ public class PlanTripBean {
 
 		String logStr = "RIASSUNTO DEL VIAGGIO:\n"+"titolo: " + this.tripBean.getTitle()+ "\n"+"lunghezza: " + this.tripBean.getTripLength() + "giorni\n"+"partenza: "+this.tripBean.getDepartureDate()+"\n"+"arrivo: "+this.tripBean.getReturnDate()+"\n"+"categoria1: "+this.tripBean.getCategory1()+"\n"+"categoria2: "+this.tripBean.getCategory2();
 		for (int i = 0; i < this.tripBean.getTripLength(); i++) {
-			logStr = logStr.concat("Giorno 1:" + this.tripBean.getDays().get(i).getActivities().size() + "attivitÃ \n");
+			logStr = logStr.concat("Giorno 1:" + this.tripBean.getDays().get(i).getActivities().size() + "attivita \n");
 		}
 		Logger.getGlobal().info(logStr);
 	}

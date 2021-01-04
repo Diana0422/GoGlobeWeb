@@ -10,25 +10,25 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="600.0" prefWidth="1024.0" stylesheets="@application.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.ManageRequestGraphicControl">
+<AnchorPane prefHeight="600.0" prefWidth="1336.0" stylesheets="@css/application.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="logic.view.ManageRequestGraphic">
    <children>
-      <Label layoutY="61.0" prefHeight="35.0" prefWidth="286.0" text="Manage Requests">
+      <Label id="info" layoutY="38.0" prefHeight="35.0" prefWidth="286.0" text="Manage Requests">
          <font>
-            <Font name="System Bold" size="21.0" />
+            <Font name="System Bold" size="24.0" />
          </font>
          <padding>
             <Insets left="30.0" />
          </padding>
       </Label>
-      <TabPane id="tab-pane" layoutY="152.0" prefHeight="448.0" prefWidth="1024.0" tabClosingPolicy="UNAVAILABLE">
+      <TabPane id="tab-pane" layoutY="102.0" prefHeight="498.0" prefWidth="1336.0" tabClosingPolicy="UNAVAILABLE">
         <tabs>
-          <Tab id="tab" text="Incoming Requests">
+          <Tab text="Incoming Requests">
             <content>
               <AnchorPane id="anchor" minHeight="0.0" minWidth="0.0" prefHeight="406.0" prefWidth="1000.0">
                      <children>
-                        <ScrollPane prefHeight="406.0" prefWidth="1024.0">
+                        <ScrollPane prefHeight="470.0" prefWidth="1336.0">
                            <content>
-                              <VBox fx:id="incResults" alignment="CENTER" prefHeight="399.0" prefWidth="763.0" spacing="20.0" stylesheets="@application.css">
+                              <VBox fx:id="incResults" alignment="CENTER" prefHeight="469.0" prefWidth="763.0" spacing="20.0" stylesheets="@application.css">
                                  <padding>
                                     <Insets left="10.0" right="10.0" />
                                  </padding>
@@ -39,11 +39,11 @@
                   </AnchorPane>
             </content>
           </Tab>
-          <Tab id="tab" text="Sent Requests">
+          <Tab text="Sent Requests">
             <content>
               <AnchorPane id="anchor" minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                      <children>
-                        <ScrollPane prefHeight="406.0" prefWidth="1024.0">
+                        <ScrollPane prefHeight="470.0" prefWidth="1336.0">
                            <content>
                               <VBox fx:id="sentResults" alignment="CENTER" prefHeight="406.0" prefWidth="763.0" spacing="20.0">
                                  <padding>

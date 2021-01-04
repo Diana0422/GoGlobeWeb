@@ -56,3 +56,8 @@
 #anchor {
 	-fx-background-color: #ffffff;
 }
+
+/* Bold text for info */
+#info {
+	-fx-text-fill: #fff;
+}

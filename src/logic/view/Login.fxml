@@ -7,9 +7,9 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="1024.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="logic.view.LoginGraphic">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="1336.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="logic.view.LoginGraphic">
    <children>
-      <AnchorPane id="login-box" layoutX="543.0" layoutY="114.0" prefHeight="344.0" prefWidth="364.0" styleClass="login-box">
+      <AnchorPane id="login-box" layoutX="668.0" layoutY="128.0" prefHeight="344.0" prefWidth="364.0" styleClass="login-box">
          <children>
             <TextField id="email_tf" fx:id="tfEmail" layoutX="26.0" layoutY="120.0" />
             <Label layoutX="26.0" layoutY="35.0" text="Login">
@@ -27,7 +27,7 @@
                   <Font size="14.0" />
                </font>
             </Label>
-            <Button id="btn" fx:id="btnSignin" layoutX="28.0" layoutY="266.0" mnemonicParsing="false" onAction="#forwardHome" prefHeight="45.0" prefWidth="74.0" text="Sign in" styleClass="login-btn" />
+            <Button id="btn" fx:id="btnSignin" layoutX="28.0" layoutY="266.0" mnemonicParsing="false" onAction="#forwardHome" prefHeight="45.0" prefWidth="74.0" styleClass="login-btn" text="Sign in" />
             <Label layoutX="112.0" layoutY="279.0" text="Don't have an account?">
                <font>
                   <Font size="14.0" />

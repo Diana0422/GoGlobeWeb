@@ -10,27 +10,27 @@
 <?import javafx.scene.shape.Line?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane id="ui-root" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="550.0" prefWidth="1024.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="logic.view.RegistrationGraphic">
+<AnchorPane id="ui-root" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="550.0" prefWidth="1336.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="logic.view.RegistrationGraphic">
    <children>
-      <Pane id="form" layoutX="128.0" layoutY="127.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="315.0" prefWidth="332.0">
+      <Pane id="form" layoutX="287.0" layoutY="116.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="355.0" prefWidth="381.0">
          <children>
-            <Label fx:id="lblRegistration" layoutX="37.0" layoutY="14.0" prefHeight="17.0" prefWidth="256.0" text="Registration">
+            <Label fx:id="lblRegistration" layoutX="37.0" layoutY="24.0" prefHeight="17.0" prefWidth="256.0" text="Registration">
                <font>
-                  <Font size="18.0" />
+                  <Font size="24.0" />
                </font>
             </Label>
-            <TextField fx:id="txtEmail" layoutX="37.0" layoutY="90.0" prefHeight="25.0" prefWidth="111.0" promptText="Email" />
-            <TextField fx:id="txtName" layoutX="37.0" layoutY="136.0" prefHeight="25.0" prefWidth="111.0" promptText="Name" />
-            <TextField fx:id="txtSurname" layoutX="179.0" layoutY="136.0" prefHeight="25.0" prefWidth="111.0" promptText="Surname" />
-            <TextField fx:id="txtBirthday" layoutX="37.0" layoutY="185.0" prefHeight="25.0" prefWidth="111.0" promptText="dd/mm/yyyy" />
-            <PasswordField fx:id="txtPassword" layoutX="179.0" layoutY="90.0" prefHeight="25.0" prefWidth="111.0" promptText="Password" />
+            <TextField fx:id="txtEmail" layoutX="37.0" layoutY="90.0" prefHeight="30.0" prefWidth="152.0" promptText="Email" />
+            <TextField fx:id="txtName" layoutX="37.0" layoutY="144.0" prefHeight="30.0" prefWidth="152.0" promptText="Name" />
+            <TextField fx:id="txtSurname" layoutX="191.0" layoutY="144.0" prefHeight="30.0" prefWidth="152.0" promptText="Surname" />
+            <TextField fx:id="txtBirthday" layoutX="37.0" layoutY="202.0" prefHeight="30.0" prefWidth="152.0" promptText="dd/mm/yyyy" />
+            <PasswordField fx:id="txtPassword" layoutX="191.0" layoutY="90.0" prefHeight="30.0" prefWidth="152.0" promptText="Password" />
             <Label layoutX="37.0" layoutY="73.0" prefHeight="17.0" prefWidth="111.0" text="Email" />
-            <Label layoutX="179.0" layoutY="73.0" prefHeight="17.0" prefWidth="111.0" text="Password" />
-            <Label layoutX="37.0" layoutY="119.0" prefHeight="17.0" prefWidth="111.0" text="Name" />
-            <Label layoutX="179.0" layoutY="119.0" prefHeight="17.0" prefWidth="111.0" text="Surname" />
-            <Label layoutX="37.0" layoutY="168.0" prefHeight="17.0" prefWidth="111.0" text="Birthday" />
-            <Line endX="153.0" layoutX="138.0" layoutY="239.0" opacity="0.26" startX="-100.0" strokeWidth="0.5" />
-            <Button id="btn" fx:id="btnSignIn" layoutX="38.0" layoutY="261.0" mnemonicParsing="false" onAction="#validate" text="Sign in">
+            <Label layoutX="191.0" layoutY="73.0" prefHeight="17.0" prefWidth="111.0" text="Password" />
+            <Label layoutX="37.0" layoutY="128.0" prefHeight="17.0" prefWidth="111.0" text="Name" />
+            <Label layoutX="191.0" layoutY="128.0" prefHeight="17.0" prefWidth="111.0" text="Surname" />
+            <Label layoutX="37.0" layoutY="185.0" prefHeight="17.0" prefWidth="111.0" text="Birthday" />
+            <Line endX="153.0" layoutX="138.0" layoutY="250.0" opacity="0.26" startX="-100.0" strokeWidth="0.5" />
+            <Button id="btn" fx:id="btnSignIn" layoutX="38.0" layoutY="284.0" mnemonicParsing="false" onAction="#validate" text="Sign in">
                <font>
                   <Font size="14.0" />
                </font>
@@ -42,9 +42,9 @@
             <URL value="@css/registration.css" />
          </stylesheets>
       </Pane>
-      <Label contentDisplay="CENTER" layoutX="591.0" layoutY="201.0" prefHeight="148.0" prefWidth="287.0" text="plan your trip, share it with the community and you are ready to go." textAlignment="CENTER" textFill="WHITE" textOverrun="CLIP" wrapText="true" AnchorPane.bottomAnchor="201.0" AnchorPane.leftAnchor="591.0" AnchorPane.topAnchor="201.0">
+      <Label contentDisplay="CENTER" layoutX="827.0" layoutY="211.0" prefHeight="148.0" prefWidth="287.0" text="plan your trip, share it with the community and you are ready to go." textAlignment="CENTER" textFill="WHITE" textOverrun="CLIP" wrapText="true" AnchorPane.bottomAnchor="191.0" AnchorPane.leftAnchor="827.0" AnchorPane.topAnchor="211.0">
          <font>
-            <Font name="System Bold" size="18.0" />
+            <Font name="System Bold" size="24.0" />
          </font>
       </Label>
    </children>

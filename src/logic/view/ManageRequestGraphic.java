@@ -28,7 +28,7 @@ public class ManageRequestGraphic implements Initializable {
 		try {
 			for (int i=0; i<inc.size(); i++) {
 				FXMLLoader loader = new FXMLLoader();
-				loader.setLocation(getClass().getResource("/application/cards/RequestItem.fxml"));
+				loader.setLocation(getClass().getResource("/logic/view/RequestItem.fxml"));
 				
 				AnchorPane anchor = loader.load();
 				RequestItemGraphic ric = loader.getController();

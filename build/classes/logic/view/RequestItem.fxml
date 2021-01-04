@@ -7,7 +7,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane id="form" prefHeight="120.0" prefWidth="700.0" style="-fx-background-color: #ffffff; -fx-effect: dropshadow(three-pass-box, grey, 10, 0, 5, 2);" stylesheets="@css/application.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.cards.RequestItemControl">
+<AnchorPane id="form" prefHeight="120.0" prefWidth="700.0" style="-fx-background-color: #ffffff; -fx-effect: dropshadow(three-pass-box, grey, 10, 0, 5, 2);" stylesheets="@css/application.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="logic.view.RequestItemGraphic">
    <children>
       <HBox alignment="CENTER" layoutX="350.0" layoutY="10.0" prefHeight="100.0" prefWidth="323.0" spacing="40.0">
          <children>
