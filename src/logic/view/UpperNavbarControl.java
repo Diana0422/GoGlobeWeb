@@ -4,7 +4,6 @@ import java.net.URL;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -17,6 +16,7 @@ import javafx.scene.control.MenuItem;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
+import logic.bean.PlanTripBean;
 import logic.bean.SessionBean;
 import logic.bean.TripBean;
 
@@ -97,7 +97,7 @@ public class UpperNavbarControl implements Initializable {
 
     @FXML
     void displayPlanTrip(MouseEvent event) {
-    	loadUI("/logic/view/PlanTrip");
+    	loadUI("/logic/view/SelectTripPreferences");
     }
 
     @FXML
@@ -127,7 +127,7 @@ public class UpperNavbarControl implements Initializable {
 
     @FXML
     void loadPlanTripView(ActionEvent event) {
-    	loadUI("/logic/view/PlanTrip");
+    	loadUI("/logic/view/SelectTripPreferences");
     }
 
     @FXML
@@ -238,6 +238,25 @@ public class UpperNavbarControl implements Initializable {
 			Logger.getLogger(UpperNavbarControl.class.getName()).log(Level.SEVERE, null, e);
 		}
     }
+    
+
+
+	//Load UI and pass data to UI's graphic controller 
+	public void loadUI(String ui, Object data) {
+		try {
+			FXMLLoader loader = new FXMLLoader(getClass().getResource(ui+".fxml"));
+			Parent root = loader.load();
+			
+			if (data instanceof PlanTripBean) {
+				System.out.println("WOW, DATA E' DI TIPO PLAN TRIP BEAN");
+				PlanTripGraphic controller = loader.getController();
+				controller.initPlanTripBean((PlanTripBean) data);
+			}		
+			addToPane(root);
+		} catch (IOException e) {
+			Logger.getLogger(UpperNavbarControl.class.getName()).log(Level.SEVERE, null, e);
+		}
+	}
     
     public void addToPane(Parent root) {
 		borderpane.setCenter(root);
