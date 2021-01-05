@@ -27,6 +27,10 @@ body {
     font-family: BarlowBold;
 }
 
+#search-btn, #plan-btn, #or, #bar {
+	margin-right: 10px;
+}
+
 .price-tag {
     display: flex;
 }

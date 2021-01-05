@@ -68,11 +68,11 @@
             <!-- search bar-->
             <div class="search-bar">
                 <form class="form-inline" action="joinTrip.jsp" method="POST" name="search-form">
-                	<input type="text" class="form-control" name="searchVal" placeholder="Search trip...">
-                	<button type="submit" name="search" class="btn btn-primary">Search</button>
+                	<input id="bar" type="text" class="form-control" name="searchVal" placeholder="Search trip...">
+                	<button id="search-btn" type="submit" name="search" class="btn btn-primary">Search</button>
                 	
                 	<h2 id="or">or</h2>
-                	<button type="submit" name="plantrip" class="btn btn-primary">Plan Trip</button>
+                	<button id="plan-btn" type="submit" name="plantrip" class="btn btn-primary">Plan Trip</button>
                 	<%
           				if (request.getParameter("plantrip") != null) {
           			%>
