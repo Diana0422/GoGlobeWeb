@@ -15,6 +15,7 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
+import logic.bean.SessionBean;
 import logic.bean.TripBean;
 import logic.control.ProfileController;
 
@@ -53,9 +54,20 @@ public class ProfileGraphic implements Initializable {
     @FXML
     private ImageView ivProfilePic;
 
-
+    /* Beans */
+    private SessionBean session;
     
-	private void loadGrid(GridPane tripsGrid, List<TripBean> trips ) {
+    
+    public SessionBean getSession() {
+		return session;
+	}
+
+	public void setSession(SessionBean session) {
+		this.session = session;
+	}
+    
+    /* Action methods */
+	private void loadGrid(GridPane tripsGrid, List<TripBean> trips) {
 		
 		int column = 0;
 		int row = 1;
@@ -69,7 +81,7 @@ public class ProfileGraphic implements Initializable {
 				AnchorPane anchor = loader.load();
 					
 				CardGraphic cc = loader.getController();
-				cc.setData(trips.get(i));
+				cc.setData(trips.get(i), getSession());
 					
 				if (column == 3) {
 					row++;
@@ -105,9 +117,6 @@ public class ProfileGraphic implements Initializable {
 		loadGrid(previousGrid, previousTripBeans);
 		
 	}
-
-
-
 
 }
 

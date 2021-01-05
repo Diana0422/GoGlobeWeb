@@ -8,6 +8,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import logic.bean.LoginBean;
+import logic.bean.SessionBean;
 
 public class LoginGraphic {
 	
@@ -31,7 +32,13 @@ public class LoginGraphic {
     	String logStr = "LOGIN TRIAL:"+"\n"+"USERNAME: " + tfEmail.getText()+"\n"+"PASSWORD: " + pfPassword.getText();
     	Logger.getGlobal().info(logStr);
     	if (loginBean.validate()) {
-        	UpperNavbarControl.getInstance().loadUI("Home");
+    		String welcome = "Welcome "+loginBean.getNome()+" "+loginBean.getCognome();
+    		SessionBean session = new SessionBean();
+    		session.setEmail(loginBean.getUsername());
+    		session.setName(loginBean.getNome());
+    		session.setSurname(loginBean.getCognome());
+    		UpperNavbarControl.getInstance().setSession(session);
+        	UpperNavbarControl.getInstance().loadHome(welcome);
     	}else {
     		logStr = "INVALID LOGIN.";
     		Logger.getGlobal().info(logStr);

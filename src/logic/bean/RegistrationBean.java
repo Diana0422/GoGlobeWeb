@@ -1,8 +1,6 @@
 package logic.bean;
 import java.util.logging.Logger;
 
-import logic.control.RegistrationController;
-
 public class RegistrationBean {
 	private String email;
 	private String password;
@@ -63,11 +61,9 @@ public class RegistrationBean {
 		// registration values control
 		if (name== null || surname==null || email == null || password == null || birthday == null) {
 			return false;
+		} else {
+			return true;
 		}
-		
-		return RegistrationController.getInstance().register(email, password, name, surname, birthday);
-		
-		
 	}
 	
 }

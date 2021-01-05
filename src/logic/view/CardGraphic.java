@@ -9,6 +9,8 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
+import logic.bean.SessionBean;
 import logic.bean.TripBean;
 
 public class CardGraphic implements Initializable {
@@ -37,10 +39,38 @@ public class CardGraphic implements Initializable {
     @FXML
     private Button btnMore;
     
-    public void setData(TripBean tripBean) {
+    /* Beans */
+    
+    private TripBean tripBean;
+    
+    private SessionBean session;
+    
+    public TripBean getTripBean() {
+		return tripBean;
+	}
+
+	public void setTripBean(TripBean tripBean) {
+		this.tripBean = tripBean;
+	}
+
+	public void setSession(SessionBean session) {
+		System.out.println(session);
+		this.session = session;
+		System.out.println("Card session: "+session);
+	}
+    
+	/* Action methods */
+	@FXML
+    void loadTripInfo(MouseEvent event) {
+    	UpperNavbarControl.getInstance().loadTripInfo(tripBean, session);
+    }
+    
+    public void setData(TripBean tripBean, SessionBean session) {
 //    	Image img = new Image(getClass().getResourceAsStream(tripBean.getImgSrc()));
 //    	imgTrip.setImage(img);
     	
+    	setTripBean(tripBean);
+    	setSession(session);
     	lblTitle.setText(tripBean.getTitle());
     	lblPrice.setText(tripBean.getPrice()+"€");
     	Image catImg = new Image(getClass().getResourceAsStream("/logic/view/images/icons8-greek-pillar-capital-50.png"));

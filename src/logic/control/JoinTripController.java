@@ -54,6 +54,7 @@ public class JoinTripController {
 		// Pick the trip corresponding to the tripBean from persistence
 		Trip trip = tripDao.getTrip(tripBean.getTitle());
 		
+		System.out.println(session.getEmail());
 		if (!trip.getOrganizer().getEmail().equals(session.getEmail())) { // only if the user is not the organizer
 			// Instantiate a new request
 			Request request = new Request();

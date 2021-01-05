@@ -17,10 +17,27 @@ import javafx.scene.control.MenuItem;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
+import logic.bean.SessionBean;
+import logic.bean.TripBean;
 
 public class UpperNavbarControl implements Initializable {
+	
+	// SINGLETON
 
 	private static UpperNavbarControl instance = null;
+	
+	private SessionBean session;
+	
+	private UpperNavbarControl() {
+    }
+    
+    public static UpperNavbarControl getInstance() {
+    	if (instance == null) {
+    		instance = new UpperNavbarControl();
+    	}
+    	
+    	return instance;
+    }
 	
 	@FXML
     private ImageView imgLogo;
@@ -60,6 +77,18 @@ public class UpperNavbarControl implements Initializable {
 
     @FXML
     private BorderPane borderpane;
+    
+    /* Session Bean SETTERS AND GETTERS */
+    
+    public SessionBean getSession() {
+		return session;
+	}
+
+	public void setSession(SessionBean session) {
+		this.session = session;
+	}
+	
+	/* Action methods */
 
     @FXML
     void displayJoinTrip(MouseEvent event) {
@@ -111,21 +140,99 @@ public class UpperNavbarControl implements Initializable {
     	loadUI("logic/view/Home");
     }
     
-    private UpperNavbarControl() {
+    void loadJoinTrip() {
+    	FXMLLoader loader = new FXMLLoader();
+    	loader.setLocation(getClass().getResource("/logic/view/JoinTrip.fxml"));
+    	String logStr = "Loaded UI: JoinTrip.fxml";
+		Logger.getGlobal().info(logStr);
+		
+		try {
+			Parent root = loader.load();
+			JoinTripGraphic graphic = loader.getController();
+	    	graphic.setSession(getSession());
+			addToPane(root);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			//Error VIEW LOADING
+			e.printStackTrace();
+		}
     }
     
-    public static UpperNavbarControl getInstance() {
-    	if (instance == null) {
-    		instance = new UpperNavbarControl();
-    	}
-    	
-    	return instance;
+    void loadRequests() {
+    	FXMLLoader loader = new FXMLLoader();
+    	loader.setLocation(getClass().getResource("/logic/view/ManageRequests.fxml"));
+    	String logStr = "Loaded UI: ManageRequests.fxml";
+		Logger.getGlobal().info(logStr);
+		
+		try {
+			Parent root = loader.load();
+			addToPane(root);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			//Error VIEW LOADING
+			e.printStackTrace();
+		}
+    }
+    
+    void loadPlanTrip() {
+    	FXMLLoader loader = new FXMLLoader();
+    	loader.setLocation(getClass().getResource("/logic/view/PlanTrip.fxml"));
+    	String logStr = "Loaded UI: PlanTrip.fxml";
+		Logger.getGlobal().info(logStr);
+		//TODO
+    }
+    
+    void loadHome(String welcome) {
+    	FXMLLoader loader = new FXMLLoader();
+    	setSession(session); //TODO move this to login and registration
+    	loader.setLocation(getClass().getResource("/logic/view/Home.fxml"));
+    	String logStr = "Loaded UI: Home.fxml";
+		Logger.getGlobal().info(logStr);
+    	try {
+			Parent root = loader.load();
+			HomeGraphic graphic = loader.getController();
+	    	graphic.setLabelText(welcome);
+			addToPane(root);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			//Error VIEW LOADING
+			e.printStackTrace();
+		}
+    }
+    
+    void loadTripInfo(TripBean choice, SessionBean session) {
+    	FXMLLoader loader = new FXMLLoader();
+    	loader.setLocation(getClass().getResource("/logic/view/TripInfo.fxml"));
+    	String logStr = "Loaded UI: TripInfo.fxml";
+		Logger.getGlobal().info(logStr);
+    	try {
+			Parent root = loader.load();
+			TripInfoGraphic tig = loader.getController();
+	    	tig.setTitleText(choice.getTitle());
+	    	tig.setPriceText(Integer.toString(choice.getPrice()));
+	    	tig.setDescriptionText(choice.getDescription());
+	    	tig.setDepartureText(choice.getDepartureDate());
+	    	tig.setReturnText(choice.getReturnDate());
+	    	tig.setCategory1Text(choice.getCategory1());
+	    	tig.setCategory2Text(choice.getCategory2());
+	    	tig.setTripBean(choice);
+	    	tig.setSession(session);
+	    	
+	    	tig.addDayTabs(choice.getDays());
+			addToPane(root);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			//Error VIEW LOADING
+			e.printStackTrace();
+		}
     }
     
     
     public void loadUI(String ui) {
     	try {
 			Parent root = FXMLLoader.load(getClass().getResource(ui+".fxml"));
+			String logStr = "Loaded UI: "+ui+".fxml";
+			Logger.getGlobal().info(logStr);
 			addToPane(root);
 		} catch (IOException e) {
 			Logger.getLogger(UpperNavbarControl.class.getName()).log(Level.SEVERE, null, e);

@@ -8,6 +8,8 @@ public class HomeGraphic {
 	@FXML
 	private Label lblWelcome;
 	
+	/*Action methods */
+	
 	public void setLabelText(String text) {
 		lblWelcome.setText(text);
 	}
@@ -15,11 +17,11 @@ public class HomeGraphic {
 	
 	@FXML
 	void forwardJoinTrip(MouseEvent event) {
-			UpperNavbarControl.getInstance().displayJoinTrip(event);
+			UpperNavbarControl.getInstance().loadJoinTrip();
 	}
 
 	@FXML
 	void forwardPlanTrip(MouseEvent event) {
-			UpperNavbarControl.getInstance().displayPlanTrip(event);
+			UpperNavbarControl.getInstance().loadPlanTrip();
 	}
 }

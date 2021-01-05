@@ -3,11 +3,13 @@ package logic.view;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.input.MouseEvent;
+import logic.bean.RequestBean;
+import logic.control.ManageRequestController;
 
 public class RequestItemGraphic implements Initializable {
 
@@ -29,21 +31,35 @@ public class RequestItemGraphic implements Initializable {
     @FXML
     private Label lblAge;
     
-    public void setData(String tripTitle, String userName, String userSurname) {
-    	lblTitle.setText(tripTitle);
-    	lblUser.setText(userName+" "+userSurname);
+    private RequestBean request;
+    
+    public RequestBean getRequest() {
+		return request;
+	}
+
+	public void setRequest(RequestBean request) {
+		this.request = request;
+	}
+    
+    public void setData(RequestBean bean) {
+    	setRequest(bean);
+    	lblTitle.setText(bean.getTripTitle());
+    	lblUser.setText(bean.getSenderName()+" "+bean.getSenderSurname());
     }
     
-    public void accept(ActionEvent event) {
-    	//TODO dummy
+    @FXML
+    public void accept(MouseEvent event) {
+    	ManageRequestController.getInstance().acceptRequest(getRequest());
     }
     
-    public void viewProfile(ActionEvent event) {
-    	//TODO dummy
+    @FXML
+    public void viewProfile(MouseEvent event) {
+    	ManageRequestController.getInstance().declineRequest(getRequest());
     }
     
-    public void decline(ActionEvent event) {
-    	//TODO dummy
+    @FXML
+    public void decline(MouseEvent event) {
+    	ManageRequestController.getInstance().declineRequest(getRequest());
     }
 
 	@Override

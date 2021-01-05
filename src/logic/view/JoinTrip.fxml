@@ -24,7 +24,7 @@
                </font>
             </Label>
             <TextField fx:id="txtSearch" layoutX="168.0" layoutY="27.0" promptText="Search trip..." />
-            <Button id="btn" fx:id="btnSearch" layoutX="337.0" layoutY="24.0" mnemonicParsing="false" onAction="#search" text="Search">
+            <Button id="btn" fx:id="btnSearch" layoutX="337.0" layoutY="24.0" mnemonicParsing="false" onMouseClicked="#search" text="Search">
                <font>
                   <Font size="14.0" />
                </font>

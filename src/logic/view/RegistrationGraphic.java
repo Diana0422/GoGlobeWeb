@@ -1,14 +1,11 @@
 package logic.view;
 
-import java.io.IOException;
-
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
+import logic.bean.SessionBean;
 import logic.control.RegistrationController;
 
 public class RegistrationGraphic {
@@ -30,8 +27,22 @@ public class RegistrationGraphic {
 	@FXML
 	private Label lblMessage;
 	
+	/* Beans */
 	
-	public void validate(ActionEvent event) throws IOException {
+	private SessionBean session;
+	
+	public SessionBean getSession() {
+		return session;
+	}
+
+	public SessionBean setSession(SessionBean session) {
+		this.session = session;
+		return session;
+	}
+	
+	/* Action methods */
+	
+	public void validate(ActionEvent event) {
 		String email = txtEmail.getText();
 		String password = txtPassword.getText();
 		String name = txtName.getText();
@@ -42,17 +53,12 @@ public class RegistrationGraphic {
 			lblMessage.setText("Input values not valid.");
 		} else {
 			/* Call the controller to register the user */
-			if (RegistrationController.getInstance().register(email, password, name, surname, birthday)) {
-				
-				FXMLLoader loader = new FXMLLoader(getClass().getResource("/logic/view/Home.fxml"));
-				Parent root = loader.load();
-				UpperNavbarControl parentCtrl = UpperNavbarControl.getInstance();
-				parentCtrl.addToPane(root);
+			if ((setSession(RegistrationController.getInstance().register(email, password, name, surname, birthday)))!= null) {
 				
 				/* Set the label in the home view */
-				String text = "Welcome"+" "+name+" "+surname;
-				HomeGraphic c = loader.getController();
-				c.setLabelText(text);
+				String welcome = "Welcome"+" "+name+" "+surname;
+				UpperNavbarControl.getInstance().setSession(session);
+				UpperNavbarControl.getInstance().loadHome(welcome);
 			} else {
 				lblMessage.setText("User already registered with this email.");
 			}

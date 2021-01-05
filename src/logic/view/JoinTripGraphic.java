@@ -5,7 +5,6 @@ import java.net.URL;
 import java.util.List;
 import java.util.ResourceBundle;
 
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -13,9 +12,11 @@ import javafx.geometry.Insets;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Region;
+import logic.bean.SessionBean;
 import logic.bean.TripBean;
 import logic.control.JoinTripController;
 
@@ -35,15 +36,30 @@ public class JoinTripGraphic implements Initializable {
 	@FXML
     private GridPane cardsLayout;
 	
+	/* Beans */
+	
 	private List<TripBean> tripBeans;
+	
+	private SessionBean session;
+	
+	public SessionBean getSession() {
+		return session;
+	}
+
+	public void setSession(SessionBean session) {
+		this.session = session;
+		System.out.println("JoinTrip session: "+session);
+	}
+	
+	/* Action methods */
 	
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
 		this.tripBeans = JoinTripController.getInstance().searchTrips(txtSearch.getText());
-		this.loadGrid(txtSearch.getText(), true);
 	}
 	
-	public void search(ActionEvent event) {
+	@FXML
+	public void search(MouseEvent event) {
 		loadGrid(txtSearch.getText(), false);
 	}
 	
@@ -54,7 +70,6 @@ public class JoinTripGraphic implements Initializable {
 		
 		try {
 			for (int i=0; i<this.tripBeans.size(); i++) {
-				
 				if (isFiltered(tripBeans.get(i), searchVal) || skipFilter) {
 					FXMLLoader loader = new FXMLLoader();
 					loader.setLocation(getClass().getResource("/logic/view/TripCard.fxml"));
@@ -62,8 +77,7 @@ public class JoinTripGraphic implements Initializable {
 					AnchorPane anchor = loader.load();
 						
 					CardGraphic cc = loader.getController();
-					cc.setData(tripBeans.get(i));
-						
+					cc.setData(tripBeans.get(i), session);
 					if (column == 3) {
 						row++;
 						column = 0;

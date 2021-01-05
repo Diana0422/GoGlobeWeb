@@ -10,7 +10,6 @@ import javafx.fxml.Initializable;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
 import logic.bean.RequestBean;
-import logic.bean.SessionBean;
 import logic.control.ManageRequestController;
 
 public class ManageRequestGraphic implements Initializable {
@@ -20,12 +19,12 @@ public class ManageRequestGraphic implements Initializable {
 	@FXML
 	private VBox sentResults;
 	
-	private SessionBean session;
+	/* action methods */
 
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
-		List<RequestBean> inc = ManageRequestController.getInstance().getUserIncomingRequests(this.getSession());
-		List<RequestBean> sent = ManageRequestController.getInstance().getUserSentRequests(this.getSession());
+		List<RequestBean> inc = ManageRequestController.getInstance().getUserIncomingRequests(UpperNavbarControl.getInstance().getSession());
+		List<RequestBean> sent = ManageRequestController.getInstance().getUserSentRequests(UpperNavbarControl.getInstance().getSession());
 		
 		try {
 			for (int i=0; i<inc.size(); i++) {
@@ -34,7 +33,7 @@ public class ManageRequestGraphic implements Initializable {
 				
 				AnchorPane anchor = loader.load();
 				RequestItemGraphic ric = loader.getController();
-				ric.setData(inc.get(i).getTripTitle(), inc.get(i).getSenderName(), inc.get(i).getSenderSurname());
+				ric.setData(inc.get(i));
 				
 				incResults.getChildren().add(anchor);
 			}
@@ -45,7 +44,7 @@ public class ManageRequestGraphic implements Initializable {
 				
 				AnchorPane anchor = loader.load();
 				RequestItemGraphic ric = loader.getController();
-				ric.setData(inc.get(i).getTripTitle(), inc.get(i).getSenderName(), inc.get(i).getSenderSurname());
+				ric.setData(inc.get(i));
 				
 				sentResults.getChildren().add(anchor);
 			}
@@ -53,13 +52,5 @@ public class ManageRequestGraphic implements Initializable {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-	}
-
-	public SessionBean getSession() {
-		return session;
-	}
-
-	public void setSession(SessionBean session) {
-		this.session = session;
 	}
 }

@@ -1,6 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
-    
+
+<%@page import="logic.control.RegistrationController"%>
+
 <!-- declaration and initialization of a register bean -->
 <jsp:useBean id="registerBean" scope="request" class="logic.bean.RegistrationBean" />
 <jsp:useBean id="sessionBean" scope="session" class="logic.bean.SessionBean"/>
@@ -66,9 +68,7 @@
                 <%
     				if (request.getParameter("signin") != null) {
         					if (registerBean.validate()) {
-        						sessionBean.setName(registerBean.getName());
-        						sessionBean.setSurname(registerBean.getSurname());
-        						sessionBean.setEmail(registerBean.getEmail());
+        						sessionBean = RegistrationController.getInstance().register(registerBean.getEmail(), registerBean.getPassword(), registerBean.getName(), registerBean.getSurname(), registerBean.getBirthday());
 							%>
         						<jsp:forward page="home.jsp"/>
 							<%
