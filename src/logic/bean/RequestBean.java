@@ -4,6 +4,8 @@ public class RequestBean {
 	private String tripTitle;
 	private String senderName;
 	private String senderSurname;
+	private String receiverName;
+	private String receiverSurname;
 	private String senderEmail;
 	private String receiverEmail;
 	private int senderAge;
@@ -54,5 +56,21 @@ public class RequestBean {
 
 	public void setReceiverEmail(String receiverEmail) {
 		this.receiverEmail = receiverEmail;
+	}
+
+	public String getReceiverName() {
+		return receiverName;
+	}
+
+	public void setReceiverName(String receiverName) {
+		this.receiverName = receiverName;
+	}
+
+	public String getReceiverSurname() {
+		return receiverSurname;
+	}
+
+	public void setReceiverSurname(String receiverSurname) {
+		this.receiverSurname = receiverSurname;
 	}
 }

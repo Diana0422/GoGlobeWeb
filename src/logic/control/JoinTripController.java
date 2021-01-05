@@ -1,4 +1,5 @@
 package logic.control;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
 
@@ -32,9 +33,14 @@ public class JoinTripController {
 		Logger.getGlobal().info(logStr);
 		TripDAO dao = new TripDAOFile();
 		List<Trip> trips = dao.getAllTrips();
+		List<Trip> filteredTrips = new ArrayList<>();
+		
+		for (Trip trip: trips) {
+			if (trip.getTitle().contains(value)) filteredTrips.add(trip);
+		}
 		
 		/* Convert List<Trip> into List<TripBean> */
-		List<TripBean> list = ConversionController.getInstance().convertTripList(trips);
+		List<TripBean> list = ConversionController.getInstance().convertTripList(filteredTrips);
 		
 		logStr = "Trip Beans: "+list;
 		Logger.getGlobal().info(logStr);
@@ -48,15 +54,18 @@ public class JoinTripController {
 		// Pick the trip corresponding to the tripBean from persistence
 		Trip trip = tripDao.getTrip(tripBean.getTitle());
 		
-		// Instantiate a new request
-		Request request = new Request();
-		request.setSender(userDao.getUser(session.getEmail()));
-		request.setReceiver(trip.getOrganizer());
-		request.setTarget(trip);
+		if (!trip.getOrganizer().getEmail().equals(session.getEmail())) { // only if the user is not the organizer
+			// Instantiate a new request
+			Request request = new Request();
+			request.setSender(userDao.getUser(session.getEmail()));
+			request.setReceiver(trip.getOrganizer());
+			request.setTarget(trip);
+			
+			// Save the request in persistence
+			RequestDAO reqDao = new  RequestDAOFile();
+			if (reqDao.getRequest(request.getTarget().getTitle(), request.getSender().getEmail(), request.getReceiver().getEmail())== null) return reqDao.saveRequest(request);
+		} 
 		
-		// Save the request in persistence
-		RequestDAO reqDao = new  RequestDAOFile();
-		if (reqDao.getRequest(request.getTarget().getTitle(), request.getSender().getEmail(), request.getReceiver().getEmail())== null) return reqDao.saveRequest(request);
 		return false;
 		
 	}

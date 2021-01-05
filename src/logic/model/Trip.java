@@ -189,6 +189,6 @@ public class Trip implements Serializable {
 	}
 	
 	public void addParticipant(User participant) {
-		this.participants.add(participant);
+		if (!getParticipants().contains(participant)) getParticipants().add(participant);
 	}
 }

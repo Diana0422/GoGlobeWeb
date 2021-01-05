@@ -9,11 +9,13 @@ import logic.bean.ActivityBean;
 import logic.bean.DayBean;
 import logic.bean.RequestBean;
 import logic.bean.TripBean;
+import logic.bean.UserBean;
 import logic.model.Activity;
 import logic.model.Day;
 import logic.model.Request;
 import logic.model.Trip;
 import logic.model.TripCategory;
+import logic.model.User;
 
 public class ConversionController {
 
@@ -94,6 +96,7 @@ public class ConversionController {
 		for (int i=0; i<trips.size(); i++) {
 			Trip t = trips.get(i);
 			TripBean bean = new TripBean();
+			bean.setOrganizer(convertToUserBean(t.getOrganizer()));
 			bean.setId(t.getId());
 			bean.setTitle(t.getTitle());
 			bean.setPrice(t.getPrice());
@@ -117,7 +120,7 @@ public class ConversionController {
 		
 	}
 	
-	
+
 	public List<RequestBean> convertRequestList(List<Request> requests) {
 		List<RequestBean> requestBeans = new ArrayList<>();
 		
@@ -128,7 +131,9 @@ public class ConversionController {
 			bean.setSenderSurname(req.getSender().getSurname());
 			bean.setSenderEmail(req.getSender().getEmail());
 			bean.setReceiverEmail(req.getReceiver().getEmail());
-//			bean.setSenderAge(req.getSender().getAge());
+			bean.setReceiverName(req.getReceiver().getName());
+			bean.setReceiverSurname(req.getReceiver().getSurname());
+			bean.setSenderAge(req.getSender().calculateUserAge());
 			requestBeans.add(bean);
 		}
 		return requestBeans;
@@ -143,4 +148,15 @@ public class ConversionController {
 			
 		return TripCategory.NONE;
 	}	
+	
+	public UserBean convertToUserBean(User user) {
+		UserBean bean = new UserBean();
+		bean.setEmail(user.getEmail());
+		bean.setName(user.getName());
+		bean.setSurname(user.getSurname());
+		bean.setBio(user.getBio());
+		bean.setPoints(user.getPoints());
+		bean.setAge(user.calculateUserAge());
+		return bean;
+	}
 }

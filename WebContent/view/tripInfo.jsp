@@ -4,12 +4,12 @@
 <!-- declaration of a join trip bean -->
 <jsp:useBean id="joinTripBean" scope="session" class="logic.bean.JoinTripBean"/>
 <jsp:useBean id="sessionBean" scope="session" class="logic.bean.SessionBean"/>
+<jsp:useBean id="profileBean" scope="request" class="logic.bean.ProfileBean"/>
 
 <%@page import="java.util.List"%>      <%--Importing all the dependent classes--%> 
 <%@page import="logic.bean.DayBean"%>
 <%@page import="logic.bean.ActivityBean"%>
 <%@page import="logic.control.JoinTripController"%>
-
 
 
 <!DOCTYPE html>
@@ -96,6 +96,23 @@
       
                 			<h1><%= joinTripBean.getTrip().getTitle() %></h1>
             			</div>
+            			<form action="tripInfo.jsp" method="POST">
+            				<div class="organizer user-tag">
+            					<h3><%= joinTripBean.getTrip().getOrganizer().getName() %></h3>
+            					<h3><%= joinTripBean.getTrip().getOrganizer().getSurname() %></h3>
+            					<button type="submit" class="btn btn-primary" name="viewprofile">profile</button>
+            				</div>
+            				
+            				<%
+            					if (request.getParameter("viewprofile") != null) {
+            						System.out.println(joinTripBean.getTrip().getOrganizer().getName());
+            						profileBean.setUser(joinTripBean.getTrip().getOrganizer());
+            						%>
+            						<jsp:forward page="profile.jsp"/>
+            						<% 
+            					}
+            				%>
+            			</form>
             			<div class="price-tag" style="margin-top:10%; margin-bottom: 5%;">
                 			<h4>Starting price:</h4>
                 			<h5><%= joinTripBean.getTrip().getPrice() %></h5>

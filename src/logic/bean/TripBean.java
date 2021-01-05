@@ -18,6 +18,8 @@ public class TripBean {
 	private String description;
 	private String minAge;
 	private String maxAge;
+	private UserBean organizer;
+	private List<UserBean> participants;
 	
 	
 	public void addActivity(int day, ActivityBean activity) {
@@ -143,6 +145,22 @@ public class TripBean {
 
 	public void setDescription(String description) {
 		this.description = description;
+	}
+
+	public UserBean getOrganizer() {
+		return organizer;
+	}
+
+	public void setOrganizer(UserBean organizer) {
+		this.organizer = organizer;
+	}
+
+	public List<UserBean> getParticipants() {
+		return participants;
+	}
+
+	public void setParticipants(List<UserBean> participants) {
+		this.participants = participants;
 	}
 	
 	

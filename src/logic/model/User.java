@@ -2,9 +2,11 @@ package logic.model;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
+
 
 public class User implements Serializable {
 	
@@ -43,6 +45,15 @@ public class User implements Serializable {
 	
 	public User() {
 		// Empty Constructor
+	}
+	
+	public int calculateUserAge() {
+		Calendar c = Calendar.getInstance();
+		c.setTime(new Date());
+		int today = c.get(Calendar.YEAR);
+		c.setTime(birthday);
+		int birth = c.get(Calendar.YEAR);
+		return today-birth;
 	}
 
 	public String getName() {

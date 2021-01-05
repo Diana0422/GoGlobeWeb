@@ -7,6 +7,6 @@ public interface TripDAO {
 	
 	public List<Trip> getAllTrips();
 	public Trip getTrip(String title);
-	public boolean updateTrip(Trip newTrip, Trip oldTrip);
 	public boolean saveTrip(Trip trip);
+	boolean updateTrip(Trip newTrip, String tripTitle);
 }

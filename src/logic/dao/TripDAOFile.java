@@ -79,13 +79,13 @@ public class TripDAOFile implements TripDAO {
 
 
 	@Override
-	public boolean updateTrip(Trip newTrip, Trip oldTrip) {
+	public boolean updateTrip(Trip newTrip, String tripTitle) {
 		// Updates trip information into back-end file
 		
 		List<Trip> trips = getAllTrips();
 		
 		for (Trip tmp: trips) {
-			if (tmp.getTitle().equals(oldTrip.getTitle())) {
+			if (tmp.getTitle().equals(tripTitle)) {
 				tmp.setTitle(newTrip.getTitle());
 				tmp.setPrice(newTrip.getPrice());
 				tmp.setCategory1(newTrip.getCategory1());

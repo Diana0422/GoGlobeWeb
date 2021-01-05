@@ -4,8 +4,10 @@
 <%@page import="java.util.List"%> 
 <%@page import="logic.bean.RequestBean"%>
 <%@page import="logic.control.ManageRequestController"%>
+<%@page import="logic.control.ProfileController"%>
 
 <jsp:useBean id="sessionBean" scope="session" class="logic.bean.SessionBean"/>
+<jsp:useBean id="profileBean" scope="request" class="logic.bean.ProfileBean"/>
 
 <!DOCTYPE html>
 <html>
@@ -65,10 +67,7 @@
                     <a class="nav-link active" href="#incoming" data-toggle="tab">Incoming Requests</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="#accepted" data-toggle="tab">Accepted Requests</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#declined" data-toggle="tab">Declined Requests</a>
+                    <a class="nav-link" href="#sent" data-toggle="tab">Sent Requests</a>
                 </li>
             </ul>
     
@@ -86,23 +85,40 @@
                                 <h5><%= req.getSenderName() %></h5>
                                 <h5><%= req.getSenderSurname() %></h5>
                             </div>
-                            <h6>Age</h6>
+                            <h6>Age: <%= req.getSenderAge() %></h6>
                         </div>
                         <form action="manageRequests.jsp" method="POST">
                         	<button type="submit" class="btn btn-primary" name="viewprofile">View Profile</button>
+                        	<%
+                        	if (request.getParameter("viewprofile") != null) {
+                    			profileBean.setUser(ManageRequestController.getInstance().getSenderBean(req));
+                    			%>
+                    				<jsp:forward page="profile.jsp"/>
+                    			<%
+                    		}
+                        	%>
+                        </form>
+                        <form action="manageRequests.jsp" method="POST">
                         	<button type="submit" class="btn btn-success" name="accept">Accept</button>
+                        	
+                        	<%
+                        	if (request.getParameter("accept") != null) {
+                    			System.out.println("Accepting request.");
+                    			ManageRequestController.getInstance().acceptRequest(req);
+                    		}
+                        	%>
+                        </form>
+                        <form action="manageRequests.jsp" method="POST">
                         	<button type="submit" class="btn btn-danger" name="decline">Decline</button>
                         	
                         	<%
-                        		if (request.getParameter("viewprofile") != null) 
-                        		if (request.getParameter("accept") != null) {
-                        			ManageRequestController.getInstance().acceptRequest(req);
-                        		}
                         		if (request.getParameter("decline") != null) {
+                        			System.out.println("Declining request.");
                         			ManageRequestController.getInstance().declineRequest(req);
                         		}
                         	%>
                         </form>
+           
                     </div>	
 						<%
 					}
@@ -111,11 +127,40 @@
 
 
                 </div>
-                <div role="tabpanel" class="tab-pane" id="accepted">
-                    <div class="filler" style="padding: 250px"><h2>No requests.</h2></div>
-                </div>
-                <div role="tabpanel" class="tab-pane" id="declined">
-                    <div class="filler" style="padding: 250px"><h2>No requests.</h2></div>
+                
+               
+                <div role="tabpanel" class="tab-pane" id="sent">
+                	<%
+					List<RequestBean> sentRequests = ManageRequestController.getInstance().getUserSentRequests(sessionBean);
+                	if (sentRequests != null) {
+                		for (RequestBean req: sentRequests) {
+    				%>
+    						<div class="request displayer">
+                            	<div class="request-info">
+                                	<h3><%= req.getTripTitle() %></h3>
+                                	<div class="name">
+                                    	<h5><%= req.getReceiverName() %></h5>
+                                    	<h5><%= req.getReceiverSurname() %></h5>
+                                	</div>
+                                	<h6>Age</h6>
+                            	</div>
+                            	<form action="manageRequests.jsp" method="POST">
+                            		<button type="submit" class="btn btn-primary" name="viewprofile">View Profile</button>
+                            	
+                    <%
+                            			if (request.getParameter("viewprofile") != null) 
+                    %>
+                            	</form>
+                        	</div>	
+    				<%
+    					}
+    					
+                	} else {
+                	%>
+                		<div class="filler" style="padding: 250px"><h2>No requests.</h2></div>
+                	<%
+                	}
+                %>
                 </div>
             </div>
         </div>

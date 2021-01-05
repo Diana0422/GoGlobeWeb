@@ -75,7 +75,14 @@ public class RequestDAOFile implements RequestDAO {
 		// Delete the request from file
 	
 		List<Request> requests = getAllRequests();
-		requests.remove(request);
+		String logStr = "Requests before delete: "+requests;
+		Logger.getGlobal().info(logStr);
+		
+		for (int i=0; i<requests.size(); i++) {
+			if (requests.get(i).getReceiver().getEmail().equals(request.getReceiver().getEmail()) && requests.get(i).getSender().getEmail().equals(request.getSender().getEmail()) && requests.get(i).getTarget().getTitle().equals(request.getTarget().getTitle())) requests.remove(requests.get(i)); 
+		}
+		logStr = "Requests after delete: "+requests;
+		Logger.getGlobal().info(logStr);
 						
 		try (ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream(pc.getBackendFile(ModelClassType.REQUEST)))) {
 			Logger.getGlobal().info("Serializing instance of request \n");

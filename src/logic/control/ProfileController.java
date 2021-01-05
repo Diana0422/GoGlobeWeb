@@ -36,8 +36,4 @@ public class ProfileController {
 	   return ConversionController.getInstance().convertTripList(trips);
 
 	}
-	
-	
-   
-   
 }

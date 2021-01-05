@@ -182,3 +182,9 @@ label.star:before {
 .fixed {
 	height: 760px;
 }
+
+/* User tag */
+.user-tag {
+	display: flex;
+	margin-right: 10px;
+}

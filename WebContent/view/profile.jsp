@@ -1,5 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
+    
+<jsp:useBean id="profileBean" scope="request" class="logic.bean.ProfileBean"/>
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -57,17 +60,17 @@
             <!-- left profile info-->
             <div class="box-profile-info rounded-circle">
                 <div class="profile-pic">
-                    <img src="../res/images/falessi.jpg" alt="profile image" class="rounded-circle border border-dark">
+                    <img src="../res/images/default-profile.png" alt="profile image" class="rounded-circle border border-dark">
                 </div>
 
                 <div class="info">
                     <div class="name profile-element">
-                        <h2>Davide</h2>
-                        <h2>Falessi</h2>
+                        <h2><%= profileBean.getUser().getName() %></h2>
+                        <h2><%= profileBean.getUser().getSurname() %></h2>
                     </div>
 
                     <div class="age profile-element">
-                        <h4>Age: <span class="text-val">33</span></h4>
+                        <h4>Age: <span class="text-val"><%= profileBean.getUser().getAge() %></span></h4>
                     </div>
 
                     <div class="travel-attitude profile-element">
@@ -130,18 +133,7 @@
                         <!--<div class="filler center"><h4>No bio.</h4></div>-->
 
                         <!-- biography -->
-                        <p class="bio-text">
-                            My name is Yoshikage Kira. I'm 33 years old. My house is in the northeast section of Morioh, where all the villas are, and I am not married.
-                            I work as an employee for the Kame Yu department stores, and I get home every day by 8 PM at the latest. 
-                            I don't smoke, but I occasionally drink. I'm in bed by 11 PM, and make sure I get eight hours of sleep, no matter what. 
-                            After having a glass of warm milk and doing about twenty minutes of stretches before going to bed, I usually have no problems sleeping until morning. 
-                            Just like a baby, I wake up without any fatigue or stress in the morning. I was told there were no issues at my last check-up. 
-                            I'm trying to explain that I'm a person who wishes to live a very quiet life. I take care not to trouble myself with any enemies, like winning and losing, that would cause me to lose sleep at night. 
-                            That is how I deal with society, and I know that is what brings me happiness. 
-                            Although, if I were to fight I wouldn't lose to anyone.
-                        </p>
-
-
+                        <p class="bio-text"><%= profileBean.getUser().getBio() %></p>
                     </div>
 
                     <div class="tab-pane" role="tabpanel" id="reviews">
