@@ -25,7 +25,7 @@ body {
 
 .price-tag {
     display: flex;
-    margin-bottom: 30%;
+    margin-bottom: 50%;
 }
 
 h4 {
@@ -97,7 +97,36 @@ li {
 	color: black;
 }
 
+.activity {
+	width: 100%;
+	display: flex;
+}
+
+.activity-price {
+	margin:auto;
+}
+
+.activity-price h4 {
+	width: max-content;
+}
+
 /* Panel titles */
 #panel-title {
 	margin-top: 5%;
+}
+
+/* Participants */
+.participants {
+	display: flex;
+}
+
+/* Organizer */
+.organizer {
+	margin-top: 10%;
+}
+
+/* FONT */
+
+h3 {
+	font-family: BarlowBold;
 }

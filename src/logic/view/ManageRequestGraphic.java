@@ -27,26 +27,30 @@ public class ManageRequestGraphic implements Initializable {
 		List<RequestBean> sent = ManageRequestController.getInstance().getUserSentRequests(UpperNavbarControl.getInstance().getSession());
 		
 		try {
-			for (int i=0; i<inc.size(); i++) {
-				FXMLLoader loader = new FXMLLoader();
-				loader.setLocation(getClass().getResource("/logic/view/RequestItem.fxml"));
-				
-				AnchorPane anchor = loader.load();
-				RequestItemGraphic ric = loader.getController();
-				ric.setData(inc.get(i));
-				
-				incResults.getChildren().add(anchor);
+			if (inc != null) {
+				for (int i=0; i<inc.size(); i++) {
+					FXMLLoader loader = new FXMLLoader();
+					loader.setLocation(getClass().getResource("/logic/view/RequestItem.fxml"));
+					
+					AnchorPane anchor = loader.load();
+					RequestItemGraphic ric = loader.getController();
+					ric.setData(inc.get(i));
+					
+					incResults.getChildren().add(anchor);
+				}
 			}
 			
-			for (int i=0; i<sent.size(); i++) {
-				FXMLLoader loader = new FXMLLoader();
-				loader.setLocation(getClass().getResource("/logic/view/RequestItem.fxml"));
-				
-				AnchorPane anchor = loader.load();
-				RequestItemGraphic ric = loader.getController();
-				ric.setData(inc.get(i));
-				
-				sentResults.getChildren().add(anchor);
+			if (sent != null) {
+				for (int i=0; i<sent.size(); i++) {
+					FXMLLoader loader = new FXMLLoader();
+					loader.setLocation(getClass().getResource("/logic/view/RequestItem.fxml"));
+					
+					AnchorPane anchor = loader.load();
+					RequestItemGraphic ric = loader.getController();
+					ric.setData(sent.get(i));
+					
+					sentResults.getChildren().add(anchor);
+				}
 			}
 		} catch (IOException e) {
 			// TODO Auto-generated catch block

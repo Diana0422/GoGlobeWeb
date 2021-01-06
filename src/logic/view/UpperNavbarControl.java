@@ -19,6 +19,7 @@ import javafx.scene.layout.BorderPane;
 import logic.bean.PlanTripBean;
 import logic.bean.SessionBean;
 import logic.bean.TripBean;
+import logic.bean.UserBean;
 
 public class UpperNavbarControl implements Initializable {
 	
@@ -140,6 +141,25 @@ public class UpperNavbarControl implements Initializable {
     	loadUI("logic/view/Home");
     }
     
+    void loadProfile(UserBean user) {
+    	FXMLLoader loader = new FXMLLoader();
+    	loader.setLocation(getClass().getResource("/logic/view/Profile.fxml"));
+    	String logStr = "Loaded UI: Profile.fxml";
+		Logger.getGlobal().info(logStr);
+		
+		try {
+			Parent root = loader.load();
+			ProfileGraphic graphic = loader.getController();
+	    	graphic.setSession(getSession());
+	    	graphic.setData(user);
+			addToPane(root);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			//Error VIEW LOADING
+			e.printStackTrace();
+		}
+    }
+    
     void loadJoinTrip() {
     	FXMLLoader loader = new FXMLLoader();
     	loader.setLocation(getClass().getResource("/logic/view/JoinTrip.fxml"));
@@ -176,10 +196,17 @@ public class UpperNavbarControl implements Initializable {
     
     void loadPlanTrip() {
     	FXMLLoader loader = new FXMLLoader();
-    	loader.setLocation(getClass().getResource("/logic/view/PlanTrip.fxml"));
-    	String logStr = "Loaded UI: PlanTrip.fxml";
+    	loader.setLocation(getClass().getResource("/logic/view/SelectTripPreferences.fxml"));
+    	String logStr = "Loaded UI: SelectTripPreferences.fxml";
 		Logger.getGlobal().info(logStr);
-		//TODO
+		try {
+			Parent root = loader.load();
+			addToPane(root);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			//Error VIEW LOADING
+			e.printStackTrace();
+		}
     }
     
     void loadHome(String welcome) {
@@ -218,6 +245,8 @@ public class UpperNavbarControl implements Initializable {
 	    	tig.setTripBean(choice);
 	    	tig.setSession(session);
 	    	
+	    	tig.initializeParticipants(choice);
+	    	tig.initializeOrganizer(choice);
 	    	tig.addDayTabs(choice.getDays());
 			addToPane(root);
 		} catch (IOException e) {

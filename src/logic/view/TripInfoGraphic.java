@@ -19,9 +19,14 @@ import logic.bean.ActivityBean;
 import logic.bean.DayBean;
 import logic.bean.SessionBean;
 import logic.bean.TripBean;
+import logic.bean.UserBean;
 import logic.control.JoinTripController;
 
 public class TripInfoGraphic {
+	
+	@FXML
+    private AnchorPane tripBackground;
+	
 	@FXML
 	private TabPane tabPane;
 	
@@ -47,13 +52,16 @@ public class TripInfoGraphic {
 	private Label lblCategory2;
 	
 	@FXML
-	private ImageView imgTrip;
-	
-	@FXML
 	private ImageView imgCategory1;
 	
 	@FXML
 	private ImageView imgCategory2;
+	
+	@FXML
+    private VBox boxOrganizer;
+
+    @FXML
+    private VBox boxTravelers;
 	
 	private TripBean tripBean;
 	
@@ -85,10 +93,6 @@ public class TripInfoGraphic {
 	
 	public void setCategory2Text(String text) {
 		lblCategory2.setText(text);
-	}
-	
-	public void setTripImg(Image tripImg) {
-		imgTrip.setImage(tripImg);
 	}
 	
 	public void setCategory1Image(Image cat1Img) {
@@ -154,6 +158,49 @@ public class TripInfoGraphic {
 
 	public void joinTrip(ActionEvent e) {
 		JoinTripController.getInstance().joinTrip(getTripBean(), UpperNavbarControl.getInstance().getSession());
+		UpperNavbarControl.getInstance().loadHome(e);
+	}
+	
+	
+	public void initializeOrganizer(TripBean trip) {
+		UserBean organizer = trip.getOrganizer();
+		
+		FXMLLoader loader = new FXMLLoader();
+		loader.setLocation(getClass().getResource("/logic/view/UserItem.fxml"));
+		
+		try {
+			AnchorPane pane = loader.load();
+			UserItemGraphic graphic = loader.getController();
+			graphic.setData(organizer);
+			boxOrganizer.getChildren().add(pane);
+			
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	
+	public void initializeParticipants(TripBean bean) {
+		List<UserBean> participants = bean.getParticipants();
+		System.out.println("Participants: "+participants);
+		
+		FXMLLoader loader = new FXMLLoader();
+		loader.setLocation(getClass().getResource("/logic/view/UserItem.fxml"));
+		
+		try {
+			AnchorPane pane = loader.load();
+			UserItemGraphic graphic = loader.getController();
+			if (participants != null) {
+				for (UserBean user: participants) {
+					graphic.setData(user);
+					boxTravelers.getChildren().add(pane);
+				}
+			}
+			
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
 }

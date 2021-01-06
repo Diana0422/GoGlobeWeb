@@ -90,6 +90,7 @@ public class TripDAOFile implements TripDAO {
 				tmp.setPrice(newTrip.getPrice());
 				tmp.setCategory1(newTrip.getCategory1());
 				tmp.setCategory2(newTrip.getCategory2());
+				tmp.setParticipants(newTrip.getParticipants());
 				break;
 			}
 		}

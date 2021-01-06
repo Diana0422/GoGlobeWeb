@@ -44,6 +44,9 @@ public class JoinTripController {
 		
 		logStr = "Trip Beans: "+list;
 		Logger.getGlobal().info(logStr);
+		for (TripBean bean: list) {
+			System.out.println(bean.getParticipants());
+		}
 		return list;
 	}
 	

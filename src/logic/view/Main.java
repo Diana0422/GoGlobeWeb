@@ -24,7 +24,7 @@ public class Main extends Application {
 			Parent root = loader.load();
 			
 			/* Set the scene */
-			Scene scene = new Scene(root,1336,768);
+			Scene scene = new Scene(root,1300,700);
 			scene.getStylesheets().addAll(
 					getClass().getResource("/logic/view/css/navbar.css").toExternalForm(),
 					getClass().getResource("/logic/view/css/login.css").toExternalForm(),

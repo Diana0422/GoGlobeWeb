@@ -96,7 +96,7 @@ public class PlanTripGraphic implements Initializable{
     void onSaveTripClick(ActionEvent event) {
     	if (planTripBean.validateTrip()) {
     		planTripBean.saveTrip(UpperNavbarControl.getInstance().getSession()); //EHHHHH QUANDO VIENE INIZIALIZZATA?
-    		UpperNavbarControl.getInstance().loadHome(event);  		
+    		UpperNavbarControl.getInstance().loadHome("Welcome "+UpperNavbarControl.getInstance().getSession().getName()+" "+UpperNavbarControl.getInstance().getSession().getSurname());	
     	}
     }
     

@@ -19,6 +19,11 @@
     src: url(../res/fonts/Barlow/Barlow-Medium.ttf);
 }
 
+@font-face {
+    font-family: BarlowSemi;
+    src: url(../res/fonts/Barlow/Barlow-SemiBold.ttf);
+}
+
 .app {
     display: flex;
 }
@@ -186,5 +191,9 @@ label.star:before {
 /* User tag */
 .user-tag {
 	display: flex;
+	margin-right: 10px;
+}
+
+.user-tag h3 {
 	margin-right: 10px;
 }

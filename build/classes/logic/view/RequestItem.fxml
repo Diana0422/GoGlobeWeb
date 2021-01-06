@@ -11,9 +11,9 @@
    <children>
       <HBox alignment="CENTER" layoutX="350.0" layoutY="10.0" prefHeight="100.0" prefWidth="323.0" spacing="40.0">
          <children>
-            <Button fx:id="btnProfile" mnemonicParsing="false" onMouseClicked="#viewProfile" prefHeight="50.0" prefWidth="87.0" style="-fx-background-color: #007bff;" text="View Profile" />
-            <Button fx:id="btnAccept" mnemonicParsing="false" onMouseClicked="#accept" prefHeight="50.0" prefWidth="87.0" style="-fx-background-color: #28a745;" text="Accept" />
-            <Button fx:id="btnDecline" mnemonicParsing="false" onMouseClicked="#decline" prefHeight="50.0" prefWidth="87.0" style="-fx-background-color: #dc3545;" text="Decline" />
+            <Button fx:id="btnProfile" mnemonicParsing="false" onMouseClicked="#viewProfile" prefHeight="50.0" prefWidth="87.0" style="-fx-background-color: #007bff; -fx-text-fill: #ffffff;" text="View Profile" />
+            <Button fx:id="btnAccept" mnemonicParsing="false" onMouseClicked="#accept" prefHeight="50.0" prefWidth="87.0" style="-fx-background-color: #28a745; -fx-text-fill: #ffffff;" text="Accept" />
+            <Button fx:id="btnDecline" mnemonicParsing="false" onMouseClicked="#decline" prefHeight="50.0" prefWidth="87.0" style="-fx-background-color: #dc3545; -fx-text-fill: #ffffff;" text="Decline" />
          </children>
       </HBox>
       <VBox layoutX="14.0" layoutY="12.0" prefHeight="100.0" prefWidth="251.0">

@@ -97,6 +97,7 @@ public class ConversionController {
 			Trip t = trips.get(i);
 			TripBean bean = new TripBean();
 			bean.setOrganizer(convertToUserBean(t.getOrganizer()));
+			bean.setParticipants(convertUserList(t.getParticipants()));
 			bean.setId(t.getId());
 			bean.setTitle(t.getTitle());
 			bean.setPrice(t.getPrice());
@@ -120,6 +121,23 @@ public class ConversionController {
 		
 	}
 	
+
+	public List<UserBean> convertUserList(List<User> users) {
+		List<UserBean> beans = new ArrayList<>();
+		
+		for (User user: users) {
+			UserBean bean = new UserBean();
+			bean.setEmail(user.getEmail());
+			bean.setName(user.getName());
+			bean.setSurname(user.getSurname());
+			bean.setAge(user.calculateUserAge());
+			bean.setBio(user.getBio());
+			bean.setPoints(user.getPoints());
+			beans.add(bean);
+		}
+		
+		return beans;
+	}
 
 	public List<RequestBean> convertRequestList(List<Request> requests) {
 		List<RequestBean> requestBeans = new ArrayList<>();

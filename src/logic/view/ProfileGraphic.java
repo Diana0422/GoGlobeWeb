@@ -17,6 +17,7 @@ import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import logic.bean.SessionBean;
 import logic.bean.TripBean;
+import logic.bean.UserBean;
 import logic.control.ProfileController;
 
 public class ProfileGraphic implements Initializable {
@@ -115,6 +116,12 @@ public class ProfileGraphic implements Initializable {
 		loadGrid(upcomingGrid, upcomingTripBeans);
 		loadGrid(myTripsGrid, myTripBeans);
 		loadGrid(previousGrid, previousTripBeans);
+		
+	}
+
+	public void setData(UserBean user) {
+		txtNameSurname.setText(user.getName()+" "+user.getSurname());
+		txtAge.setText(Integer.toString(user.getAge()));
 		
 	}
 
