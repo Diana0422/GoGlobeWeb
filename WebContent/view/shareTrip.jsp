@@ -76,13 +76,20 @@
 %>
             <form method="POST" action="shareTrip.jsp">
             
+            		
+            		<div class="form-row">
+					    <div class="form-group col-md-3">
+					      <label >Max participants</label>
+					      <input type="text" class="form-control" name="maxParticipants" id="inputMaxParticipants" placeholder="Insert max participants for your trip">
+					    </div>
+				    </div>
             	   <div class="form-row">
 				    <div class="form-group col-md-6">
-				      <label for="inputEmail4">Min age</label>
+				      <label>Min age</label>
 				      <input type="text" class="form-control" name="minAge" id="inputMinAge" placeholder="Insert minimum age">
 				    </div>
 				    <div class="form-group col-md-6">
-				      <label for="inputPassword4">Max age</label>
+				      <label>Max age</label>
 				      <input type="text" class="form-control" name="maxAge" id="inputMaxAge" placeholder="Insert maximum age">
 				    </div>
 				  </div>

@@ -15,10 +15,17 @@ public class ActivityCardGraphic {
     @FXML
     private Text txtTime;
     
+    @FXML
+    private Text txtActivityCost;
+    
+    
+    
     public void setData(ActivityBean activity) {
     	txtTitle.setText(activity.getTitle());
     	txtTime.setText(activity.getTime());
+    	txtActivityCost.setText(activity.getEstimatedCost());
     	txtDescription.setText(activity.getDescription());
+    	
     }
 
 }

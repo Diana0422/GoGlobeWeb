@@ -15,7 +15,7 @@
 	System.out.println(sessionBean.getSurname());
 %>
 
-<html>
+<html lang="en">
 <head>
 	<meta charset="UTF-8">
 	<title>GoGlobe - Login</title>

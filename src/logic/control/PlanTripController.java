@@ -23,7 +23,7 @@ import logic.model.TripCategory;
 
 public class PlanTripController {
 	
-	private static final String DATE_FORMAT = "dd/mm/yyyy";
+	private static final String DATE_FORMAT = "dd/MM/yyyy";
 
 		
 	private static PlanTripController instance;
@@ -75,16 +75,22 @@ public class PlanTripController {
 		}			
 	}
 	
-	public TripBean setSharingTripPreferences(TripBean tripBean, String minAge, String maxAge, String description) {
+	public TripBean setSharingTripPreferences(TripBean tripBean, String minAge, String maxAge, String description, String maxParticipants) {
 		tripBean.setShared(true);
 		tripBean.setDescription(description);
 		tripBean.setMinAge(minAge);
 		tripBean.setMaxAge(maxAge);	
+		tripBean.setMaxParticipants(maxParticipants);
 		return tripBean;
 	}
 	
 	public long calculateTripLength(Date depDate, Date retDate) {
+		
+		System.out.println("la data di partenza e' " + depDate);
+		System.out.println("la data di ritorno e' " + retDate);
+
 		long diff = retDate.getTime() - depDate.getTime();
+		
 		return TimeUnit.DAYS.convert(diff, TimeUnit.MILLISECONDS);
 	}
 	
@@ -93,11 +99,13 @@ public class PlanTripController {
 		Logger.getGlobal().info("title: " + activity.getTitle());
 		Logger.getGlobal().info("time: " + activity.getTime());
 		Logger.getGlobal().info("description: " + activity.getDescription());
+		Logger.getGlobal().info("cost: " + activity.getEstimatedCost());
 
 		ActivityBean newActivity = new ActivityBean();
 		newActivity.setTitle(activity.getTitle());
 		newActivity.setTime(activity.getTime());
 		newActivity.setDescription(activity.getDescription());
+		newActivity.setEstimatedCost(activity.getEstimatedCost());
 		tripBean.addActivity(planningDay, newActivity);
 	}
 	

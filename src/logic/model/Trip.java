@@ -26,6 +26,7 @@ public class Trip implements Serializable {
 	private String description;
 	private int minAge;
 	private int maxAge;
+	private int maxParticipants;
 	private User organizer;
 	private List<User> participants;
 	//Meglio lasciare solo id  e List<Days> e incapsulare gli altri attributi in una 
@@ -44,7 +45,7 @@ public class Trip implements Serializable {
 		this.category1 = TripCategory.valueOf(cat1);
 		this.category2 = TripCategory.valueOf(cat2);
 		
-		DateFormat df = new SimpleDateFormat("dd/mm/yyyy");
+		DateFormat df = new SimpleDateFormat("dd/MM/yyyy");
 		try {
 			Date dep = df.parse(departureDate);
 			Date ret = df.parse(returnDate);
@@ -191,4 +192,14 @@ public class Trip implements Serializable {
 	public void addParticipant(User participant) {
 		if (!getParticipants().contains(participant)) getParticipants().add(participant);
 	}
+
+	public int getMaxParticipants() {
+		return maxParticipants;
+	}
+
+	public void setMaxParticipants(int maxParticipants) {
+		this.maxParticipants = maxParticipants;
+	}
+
+	
 }

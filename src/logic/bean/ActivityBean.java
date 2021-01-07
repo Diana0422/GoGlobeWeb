@@ -7,6 +7,7 @@ public class ActivityBean {
 	private String time;
 	private String title;
 	private String description;
+	private String estimatedCost;
 	
 	
 	public ActivityBean() {
@@ -43,6 +44,18 @@ public class ActivityBean {
 		this.description = description;
 	}
 	
+	
+	
+	public String getEstimatedCost() {
+		return estimatedCost;
+	}
+
+
+	public void setEstimatedCost(String estimatedCost) {
+		this.estimatedCost = estimatedCost;
+	}
+
+
 	public boolean validateActivity() {
 		String infoStr = "TITLE CHECK:" + validateTitle(this.title);
 		Logger.getGlobal().info(infoStr);
@@ -51,7 +64,7 @@ public class ActivityBean {
 		infoStr = "DESCRIPTION CHECK:" + validateDescription(this.description);
 		Logger.getGlobal().info(infoStr);
 		
-		return (validateTitle(this.title) && validateTime(this.time) && validateDescription(this.description));
+		return (validateTitle(this.title) && validateTime(this.time) && validateDescription(this.description) && validateCost(this.estimatedCost));
 	}
 	
 	private boolean validateTitle(String title) {
@@ -74,7 +87,20 @@ public class ActivityBean {
 			return (validateHour(hour) && validateMinute(minute));
 		}catch(NumberFormatException e) {
 			return false;
-		}	
+		}
+	}
+		
+	private boolean validateCost(String strCost) {
+		if (strCost == null || strCost.equals("")) {
+			return false;
+		}
+		try {
+			int cost = Integer.parseInt(strCost);
+			if (cost < 0) return false;			
+		}catch(NumberFormatException e) {
+			return false;
+		}
+		return true;
 		
 	}
 	

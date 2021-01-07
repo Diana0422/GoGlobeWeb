@@ -49,7 +49,7 @@ public class SelectTripPreferencesGraphic implements Initializable {
     	planTripBean.setCategory2(cbCategory2.getValue());
     	planTripBean.setPreferences();
     	if (planTripBean.validateForm()) {
-    		UpperNavbarControl.getInstance().loadUI("/logic/view/PlanTrip", planTripBean);
+    		UpperNavbarControl.getInstance().loadPlanTrip(planTripBean);
     	}   	
     }
 

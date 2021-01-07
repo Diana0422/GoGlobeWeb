@@ -8,11 +8,13 @@ public class Activity implements Serializable{
 	private String time;
 	private String title;
 	private String description;
+	private String estimatedCost;
 	
-	public Activity( String title, String time, String description) {
+	public Activity( String title, String time, String description, String estimatedCost) {
 		this.time = time;
 		this.title = title;
 		this.description = description;
+		this.estimatedCost = estimatedCost;
 		
 	}
 
@@ -39,6 +41,16 @@ public class Activity implements Serializable{
 	public void setDescription(String description) {
 		this.description = description;
 	}
+
+	public String getEstimatedCost() {
+		return estimatedCost;
+	}
+
+	public void setEstimatedCost(String estimatedCost) {
+		this.estimatedCost = estimatedCost;
+	}
+	
+	
 	
 	
 	

@@ -193,9 +193,14 @@ if (request.getParameter("daybtn") != null){
                         		placeholder="Enter activity name" maxlength="15">
                         	</div>
                         	<div class = "flex-form-row">
-                        		<h4>h</h4>
+                        		<h4>Time</h4>
                         		<input type="text" name="time" id="act-time"
                         		placeholder="hh:mm" maxlength="5">
+                        	</div>
+                        	<div class = "flex-form-row">
+                        		<h4>Cost</h4>
+                        		<input type="text" name="estimatedCost" id="act-cost"
+                        		placeholder="Insert activity cost">
                         	</div>
                         	<div class = "activity-description">
                         		<h4>Plan</h4>
@@ -213,12 +218,14 @@ if (request.getParameter("daybtn") != null){
 					 		System.out.println("Activity Found!\n");
 	            			System.out.println("title: " + planTripBean.displayActivityTitle(j) + "\n");
 	            			System.out.println("time: "+ planTripBean.displayActivityTime(j) + "\n");
-	            			System.out.println("description: "+ planTripBean.displayActivityDescription(j) + "\n");
+	            			System.out.println("time: "+ planTripBean.displayActivityTime(j) + "\n");
+	            			System.out.println("cost: "+ planTripBean.displayActivityCost(j) + "\n");
 %>		
 	            			  
 	            			<div class="activity">		
 		            			<h2><%=planTripBean.displayActivityTitle(j) %></h2>
 		            			<h3><%=planTripBean.displayActivityTime(j) %></h3>
+		            			<h3><%=planTripBean.displayActivityCost(j) %></h3>
 		            			<div class="description">
 		            				<p><%=planTripBean.displayActivityDescription(j)%></p>
 		            			</div>		            			

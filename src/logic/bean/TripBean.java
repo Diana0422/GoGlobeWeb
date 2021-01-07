@@ -18,6 +18,7 @@ public class TripBean {
 	private String description;
 	private String minAge;
 	private String maxAge;
+	private String maxParticipants;
 	private UserBean organizer;
 	private List<UserBean> participants;
 	
@@ -121,6 +122,14 @@ public class TripBean {
 
 	public void setShared(boolean shared) {
 		this.shared = shared;
+	}
+	
+	public String getMaxParticipants() {
+		return maxParticipants;
+	}
+
+	public void setMaxParticipants(String maxParticipants) {
+		this.maxParticipants = maxParticipants;
 	}
 
 	public String getMinAge() {
