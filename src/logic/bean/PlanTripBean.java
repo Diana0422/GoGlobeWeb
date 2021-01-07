@@ -11,7 +11,7 @@ import logic.control.PlanTripController;
 
 public class PlanTripBean {
 	
-	private static final String DATE_FORMAT = "dd/mm/yyyy"; 
+	private static final String DATE_FORMAT = "dd/MM/yyyy"; 
 	private TripBean tripBean;
 	private String tripName;
 	private String departureDate;
@@ -23,6 +23,7 @@ public class PlanTripBean {
 	private String tripDescription;
 	private String maxAge;
 	private String minAge;
+	private String maxParticipants;
 	private boolean shared;
 	private int planningDay = 0;
 
@@ -36,18 +37,6 @@ public class PlanTripBean {
 			this.setErrorMsg("Error on trip description.");
 			return false;
 		}
-			
-	
-		try {
-			int min = Integer.parseInt(this.minAge);
-			int max = Integer.parseInt(this.maxAge);
-			if (min > max) {
-				this.setErrorMsg("Minimum age must be lesser than maximum age.");
-				return  false;
-			}
-		}catch (NumberFormatException e) {
-			return false;
-		}
 		
 		if (this.minAge == null || this.minAge.equals("")) {
 			this.setErrorMsg("Error on minimum age.");
@@ -59,7 +48,22 @@ public class PlanTripBean {
 			return false;
 		}
 		
-		
+		if (this.maxParticipants == null || this.maxParticipants.equals("")) {
+			this.setErrorMsg("Insert maximum participants.");
+			return false;
+		}
+			
+		try {
+			int min = Integer.parseInt(this.minAge);
+			int max = Integer.parseInt(this.maxAge);
+			if (min > max) {
+				this.setErrorMsg("Minimum age must be lesser than maximum age.");
+				return  false;
+			}
+		}catch (NumberFormatException e) {
+			return false;
+		}
+			
 		String logStr = "SHARE FORM INFO: "+"trip description: " + this.tripDescription+" min age: " + this.minAge+" max age: " + this.maxAge;
 		Logger.getGlobal().info(logStr);
 		return true;
@@ -176,7 +180,7 @@ public class PlanTripBean {
 	}
 	
 	public void setSharingPreferences() {
-		this.setTripBean(PlanTripController.getInstance().setSharingTripPreferences(this.tripBean, this.minAge, this.maxAge, this.tripDescription));
+		this.setTripBean(PlanTripController.getInstance().setSharingTripPreferences(this.tripBean, this.minAge, this.maxAge, this.tripDescription, this.maxParticipants));
 	}
 	
 	public void saveLocation() {
@@ -226,6 +230,11 @@ public class PlanTripBean {
 	//GUI CONTROLLER
 	public String displayActivityDescription(int activityNum) {
 		return this.getTripDays().get(planningDay).getActivities().get(activityNum).getDescription();
+	}
+	
+	//GUI CONTROLLER 
+	public String displayActivityCost(int activityNum) {
+		return this.getTripDays().get(planningDay).getActivities().get(activityNum).getEstimatedCost();
 	}
 	
 	public boolean saveTrip(SessionBean session) {
@@ -335,4 +344,14 @@ public class PlanTripBean {
 	public void setShared(boolean shared) {
 		this.shared = shared;
 	}
+
+	public String getMaxParticipants() {
+		return maxParticipants;
+	}
+
+	public void setMaxParticipants(String maxParticipants) {
+		this.maxParticipants = maxParticipants;
+	}
+	
+	
 }

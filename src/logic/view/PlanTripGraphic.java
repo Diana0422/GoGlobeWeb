@@ -51,6 +51,9 @@ public class PlanTripGraphic implements Initializable{
 
     @FXML
     private TextField tfActivityTime;
+    
+    @FXML
+    private TextField tfActivityCost;
 
     @FXML
     private TextArea taActivityDescription;
@@ -79,6 +82,8 @@ public class PlanTripGraphic implements Initializable{
     	newActivity.setTitle(tfActivityTitle.getText());
     	newActivity.setTime(tfActivityTime.getText());
     	newActivity.setDescription(taActivityDescription.getText());
+    	newActivity.setEstimatedCost(tfActivityCost.getText());
+ 
     	if (newActivity.validateActivity()) {
     		planTripBean.addActivity(newActivity);
     		loadActivity(newActivity);
@@ -103,8 +108,9 @@ public class PlanTripGraphic implements Initializable{
     
     @FXML
     void onShareTripClick(ActionEvent event) {
-    	// TODO
-    }
+    	if (planTripBean.validateTrip()) {
+    		UpperNavbarControl.getInstance().loadShareTrip(this.planTripBean);
+    	}    }
 	
 	public void initPlanTripBean(PlanTripBean planTripBean) {
 		this.planTripBean = planTripBean;

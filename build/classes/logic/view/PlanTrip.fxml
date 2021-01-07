@@ -36,13 +36,16 @@
                </font>
             </Text>
             <TextField fx:id="tfLocation" layoutX="149.0" layoutY="110.0" promptText="Insert Location" />
-            <Button id="btn" fx:id="btnSaveLocation" layoutX="322.0" layoutY="104.0" mnemonicParsing="false" onAction="#saveLocation" prefHeight="39.0" prefWidth="95.0" text="Save Location" />
+            <Button id="btn" fx:id="btnSaveLocation" layoutX="322.0" layoutY="104.0" mnemonicParsing="false" onAction="#saveLocation" prefHeight="39.0" prefWidth="119.0" text="Save Location">
+               <font>
+                  <Font size="16.0" />
+               </font></Button>
             <Text fx:id="txtLocation" layoutX="166.0" layoutY="100.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Location: ">
                <font>
                   <Font size="27.0" />
                </font>
             </Text>
-            <AnchorPane id="form" fx:id="apActivityForm" layoutX="12.0" layoutY="145.0" prefHeight="262.0" prefWidth="452.0" style="-fx-effect: dropshadow(three-pass-box, grey, 10, 0, 5, 2) dropshadow(three-pass-box, grey, 10, 0, 5, 2);" stylesheets="@css/application.css">
+            <AnchorPane id="form" fx:id="apActivityForm" layoutX="12.0" layoutY="145.0" prefHeight="318.0" prefWidth="452.0" style="-fx-effect: dropshadow(three-pass-box, grey, 10, 0, 5, 2) dropshadow(three-pass-box, grey, 10, 0, 5, 2);" stylesheets="@css/application.css">
                <children>
                   <Text layoutX="25.0" layoutY="33.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Title:">
                      <font>
@@ -54,20 +57,29 @@
                         <Font size="18.0" />
                      </font>
                   </Text>
-                  <Text layoutX="19.0" layoutY="97.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Description:">
+                  <Text layoutX="18.0" layoutY="142.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Description:">
                      <font>
                         <Font size="18.0" />
                      </font>
                   </Text>
                   <TextField fx:id="tfActivityTitle" layoutX="74.0" layoutY="13.0" AnchorPane.leftAnchor="73.0" />
                   <TextField fx:id="tfActivityTime" layoutX="73.0" layoutY="46.0" AnchorPane.leftAnchor="73.0" />
-                  <TextArea fx:id="taActivityDescription" layoutX="21.0" layoutY="103.0" prefHeight="95.0" prefWidth="415.0" />
-                  <Button id="btn" fx:id="btnAddActivity" layoutX="21.0" layoutY="207.0" mnemonicParsing="false" onAction="#addActivity" prefHeight="41.0" prefWidth="413.0" text="Add activity" />
+                  <TextArea fx:id="taActivityDescription" layoutX="20.0" layoutY="148.0" prefHeight="95.0" prefWidth="415.0" />
+                  <Button id="btn" fx:id="btnAddActivity" layoutX="20.0" layoutY="252.0" mnemonicParsing="false" onAction="#addActivity" prefHeight="41.0" prefWidth="413.0" text="Add activity">
+                     <font>
+                        <Font size="18.0" />
+                     </font></Button>
+                  <Text layoutX="22.0" layoutY="103.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Cost:">
+                     <font>
+                        <Font size="18.0" />
+                     </font>
+                  </Text>
+                  <TextField fx:id="tfActivityCost" layoutX="73.0" layoutY="83.0" />
                </children>
             </AnchorPane>
-            <ScrollPane fx:id="spActivities" layoutX="16.0" layoutY="426.0" prefHeight="331.0" prefWidth="473.0" style="-fx-background-color: white;">
+            <ScrollPane fx:id="spActivities" layoutX="16.0" layoutY="472.0" prefHeight="285.0" prefWidth="474.0" style="-fx-background-color: white;">
                <content>
-                  <VBox fx:id="vbActivities" prefHeight="324.0" prefWidth="452.0" spacing="20.0" style="-fx-background-color: white;" />
+                  <VBox fx:id="vbActivities" prefHeight="278.0" prefWidth="452.0" spacing="20.0" style="-fx-background-color: white;" />
                </content>
             </ScrollPane>
          </children>

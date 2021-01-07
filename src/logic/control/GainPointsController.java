@@ -42,7 +42,7 @@ public class GainPointsController {
 		
 		List<TripBean> list = ConversionController.getInstance().convertTripList(tripDao.getAllTrips());
 		for (TripBean bean: list) {
-			DateFormat formatter = new SimpleDateFormat("dd/mm/yyyy");
+			DateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
 			Date dep = null;
 			Date ret = null;
 			try {

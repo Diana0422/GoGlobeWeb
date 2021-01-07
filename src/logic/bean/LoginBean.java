@@ -44,6 +44,8 @@ public class LoginBean {
 		if (username == null || username.equals("") || password==null || password.equals("")) {
 			return false;
 		}
+		
+		System.out.println("TRYING TO LOGIN AS: " + this.getUsername() + " " + this.getPassword());
 
 		LoginBean utenteTrovato = LoginController.getInstance().login(username, password);
 		if (utenteTrovato != null) {

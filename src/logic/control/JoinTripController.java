@@ -36,7 +36,10 @@ public class JoinTripController {
 		List<Trip> filteredTrips = new ArrayList<>();
 		
 		for (Trip trip: trips) {
+			//QUI QUI
+			System.out.println(trip.getTitle());
 			if (trip.getTitle().contains(value)) filteredTrips.add(trip);
+			
 		}
 		
 		/* Convert List<Trip> into List<TripBean> */

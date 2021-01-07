@@ -27,6 +27,8 @@ public class UpperNavbarControl implements Initializable {
 
 	private static UpperNavbarControl instance = null;
 	
+	private static final String FXML_EXTENSION = ".fxml";
+	
 	private SessionBean session;
 	
 	private UpperNavbarControl() {
@@ -230,7 +232,7 @@ public class UpperNavbarControl implements Initializable {
 		}	
 	}
     
-    
+    //Used when loading planTrip for the first time 
     void loadPlanTrip() {
     	FXMLLoader loader = new FXMLLoader();
     	loader.setLocation(getClass().getResource("/logic/view/SelectTripPreferences.fxml"));
@@ -245,6 +247,24 @@ public class UpperNavbarControl implements Initializable {
 			e.printStackTrace();
 		}
     }
+    
+    //Used to refresh planTrip View and to go back from shareTrip View
+    public void loadPlanTrip(PlanTripBean planTripBean) {
+  	  try {
+  		  FXMLLoader loader = new FXMLLoader();
+  	  	  loader.setLocation(getClass().getResource("/logic/view/PlanTrip.fxml"));
+  	  	  String logStr = "Loaded UI: PlanTrip.fxml";
+  		  Logger.getGlobal().info(logStr);
+  		  Parent root = loader.load();
+  		  PlanTripGraphic controller = loader.getController();
+  		  controller.initPlanTripBean(planTripBean);
+  		  addToPane(root);
+  	  }catch(IOException e){
+  		  //TODO Error View loading
+  	  }  
+      }
+    
+  
     
     void loadHome(String welcome) {
     	FXMLLoader loader = new FXMLLoader();
@@ -264,6 +284,43 @@ public class UpperNavbarControl implements Initializable {
 			e.printStackTrace();
 		}
     }
+    
+    //ALTERNATIVA
+    void loadHome() {
+    	FXMLLoader loader = new FXMLLoader();
+    	setSession(session); //TODO move this to login and registration
+    	loader.setLocation(getClass().getResource("/logic/view/Home.fxml"));
+    	String logStr = "Loaded UI: Home.fxml";
+		Logger.getGlobal().info(logStr);
+    	try {
+			Parent root = loader.load();
+			HomeGraphic graphic = loader.getController();
+	    	graphic.setWelcomeText(generateWelcomeString());
+	    	graphic.setPointsText("You have "+getSession().getPoints()+" points.");
+			addToPane(root);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			//Error VIEW LOADING
+			e.printStackTrace();
+		}
+    }
+    
+    public void loadShareTrip(PlanTripBean planTripBean) {
+  	  try {
+  		  FXMLLoader loader = new FXMLLoader();
+  	  	  loader.setLocation(getClass().getResource("/logic/view/ShareTrip.fxml"));
+  	  	  String logStr = "Loaded UI: ShareTrip.fxml";
+  		  Logger.getGlobal().info(logStr);
+  		  Parent root = loader.load();
+  		  ShareTripGraphic controller = loader.getController();
+  		  controller.initPlanTripBean(planTripBean);
+  		  addToPane(root);
+  	  }catch(IOException e){
+  		  //TODO Error View loading
+  	  }  
+      }
+    
+   
     
     void loadTripInfo(TripBean choice, SessionBean session) {
     	FXMLLoader loader = new FXMLLoader();
@@ -293,11 +350,10 @@ public class UpperNavbarControl implements Initializable {
 			e.printStackTrace();
 		}
     }
-    
-    
+      
     public void loadUI(String ui) {
     	try {
-			Parent root = FXMLLoader.load(getClass().getResource(ui+".fxml"));
+			Parent root = FXMLLoader.load(getClass().getResource(ui+ FXML_EXTENSION));
 			String logStr = "Loaded UI: "+ui+".fxml";
 			Logger.getGlobal().info(logStr);
 			addToPane(root);
@@ -311,7 +367,7 @@ public class UpperNavbarControl implements Initializable {
 	//Load UI and pass data to UI's graphic controller 
 	public void loadUI(String ui, Object data) {
 		try {
-			FXMLLoader loader = new FXMLLoader(getClass().getResource(ui+".fxml"));
+			FXMLLoader loader = new FXMLLoader(getClass().getResource(ui+ FXML_EXTENSION));
 			Parent root = loader.load();
 			
 			if (data instanceof PlanTripBean) {
@@ -329,10 +385,15 @@ public class UpperNavbarControl implements Initializable {
 		borderpane.setCenter(root);
 		
 	}
+    
+    private String generateWelcomeString() {
+    	return "Welcome " + this.session.getName() + " " + this.session.getSurname();
+    	
+    }
 
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
-		//empty
+		loadUI("/logic/view/Login");
 	}
 
 }

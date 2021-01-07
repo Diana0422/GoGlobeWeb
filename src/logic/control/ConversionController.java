@@ -56,7 +56,8 @@ public class ConversionController {
 			String title = activityBeans.get(i).getTitle();
 			String time = activityBeans.get(i).getTime();
 			String description = activityBeans.get(i).getDescription();
-			Activity activity = new Activity(title, time, description);
+			String cost = activityBeans.get(i).getEstimatedCost();
+			Activity activity = new Activity(title, time, description, cost);
 			activities.add(activity);			
 		}
 		
@@ -82,10 +83,12 @@ public class ConversionController {
 			String title = activities.get(i).getTitle();
 			String time = activities.get(i).getTime();
 			String description = activities.get(i).getDescription();
+			String cost = activities.get(i).getEstimatedCost();
 			ActivityBean activityBean = new ActivityBean();
 			activityBean.setTitle(title);
 			activityBean.setTime(time);
 			activityBean.setDescription(description);
+			activityBean.setEstimatedCost(cost);
 			activityBeans.add(activityBean);			
 		}
 		
@@ -106,9 +109,13 @@ public class ConversionController {
 			bean.setCategory1(t.getCategory1().toString());
 			bean.setCategory2(t.getCategory2().toString());
 			bean.setImgSrc(t.getImgSrc());
+			bean.setShared(t.isShared());
+			bean.setMinAge(Integer.toString(t.getMinAge()));
+			bean.setMaxAge(Integer.toString(t.getMaxAge()));
+			bean.setMaxParticipants(Integer.toString(t.getMaxParticipants()));
 			
 			// Converting Dates to String
-			DateFormat formatter = new SimpleDateFormat("dd/mm/yyyy");
+			DateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
 			String depDateStr = formatter.format(t.getDepartureDate());
 			String retDateStr = formatter.format(t.getReturnDate());
 			bean.setDepartureDate(depDateStr);
