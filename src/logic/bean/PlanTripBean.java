@@ -100,6 +100,7 @@ public class PlanTripBean {
 //			Date currentDate = new Date();
 			
 			
+			
 //			if (depDate.before(currentDate)) {
 //				this.setErrorMsg("Departure date must be later than current date");
 //				return false;
