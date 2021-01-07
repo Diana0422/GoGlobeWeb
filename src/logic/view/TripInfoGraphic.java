@@ -122,38 +122,55 @@ public class TripInfoGraphic {
 	
 	public void addDayTabs(List<DayBean> days) {
 		for (int i=0; i<days.size(); i++) {
-			AnchorPane pane = new AnchorPane();
-			pane.setId("tab-container");
-			pane.setPadding(new Insets(10));
-			ScrollPane scroll = new ScrollPane();
-			pane.getChildren().add(scroll);
-			VBox vbox = new VBox();
-			vbox.setSpacing(10);
-			vbox.setPadding(new Insets(10));
-			scroll.setContent(vbox);
-			displayActivityList(vbox, days.get(i).getActivities());
-			Tab tab = new Tab("Day "+Integer.toString(i+1), pane);
+			
+			VBox table = new VBox();
+			VBox container = new VBox();
+		
+			container.setPrefSize(500f,500f);
+			container.setPadding(new Insets(10));
+			container.setId("tab-container");
+			
+			Label locationTitle = new Label("Location:");
+			container.getChildren().add(locationTitle);
+			
+			Label location = new Label();
+			location.setText(days.get(i).getLocation());
+			container.getChildren().add(location);
+			
+			Label activitiesTitle = new Label("Activities of the day:");
+			container.getChildren().add(activitiesTitle);
+			
+			List<ActivityBean> activities = days.get(i).getActivities();
+			for (ActivityBean bean: activities) {
+				displayActivity(table, bean);
+			}
+			ScrollPane scroll = new ScrollPane(table);
+			scroll.setPrefSize(500f, 500f);
+			
+			container.getChildren().add(scroll);
+			
+			Tab tab = new Tab("Day "+Integer.toString(i+1));
+			tab.setContent(container);
 			tabPane.getTabs().add(tab);
 		}
 	}
 	
 	
-	private void displayActivityList(VBox vbox, List<ActivityBean> activities) {
+	private void displayActivity(VBox vbox, ActivityBean activity) {
 		FXMLLoader loader = new FXMLLoader();
 		loader.setLocation(getClass().getResource("/logic/view/ActivityItem.fxml"));
 		try {
-			for (ActivityBean bean: activities) {
-				AnchorPane anchor = loader.load();
-				ActivityItemGraphic graphic = loader.getController();
-				graphic.setData(bean);
-				vbox.getChildren().add(anchor);
-			}
+			AnchorPane anchor = loader.load();
 			
+			System.out.println("Bean: "+activity);
+			ActivityItemGraphic graphic = loader.getController();
+			graphic.setData(activity);
+			vbox.getChildren().add(anchor);
+		
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
 	}
 
 	public void joinTrip(ActionEvent e) {
@@ -187,20 +204,29 @@ public class TripInfoGraphic {
 		FXMLLoader loader = new FXMLLoader();
 		loader.setLocation(getClass().getResource("/logic/view/UserItem.fxml"));
 		
-		try {
-			AnchorPane pane = loader.load();
-			UserItemGraphic graphic = loader.getController();
-			if (participants != null) {
-				for (UserBean user: participants) {
-					graphic.setData(user);
-					boxTravelers.getChildren().add(pane);
-				}
+		if (participants != null) {
+			for (UserBean user: participants) {
+				displayParticipant(user);
 			}
+		}
+	}
+
+	private void displayParticipant(UserBean user) {
+		FXMLLoader loader = new FXMLLoader();
+		loader.setLocation(getClass().getResource("/logic/view/UserItem.fxml"));
+		try {
+			AnchorPane anchor = loader.load();
 			
+			System.out.println("Bean: "+user);
+			UserItemGraphic graphic = loader.getController();
+			graphic.setData(user);
+			boxTravelers.getChildren().add(anchor);
+		
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		
 	}
 
 }

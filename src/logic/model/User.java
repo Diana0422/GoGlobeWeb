@@ -139,4 +139,8 @@ public class User implements Serializable {
 	public void setBirthday(Date birthday) {
 		this.birthday = birthday;
 	}
+
+	public void addPoints(int i) {
+		setPoints(getPoints()+i);
+	}
 }

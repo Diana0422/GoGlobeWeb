@@ -59,11 +59,7 @@ public class RegistrationBean {
 		Logger.getGlobal().info(infoStr);
 		
 		// registration values control
-		if (name== null || surname==null || email == null || password == null || birthday == null) {
-			return false;
-		} else {
-			return true;
-		}
+		return (name== null || surname==null || email == null || password == null || birthday == null);
 	}
 	
 }

@@ -37,6 +37,7 @@ public class RegistrationController {
 				session.setEmail(email);
 				session.setName(name);
 				session.setSurname(surname);
+				session.setPoints(0);
 				return session;
 			}
 		} catch (ParseException e) {

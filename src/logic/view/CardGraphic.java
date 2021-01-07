@@ -54,9 +54,7 @@ public class CardGraphic implements Initializable {
 	}
 
 	public void setSession(SessionBean session) {
-		System.out.println(session);
 		this.session = session;
-		System.out.println("Card session: "+session);
 	}
     
 	/* Action methods */

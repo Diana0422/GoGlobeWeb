@@ -7,6 +7,7 @@ public class SessionBean {
 	private String name;
 	private String surname;
 	private String email;
+	private int points;
 	
 	public SessionBean() {
 		// empty constructor
@@ -44,6 +45,19 @@ public class SessionBean {
 
 	public void setEmail(String email) {
 		this.email = email;
+	}
+
+	public int getPoints() {
+		return points;
+	}
+
+	public void setPoints(int points) {
+		this.points = points;
+	}
+
+	public String getUserLocation() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 	
 	

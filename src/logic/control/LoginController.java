@@ -31,9 +31,9 @@ public class LoginController {
 		for (int i = 0; i < users.size(); i++) {
 			User tempUser = users.get(i);
 			if (tempUser.getEmail().equals(username) && tempUser.getPassword().equals(password)){
-				
 					loginBean.setNome(tempUser.getName());
 					loginBean.setCognome(tempUser.getSurname());
+					loginBean.setPoints(tempUser.getPoints());
 					return loginBean;			
 			}	
 			

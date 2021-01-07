@@ -48,7 +48,6 @@ public class JoinTripGraphic implements Initializable {
 
 	public void setSession(SessionBean session) {
 		this.session = session;
-		System.out.println("JoinTrip session: "+session);
 	}
 	
 	/* Action methods */

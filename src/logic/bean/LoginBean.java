@@ -8,6 +8,7 @@ public class LoginBean {
 	private String password;
 	protected String nome;
 	protected String cognome;
+	private int points;
 	
 	public LoginBean() {
 		//empty constructor
@@ -48,9 +49,20 @@ public class LoginBean {
 		if (utenteTrovato != null) {
 			setNome(utenteTrovato.getNome());
 			setCognome(utenteTrovato.getCognome());
+			setPoints(utenteTrovato.getPoints());
 		}
 		return utenteTrovato != null;
 		
+	}
+
+
+	public int getPoints() {
+		return points;
+	}
+
+
+	public void setPoints(int points) {
+		this.points = points;
 	}
 	
 

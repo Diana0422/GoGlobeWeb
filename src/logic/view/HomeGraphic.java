@@ -8,20 +8,31 @@ public class HomeGraphic {
 	@FXML
 	private Label lblWelcome;
 	
+	@FXML
+    private Label lblPoints;
+	
 	/*Action methods */
 	
-	public void setLabelText(String text) {
+	public void setWelcomeText(String text) {
 		lblWelcome.setText(text);
 	}
 	
+	public void setPointsText(String text) {
+		lblPoints.setText(text);
+	}
+	
+	@FXML
+	void forwardGainPoints(MouseEvent event) {
+		UpperNavbarControl.getInstance().loadGainPoints();
+	}
 	
 	@FXML
 	void forwardJoinTrip(MouseEvent event) {
-			UpperNavbarControl.getInstance().loadJoinTrip();
+		UpperNavbarControl.getInstance().loadJoinTrip();
 	}
 
 	@FXML
 	void forwardPlanTrip(MouseEvent event) {
-			UpperNavbarControl.getInstance().loadPlanTrip();
+		UpperNavbarControl.getInstance().loadPlanTrip();
 	}
 }

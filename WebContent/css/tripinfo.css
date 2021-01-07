@@ -10,13 +10,17 @@ body {
 }
 
 .main-content {
-	display: flex;
 	margin-top: 5%;
 }
 
 /* left elements in displayer */
 .general-info {
+	display: flex;
     margin-right: 10%;
+}
+
+.infos-left {
+	margin-right: 20%;
 }
 
 .trip-title {

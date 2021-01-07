@@ -58,15 +58,19 @@ public class UserDAOFile implements UserDAO{
 	
 
 	@Override
-	public boolean updateUser(User newUser, User oldUser) {
+	public boolean updateUser(User newUser, String oldUserEmail) {
 		// Updates trip information into back-end file
 		
 		List<User> users = getAllUsers();
 				
 		for (User tmp: users) {
-			if (tmp.getEmail().equals(oldUser.getEmail())) {
+			if (tmp.getEmail().equals(oldUserEmail)) {
 				tmp.setName(newUser.getName());
 				tmp.setSurname(newUser.getSurname());
+				tmp.setPoints(newUser.getPoints());
+				tmp.setBirthday(newUser.getBirthday());
+				tmp.setReviews(newUser.getReviews());
+				tmp.setRedeemedPrizes(newUser.getRedeemedPrizes());
 				Logger.getGlobal().info("Add update profile picture.");
 				break;
 			}

@@ -10,6 +10,8 @@ import logic.bean.DayBean;
 import logic.bean.RequestBean;
 import logic.bean.TripBean;
 import logic.bean.UserBean;
+import logic.dao.TripDAO;
+import logic.dao.TripDAOFile;
 import logic.model.Activity;
 import logic.model.Day;
 import logic.model.Request;
@@ -176,5 +178,16 @@ public class ConversionController {
 		bean.setPoints(user.getPoints());
 		bean.setAge(user.calculateUserAge());
 		return bean;
+	}
+
+	public Trip convertToTrip(TripBean tripBean) {
+		TripDAO tripDao = new TripDAOFile();
+		List<Trip> list = tripDao.getAllTrips();
+		
+		for (Trip trip: list) {
+			if (tripBean.getTitle().equals(trip.getTitle())) return trip;
+		}
+		return null;
+		
 	}
 }

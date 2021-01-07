@@ -44,8 +44,6 @@ public class ManageRequestController {
 		RequestDAO reqDao = new RequestDAOFile();
 		Request req = reqDao.getRequest(requestBean.getTripTitle(), requestBean.getSenderEmail(), requestBean.getReceiverEmail());
 		
-		System.out.println("Participants: "+req.getTarget().getParticipants());
-		
 		// Add sender user to trip participants
 		req.getTarget().addParticipant(req.getSender());
 		String logStr = "Participants: "+req.getTarget().getParticipants();

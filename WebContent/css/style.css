@@ -197,3 +197,8 @@ label.star:before {
 .user-tag h3 {
 	margin-right: 10px;
 }
+
+/* List displayer */
+.list {
+	max-height: 400px;
+}

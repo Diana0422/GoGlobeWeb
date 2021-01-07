@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.List;
 import java.util.ResourceBundle;
+import java.util.logging.Logger;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -89,7 +90,7 @@ public class PlanTripGraphic implements Initializable{
     	planTripBean.setLocation(tfLocation.getText());
     	if (planTripBean.validateLocation())
     		planTripBean.saveLocation();
-    		refresh();
+    	refresh();
     }
     
     @FXML
@@ -102,17 +103,21 @@ public class PlanTripGraphic implements Initializable{
     
     @FXML
     void onShareTripClick(ActionEvent event) {
-    	
+    	// TODO
     }
 	
 	public void initPlanTripBean(PlanTripBean planTripBean) {
 		this.planTripBean = planTripBean;
-		System.out.println("TRIP TITLE: " + this.planTripBean.getTripName());
+		
+		String logStr = "TRIP TITLE: " + this.planTripBean.getTripName();
+		Logger.getGlobal().info(logStr);
+		
 		//set GUI elements visibility
 		txtTripTitle.setText(planTripBean.getTripName());
 		txtDayNumber.setText(Integer.toString(planTripBean.getPlanningDay() + 1));
 		if (planTripBean.checkDay()) {
-			System.out.println("THIS DAY HAS NO LOCATION");
+			logStr = "THIS DAY HAS NO LOCATION";
+			Logger.getGlobal().info(logStr);
 
 			txtLocationForm.setVisible(true);					
 			tfLocation.setVisible(true);
@@ -123,7 +128,8 @@ public class PlanTripGraphic implements Initializable{
 			spActivities.setVisible(false);
 			
 		}else{
-			System.out.println("LOCATION FOUND: SHOWING THINGS.");
+			logStr = "LOCATION FOUND: SHOWING THINGS.";
+			Logger.getGlobal().info(logStr);
 
 			txtLocationForm.setVisible(false);
 			tfLocation.setVisible(false);
@@ -184,7 +190,7 @@ public class PlanTripGraphic implements Initializable{
 
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
-		
+		//empty
 	}
 	
 	

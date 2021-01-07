@@ -141,6 +141,23 @@ public class UpperNavbarControl implements Initializable {
     	loadUI("logic/view/Home");
     }
     
+    void loadPrizes() {
+    	FXMLLoader loader = new FXMLLoader();
+    	loader.setLocation(getClass().getResource("/logic/view/Prizes.fxml"));
+    	String logStr = "Loaded UI: Prizes.fxml";
+    	Logger.getGlobal().info(logStr);
+    	
+    	try {
+			Parent root = loader.load();
+			PrizesGraphic graphic = loader.getController();
+			addToPane(root);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+    	
+    }
+    
     void loadProfile(UserBean user) {
     	FXMLLoader loader = new FXMLLoader();
     	loader.setLocation(getClass().getResource("/logic/view/Profile.fxml"));
@@ -194,6 +211,26 @@ public class UpperNavbarControl implements Initializable {
 		}
     }
     
+    
+    public void loadGainPoints() {
+    	FXMLLoader loader = new FXMLLoader();
+    	loader.setLocation(getClass().getResource("/logic/view/GainPoints.fxml"));
+    	String logStr = "Loaded UI: GainPoints.fxml";
+    	Logger.getGlobal().info(logStr);
+    
+		try {
+			Parent root = loader.load();
+			GainPointsGraphic graphic = loader.getController();
+			graphic.setPointsText("You have "+getSession().getPoints()+" points.");
+			graphic.loadTrip();
+			addToPane(root);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}	
+	}
+    
+    
     void loadPlanTrip() {
     	FXMLLoader loader = new FXMLLoader();
     	loader.setLocation(getClass().getResource("/logic/view/SelectTripPreferences.fxml"));
@@ -218,7 +255,8 @@ public class UpperNavbarControl implements Initializable {
     	try {
 			Parent root = loader.load();
 			HomeGraphic graphic = loader.getController();
-	    	graphic.setLabelText(welcome);
+	    	graphic.setWelcomeText(welcome);
+	    	graphic.setPointsText("You have "+getSession().getPoints()+" points.");
 			addToPane(root);
 		} catch (IOException e) {
 			// TODO Auto-generated catch block

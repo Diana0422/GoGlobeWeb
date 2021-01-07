@@ -45,7 +45,8 @@ public class JoinTripController {
 		logStr = "Trip Beans: "+list;
 		Logger.getGlobal().info(logStr);
 		for (TripBean bean: list) {
-			System.out.println(bean.getParticipants());
+			logStr = "Participants: "+bean.getParticipants();
+			Logger.getGlobal().info(logStr);
 		}
 		return list;
 	}
@@ -57,7 +58,6 @@ public class JoinTripController {
 		// Pick the trip corresponding to the tripBean from persistence
 		Trip trip = tripDao.getTrip(tripBean.getTitle());
 		
-		System.out.println(session.getEmail());
 		if (!trip.getOrganizer().getEmail().equals(session.getEmail())) { // only if the user is not the organizer
 			// Instantiate a new request
 			Request request = new Request();

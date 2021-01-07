@@ -37,6 +37,7 @@ public class LoginGraphic {
     		session.setEmail(loginBean.getUsername());
     		session.setName(loginBean.getNome());
     		session.setSurname(loginBean.getCognome());
+    		session.setPoints(loginBean.getPoints());
     		UpperNavbarControl.getInstance().setSession(session);
         	UpperNavbarControl.getInstance().loadHome(welcome);
     	}else {
