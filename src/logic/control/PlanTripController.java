@@ -149,7 +149,8 @@ public class PlanTripController {
 			// Test if correct
 			days.get(i).getDate();
 		}
-		trip.setDays(days); 
+		trip.setDays(days);
+		System.out.println(trip.getPrice());
 		
 		if (tripBean.isShared()) {
 			trip.setShared(true);

@@ -11,6 +11,7 @@ public class Day implements Serializable{
 	private String location;
 	private List<Activity> activities;
 	private Date date;
+	private int budget;
 	
 	public Day() {
 		activities = new ArrayList<>();	
@@ -40,6 +41,25 @@ public class Day implements Serializable{
 
 	public void setDate(Date date) {
 		this.date = date;
+	}
+
+	public int getBudget() {
+		return budget;
+	}
+
+	public void setBudget(int budget) {
+		this.budget = budget;
+	}
+	
+	public int calclulateBudget() {
+		int costSum = 0;
+		
+		for (Activity act: this.activities) {
+			costSum += act.getEstimatedCost();
+		}
+		setBudget(costSum);
+		return costSum;
+		
 	}
 	
 }

@@ -22,7 +22,6 @@ public class User implements Serializable {
 	private int points;
 	private String bio;
 	private List<Request> request;
-	private List<Review> reviews;
 	private List<Prize> redeemedPrizes;
 	private Map<TripCategory, String> attitude;
 	
@@ -39,7 +38,6 @@ public class User implements Serializable {
 		this.points = 0;
 		this.bio ="";
 		this.request = new ArrayList<Request>();
-		this.reviews = new ArrayList<Review>();
 		this.redeemedPrizes = new ArrayList<Prize>();
 	}
 	
@@ -94,14 +92,6 @@ public class User implements Serializable {
 	
 	public void setRequest(List<Request> request) {
 		this.request = request;
-	}
-
-	public List<Review> getReviews() {
-		return reviews;
-	}
-
-	public void setReviews(List<Review> reviews) {
-		this.reviews = reviews;
 	}
 
 	public List<Prize> getRedeemedPrizes() {

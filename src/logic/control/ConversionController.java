@@ -44,7 +44,10 @@ public class ConversionController {
 			Day day = new Day();
 			day.setLocation(dayBeans.get(i).getLocation());
 			day.setActivities(convertActivityBeanList(dayBeans.get(i).getActivities()));
+			day.calclulateBudget();
+			System.out.println("Day price:"+day.getBudget());
 			days.add(day);
+
 		}
 		return days;
 	}
@@ -56,7 +59,7 @@ public class ConversionController {
 			String title = activityBeans.get(i).getTitle();
 			String time = activityBeans.get(i).getTime();
 			String description = activityBeans.get(i).getDescription();
-			String cost = activityBeans.get(i).getEstimatedCost();
+			int cost = Integer.parseInt(activityBeans.get(i).getEstimatedCost());
 			Activity activity = new Activity(title, time, description, cost);
 			activities.add(activity);			
 		}
@@ -83,7 +86,7 @@ public class ConversionController {
 			String title = activities.get(i).getTitle();
 			String time = activities.get(i).getTime();
 			String description = activities.get(i).getDescription();
-			String cost = activities.get(i).getEstimatedCost();
+			String cost = String.valueOf(activities.get(i).getEstimatedCost());
 			ActivityBean activityBean = new ActivityBean();
 			activityBean.setTitle(title);
 			activityBean.setTime(time);
@@ -103,6 +106,7 @@ public class ConversionController {
 			TripBean bean = new TripBean();
 			bean.setOrganizer(convertToUserBean(t.getOrganizer()));
 			bean.setParticipants(convertUserList(t.getParticipants()));
+			bean.setDescription(t.getDescription());
 			bean.setId(t.getId());
 			bean.setTitle(t.getTitle());
 			bean.setPrice(t.getPrice());

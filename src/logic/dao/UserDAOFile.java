@@ -69,7 +69,6 @@ public class UserDAOFile implements UserDAO{
 				tmp.setSurname(newUser.getSurname());
 				tmp.setPoints(newUser.getPoints());
 				tmp.setBirthday(newUser.getBirthday());
-				tmp.setReviews(newUser.getReviews());
 				tmp.setRedeemedPrizes(newUser.getRedeemedPrizes());
 				Logger.getGlobal().info("Add update profile picture.");
 				break;

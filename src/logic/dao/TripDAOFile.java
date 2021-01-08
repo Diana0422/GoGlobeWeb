@@ -87,7 +87,6 @@ public class TripDAOFile implements TripDAO {
 		for (Trip tmp: trips) {
 			if (tmp.getTitle().equals(tripTitle)) {
 				tmp.setTitle(newTrip.getTitle());
-				tmp.setPrice(newTrip.getPrice());
 				tmp.setCategory1(newTrip.getCategory1());
 				tmp.setCategory2(newTrip.getCategory2());
 				tmp.setParticipants(newTrip.getParticipants());

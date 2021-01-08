@@ -13,7 +13,6 @@ public class Trip implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	private int id;
-	private boolean shared;
 	private String title;
 	private int price;
 	private TripCategory category1;
@@ -23,6 +22,9 @@ public class Trip implements Serializable {
 	private Date returnDate;	
 	private List<Day> days;	
 	private long tripLength;
+	
+	/* SHARED TRIP ELEMENTS */
+	private boolean shared;
 	private String description;
 	private int minAge;
 	private int maxAge;
@@ -69,14 +71,6 @@ public class Trip implements Serializable {
 		this.title = title;
 	}
 	
-	public int getPrice() {
-		return price;
-	}
-	
-	public void setPrice(int price) {
-		this.price = price;
-	}
-	
 	public TripCategory getCategory1() {
 		return category1;
 	}
@@ -107,6 +101,19 @@ public class Trip implements Serializable {
 
 	public void setDays(List<Day> days) {
 		this.days = days;
+		this.calculatePrice();
+	}
+	
+	public int getPrice() {
+		return price;
+	}
+
+	public void calculatePrice() {
+		int sumPrice = 0;
+		for (int i=0; i<getDays().size(); i++) {
+			sumPrice += getDays().get(i).getBudget();
+		}
+		this.price = sumPrice;
 	}
 
 	public Date getDepartureDate() {
@@ -188,10 +195,6 @@ public class Trip implements Serializable {
 	public void setParticipants(List<User> participants) {
 		this.participants = participants;
 	}
-	
-	public void addParticipant(User participant) {
-		if (!getParticipants().contains(participant)) getParticipants().add(participant);
-	}
 
 	public int getMaxParticipants() {
 		return maxParticipants;
@@ -200,6 +203,9 @@ public class Trip implements Serializable {
 	public void setMaxParticipants(int maxParticipants) {
 		this.maxParticipants = maxParticipants;
 	}
-
+	
+	public void addParticipant(User participant) {
+		if (!getParticipants().contains(participant)) getParticipants().add(participant);
+	}
 	
 }

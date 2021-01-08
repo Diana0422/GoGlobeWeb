@@ -8,9 +8,9 @@ public class Activity implements Serializable{
 	private String time;
 	private String title;
 	private String description;
-	private String estimatedCost;
+	private int estimatedCost;
 	
-	public Activity( String title, String time, String description, String estimatedCost) {
+	public Activity( String title, String time, String description, int estimatedCost) {
 		this.time = time;
 		this.title = title;
 		this.description = description;
@@ -42,11 +42,11 @@ public class Activity implements Serializable{
 		this.description = description;
 	}
 
-	public String getEstimatedCost() {
+	public int getEstimatedCost() {
 		return estimatedCost;
 	}
 
-	public void setEstimatedCost(String estimatedCost) {
+	public void setEstimatedCost(int estimatedCost) {
 		this.estimatedCost = estimatedCost;
 	}
 	

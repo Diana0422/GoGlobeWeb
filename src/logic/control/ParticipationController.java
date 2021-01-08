@@ -37,14 +37,13 @@ public class ParticipationController {
 		List<Day> days = trip.getDays();
 		
 		// TODO sistemare formattazione date in maniera univoca
-		DateFormat formatterDay = new SimpleDateFormat("dd/mm/yyyy");
 		DateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
 		String todayStr = formatter.format(today);
 		System.out.println("Today str: "+todayStr);
 		
 		for (Day day: days) {
 			Logger.getGlobal().info("Date associated: "+day.getDate());
-			String dayStr = formatterDay.format(day.getDate());
+			String dayStr = formatter.format(day.getDate());
 			System.out.println("Day str: "+dayStr);
 			
 			if (dayStr.equals(todayStr)) {
