@@ -1,7 +1,7 @@
 package logic.model.factories;
 
 import logic.model.adapters.IPFinderAdapter;
-import logic.model.apis.WHOISImplementation;
+import logic.model.apis.WhoIsAPI;
 
 public class IPFinderAdapterFactory {
 	
@@ -20,7 +20,7 @@ public class IPFinderAdapterFactory {
 	}
 	
 	public IPFinderAdapter createIPFinderAdapter() {
-		return new IPFinderAdapter(new WHOISImplementation());
+		return new IPFinderAdapter(new WhoIsAPI());
 	}
 	
 }

@@ -10,13 +10,11 @@ import java.util.logging.Logger;
 
 import org.json.JSONObject;
 
-import logic.model.interfaces.IPLocationAPI;
 
-public class IPFindImplementation implements IPLocationAPI {
+public class IPFindAPI {
 	
 	private static final String APIKEY = "534948a4-7cc6-4cd6-b9ed-be250ff572f4";
 
-	@Override
 	public String getUserLatAndLong(String ip) {
 		HttpRequest request2 = HttpRequest.newBuilder()
     			.uri(URI.create("https://api.ipfind.com?ip="+ip+"&auth="+APIKEY))

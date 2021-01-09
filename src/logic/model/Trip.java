@@ -15,6 +15,7 @@ public class Trip implements Serializable {
 	private int id;
 	private String title;
 	private int price;
+	private int ticketPrice;
 	private TripCategory category1;
 	private TripCategory category2;
 	private String imgSrc;
@@ -206,6 +207,14 @@ public class Trip implements Serializable {
 	
 	public void addParticipant(User participant) {
 		if (!getParticipants().contains(participant)) getParticipants().add(participant);
+	}
+
+	public int getTicketPrice() {
+		return ticketPrice;
+	}
+
+	public void setTicketPrice(int ticketPrice) {
+		this.ticketPrice = ticketPrice;
 	}
 	
 }

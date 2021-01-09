@@ -29,7 +29,11 @@
 	</classpathentry>
 	<classpathentry kind="con" path="org.eclipse.jst.j2ee.internal.web.container"/>
 	<classpathentry kind="lib" path="lib/mysql-connector-java-8.0.22.jar"/>
-	<classpathentry kind="lib" path="lib/json/json.jar"/>
+	<classpathentry kind="lib" path="lib/json/json.jar">
+		<attributes>
+			<attribute name="org.eclipse.jst.component.dependency" value="/WEB-INF/lib"/>
+		</attributes>
+	</classpathentry>
 	<classpathentry kind="lib" path="lib/httpclient/commons-cli-1.4.jar"/>
 	<classpathentry kind="lib" path="lib/httpclient/commons-codec-1.13.jar"/>
 	<classpathentry kind="lib" path="lib/httpclient/httpclient5-5.0.3.jar"/>

@@ -20,7 +20,7 @@
                   <Font size="24.0" />
                </font>
             </Label>
-            <Button id="btn" layoutX="460.0" layoutY="71.0" mnemonicParsing="false" onMouseClicked="#forwardJoinTrip" text="Join a trip">
+            <Button id="btn" fx:id="btnJoin" layoutX="460.0" layoutY="71.0" mnemonicParsing="false" onMouseClicked="#forwardJoinTrip" text="Join a trip">
                <font>
                   <Font size="18.0" />
                </font>
@@ -34,7 +34,7 @@
                   <Font size="24.0" />
                </font>
             </Label>
-            <Button id="btn" layoutX="456.0" layoutY="79.0" mnemonicParsing="false" onMouseClicked="#forwardPlanTrip" text="Plan a trip">
+            <Button id="btn" fx:id="btnPlan" layoutX="456.0" layoutY="79.0" mnemonicParsing="false" onMouseClicked="#forwardPlanTrip" text="Plan a trip">
                <font>
                   <Font size="18.0" />
                </font>
@@ -53,7 +53,7 @@
                   <Font size="24.0" />
                </font>
             </Label>
-            <Button id="btn" layoutX="323.0" layoutY="67.0" mnemonicParsing="false" onMouseClicked="#forwardGainPoints" prefHeight="46.0" prefWidth="119.0" text="Gain Points">
+            <Button id="btn" fx:id="btnGain" layoutX="323.0" layoutY="67.0" mnemonicParsing="false" onMouseClicked="#forwardGainPoints" prefHeight="46.0" prefWidth="119.0" text="Gain Points">
                <font>
                   <Font size="18.0" />
                </font></Button>

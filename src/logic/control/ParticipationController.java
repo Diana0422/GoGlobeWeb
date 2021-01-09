@@ -47,6 +47,7 @@ public class ParticipationController {
 			System.out.println("Day str: "+dayStr);
 			
 			if (dayStr.equals(todayStr)) {
+				//TODO FARE IN MODO CHE LA POSIZIONE VENGA PRELEVATA 1 VOLTA SOLA AL MOMENTO DEL LOGIN E SIA FISSA PER L'INTERA SESSIONE
 				userIP = IPFinderAdapterFactory.getInstance().createIPFinderAdapter().getCurrentIP();
 				userPos = PositionAdapterFactory.getInstance().createIPLocationAdapter().getIPCurrentPosition(userIP);
 				Logger.getGlobal().info(userPos);

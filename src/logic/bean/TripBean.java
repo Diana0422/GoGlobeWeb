@@ -8,6 +8,7 @@ public class TripBean {
 	private boolean shared;
 	private String title;
 	private int price;
+	private int ticketPrice;
 	private String category1;
 	private String category2;
 	private String imgSrc;
@@ -170,6 +171,14 @@ public class TripBean {
 
 	public void setParticipants(List<UserBean> participants) {
 		this.participants = participants;
+	}
+
+	public int getTicketPrice() {
+		return ticketPrice;
+	}
+
+	public void setTicketPrice(int ticketPrice) {
+		this.ticketPrice = ticketPrice;
 	}
 	
 	

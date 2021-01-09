@@ -1,7 +1,7 @@
 package logic.model.factories;
 
 import logic.model.adapters.IPLocationAdapter;
-import logic.model.apis.IPFindImplementation;
+import logic.model.apis.IPFindAPI;
 
 public class PositionAdapterFactory {
 	
@@ -20,7 +20,7 @@ public class PositionAdapterFactory {
 	}
 	
 	public IPLocationAdapter createIPLocationAdapter() {
-		return new IPLocationAdapter(new IPFindImplementation());
+		return new IPLocationAdapter(new IPFindAPI());
 	}
 
 }

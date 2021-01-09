@@ -10,11 +10,8 @@ import java.util.logging.Logger;
 
 import org.json.JSONObject;
 
-import logic.model.interfaces.IPFinderAPI;
+public class WhoIsAPI {
 
-public class WHOISImplementation implements IPFinderAPI {
-
-	@Override
 	public String getUserIP() {
 		
 		HttpRequest request = HttpRequest.newBuilder()

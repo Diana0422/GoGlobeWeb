@@ -110,6 +110,7 @@ public class ConversionController {
 			bean.setId(t.getId());
 			bean.setTitle(t.getTitle());
 			bean.setPrice(t.getPrice());
+			bean.setTicketPrice(t.getTicketPrice());
 			bean.setCategory1(t.getCategory1().toString());
 			bean.setCategory2(t.getCategory2().toString());
 			bean.setImgSrc(t.getImgSrc());
