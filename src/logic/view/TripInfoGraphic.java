@@ -20,6 +20,7 @@ import logic.bean.DayBean;
 import logic.bean.SessionBean;
 import logic.bean.TripBean;
 import logic.bean.UserBean;
+import logic.control.FlightController;
 import logic.control.JoinTripController;
 
 public class TripInfoGraphic {
@@ -45,6 +46,18 @@ public class TripInfoGraphic {
 	@FXML
 	private Label lblReturn;
 	
+    @FXML
+    private Label lblOrigin;
+
+    @FXML
+    private Label lblDestination;
+
+    @FXML
+    private Label lblCarrier;
+
+    @FXML
+    private Label lblTicketPrice;
+	
 	@FXML
 	private Label lblCategory1;
 	
@@ -62,6 +75,9 @@ public class TripInfoGraphic {
 
     @FXML
     private VBox boxTravelers;
+    
+    @FXML
+    private VBox boxFlight;
 	
 	private TripBean tripBean;
 	
@@ -152,6 +168,23 @@ public class TripInfoGraphic {
 			Tab tab = new Tab("Day "+Integer.toString(i+1));
 			tab.setContent(container);
 			tabPane.getTabs().add(tab);
+		}
+	}
+	
+	
+	public void displayFlightInfo() {
+		String notDefined = "N/D";
+		int price; 
+		if ((price = FlightController.getInstance().retrieveFlightPrice(tripBean)) == 0) {
+			lblCarrier.setText(notDefined);
+			lblOrigin.setText(notDefined);
+			lblDestination.setText(notDefined);
+			lblTicketPrice.setText(notDefined);
+		} else {
+			lblCarrier.setText(FlightController.getInstance().retrieveFlightCarrier(tripBean));
+			lblOrigin.setText(FlightController.getInstance().retrieveFlightOrigin(tripBean));
+			lblDestination.setText(FlightController.getInstance().retrieveFlightDestination(tripBean));
+			lblTicketPrice.setText(price+"€");
 		}
 	}
 	

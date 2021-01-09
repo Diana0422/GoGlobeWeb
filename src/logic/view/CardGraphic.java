@@ -25,6 +25,9 @@ public class CardGraphic implements Initializable {
     private Label lblPrice;
     
     @FXML
+    private Label lblTicketPrice;
+    
+    @FXML
     private Label lblCat1;
     
     @FXML
@@ -71,6 +74,7 @@ public class CardGraphic implements Initializable {
     	setSession(session);
     	lblTitle.setText(tripBean.getTitle());
     	lblPrice.setText(tripBean.getPrice()+"€");
+    	lblTicketPrice.setText(tripBean.getTicketPrice()+"€");
     	Image catImg = new Image(getClass().getResourceAsStream("/logic/view/images/icons8-greek-pillar-capital-50.png"));
     	imgCat1.setImage(catImg);
     	imgCat2.setImage(catImg);

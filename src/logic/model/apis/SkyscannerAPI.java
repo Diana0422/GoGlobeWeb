@@ -171,7 +171,7 @@ public class SkyscannerAPI {
 
 
 	public String getCarrierName(JSONObject flight) {
-		JSONObject details = flight.getJSONObject("OutbuondLeg");
+		JSONObject details = flight.getJSONObject("OutboundLeg");
 		int carrierId = details.getJSONArray("CarrierIds").getInt(0);
 		System.out.println(carrierId);
 		

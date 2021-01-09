@@ -151,7 +151,7 @@ public class UpperNavbarControl implements Initializable {
     	
     	try {
 			Parent root = loader.load();
-			PrizesGraphic graphic = loader.getController();
+//			PrizesGraphic graphic = loader.getController();
 			addToPane(root);
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
@@ -318,7 +318,7 @@ public class UpperNavbarControl implements Initializable {
   	  }catch(IOException e){
   		  //TODO Error View loading
   	  }  
-      }
+   }
     
    
     
@@ -339,6 +339,8 @@ public class UpperNavbarControl implements Initializable {
 	    	tig.setCategory2Text(choice.getCategory2());
 	    	tig.setTripBean(choice);
 	    	tig.setSession(session);
+	    	// Set flight info
+	    	tig.displayFlightInfo();
 	    	
 	    	tig.initializeParticipants(choice);
 	    	tig.initializeOrganizer(choice);

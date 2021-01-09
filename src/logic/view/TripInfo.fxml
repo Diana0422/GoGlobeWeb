@@ -6,9 +6,11 @@
 <?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.Tab?>
 <?import javafx.scene.control.TabPane?>
+<?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.shape.Line?>
 <?import javafx.scene.text.Font?>
@@ -26,7 +28,7 @@
                               <Font name="System Bold" size="18.0" />
                            </font>
                         </Label>
-                        <Label layoutX="30.0" layoutY="352.0" prefHeight="31.0" prefWidth="125.0" text="Description:" wrapText="true">
+                        <Label layoutX="30.0" layoutY="356.0" prefHeight="31.0" prefWidth="125.0" text="Description:" wrapText="true">
                            <font>
                               <Font name="System Bold" size="18.0" />
                            </font>
@@ -38,63 +40,37 @@
                            <padding>
                               <Insets left="10.0" />
                            </padding></Label>
-                        <Label fx:id="lblDescription" layoutX="30.0" layoutY="387.0" prefWidth="420.0" style="-fx-background-color: #ffffff;" text="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam tincidunt ex enim, ac laoreet justo rhoncus eget. Suspendisse potenti. Vivamus eleifend dui ut turpis aliquet tempor. Phasellus consequat tincidunt varius. Aenean rhoncus nunc ut tristique porttitor. Curabitur quis vulputate sem. Nunc eu nunc at urna blandit ornare at sed dolor. Nunc blandit in sem a eleifend. Nulla at odio vulputate nisl fringilla vehicula. In vel est vel dui volutpat placerat sit amet id sem. Suspendisse elit mi vel." textAlignment="JUSTIFY" wrapText="true">
+                        <Label fx:id="lblDescription" alignment="TOP_LEFT" layoutX="30.0" layoutY="392.0" prefHeight="160.0" prefWidth="384.0" style="-fx-background-color: #ffffff;" text="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam tincidunt ex enim, ac laoreet justo rhoncus eget. Suspendisse potenti. Vivamus eleifend dui ut turpis aliquet tempor. Phasellus consequat tincidunt varius. Aenean rhoncus nunc ut tristique porttitor. Curabitur quis vulputate sem. Nunc eu nunc at urna blandit ornare at sed dolor. Nunc blandit in sem a eleifend. Nulla at odio vulputate nisl fringilla vehicula. In vel est vel dui volutpat placerat sit amet id sem. " textAlignment="JUSTIFY" wrapText="true">
                            <font>
                               <Font size="14.0" />
                            </font></Label>
-                        <Label layoutX="487.0" layoutY="118.0" prefHeight="20.0" prefWidth="99.0" text="Dates:" wrapText="true">
+                        <Label layoutX="479.0" layoutY="120.0" prefHeight="20.0" prefWidth="99.0" text="Dates:" wrapText="true">
                            <font>
                               <Font name="System Bold" size="18.0" />
                            </font>
                         </Label>
-                        <Label layoutX="485.0" layoutY="169.0" text="Departure:">
-                           <font>
-                              <Font size="18.0" />
-                           </font></Label>
-                        <Label layoutX="485.0" layoutY="207.0" text="Return:">
-                           <font>
-                              <Font size="18.0" />
-                           </font></Label>
-                        <Label fx:id="lblDeparture" layoutX="581.0" layoutY="173.0" prefHeight="17.0" prefWidth="93.0" text="22/04/1997">
-                           <font>
-                              <Font size="14.0" />
-                           </font></Label>
-                        <Label fx:id="lblReturn" layoutX="581.0" layoutY="210.0" prefHeight="17.0" prefWidth="93.0" text="22/04/1997">
-                           <font>
-                              <Font size="14.0" />
-                           </font></Label>
-                        <Label layoutX="29.0" layoutY="167.0" prefHeight="20.0" prefWidth="99.0" text="Categories:" wrapText="true">
+                        <Label layoutX="479.0" layoutY="266.0" prefHeight="20.0" prefWidth="99.0" text="Categories:" wrapText="true">
                            <font>
                               <Font name="System Bold" size="18.0" />
                            </font>
                         </Label>
-                        <ImageView fx:id="imgCategory1" fitHeight="50.0" fitWidth="50.0" layoutX="29.0" layoutY="209.0" pickOnBounds="true" preserveRatio="true" />
-                        <ImageView fx:id="imgCategory2" fitHeight="50.0" fitWidth="50.0" layoutX="29.0" layoutY="280.0" pickOnBounds="true" preserveRatio="true" />
-                        <Label fx:id="lblCategory1" alignment="CENTER" layoutX="94.0" layoutY="224.0" prefHeight="17.0" prefWidth="72.0" stylesheets="@application.css" text="Category 1">
-                           <font>
-                              <Font size="14.0" />
-                           </font></Label>
-                        <Label fx:id="lblCategory2" alignment="CENTER" layoutX="92.0" layoutY="292.0" prefHeight="26.0" prefWidth="76.0" text="Category 2">
-                           <font>
-                              <Font size="14.0" />
-                           </font></Label>
-                        <Line endX="-9.0" endY="396.0" layoutX="742.0" layoutY="115.0" opacity="0.33" startX="-9.0" startY="-95.0" />
-                        <Label layoutX="777.0" layoutY="92.0" prefHeight="27.0" prefWidth="195.0" text="Organizer:">
+                        <Line endX="21.0" endY="433.0" layoutX="742.0" layoutY="115.0" opacity="0.33" startX="21.0" startY="-95.0" />
+                        <Label layoutX="790.0" layoutY="118.0" prefHeight="27.0" prefWidth="195.0" text="Organizer:">
                            <font>
                               <Font name="System Bold" size="18.0" />
                            </font></Label>
-                        <Label layoutX="777.0" layoutY="24.0" text="Participants:">
+                        <Label layoutX="790.0" layoutY="33.0" text="Participants:">
                            <font>
                               <Font name="System Bold" size="24.0" />
                            </font>
                         </Label>
-                        <VBox fx:id="boxOrganizer" layoutX="777.0" layoutY="126.0" prefHeight="63.0" prefWidth="463.0" />
-                        <Label layoutX="777.0" layoutY="210.0" prefHeight="27.0" prefWidth="195.0" text="Travelers:">
+                        <VBox fx:id="boxOrganizer" layoutX="792.0" layoutY="148.0" prefHeight="63.0" prefWidth="463.0" />
+                        <Label layoutX="790.0" layoutY="228.0" prefHeight="27.0" prefWidth="195.0" text="Travelers:">
                            <font>
                               <Font name="System Bold" size="18.0" />
                            </font>
                         </Label>
-                        <ScrollPane layoutX="777.0" layoutY="248.0" prefHeight="208.0" prefWidth="466.0">
+                        <ScrollPane layoutX="790.0" layoutY="267.0" prefHeight="208.0" prefWidth="466.0">
                            <content>
                               <VBox fx:id="boxTravelers" prefHeight="205.0" prefWidth="464.0" style="-fx-background-color: #ffffff;" />
                            </content>
@@ -113,6 +89,184 @@
                               </Button>
                            </children>
                         </HBox>
+                        <Label layoutX="30.0" layoutY="158.0" prefHeight="30.0" prefWidth="148.0" text="Available Flight:" wrapText="true">
+                           <font>
+                              <Font name="System Bold" size="18.0" />
+                           </font>
+                        </Label>
+                        <VBox fx:id="boxFlight" layoutX="28.0" layoutY="198.0" prefHeight="143.0" prefWidth="388.0">
+                           <children>
+                              <HBox prefHeight="47.0" prefWidth="424.0" style="-fx-border-color: grey;">
+                                 <children>
+                                    <Pane prefHeight="36.0" prefWidth="177.0" style="-fx-background-color: lightgrey;">
+                                       <children>
+                                          <Label layoutX="64.0" layoutY="8.0" style="-fx-background-color: lightgrey;" text="Departure from:">
+                                             <font>
+                                                <Font name="System Bold Italic" size="14.0" />
+                                             </font>
+                                          </Label>
+                                          <ImageView fitHeight="32.0" fitWidth="37.0" layoutX="6.0" layoutY="4.0" pickOnBounds="true" preserveRatio="true">
+                                             <image>
+                                                <Image url="@images/origin-icon.png" />
+                                             </image>
+                                          </ImageView>
+                                       </children>
+                                    </Pane>
+                                    <Label fx:id="lblOrigin" prefHeight="34.0" prefWidth="209.0" text="Departure Airport">
+                                       <font>
+                                          <Font size="14.0" />
+                                       </font>
+                                       <padding>
+                                          <Insets left="10.0" />
+                                       </padding></Label>
+                                 </children>
+                              </HBox>
+                              <HBox prefHeight="47.0" prefWidth="424.0" style="-fx-border-color: grey;">
+                                 <children>
+                                    <Pane prefHeight="36.0" prefWidth="177.0" style="-fx-background-color: lightgrey;">
+                                       <children>
+                                          <Label layoutX="64.0" layoutY="8.0" text="Destination:">
+                                             <font>
+                                                <Font name="System Bold Italic" size="14.0" />
+                                             </font>
+                                          </Label>
+                                          <ImageView fitHeight="32.0" fitWidth="37.0" layoutX="7.0" layoutY="2.0" pickOnBounds="true" preserveRatio="true">
+                                             <image>
+                                                <Image url="@images/dest-icon.png" />
+                                             </image>
+                                          </ImageView>
+                                       </children>
+                                    </Pane>
+                                    <Label fx:id="lblDestination" prefHeight="34.0" prefWidth="210.0" text="Destination Airport">
+                                       <font>
+                                          <Font size="14.0" />
+                                       </font>
+                                       <padding>
+                                          <Insets left="10.0" />
+                                       </padding></Label>
+                                 </children>
+                              </HBox>
+                              <HBox prefHeight="47.0" prefWidth="424.0" style="-fx-border-color: grey;">
+                                 <children>
+                                    <Pane prefHeight="34.0" prefWidth="178.0" style="-fx-background-color: lightgrey;">
+                                       <children>
+                                          <Label layoutX="64.0" layoutY="8.0" text="Carrier:">
+                                             <font>
+                                                <Font name="System Bold Italic" size="14.0" />
+                                             </font>
+                                          </Label>
+                                          <ImageView fitHeight="32.0" fitWidth="37.0" layoutX="7.0" layoutY="2.0" pickOnBounds="true" preserveRatio="true">
+                                             <image>
+                                                <Image url="@images/carrier-icon.png" />
+                                             </image>
+                                          </ImageView>
+                                       </children>
+                                    </Pane>
+                                    <Label fx:id="lblCarrier" prefHeight="34.0" prefWidth="211.0" text="Carrier name">
+                                       <font>
+                                          <Font size="14.0" />
+                                       </font>
+                                       <padding>
+                                          <Insets left="10.0" />
+                                       </padding></Label>
+                                 </children>
+                              </HBox>
+                              <HBox prefHeight="47.0" prefWidth="424.0" style="-fx-border-color: grey;">
+                                 <children>
+                                    <Pane prefHeight="36.0" prefWidth="177.0" style="-fx-background-color: lightgrey;">
+                                       <children>
+                                          <Label layoutX="64.0" layoutY="8.0" text="Price:">
+                                             <font>
+                                                <Font name="System Bold Italic" size="14.0" />
+                                             </font>
+                                          </Label>
+                                          <ImageView fitHeight="32.0" fitWidth="37.0" layoutX="7.0" layoutY="2.0" pickOnBounds="true" preserveRatio="true">
+                                             <image>
+                                                <Image url="@images/pricetag-icon.png" />
+                                             </image>
+                                          </ImageView>
+                                       </children>
+                                    </Pane>
+                                    <Label fx:id="lblTicketPrice" prefHeight="34.0" prefWidth="209.0" text="Ticket price">
+                                       <font>
+                                          <Font size="14.0" />
+                                       </font>
+                                       <padding>
+                                          <Insets left="10.0" />
+                                       </padding></Label>
+                                 </children>
+                              </HBox>
+                           </children>
+                        </VBox>
+                        <Pane layoutX="487.0" layoutY="387.0" prefHeight="61.0" prefWidth="183.0" style="-fx-background-color: #fff; -fx-border-color: grey;">
+                           <children>
+                              <Label fx:id="lblCategory2" alignment="CENTER" layoutX="92.0" layoutY="18.0" prefHeight="26.0" prefWidth="76.0" text="Category 2">
+                                 <font>
+                                    <Font size="14.0" />
+                                 </font>
+                              </Label>
+                              <ImageView fx:id="imgCategory2" fitHeight="50.0" fitWidth="50.0" layoutX="14.0" layoutY="6.0" pickOnBounds="true" preserveRatio="true" />
+                           </children>
+                        </Pane>
+                        <Pane layoutX="488.0" layoutY="312.0" prefHeight="59.0" prefWidth="181.0" style="-fx-background-color: #fff; -fx-border-color: grey;">
+                           <children>
+                              <Label fx:id="lblCategory1" alignment="CENTER" layoutX="93.0" layoutY="20.0" prefHeight="17.0" prefWidth="72.0" stylesheets="@application.css" text="Category 1">
+                                 <font>
+                                    <Font size="14.0" />
+                                 </font>
+                              </Label>
+                              <ImageView fx:id="imgCategory1" fitHeight="50.0" fitWidth="50.0" layoutX="14.0" layoutY="5.0" pickOnBounds="true" preserveRatio="true" />
+                           </children>
+                        </Pane>
+                        <VBox layoutX="479.0" layoutY="154.0" prefHeight="74.0" prefWidth="262.0">
+                           <children>
+                              <HBox prefHeight="43.0" prefWidth="262.0" style="-fx-border-color: grey;">
+                                 <children>
+                                    <Pane prefHeight="42.0" prefWidth="148.0" style="-fx-background-color: lightgrey;">
+                                       <children>
+                                          <ImageView fitHeight="32.0" fitWidth="37.0" layoutX="8.0" layoutY="2.0" pickOnBounds="true" preserveRatio="true">
+                                             <image>
+                                                <Image url="@images/takeoff-icon.png" />
+                                             </image>
+                                          </ImageView>
+                                          <Label layoutX="64.0" layoutY="8.0" text="Departure:">
+                                             <font>
+                                                <Font name="System Bold Italic" size="14.0" />
+                                             </font>
+                                          </Label>
+                                       </children>
+                                    </Pane>
+                                    <Label fx:id="lblDeparture" alignment="CENTER" prefHeight="35.0" prefWidth="113.0" text="22/04/1997">
+                                       <font>
+                                          <Font size="14.0" />
+                                       </font>
+                                    </Label>
+                                 </children></HBox>
+                              <HBox prefHeight="43.0" prefWidth="262.0" style="-fx-border-color: grey;">
+                                 <children>
+                                    <Pane prefHeight="49.0" prefWidth="149.0" style="-fx-background-color: lightgrey;">
+                                       <children>
+                                          <ImageView fitHeight="32.0" fitWidth="37.0" layoutX="8.0" layoutY="2.0" pickOnBounds="true" preserveRatio="true">
+                                             <image>
+                                                <Image url="@images/landing-icon.png" />
+                                             </image>
+                                          </ImageView>
+                                          <Label layoutX="64.0" layoutY="8.0" text="Return:">
+                                             <font>
+                                                <Font name="System Bold Italic" size="14.0" />
+                                             </font>
+                                          </Label>
+                                       </children>
+                                    </Pane>
+                                    <Label fx:id="lblReturn" alignment="CENTER" prefHeight="42.0" prefWidth="114.0" text="22/04/1997">
+                                       <font>
+                                          <Font size="14.0" />
+                                       </font>
+                                    </Label>
+                                 </children>
+                              </HBox>
+                           </children>
+                        </VBox>
                      </children>
                   </AnchorPane>
             </content>

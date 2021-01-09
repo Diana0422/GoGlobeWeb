@@ -38,7 +38,6 @@ public class JoinTripController {
 		for (Trip trip: trips) {
 			//QUI QUI
 			System.out.println(trip.getTitle());
-			FlightController.getInstance().retrieveFlightPrice(trip);
 			if (trip.getTitle().contains(value)) filteredTrips.add(trip);
 			
 		}
