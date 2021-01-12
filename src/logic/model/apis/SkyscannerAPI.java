@@ -5,12 +5,13 @@ import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import logic.model.exceptions.APIException;
+import logic.model.exceptions.FlightNotFoundException;
 
 public class SkyscannerAPI {
 	
@@ -60,7 +61,7 @@ public class SkyscannerAPI {
 		this.places = places;
 	}
 
-	public String getCityId(String cityName, String locale, String country, String currency) {
+	public String getCityId(String cityName, String locale, String country, String currency) throws APIException {
 		String query = cityName;
 		
 		try {
@@ -78,29 +79,19 @@ public class SkyscannerAPI {
 			response = HttpClient.newHttpClient().send(request, HttpResponse.BodyHandlers.ofString());
 			
 			JSONObject json = new JSONObject(response.body());
-			System.out.println(json.getJSONArray("Places").getJSONObject(0).getString("CityId"));
-			
 			return json.getJSONArray("Places").getJSONObject(0).getString("CityId");
 			
-		} catch (IOException e) {
-			// TODO Auto-generated catch block APIERROR
-			e.printStackTrace();
+		} catch (IOException | JSONException  e) {
+			throw new APIException(e.getCause(), "Error parsing JSON.");
 		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block APIERROR
-			Logger.getGlobal().log(Level.WARNING, "Interrupted City Id retrieval routine in SkyscannerImplementation.", e);
 			Thread.currentThread().interrupt();
-			e.printStackTrace();
+			throw new APIException(e.getCause(), "The request to the API was interrupted.");
 		}
-		return null;
 	}
 
 
 	public JSONObject getCheapestFlight(String originId, String destId, String outboundpartial, String locale, String country,
-			String currency) {
-		System.out.println(outboundpartial);
-		System.out.println(locale);
-		System.out.println(country);
-		System.out.println(currency);
+			String currency) throws FlightNotFoundException, APIException {
 		
 		try
         {      	
@@ -118,33 +109,31 @@ public class SkyscannerAPI {
         			.build();
         	HttpResponse<String> response = HttpClient.newHttpClient().send(request, HttpResponse.BodyHandlers.ofString());
             JSONObject json = new JSONObject(response.body());
-            System.out.println(json);
             setCarriers(json.getJSONArray("Carriers"));
             setPlaces(json.getJSONArray("Places"));
             JSONArray quotes = json.getJSONArray("Quotes");
+            
+            // FlightNotFoundException handling
             if (!quotes.isEmpty()) {
             	setFlight(quotes.getJSONObject(0));
-            	System.out.println("Flight: "+quotes.getJSONObject(0));
             	return quotes.getJSONObject(0);
+            } else {
+            	throw new FlightNotFoundException("No flight was found for the origin: "+originId+"and destination: "+destId);
             }
             
-        } catch (IOException | JSONException ex) {
-            ex.printStackTrace();
+        } catch (IOException | JSONException e) {
+            throw new APIException(e.getCause(), "Error parsing JSON.");
         } catch (InterruptedException e) {
-			// TODO Auto-generated catch block
-        	Logger.getGlobal().log(Level.WARNING, "Interrupted Flight retrieval routine.", e);
 			Thread.currentThread().interrupt();
-			e.printStackTrace();
+			throw new APIException(e.getCause(), "The request to the API was interrupted.");
 		}
-		return null;
 	}
 
 
-	public String getOrigin(JSONObject flight) {
+	public String getOrigin(JSONObject flight)  {
 		
 		JSONObject details = flight.getJSONObject("OutboundLeg");
     	int originId = details.getInt("OriginId");
-    	System.out.println(originId);
 		
     	for (int i=0; i<getPlaces().length(); i++) {
     		JSONObject place = getPlaces().getJSONObject(i);
@@ -158,7 +147,6 @@ public class SkyscannerAPI {
 		
 		JSONObject details = flight.getJSONObject("OutboundLeg");
 		int destId = details.getInt("DestinationId");
-		System.out.println(destId);
 		
 		for (int i=0; i<getPlaces().length(); i++) {
 			JSONObject place = getPlaces().getJSONObject(i);
@@ -173,7 +161,6 @@ public class SkyscannerAPI {
 	public String getCarrierName(JSONObject flight) {
 		JSONObject details = flight.getJSONObject("OutboundLeg");
 		int carrierId = details.getJSONArray("CarrierIds").getInt(0);
-		System.out.println(carrierId);
 		
 		for (int i=0; i<getCarriers().length(); i++) {
 			JSONObject carrier = getCarriers().getJSONObject(i);

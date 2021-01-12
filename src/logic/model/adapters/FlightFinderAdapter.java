@@ -4,7 +4,10 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
+
 import logic.model.apis.SkyscannerAPI;
+import logic.model.exceptions.APIException;
+import logic.model.exceptions.FlightNotFoundException;
 import logic.model.interfaces.FlightFinder;
 
 public class FlightFinderAdapter implements FlightFinder {
@@ -16,7 +19,7 @@ public class FlightFinderAdapter implements FlightFinder {
 	}
 
 	@Override
-	public String getFlightOrigin(String userLocation, String destination, Date depDate) {
+	public String getFlightOrigin(String userLocation, String destination, Date depDate) throws FlightNotFoundException, APIException {
 	
 		String origID = api.getCityId(userLocation, formatLocale(Locale.getDefault()), formatCountry(Locale.getDefault()), "EUR");
 		String destID = api.getCityId(destination, formatLocale(Locale.getDefault()), formatCountry(Locale.getDefault()), "EUR");
@@ -25,7 +28,7 @@ public class FlightFinderAdapter implements FlightFinder {
  	}
 
 	@Override
-	public String getFlightDestination(String userLocation, String destination, Date depDate) {
+	public String getFlightDestination(String userLocation, String destination, Date depDate) throws FlightNotFoundException, APIException {
 		
 		String origID = api.getCityId(userLocation, formatLocale(Locale.getDefault()), formatCountry(Locale.getDefault()), "EUR");
 		String destID = api.getCityId(destination, formatLocale(Locale.getDefault()), formatCountry(Locale.getDefault()), "EUR");
@@ -34,7 +37,7 @@ public class FlightFinderAdapter implements FlightFinder {
 	}
 
 	@Override
-	public String getFlightCarrier(String userLocation, String destination, Date depDate) {
+	public String getFlightCarrier(String userLocation, String destination, Date depDate) throws FlightNotFoundException, APIException {
 		
 		String origID = api.getCityId(userLocation, formatLocale(Locale.getDefault()), formatCountry(Locale.getDefault()), "EUR");
 		String destID = api.getCityId(destination, formatLocale(Locale.getDefault()), formatCountry(Locale.getDefault()), "EUR");
@@ -43,7 +46,7 @@ public class FlightFinderAdapter implements FlightFinder {
 	}
 
 	@Override
-	public int getFlightPrice(String userLocation, String destination, Date depDate) {
+	public int getFlightPrice(String userLocation, String destination, Date depDate) throws FlightNotFoundException, APIException {
 		
 		String origID = api.getCityId(userLocation, formatLocale(Locale.getDefault()), formatCountry(Locale.getDefault()), "EUR");
 		String destID = api.getCityId(destination, formatLocale(Locale.getDefault()), formatCountry(Locale.getDefault()), "EUR");

@@ -133,7 +133,6 @@ public class TripInfoGraphic {
 
 	public void setSession(SessionBean session) {
 		this.session = session;
-		System.out.println("Trip Info session: "+session);
 	}
 	
 	public void addDayTabs(List<DayBean> days) {
@@ -175,17 +174,16 @@ public class TripInfoGraphic {
 	public void displayFlightInfo() {
 		String notDefined = "N/D";
 		int price; 
+		
 		if ((price = FlightController.getInstance().retrieveFlightPrice(tripBean)) == 0) {
-			lblCarrier.setText(notDefined);
-			lblOrigin.setText(notDefined);
-			lblDestination.setText(notDefined);
 			lblTicketPrice.setText(notDefined);
 		} else {
-			lblCarrier.setText(FlightController.getInstance().retrieveFlightCarrier(tripBean));
-			lblOrigin.setText(FlightController.getInstance().retrieveFlightOrigin(tripBean));
-			lblDestination.setText(FlightController.getInstance().retrieveFlightDestination(tripBean));
 			lblTicketPrice.setText(price+"€");
 		}
+		
+		lblOrigin.setText(FlightController.getInstance().retrieveFlightOrigin(tripBean));
+		lblDestination.setText(FlightController.getInstance().retrieveFlightDestination(tripBean));
+		lblCarrier.setText(FlightController.getInstance().retrieveFlightCarrier(tripBean));
 	}
 	
 	

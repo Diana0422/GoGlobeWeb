@@ -5,17 +5,20 @@ import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import org.json.JSONException;
 import org.json.JSONObject;
 
+import logic.model.exceptions.APIException;
 
-public class IPFindAPI {
+
+public class IPFindPositionFinderAPI {
 	
-	private static final String APIKEY = "534948a4-7cc6-4cd6-b9ed-be250ff572f4";
+//	private static final String APIKEY = "534948a4-7cc6-4cd6-b9ed-be250ff572f4";
+	private static final String APIKEY = "";
 
-	public String getUserLatAndLong(String ip) {
+	public String geolocateIP(String ip) throws APIException {
 		HttpRequest request2 = HttpRequest.newBuilder()
     			.uri(URI.create("https://api.ipfind.com?ip="+ip+"&auth="+APIKEY))
     			.method("GET", HttpRequest.BodyPublishers.noBody())
@@ -30,17 +33,12 @@ public class IPFindAPI {
 		    	
 		    JSONObject ipInfo = new JSONObject(response2.body());
 		    return ipInfo.getString("city");
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+		} catch (IOException | JSONException e) {
+			throw new APIException(e.getCause(), "Error sending request to API");
 		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
-			Logger.getGlobal().log(Level.WARNING, "Interrupted IP location routine.", e);
 			Thread.currentThread().interrupt();
-			e.printStackTrace();
+			throw new APIException(e.getCause(), "Interrupted IP location routine.");
 		}
-	
-		return null;
 	}
 
 }

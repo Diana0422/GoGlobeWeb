@@ -91,7 +91,7 @@ public class UpperNavbarControl implements Initializable {
 		this.session = session;
 	}
 	
-	/* Action methods */
+	/* Action methods - vedere di eliminarli */
 
     @FXML
     void displayJoinTrip(MouseEvent event) {
@@ -142,6 +142,8 @@ public class UpperNavbarControl implements Initializable {
     void loadHome(ActionEvent event) {
     	loadUI("logic/view/Home");
     }
+    
+   
     
     void loadPrizes() {
     	FXMLLoader loader = new FXMLLoader();

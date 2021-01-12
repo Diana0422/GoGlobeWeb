@@ -8,8 +8,9 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import logic.model.Day;
 import logic.model.Trip;
-import logic.model.factories.IPFinderAdapterFactory;
-import logic.model.factories.PositionAdapterFactory;
+import logic.model.exceptions.IPNotFoundException;
+import logic.model.exceptions.LocationNotFoundException;
+import logic.model.utils.GeolocationPicker;
 
 public class ParticipationController {
 	
@@ -25,31 +26,38 @@ public class ParticipationController {
 		if (instance == null) {
 			instance = new ParticipationController();
 			today = new Date();
-			System.out.println("Today:"+ today);
 		}
 		
 		return instance;
 	}
 	
 	public boolean checkParticipation(Trip trip) {
-		String userIP;
-		String userPos;
+		String userIP = null;
+		String userPos = null;
 		List<Day> days = trip.getDays();
 		
 		// TODO sistemare formattazione date in maniera univoca
 		DateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
 		String todayStr = formatter.format(today);
-		System.out.println("Today str: "+todayStr);
 		
 		for (Day day: days) {
 			Logger.getGlobal().info("Date associated: "+day.getDate());
 			String dayStr = formatter.format(day.getDate());
-			System.out.println("Day str: "+dayStr);
 			
 			if (dayStr.equals(todayStr)) {
 				//TODO FARE IN MODO CHE LA POSIZIONE VENGA PRELEVATA 1 VOLTA SOLA AL MOMENTO DEL LOGIN E SIA FISSA PER L'INTERA SESSIONE
-				userIP = IPFinderAdapterFactory.getInstance().createIPFinderAdapter().getCurrentIP();
-				userPos = PositionAdapterFactory.getInstance().createIPLocationAdapter().getIPCurrentPosition(userIP);
+				try {
+					userIP = GeolocationPicker.getInstance().forwardIPRequestToAPI();
+				} catch (IPNotFoundException e) {
+					userIP = "N/D";
+					Logger.getGlobal().log(Level.WARNING, e.getMessage());
+				}
+				try {
+					userPos = GeolocationPicker.getInstance().forwardLocationRequestToAPI(userIP);
+				} catch (LocationNotFoundException e) {
+					userPos = "N/D";
+					Logger.getGlobal().log(Level.WARNING, e.getMessage());
+				}
 				Logger.getGlobal().info(userPos);
 				
 				if (userPos.equals(day.getLocation())) {

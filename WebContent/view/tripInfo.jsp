@@ -11,6 +11,7 @@
 <%@page import="logic.bean.ActivityBean"%>
 <%@page import="logic.bean.UserBean"%>
 <%@page import="logic.control.JoinTripController"%>
+<%@page import="logic.control.FlightController"%>
 
 
 <!DOCTYPE html>
@@ -149,30 +150,69 @@
 		            			<div class="trip-description">
 		                			<p><%= joinTripBean.getTrip().getDescription() %></p>
 		            			</div>
-	            			</div>
-	            			
-	            			
-	            			<div class="infos-right">	
-	        			
-		        				<div class="price-tag" style="margin-top:20%; margin-bottom: 20%;">
+		            			
+		            			<div class="price-tag" style="margin-top:20%; margin-bottom: 20%;">
 		                			<h3>Starting price:</h3>
 		                			<h4 style="margin-top: 5px; margin-left:10px;"><%= joinTripBean.getTrip().getPrice() %></h4>
 		            			</div>
-	            			
-		            			<h3>Dates:</h3>
-		            			<div class="dates">
-		                			<div class="departure">
-		                    			<h4>Departure:</h4>
-		                    			<h4><%= joinTripBean.getTrip().getDepartureDate() %></h4>
-		                			</div>
-		                			<div class="return">
-		                    			<h4>Return:</h4>
-		                    			<h4><%= joinTripBean.getTrip().getReturnDate() %></h4>
-		                			</div>
-		            			</div>
-	              			
-	        				</div>
-	            	
+	            			</div>
+	        			</div>
+	        			
+	        			<h3>Dates:</h3>
+	            		<div class="dates bordered">
+		            		<ul>
+		            			<li class="departure bordered-bottom">
+		            				<img src="../res/images/takeoff-icon.png">
+		                    		<h4 class="center italicbold">Departure:</h4>
+		                    		<h4 class="center"><%= joinTripBean.getTrip().getDepartureDate() %></h4>
+		            			</li>
+		            			<li class="return">
+		            				<img src="../res/images/landing-icon.png">               			
+		                    		<h4 class="center italicbold">Return:</h4>
+		                    		<h4 class="center"><%= joinTripBean.getTrip().getReturnDate() %></h4>
+		            			</li>
+		            		</ul>
+		            	</div>
+	        			
+	        			<h3>Available Flight:</h3>
+	        			<div class="flight bordered">
+	        				<ul>
+	        					<li class="origin bordered-bottom">
+	        						<img src="../res/images/origin-icon.png">
+	        						<h4 class="center italicbold">Departure from:</h4>
+	        						<h4 class="center"><%= FlightController.getInstance().retrieveFlightOrigin(joinTripBean.getTrip()) %></h4>
+	        						<br>
+	        					</li>
+	        					<li class="destination bordered-bottom">
+	        						<img src="../res/images/origin-icon.png">
+	        						<h4 class="center italicbold">Arrival to:</h4>
+	        						<h4 class="center"><%= FlightController.getInstance().retrieveFlightDestination(joinTripBean.getTrip()) %></h4>
+	        						<br>
+	        					</li>
+	        					<li class="carrier bordered-bottom">
+	        						<img src="../res/images/carrier-icon.png">
+	        						<h4 class="center italicbold">Carrier:</h4>
+	        						<h4 class="center"><%= FlightController.getInstance().retrieveFlightCarrier(joinTripBean.getTrip()) %></h4>
+	        						<br>
+	        					</li>
+	        					<li class="ticket-price">
+	        						<img src="../res/images/pricetag-icon.png">
+	        						<h4 class="center italicbold">Ticket price:</h4>
+	        						<%
+	        							int price = FlightController.getInstance().retrieveFlightPrice(joinTripBean.getTrip());
+	        							if (price != 0) {
+	        								%>
+	        								<h4 class="center"><%= price %>€</h4>
+	        								<%
+	        							} else {
+	        								%>
+	        								<h4 class="center">N/D</h4>
+	        								<%
+	        							}
+	        						%>
+	        						<br>
+	        					</li>
+	        				</ul>
 	        			</div>
 	        			
     				</div>

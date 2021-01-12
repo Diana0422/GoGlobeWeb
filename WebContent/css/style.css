@@ -120,6 +120,12 @@ img.resize {
     width: 50%;
     padding: 10px;
   }
+  
+/* italics and bold */
+.italicbold {
+	font-weight: bold;
+	font-style: italic;
+}
 
 /* star rating */
 div.stars {
@@ -201,4 +207,18 @@ label.star:before {
 /* List displayer */
 .list {
 	max-height: 400px;
+}
+
+/* Bordered div */
+.bordered {
+	padding-top: 2%;
+	padding-left: 2%;
+	padding-right: 2%;
+	border: 2px solid lightgrey;
+  	border-radius: 5px;
+}
+
+.bordered-bottom {
+	border-bottom: 2px solid lightgrey;
+	border-radius: 5px;
 }
