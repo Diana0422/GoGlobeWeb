@@ -9,6 +9,8 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
 import logic.bean.PlanTripBean;
+import logic.bean.TripBean;
+import logic.control.PlanTripController;
 import logic.model.TripCategory;
 
 public class SelectTripPreferencesGraphic implements Initializable {
@@ -47,7 +49,12 @@ public class SelectTripPreferencesGraphic implements Initializable {
     	planTripBean.setReturnDate(tfReturnDate.getText());
     	planTripBean.setCategory1(cbCategory1.getValue());
     	planTripBean.setCategory2(cbCategory2.getValue());
-    	planTripBean.setPreferences();
+    	//Create new instance of trip bean and assign it to planTripBean
+    	TripBean newTripBean = new TripBean();
+    	planTripBean.setTripBean(newTripBean);
+    	PlanTripController.getInstance().setupTripBean(planTripBean);
+    	
+    	//Validate form and load next GUI
     	if (planTripBean.validateForm()) {
     		UpperNavbarControl.getInstance().loadPlanTrip(planTripBean);
     	}   	

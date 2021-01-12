@@ -6,6 +6,8 @@ import java.util.List;
 import java.util.ResourceBundle;
 import java.util.logging.Logger;
 
+import javafx.application.Platform;
+import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -20,6 +22,12 @@ import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import logic.bean.ActivityBean;
 import logic.bean.PlanTripBean;
+import logic.control.PlanTripController;
+import logic.model.Location;
+import logic.model.Place;
+import logic.model.adapters.HereAPIAdapter;
+import logic.model.factories.HereAdapterFactory;
+import logic.view.threads.LoadVBox;
 
 public class PlanTripGraphic implements Initializable{
 	
@@ -75,9 +83,16 @@ public class PlanTripGraphic implements Initializable{
     
     @FXML	
     private AnchorPane apActivityForm;
+    
+    @FXML 
+    private ScrollPane spSuggestions;
+    
+    @FXML
+    private VBox vbSuggestions;
 
     @FXML
     void addActivity(ActionEvent event) {
+    	//create new activity from user input 
     	ActivityBean newActivity = new ActivityBean();
     	newActivity.setTitle(tfActivityTitle.getText());
     	newActivity.setTime(tfActivityTime.getText());
@@ -85,9 +100,20 @@ public class PlanTripGraphic implements Initializable{
     	newActivity.setEstimatedCost(tfActivityCost.getText());
  
     	if (newActivity.validateActivity()) {
-    		planTripBean.addActivity(newActivity);
+    		//planTripBean.addActivity(newActivity);  ULTIMO CAMBIAMENTO
+    		PlanTripController.getInstance().addActivity(this.planTripBean, newActivity);
     		loadActivity(newActivity);
     	}	
+    	
+    	System.out.println("L'HA MESSA L'ACTIVITY?");
+    	System.out.println("QUANTI GIORNI CE STANNO: " + planTripBean.getTripDays().size());
+    	System.out.println("NEL GIORNO CORRENTE CE STANNO: " + planTripBean.getTripDays().get(planTripBean.getPlanningDay()).getActivities().size());
+    	
+    	//reset activity form's text fields
+    	tfActivityTitle.setText("");
+    	tfActivityTime.setText("");
+    	taActivityDescription.setText("");
+    	tfActivityCost.setText("");
     }
 
     @FXML
@@ -101,7 +127,7 @@ public class PlanTripGraphic implements Initializable{
     @FXML
     void onSaveTripClick(ActionEvent event) {
     	if (planTripBean.validateTrip()) {
-    		planTripBean.saveTrip(UpperNavbarControl.getInstance().getSession()); //EHHHHH QUANDO VIENE INIZIALIZZATA?
+    		PlanTripController.getInstance().saveTrip(planTripBean.getTripBean(), UpperNavbarControl.getInstance().getSession()); 
     		UpperNavbarControl.getInstance().loadHome("Welcome "+UpperNavbarControl.getInstance().getSession().getName()+" "+UpperNavbarControl.getInstance().getSession().getSurname());	
     	}
     }
@@ -145,16 +171,33 @@ public class PlanTripGraphic implements Initializable{
 			vbActivities.setVisible(true);
 			spActivities.setVisible(true);
 			
-			txtLocation.setText("Location: " +planTripBean.getDayLocation());
+			txtLocation.setText("Location: " + planTripBean.getDayLocation());
 			
 			//adds day's activities to the GUI
 			List<ActivityBean> activities = planTripBean.getTripDays().get(planTripBean.getPlanningDay()).getActivities();
 			for (int i = 0; i < activities.size(); i++) {
 				loadActivity(activities.get(i));						
 			}
+			
+			
+			//Call thread to load suggestions
+			//TODO chiamare controller per usare API
+//			Thread loadSuggestions = new Thread(() -> {
+//				//Use ApiAdapter to request list of suggestions and add them to the GUI
+//				HereAPIAdapter hereAPI = HereAdapterFactory.getInstance().createHereAdapter();
+//				Location dayLocation = hereAPI.getLocationInfo(planTripBean.getDayLocation());
+//				List<Place> suggestions = hereAPI.getNearbyPlaces(dayLocation.getCoordinates(), planTripBean.getCategory1());
+//				Platform.runLater(new LoadVBox(vbSuggestions, suggestions));			
+//				
+//			});			
+//			loadSuggestions.start();
+			
+//			List<Place> places = PlanTripController.getInstance().getNearbyPlaces(planTripBean.getDayLocation(), planTripBean.getCategory1());
+//			for (int i = 0; i < places.size(); i++) {
+//				this.loadSuggestion(places.get(i));
+//			}
 		}
-		
-		//setup side bar buttons
+		//setup side bar buttons	
 		for (int i = 0; i < planTripBean.getTripDays().size(); i++) {
 			Button btnDay = new Button("Day " + (i+1));
 			btnDay.setPrefHeight(50);
@@ -188,6 +231,22 @@ public class PlanTripGraphic implements Initializable{
 			ActivityCardGraphic controller = loader.getController();
 			controller.setData(activityBean);
 			vbActivities.getChildren().add(anchor);
+		} catch (IOException e){
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	
+	//load suggestion in the GUI
+	private void loadSuggestion(Place place) {
+		FXMLLoader loader = new FXMLLoader();
+		loader.setLocation(getClass().getResource("/logic/view/PlaceSuggestion.fxml"));
+			
+		try {
+			AnchorPane anchor = loader.load();
+			SuggestionCardGraphic controller = loader.getController();
+			controller.setData(place);
+			vbSuggestions.getChildren().add(anchor);
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -198,6 +257,7 @@ public class PlanTripGraphic implements Initializable{
 	public void initialize(URL arg0, ResourceBundle arg1) {
 		//empty
 	}
+	
 	
 	
 }

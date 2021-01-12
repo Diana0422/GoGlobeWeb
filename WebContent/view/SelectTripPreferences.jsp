@@ -1,7 +1,11 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+    <%@page import="logic.control.PlanTripController"%>
+        <%@page import="logic.bean.TripBean"%>
+    
    <jsp:useBean id="planTripBean" scope="session" class="logic.bean.PlanTripBean"/>  
    <jsp:setProperty name="planTripBean" property="*"/>
+   
    
 <% 
    if (request.getParameter("back-btn")!= null){
@@ -69,7 +73,10 @@
 		String projectPath = System.getProperty("user.dir");
 		System.out.println(projectPath);
 		if (planTripBean.validateForm()){
-			planTripBean.setPreferences();
+			TripBean newTripBean = new TripBean();
+			planTripBean.setTripBean(newTripBean);
+			PlanTripController.getInstance().setupTripBean(planTripBean);
+			planTripBean.setPlanningDay(0);
 %>			
 			<jsp:forward page="planTrip.jsp"/>
 <% 

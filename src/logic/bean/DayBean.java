@@ -12,6 +12,12 @@ public class DayBean {
 		activities = new ArrayList<>();
 	}
 	
+	public void addActivity(ActivityBean newActivityBean) {
+		activities.add(newActivityBean);
+		System.out.println("NELLA DAY BEAN:");
+		System.out.println(newActivityBean);
+	}
+	
 	
 	public String getLocation() {
 		return location;

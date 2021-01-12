@@ -12,6 +12,7 @@
 <%@page import="java.util.Iterator"%> 
 <%@page import="logic.model.Trip"%>
 <%@page import="logic.model.Day"%>
+<%@page import="logic.control.PlanTripController"%>
 
 
 
@@ -109,7 +110,8 @@ if (request.getParameter("daybtn") != null){
 					
 					if (planTripBean.validateTrip()){
 						
-						planTripBean.saveTrip(sessionBean);
+			    		PlanTripController.getInstance().saveTrip(planTripBean.getTripBean(), sessionBean); 
+;
 %>
 						<jsp:forward page="home.jsp"/>
 <% 
@@ -179,7 +181,8 @@ if (request.getParameter("daybtn") != null){
 <%
 		if (request.getParameter("save-activity-btn") != null){
 			if (activityBean.validateActivity()){
-				planTripBean.addActivity(activityBean);						
+				//planTripBean.addActivity(activityBean);	
+				PlanTripController.getInstance().addActivity(planTripBean, activityBean);
 			}else{
 %>
 				<p style="color: red">ERRORE</p>

@@ -17,6 +17,7 @@ import javafx.scene.image.ImageView;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import logic.bean.PlanTripBean;
+import logic.control.PlanTripController;
 
 //TODO FARE IN MODO CHE LE VIEW PRENDANO IL VALORE DI ESTIMATEDCOST E INCLUDERE IL VALIDATE-COST NEL VALIDATE ACTIVITY
 
@@ -66,8 +67,9 @@ public class ShareTripGraphic implements Initializable {
     	planTripBean.setMaxParticipants(tfMaxParticipants.getText());
 
     	if (planTripBean.validateSharingPref()){
-			planTripBean.setSharingPreferences();
-			planTripBean.saveTrip(UpperNavbarControl.getInstance().getSession());
+    		//DELETEME: vecchia alternativa -> chiamare setSharingPreferences dal planTripBean 
+    		PlanTripController.getInstance().setSharingPreferences(planTripBean);
+    		PlanTripController.getInstance().saveTrip(planTripBean.getTripBean(), UpperNavbarControl.getInstance().getSession()); 
 			System.out.println("VIAGGIO SALVATO COME CONDIVISO");
 			
 			UpperNavbarControl.getInstance().loadHome();

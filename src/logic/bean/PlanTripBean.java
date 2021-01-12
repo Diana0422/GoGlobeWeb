@@ -169,20 +169,20 @@ public class PlanTripBean {
 	}
 	
 	//Create new trip instance and set 
-	public void setPreferences(){
-		
-		this.setTripBean(PlanTripController.getInstance().setPreferencesBean(this.tripName, departureDate, returnDate, category1, category2));
-
-		String logStr = "RIASSUNTO DEL VIAGGIO:\n"+"titolo: " + this.tripBean.getTitle()+ "\n"+"lunghezza: " + this.tripBean.getTripLength() + "giorni\n"+"partenza: "+this.tripBean.getDepartureDate()+"\n"+"arrivo: "+this.tripBean.getReturnDate()+"\n"+"categoria1: "+this.tripBean.getCategory1()+"\n"+"categoria2: "+this.tripBean.getCategory2();
-		for (int i = 0; i < this.tripBean.getTripLength(); i++) {
-			logStr = logStr.concat("Giorno 1:" + this.tripBean.getDays().get(i).getActivities().size() + "attivita");
-		}
-		Logger.getGlobal().info(logStr);
-	}
+//	public void setPreferences(){
+//		
+//		this.setTripBean(PlanTripController.getInstance().setPreferencesBean(this.tripName, departureDate, returnDate, category1, category2));
+//
+//		String logStr = "RIASSUNTO DEL VIAGGIO:\n"+"titolo: " + this.tripBean.getTitle()+ "\n"+"lunghezza: " + this.tripBean.getTripLength() + "giorni\n"+"partenza: "+this.tripBean.getDepartureDate()+"\n"+"arrivo: "+this.tripBean.getReturnDate()+"\n"+"categoria1: "+this.tripBean.getCategory1()+"\n"+"categoria2: "+this.tripBean.getCategory2();
+//		for (int i = 0; i < this.tripBean.getTripLength(); i++) {
+//			logStr = logStr.concat("Giorno 1:" + this.tripBean.getDays().get(i).getActivities().size() + "attivita");
+//		}
+//		Logger.getGlobal().info(logStr);
+//	}
 	
-	public void setSharingPreferences() {
-		this.setTripBean(PlanTripController.getInstance().setSharingTripPreferences(this.tripBean, this.minAge, this.maxAge, this.tripDescription, this.maxParticipants));
-	}
+//	public void setSharingPreferences() {
+//		this.setTripBean(PlanTripController.getInstance().setSharingTripPreferences(this.tripBean, this.minAge, this.maxAge, this.tripDescription, this.maxParticipants));
+//	}
 	
 	public void saveLocation() {
 		String logStr = "SAVING LOCATION: " + this.location;
@@ -214,9 +214,9 @@ public class PlanTripBean {
 	}
 	
 	
-	public void addActivity(ActivityBean activityBean) {
-		PlanTripController.getInstance().addActivity(this.tripBean, planningDay, activityBean);
-	}
+//	public void addActivity(ActivityBean activityBean) {
+//		PlanTripController.getInstance().addActivity(this.tripBean, planningDay, activityBean);
+//	}
 	
 	//GUI CONTROLLER
 	public String displayActivityTime(int activityNum) {

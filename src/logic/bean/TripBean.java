@@ -1,5 +1,6 @@
 package logic.bean;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class TripBean {
@@ -26,6 +27,15 @@ public class TripBean {
 	
 	public void addActivity(int day, ActivityBean activity) {
 		this.getDays().get(day).getActivities().add(activity);
+	}
+	
+	//Creates dayBean instances
+	public void createDays(int tripLength) {
+		days = new ArrayList<>();
+		for (int i = 0; i < tripLength; i++) {
+			DayBean day = new DayBean();
+			this.days.add(day);
+		}
 	}
 	
 	public boolean validateTrip() {

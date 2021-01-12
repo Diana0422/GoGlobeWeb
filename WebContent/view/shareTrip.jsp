@@ -1,6 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
     
+   <%@page import="logic.control.PlanTripController"%>
+    
    <jsp:useBean id="planTripBean" scope="session" class="logic.bean.PlanTripBean"/>  
    <jsp:useBean id="sessionBean" scope="session" class="logic.bean.SessionBean"/>
    <jsp:setProperty name="planTripBean" property="*"/>
@@ -60,8 +62,8 @@
 <%
 	if (request.getParameter("share-btn") != null){
 		if (planTripBean.validateSharingPref()){
-			planTripBean.setSharingPreferences();
-			planTripBean.saveTrip(sessionBean);
+			PlanTripController.getInstance().setSharingPreferences(planTripBean);
+    		PlanTripController.getInstance().saveTrip(planTripBean.getTripBean(), sessionBean); 
 			System.out.println("VIAGGIO SALVATO COME CONDIVISO");
 %>		
 			

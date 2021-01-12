@@ -13,49 +13,7 @@ public class ActivityBean {
 	public ActivityBean() {
 		//Constructor of a bean must be empty 
 	}
-
-
-	public String getTime() {
-		return time;
-	}
-
-
-	public void setTime(String time) {
-		this.time = time;
-	}
-
-
-	public String getTitle() {
-		return title;
-	}
-
-
-	public void setTitle(String title) {
-		this.title = title;
-	}
-
-
-	public String getDescription() {
-		return description;
-	}
-
-
-	public void setDescription(String description) {
-		this.description = description;
-	}
 	
-	
-	
-	public String getEstimatedCost() {
-		return estimatedCost;
-	}
-
-
-	public void setEstimatedCost(String estimatedCost) {
-		this.estimatedCost = estimatedCost;
-	}
-
-
 	public boolean validateActivity() {
 		String infoStr = "TITLE CHECK:" + validateTitle(this.title);
 		Logger.getGlobal().info(infoStr);
@@ -111,5 +69,49 @@ public class ActivityBean {
 	private boolean validateMinute(int minute) {
 		return ((minute >= 0) && (minute < 60));
 	}
+
+
+
+	public String getTime() {
+		return time;
+	}
+
+
+	public void setTime(String time) {
+		this.time = time;
+	}
+
+
+	public String getTitle() {
+		return title;
+	}
+
+
+	public void setTitle(String title) {
+		this.title = title;
+	}
+
+
+	public String getDescription() {
+		return description;
+	}
+
+
+	public void setDescription(String description) {
+		this.description = description;
+	}
+	
+	
+	
+	public String getEstimatedCost() {
+		return estimatedCost;
+	}
+
+
+	public void setEstimatedCost(String estimatedCost) {
+		this.estimatedCost = estimatedCost;
+	}
+
+
 
 }
