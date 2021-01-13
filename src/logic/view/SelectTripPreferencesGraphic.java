@@ -2,6 +2,7 @@ package logic.view;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
@@ -58,7 +59,7 @@ public class SelectTripPreferencesGraphic implements GraphicController {
     }
 
 	@Override
-	public void initializeData(Object bundle) {
+	public void initializeData(FXMLLoader loader, Object bundle) {
 		TripCategory[] categories = TripCategory.values();
 		for (int i = 0; i < categories.length; i++) {
 			cbCategory1.getItems().add((categories[i].toString()));

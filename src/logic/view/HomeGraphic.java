@@ -1,6 +1,7 @@
 package logic.view;
 
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.input.MouseEvent;
@@ -46,7 +47,7 @@ public class HomeGraphic implements GraphicController {
 
 
 	@Override
-	public void initializeData(Object bundle) {
+	public void initializeData(FXMLLoader loader, Object bundle) {
 		SessionBean session = (SessionBean) bundle;
 		lblWelcome.setText("Welcome "+session.getName()+" "+session.getSurname());
 		lblPoints.setText(Integer.toString(session.getPoints()));

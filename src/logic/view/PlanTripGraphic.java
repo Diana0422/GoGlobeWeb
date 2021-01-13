@@ -172,7 +172,7 @@ public class PlanTripGraphic implements GraphicController{
 
 	
 	@Override
-	public void initializeData(Object bundle) {
+	public void initializeData(FXMLLoader loader, Object bundle) {
 		this.planTripBean = (PlanTripBean) bundle;
 		
 		String logStr = "TRIP TITLE: " + this.planTripBean.getTripName();

@@ -34,7 +34,7 @@ public class GainPointsGraphic implements GraphicController {
 				loader.setLocation(getClass().getResource("/logic/view/Alert.fxml"));
 				AnchorPane pane = loader.load();
 				AlertGraphic graphic = loader.getController();
-				graphic.setData("Trip validated successfully.", "You gained 100 points", "RedeemPrizes", "Home");
+				graphic.display(null, GUIType.HOME, DesktopSessionContext.getInstance().getSession(),  "Trip validated successfully.", "You gained 100 points");
 				alertPane.getChildren().add(pane);
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
@@ -46,7 +46,7 @@ public class GainPointsGraphic implements GraphicController {
 				loader.setLocation(getClass().getResource("/logic/view/Alert.fxml"));
 				AnchorPane pane = loader.load();
 				AlertGraphic graphic = loader.getController();
-				graphic.setData("Can't validate trip.", "You don't gain any points", "RedeemPrizes", "Home");
+				graphic.display(null, GUIType.HOME, DesktopSessionContext.getInstance().getSession(), "Can't validate trip.", "You don't gain any points");
 				alertPane.getChildren().add(pane);
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
@@ -106,7 +106,7 @@ public class GainPointsGraphic implements GraphicController {
 	}
 
 	@Override
-	public void initializeData(Object bundle) {
+	public void initializeData(FXMLLoader loader, Object bundle) {
 		loadTrip();
 		lblPoints.setText("You have "+DesktopSessionContext.getInstance().getSession().getPoints()+" points.");
 		System.out.println("initializing card data");

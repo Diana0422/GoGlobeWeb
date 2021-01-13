@@ -107,7 +107,7 @@ public class ProfileGraphic implements GraphicController {
 
 
 	@Override
-	public void initializeData(Object bundle) {
+	public void initializeData(FXMLLoader loader, Object bundle) {
 		UserBean user = (UserBean) bundle;
 		List<TripBean> myTripBeans = ProfileController.getInstance().getMyTrips();
 		List<TripBean> upcomingTripBeans = ProfileController.getInstance().getUpcomingTrips();

@@ -80,33 +80,7 @@ public class TripInfoGraphic implements GraphicController {
 	
 	private TripBean tripBean;
 	
-	public void setTitleText(String text) {
-		lblTitle.setText(text);
-	}
-	
-	public void setPriceText(String text) {
-		lblPrice.setText(text);
-	}
-	
-	public void setDescriptionText(String text) {
-		lblDescription.setText(text);
-	}
-	
-	public void setDepartureText(String text) {
-		lblDeparture.setText(text);
-	}
-	
-	public void setReturnText(String text) {
-		lblReturn.setText(text);
-	}
-	
-	public void setCategory1Text(String text) {
-		lblCategory1.setText(text);
-	}
-	
-	public void setCategory2Text(String text) {
-		lblCategory2.setText(text);
-	}
+	private FXMLLoader thisLoader;
 	
 	public void setCategory1Image(Image cat1Img) {
 		imgCategory1.setImage(cat1Img);
@@ -204,7 +178,12 @@ public class TripInfoGraphic implements GraphicController {
 	}
 
 	public void joinTrip(ActionEvent e) {
-		JoinTripController.getInstance().joinTrip(getTripBean(), DesktopSessionContext.getInstance().getSession());
+		if (DesktopSessionContext.getInstance().getSession() != null) {
+			JoinTripController.getInstance().joinTrip(getTripBean(), DesktopSessionContext.getInstance().getSession());
+		} else {
+			AlertGraphic alert = new AlertGraphic();
+			alert.display(GUIType.INFO, GUIType.LOGIN, getTripBean(), "You are not logged in.", "Register or login first.");
+		}
 	}
 	
 	
@@ -259,13 +238,23 @@ public class TripInfoGraphic implements GraphicController {
 	}
 
 	@Override
-	public void initializeData(Object bundle) {
+	public void initializeData(FXMLLoader loader, Object bundle) {
 		TripBean bean = (TripBean) bundle;
 		setTripBean(bean);
+		setThisLoader(loader);
 		initializeParticipants(getTripBean());
 		initializeOrganizer(getTripBean());
 		initializeTripData();
 		addDayTabs(bean.getDays());
+		displayFlightInfo();
+	}
+
+	public FXMLLoader getThisLoader() {
+		return thisLoader;
+	}
+
+	public void setThisLoader(FXMLLoader thisLoader) {
+		this.thisLoader = thisLoader;
 	}
 
 }

@@ -5,6 +5,7 @@ import java.io.File;
 import java.io.IOException;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
@@ -94,7 +95,7 @@ public class ShareTripGraphic implements GraphicController {
     }
 
 	@Override
-	public void initializeData(Object bundle) {
+	public void initializeData(FXMLLoader loader, Object bundle) {
 		this.planTripBean = (PlanTripBean) bundle;
     	Image icAddImage = new Image("/logic/view/images/" + IC_ADDIMAGE);
 		ImageView imgView = new ImageView(icAddImage);
