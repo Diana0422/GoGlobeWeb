@@ -32,14 +32,13 @@ public class LoginGraphic {
     	String logStr = "LOGIN TRIAL:"+"\n"+"USERNAME: " + tfEmail.getText()+"\n"+"PASSWORD: " + pfPassword.getText();
     	Logger.getGlobal().info(logStr);
     	if (loginBean.validate()) {
-    		String welcome = "Welcome "+loginBean.getNome()+" "+loginBean.getCognome();
     		SessionBean session = new SessionBean();
     		session.setEmail(loginBean.getUsername());
     		session.setName(loginBean.getNome());
     		session.setSurname(loginBean.getCognome());
     		session.setPoints(loginBean.getPoints());
-    		UpperNavbarControl.getInstance().setSession(session);
-        	UpperNavbarControl.getInstance().loadHome(welcome);
+    		DesktopSessionContext.getInstance().setSession(session);
+        	DesktopSessionContext.getGuiLoader().loadGUI(null, session, GUIType.HOME);
     	}else {
     		logStr = "INVALID LOGIN.";
     		Logger.getGlobal().info(logStr);
@@ -48,8 +47,7 @@ public class LoginGraphic {
 
     @FXML
     public void forwardRegistration(ActionEvent event){
-    	
-    	UpperNavbarControl.getInstance().loadUI("Registration");
+    	DesktopSessionContext.getGuiLoader().loadGUI(null, null, GUIType.REGISTER);
     }
 
 }

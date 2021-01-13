@@ -3,11 +3,8 @@ package logic.view;
 import java.awt.Desktop;
 import java.io.File;
 import java.io.IOException;
-import java.net.URL;
-import java.util.ResourceBundle;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
@@ -21,7 +18,7 @@ import logic.control.PlanTripController;
 
 //TODO FARE IN MODO CHE LE VIEW PRENDANO IL VALORE DI ESTIMATEDCOST E INCLUDERE IL VALIDATE-COST NEL VALIDATE ACTIVITY
 
-public class ShareTripGraphic implements Initializable {
+public class ShareTripGraphic implements GraphicController {
 	
 	private static final String IC_ADDIMAGE = "icAddImage.png";
 	private final FileChooser fileChooser = new FileChooser();
@@ -55,8 +52,7 @@ public class ShareTripGraphic implements Initializable {
 
     @FXML
     void onCancelClick(ActionEvent event) {
-		UpperNavbarControl.getInstance().loadPlanTrip(this.planTripBean);
-
+		DesktopSessionContext.getGuiLoader().loadGUI(null, this.planTripBean, GUIType.PLAN);
     }
 
     @FXML
@@ -66,13 +62,12 @@ public class ShareTripGraphic implements Initializable {
     	planTripBean.setTripDescription(taTripDescription.getText());
     	planTripBean.setMaxParticipants(tfMaxParticipants.getText());
 
-    	if (planTripBean.validateSharingPref()){
-    		//DELETEME: vecchia alternativa -> chiamare setSharingPreferences dal planTripBean 
+    	if (planTripBean.validateSharingPref()){ 
     		PlanTripController.getInstance().setSharingPreferences(planTripBean);
-    		PlanTripController.getInstance().saveTrip(planTripBean.getTripBean(), UpperNavbarControl.getInstance().getSession()); 
+    		PlanTripController.getInstance().saveTrip(planTripBean.getTripBean(), DesktopSessionContext.getInstance().getSession()); 
 			System.out.println("VIAGGIO SALVATO COME CONDIVISO");
 			
-			UpperNavbarControl.getInstance().loadHome();
+			DesktopSessionContext.getGuiLoader().loadGUI(null, DesktopSessionContext.getInstance().getSession(), GUIType.HOME);
     	}
     }
     
@@ -90,11 +85,6 @@ public class ShareTripGraphic implements Initializable {
          }
     }
     
-    public void initPlanTripBean(PlanTripBean planTripBean) {
-    	this.planTripBean = planTripBean;
-    	System.out.println("PROVA"  + this.planTripBean.getReturnDate());
-    }
-    
     private void openFile(File file) {
         try {
             desktop.open(file);
@@ -104,8 +94,9 @@ public class ShareTripGraphic implements Initializable {
     }
 
 	@Override
-	public void initialize(URL arg0, ResourceBundle arg1) {
-		Image icAddImage = new Image("/logic/view/images/" + IC_ADDIMAGE);
+	public void initializeData(Object bundle) {
+		this.planTripBean = (PlanTripBean) bundle;
+    	Image icAddImage = new Image("/logic/view/images/" + IC_ADDIMAGE);
 		ImageView imgView = new ImageView(icAddImage);
 		btnChooseFile.setGraphic(imgView);
 	}

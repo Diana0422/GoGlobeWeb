@@ -13,12 +13,12 @@ public class Main extends Application {
 		try {
 			/* Set FXML controller factory */
 			FXMLLoader loader = new FXMLLoader();
-			loader.setLocation(getClass().getResource("/logic/view/UpperNavbar.fxml"));
+			loader.setLocation(getClass().getResource("/logic/view/Stage.fxml"));
 			
 			loader.setControllerFactory((Callback<Class<?>, Object>) new Callback<Class<?>, Object>(){
 				@Override
 				public Object call(Class<?> arg0) {
-					return UpperNavbarControl.getInstance();
+					return DesktopSessionContext.getInstance();
 				}
 			});
 			Parent root = loader.load();
@@ -27,8 +27,8 @@ public class Main extends Application {
 			Scene scene = new Scene(root,1300,700);
 			scene.getStylesheets().addAll(
 					getClass().getResource("/logic/view/css/navbar.css").toExternalForm(),
-					getClass().getResource("/logic/view/css/login.css").toExternalForm(),
-					getClass().getResource("/logic/view/css/application.css").toExternalForm());
+					getClass().getResource("/logic/view/css/application.css").toExternalForm(),
+					getClass().getResource("/logic/view/css/login.css").toExternalForm());
 			primaryStage.setScene(scene);
 			primaryStage.show();
 		} catch(Exception e) {

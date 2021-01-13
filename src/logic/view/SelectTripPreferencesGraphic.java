@@ -1,10 +1,7 @@
 package logic.view;
 
-import java.net.URL;
-import java.util.ResourceBundle;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
@@ -13,7 +10,7 @@ import logic.bean.TripBean;
 import logic.control.PlanTripController;
 import logic.model.TripCategory;
 
-public class SelectTripPreferencesGraphic implements Initializable {
+public class SelectTripPreferencesGraphic implements GraphicController {
 
     @FXML
     private TextField tfTripTitle;
@@ -38,7 +35,7 @@ public class SelectTripPreferencesGraphic implements Initializable {
 
     @FXML
     void onCancelClick(ActionEvent event) {
-    	
+    	DesktopSessionContext.getGuiLoader().loadGUI(null, DesktopSessionContext.getInstance().getSession(), GUIType.HOME);
     }
 
     @FXML
@@ -56,19 +53,19 @@ public class SelectTripPreferencesGraphic implements Initializable {
     	
     	//Validate form and load next GUI
     	if (planTripBean.validateForm()) {
-    		UpperNavbarControl.getInstance().loadPlanTrip(planTripBean);
+    		DesktopSessionContext.getGuiLoader().loadGUI(null, planTripBean, GUIType.PLAN);
     	}   	
     }
 
 	@Override
-	public void initialize(URL arg0, ResourceBundle arg1) {
+	public void initializeData(Object bundle) {
 		TripCategory[] categories = TripCategory.values();
 		for (int i = 0; i < categories.length; i++) {
 			cbCategory1.getItems().add((categories[i].toString()));
 			cbCategory2.getItems().add((categories[i].toString()));			
 		}
 		cbCategory1.setValue("NONE");
-		cbCategory2.setValue("NONE");	
+		cbCategory2.setValue("NONE");
 	}
 	
 

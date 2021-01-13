@@ -4,8 +4,9 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.input.MouseEvent;
+import logic.bean.SessionBean;
 
-public class HomeGraphic {
+public class HomeGraphic implements GraphicController {
 	
 	@FXML
 	private Label lblWelcome;
@@ -24,30 +25,30 @@ public class HomeGraphic {
 	
 	/*Action methods */
 	
-	public void setWelcomeText(String text) {
-		lblWelcome.setText(text);
-	}
-	
-	public void setPointsText(String text) {
-		lblPoints.setText(text);
-	}
-	
 	@FXML
 	void forwardGainPoints(MouseEvent event) {
 		btnGain.setDisable(true);
-		UpperNavbarControl.getInstance().loadGainPoints();
+		DesktopSessionContext.getGuiLoader().loadGUI(null, null, GUIType.GAIN);
 		btnGain.setDisable(false);
 	}
 	
 	@FXML
 	void forwardJoinTrip(MouseEvent event) {
 		btnJoin.setDisable(true);
-		UpperNavbarControl.getInstance().loadJoinTrip();
+		DesktopSessionContext.getGuiLoader().loadGUI(null, null, GUIType.JOIN);
 		btnJoin.setDisable(false);
 	}
 
 	@FXML
 	void forwardPlanTrip(MouseEvent event) {
-		UpperNavbarControl.getInstance().loadPlanTrip();
+		DesktopSessionContext.getGuiLoader().loadGUI(null, null, GUIType.PREFTRIP);
+	}
+
+
+	@Override
+	public void initializeData(Object bundle) {
+		SessionBean session = (SessionBean) bundle;
+		lblWelcome.setText("Welcome "+session.getName()+" "+session.getSurname());
+		lblPoints.setText(Integer.toString(session.getPoints()));
 	}
 }

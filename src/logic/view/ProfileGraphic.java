@@ -1,13 +1,10 @@
 package logic.view;
 
 import java.io.IOException;
-import java.net.URL;
 import java.util.List;
-import java.util.ResourceBundle;
 
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.fxml.Initializable;
 import javafx.geometry.Insets;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
@@ -20,7 +17,7 @@ import logic.bean.TripBean;
 import logic.bean.UserBean;
 import logic.control.ProfileController;
 
-public class ProfileGraphic implements Initializable {
+public class ProfileGraphic implements GraphicController {
 
     @FXML
     private VBox vbReviews;
@@ -82,8 +79,8 @@ public class ProfileGraphic implements Initializable {
 				AnchorPane anchor = loader.load();
 					
 				CardGraphic cc = loader.getController();
-				cc.setData(trips.get(i), getSession());
-					
+				cc.setData(trips.get(i));
+				
 				if (column == 3) {
 					row++;
 					column = 0;
@@ -108,22 +105,20 @@ public class ProfileGraphic implements Initializable {
 		}
 	}
 
+
 	@Override
-	public void initialize(URL arg0, ResourceBundle arg1) {
+	public void initializeData(Object bundle) {
+		UserBean user = (UserBean) bundle;
 		List<TripBean> myTripBeans = ProfileController.getInstance().getMyTrips();
 		List<TripBean> upcomingTripBeans = ProfileController.getInstance().getUpcomingTrips();
 		List<TripBean> previousTripBeans = ProfileController.getInstance().getRecentTrips();
 		loadGrid(upcomingGrid, upcomingTripBeans);
 		loadGrid(myTripsGrid, myTripBeans);
 		loadGrid(previousGrid, previousTripBeans);
-		
+		txtNameSurname.setText(user.getName()+" "+user.getSurname());
+		txtAge.setText(Integer.toString(user.getAge()));	
 	}
 
-	public void setData(UserBean user) {
-		txtNameSurname.setText(user.getName()+" "+user.getSurname());
-		txtAge.setText(Integer.toString(user.getAge()));
-		
-	}
 
 }
 

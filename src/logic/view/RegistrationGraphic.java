@@ -54,11 +54,7 @@ public class RegistrationGraphic {
 		} else {
 			/* Call the controller to register the user */
 			if ((setSession(RegistrationController.getInstance().register(email, password, name, surname, birthday)))!= null) {
-				
-				/* Set the label in the home view */
-				String welcome = "Welcome"+" "+name+" "+surname;
-				UpperNavbarControl.getInstance().setSession(session);
-				UpperNavbarControl.getInstance().loadHome(welcome);
+				DesktopSessionContext.getGuiLoader().loadGUI(null, DesktopSessionContext.getInstance().getSession(), GUIType.HOME);
 			} else {
 				lblMessage.setText("User already registered with this email.");
 			}

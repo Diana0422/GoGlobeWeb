@@ -76,7 +76,7 @@ public class JoinTripGraphic implements Initializable {
 					AnchorPane anchor = loader.load();
 						
 					CardGraphic cc = loader.getController();
-					cc.setData(tripBeans.get(i), session);
+					cc.setData(tripBeans.get(i));
 					if (column == 3) {
 						row++;
 						column = 0;

@@ -27,13 +27,13 @@ public class AlertGraphic {
 		 btnOption2.setMaxWidth(buttonOption2.length());
 		 
 		 
-		 btnOption1.setOnAction(e -> 
-			 UpperNavbarControl.getInstance().loadUI(buttonOption1)
-		 );
-		 
-		 btnOption2.setOnAction(e ->
-			 UpperNavbarControl.getInstance().loadUI(buttonOption2)
-		 );
+//		 btnOption1.setOnAction(e -> 
+////			 UpperNavbarControl.getInstance().loadUI(buttonOption1)
+//		 );
+//		 
+//		 btnOption2.setOnAction(e ->
+//			 UpperNavbarControl.getInstance().loadUI(buttonOption2)
+//		 );
 	 }
 
 }

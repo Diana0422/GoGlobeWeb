@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import java.net.URL?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.Separator?>
@@ -141,4 +142,8 @@
          </children>
       </AnchorPane>
    </children>
+   <stylesheets>
+      <URL value="@css/application.css" />
+      <URL value="@css/profile.css" />
+   </stylesheets>
 </AnchorPane>

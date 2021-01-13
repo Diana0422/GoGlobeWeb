@@ -1,9 +1,7 @@
 package logic.view;
 
 import java.io.IOException;
-import java.net.URL;
 import java.util.List;
-import java.util.ResourceBundle;
 import java.util.logging.Logger;
 
 import javafx.application.Platform;
@@ -11,7 +9,6 @@ import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextArea;
@@ -29,7 +26,7 @@ import logic.model.adapters.HereAPIAdapter;
 import logic.model.factories.HereAdapterFactory;
 import logic.view.threads.LoadVBox;
 
-public class PlanTripGraphic implements Initializable{
+public class PlanTripGraphic implements GraphicController{
 	
 	PlanTripBean planTripBean;
 
@@ -104,11 +101,7 @@ public class PlanTripGraphic implements Initializable{
     		PlanTripController.getInstance().addActivity(this.planTripBean, newActivity);
     		loadActivity(newActivity);
     	}	
-    	
-    	System.out.println("L'HA MESSA L'ACTIVITY?");
-    	System.out.println("QUANTI GIORNI CE STANNO: " + planTripBean.getTripDays().size());
-    	System.out.println("NEL GIORNO CORRENTE CE STANNO: " + planTripBean.getTripDays().get(planTripBean.getPlanningDay()).getActivities().size());
-    	
+ 
     	//reset activity form's text fields
     	tfActivityTitle.setText("");
     	tfActivityTime.setText("");
@@ -127,19 +120,60 @@ public class PlanTripGraphic implements Initializable{
     @FXML
     void onSaveTripClick(ActionEvent event) {
     	if (planTripBean.validateTrip()) {
-    		PlanTripController.getInstance().saveTrip(planTripBean.getTripBean(), UpperNavbarControl.getInstance().getSession()); 
-    		UpperNavbarControl.getInstance().loadHome("Welcome "+UpperNavbarControl.getInstance().getSession().getName()+" "+UpperNavbarControl.getInstance().getSession().getSurname());	
+    		PlanTripController.getInstance().saveTrip(planTripBean.getTripBean(), DesktopSessionContext.getInstance().getSession()); 
+    		DesktopSessionContext.getGuiLoader().loadGUI(null, DesktopSessionContext.getInstance().getSession(), GUIType.HOME);	
     	}
     }
     
     @FXML
     void onShareTripClick(ActionEvent event) {
     	if (planTripBean.validateTrip()) {
-    		UpperNavbarControl.getInstance().loadShareTrip(this.planTripBean);
-    	}    }
+    		DesktopSessionContext.getGuiLoader().loadGUI(null, this.planTripBean, GUIType.SHARE);
+    	}    
+    }
 	
-	public void initPlanTripBean(PlanTripBean planTripBean) {
-		this.planTripBean = planTripBean;
+	
+	//refresh the scene
+	private void refresh() {
+		DesktopSessionContext.getGuiLoader().loadGUI(null, this.planTripBean, GUIType.PLAN);
+	}
+	
+	//load an activity in GUI
+	private void loadActivity(ActivityBean activityBean) {
+		FXMLLoader loader = new FXMLLoader();
+		loader.setLocation(getClass().getResource("/logic/view/ActivityCard.fxml"));
+			
+		try {
+			AnchorPane anchor = loader.load();
+			ActivityCardGraphic controller = loader.getController();
+			controller.setData(activityBean);
+			vbActivities.getChildren().add(anchor);
+		} catch (IOException e){
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	
+	//load suggestion in the GUI
+	private void loadSuggestion(Place place) {
+		FXMLLoader loader = new FXMLLoader();
+		loader.setLocation(getClass().getResource("/logic/view/PlaceSuggestion.fxml"));
+			
+		try {
+			AnchorPane anchor = loader.load();
+			SuggestionCardGraphic controller = loader.getController();
+			controller.setData(place);
+			vbSuggestions.getChildren().add(anchor);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+
+	
+	@Override
+	public void initializeData(Object bundle) {
+		this.planTripBean = (PlanTripBean) bundle;
 		
 		String logStr = "TRIP TITLE: " + this.planTripBean.getTripName();
 		Logger.getGlobal().info(logStr);
@@ -215,49 +249,6 @@ public class PlanTripGraphic implements Initializable{
 			vbDays.getChildren().add(btnDay);
 		}
 	}
-	
-	//refresh the scene
-	private void refresh() {
-		UpperNavbarControl.getInstance().loadUI("/logic/view/PlanTrip", this.planTripBean);
-	}
-	
-	//load an activity in GUI
-	private void loadActivity(ActivityBean activityBean) {
-		FXMLLoader loader = new FXMLLoader();
-		loader.setLocation(getClass().getResource("/logic/view/ActivityCard.fxml"));
-			
-		try {
-			AnchorPane anchor = loader.load();
-			ActivityCardGraphic controller = loader.getController();
-			controller.setData(activityBean);
-			vbActivities.getChildren().add(anchor);
-		} catch (IOException e){
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-	}
-	
-	//load suggestion in the GUI
-	private void loadSuggestion(Place place) {
-		FXMLLoader loader = new FXMLLoader();
-		loader.setLocation(getClass().getResource("/logic/view/PlaceSuggestion.fxml"));
-			
-		try {
-			AnchorPane anchor = loader.load();
-			SuggestionCardGraphic controller = loader.getController();
-			controller.setData(place);
-			vbSuggestions.getChildren().add(anchor);
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-	}
-
-	@Override
-	public void initialize(URL arg0, ResourceBundle arg1) {
-		//empty
-	}
-	
 	
 	
 }

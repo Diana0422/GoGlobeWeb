@@ -77,10 +77,5 @@ public class HereAPIAdapter implements LocationFinder{
      	String cityCoordinates = lat + "," + lng;
 		return new Location(cityName, countryName, cityCoordinates);
 	}
-	
-	public static void main(String[] args) {	
-		HereAPIAdapter adapter = HereAdapterFactory.getInstance().createHereAdapter();
-		adapter.getNearbyPlaces("41.893528633142225,12.492072936578582" , "CULTURE");
-	}
 
 }

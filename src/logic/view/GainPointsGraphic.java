@@ -13,7 +13,7 @@ import javafx.scene.layout.Region;
 import logic.bean.TripBean;
 import logic.control.GainPointsController;
 
-public class GainPointsGraphic {
+public class GainPointsGraphic implements GraphicController {
 	
 	@FXML
 	private GridPane cardsLayout;
@@ -28,7 +28,7 @@ public class GainPointsGraphic {
 
 	@FXML
 	void onGainPoints(MouseEvent event) {
-		if (GainPointsController.getInstance().verifyParticipation(UpperNavbarControl.getInstance().getSession(), getTrip())) {
+		if (GainPointsController.getInstance().verifyParticipation(DesktopSessionContext.getInstance().getSession(), getTrip())) {
 			try {
 				FXMLLoader loader = new FXMLLoader();
 				loader.setLocation(getClass().getResource("/logic/view/Alert.fxml"));
@@ -69,8 +69,8 @@ public class GainPointsGraphic {
 	
 	public void loadTrip() {
 		
-		setTrip(GainPointsController.getInstance().getTripOfTheDay(UpperNavbarControl.getInstance().getSession().getEmail()));
-		
+		setTrip(GainPointsController.getInstance().getTripOfTheDay(DesktopSessionContext.getInstance().getSession().getEmail()));
+		System.out.println(getTrip());
 		if (getTrip() != null) {
 			int column = 0;
 			int row = 1;
@@ -83,7 +83,7 @@ public class GainPointsGraphic {
 				anchor = loader.load();
 				
 				CardGraphic cc = loader.getController();
-				cc.setData(getTrip(), UpperNavbarControl.getInstance().getSession());
+				cc.setData(getTrip());
 								
 				cardsLayout.add(anchor, column, row);
 				GridPane.setMargin(anchor, new Insets(20));
@@ -103,6 +103,13 @@ public class GainPointsGraphic {
 			}
 		}
 					
+	}
+
+	@Override
+	public void initializeData(Object bundle) {
+		loadTrip();
+		lblPoints.setText("You have "+DesktopSessionContext.getInstance().getSession().getPoints()+" points.");
+		System.out.println("initializing card data");
 	}
 				
 }

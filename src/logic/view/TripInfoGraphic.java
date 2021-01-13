@@ -17,13 +17,12 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
 import logic.bean.ActivityBean;
 import logic.bean.DayBean;
-import logic.bean.SessionBean;
 import logic.bean.TripBean;
 import logic.bean.UserBean;
 import logic.control.FlightController;
 import logic.control.JoinTripController;
 
-public class TripInfoGraphic {
+public class TripInfoGraphic implements GraphicController {
 	
 	@FXML
     private AnchorPane tripBackground;
@@ -81,8 +80,6 @@ public class TripInfoGraphic {
 	
 	private TripBean tripBean;
 	
-	private SessionBean session;
-	
 	public void setTitleText(String text) {
 		lblTitle.setText(text);
 	}
@@ -119,20 +116,22 @@ public class TripInfoGraphic {
 		imgCategory2.setImage(cat2Img);
 	}
 	
+	public void initializeTripData() {
+		lblTitle.setText(getTripBean().getTitle());
+		lblPrice.setText(getTripBean().getPrice()+"€");
+		lblDescription.setText(getTripBean().getDescription());
+		lblDeparture.setText(getTripBean().getDepartureDate());
+		lblReturn.setText(getTripBean().getReturnDate());
+		lblCategory1.setText(getTripBean().getCategory1());
+		lblCategory2.setText(getTripBean().getCategory2());
+	}
+	
 	public TripBean getTripBean() {
 		return tripBean;
 	}
 
 	public void setTripBean(TripBean tripBean) {
 		this.tripBean = tripBean;
-	}
-
-	public SessionBean getSession() {
-		return session;
-	}
-
-	public void setSession(SessionBean session) {
-		this.session = session;
 	}
 	
 	public void addDayTabs(List<DayBean> days) {
@@ -205,8 +204,7 @@ public class TripInfoGraphic {
 	}
 
 	public void joinTrip(ActionEvent e) {
-		JoinTripController.getInstance().joinTrip(getTripBean(), UpperNavbarControl.getInstance().getSession());
-		UpperNavbarControl.getInstance().loadHome(e);
+		JoinTripController.getInstance().joinTrip(getTripBean(), DesktopSessionContext.getInstance().getSession());
 	}
 	
 	
@@ -258,6 +256,16 @@ public class TripInfoGraphic {
 			e.printStackTrace();
 		}
 		
+	}
+
+	@Override
+	public void initializeData(Object bundle) {
+		TripBean bean = (TripBean) bundle;
+		setTripBean(bean);
+		initializeParticipants(getTripBean());
+		initializeOrganizer(getTripBean());
+		initializeTripData();
+		addDayTabs(bean.getDays());
 	}
 
 }

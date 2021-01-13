@@ -10,7 +10,6 @@ import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
-import logic.bean.SessionBean;
 import logic.bean.TripBean;
 
 public class CardGraphic implements Initializable {
@@ -45,8 +44,7 @@ public class CardGraphic implements Initializable {
     /* Beans */
     
     private TripBean tripBean;
-    
-    private SessionBean session;
+
     
     public TripBean getTripBean() {
 		return tripBean;
@@ -55,23 +53,25 @@ public class CardGraphic implements Initializable {
 	public void setTripBean(TripBean tripBean) {
 		this.tripBean = tripBean;
 	}
-
-	public void setSession(SessionBean session) {
-		this.session = session;
-	}
     
 	/* Action methods */
 	@FXML
     void loadTripInfo(MouseEvent event) {
-    	UpperNavbarControl.getInstance().loadTripInfo(tripBean, session);
+		DesktopSessionContext.getGuiLoader().loadGUI(null, getTripBean(), GUIType.INFO);
     }
     
-    public void setData(TripBean tripBean, SessionBean session) {
-//    	Image img = new Image(getClass().getResourceAsStream(tripBean.getImgSrc()));
+
+	@Override
+	public void initialize(URL arg0, ResourceBundle arg1) {
+		// empty method: nothing to do when initialized
+		
+	}
+
+	public void setData(TripBean tripBean) {
+//		Image img = new Image(getClass().getResourceAsStream(tripBean.getImgSrc()));
 //    	imgTrip.setImage(img);
     	
     	setTripBean(tripBean);
-    	setSession(session);
     	lblTitle.setText(tripBean.getTitle());
     	lblPrice.setText(tripBean.getPrice()+"€");
     	lblTicketPrice.setText(tripBean.getTicketPrice()+"€");
@@ -80,13 +80,6 @@ public class CardGraphic implements Initializable {
     	imgCat2.setImage(catImg);
     	lblCat1.setText(tripBean.getCategory1());
     	lblCat2.setText(tripBean.getCategory2());
-    	
-    }
-
-	@Override
-	public void initialize(URL arg0, ResourceBundle arg1) {
-		// empty method: nothing to do when initialized
-		
 	}
 
 }

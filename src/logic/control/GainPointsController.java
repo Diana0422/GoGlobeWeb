@@ -50,9 +50,11 @@ public class GainPointsController {
 				ret = formatter.parse(bean.getReturnDate());
 
 			} catch (ParseException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
+				return null;
 			}
+			
+			System.out.println(bean.getOrganizer());
 			
 			if (today.after(dep) && today.before(ret)) {
 				if (bean.getOrganizer().getEmail().equals(logged.getEmail())) return bean;
@@ -60,7 +62,6 @@ public class GainPointsController {
 				if (isParticipant(logged.getEmail(), bean.getParticipants())) return bean;
 			}
 		}
-		
 		return null;
 	}
 	

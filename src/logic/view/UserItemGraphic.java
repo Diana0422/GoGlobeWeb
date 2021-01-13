@@ -17,7 +17,7 @@ public class UserItemGraphic {
 
 	@FXML
 	void displayProfile(MouseEvent event) {
-		UpperNavbarControl.getInstance().loadProfile(getUser());
+		DesktopSessionContext.getGuiLoader().loadGUI(null, getUser(), GUIType.PROFILE);
 	}
 
 	public void setData(UserBean bean) {

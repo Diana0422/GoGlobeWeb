@@ -1,30 +1,26 @@
 package logic.view;
 
 import java.io.IOException;
-import java.net.URL;
 import java.util.List;
-import java.util.ResourceBundle;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.fxml.Initializable;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
 import logic.bean.RequestBean;
 import logic.control.ManageRequestController;
 
-public class ManageRequestGraphic implements Initializable {
+public class ManageRequestGraphic implements GraphicController {
 	@FXML
 	private VBox incResults;
 
 	@FXML
 	private VBox sentResults;
-	
-	/* action methods */
+
 
 	@Override
-	public void initialize(URL arg0, ResourceBundle arg1) {
-		List<RequestBean> inc = ManageRequestController.getInstance().getUserIncomingRequests(UpperNavbarControl.getInstance().getSession());
-		List<RequestBean> sent = ManageRequestController.getInstance().getUserSentRequests(UpperNavbarControl.getInstance().getSession());
+	public void initializeData(Object bundle) {
+		List<RequestBean> inc = ManageRequestController.getInstance().getUserIncomingRequests(DesktopSessionContext.getInstance().getSession());
+		List<RequestBean> sent = ManageRequestController.getInstance().getUserSentRequests(DesktopSessionContext.getInstance().getSession());
 		
 		try {
 			if (inc != null) {
@@ -56,5 +52,6 @@ public class ManageRequestGraphic implements Initializable {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		
 	}
 }
