@@ -44,6 +44,7 @@ public class HereImplementation {
             ex.printStackTrace();
         } catch (InterruptedException e) {
 			// TODO Auto-generated catch block
+        	Thread.currentThread().interrupt();
 			e.printStackTrace();
 		}	
 		return null;
@@ -76,6 +77,7 @@ public class HereImplementation {
         ex.printStackTrace();
     } catch (InterruptedException e) {
 		// TODO Auto-generated catch block
+    	Thread.currentThread().interrupt();
 		e.printStackTrace();
 	}		
 		return new JSONObject();
