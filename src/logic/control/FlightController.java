@@ -13,6 +13,7 @@ import logic.model.exceptions.APIException;
 import logic.model.exceptions.FlightNotFoundException;
 import logic.model.exceptions.IPNotFoundException;
 import logic.model.exceptions.LocationNotFoundException;
+import logic.model.exceptions.SerializationException;
 import logic.model.utils.GeolocationPicker;
 
 public class FlightController {
@@ -50,9 +51,16 @@ public class FlightController {
 	
 	public int retrieveFlightPrice(TripBean bean) {
 		// Adding variable flight ticket price
-		Trip trip = dao.getTrip(bean.getTitle());
-		String destination = trip.getDays().get(0).getLocation();
+		Trip trip = null;
 		int ticketPrice;
+		try {
+			trip = dao.getTrip(bean.getTitle());
+		} catch (SerializationException e1) {
+			Logger.getGlobal().log(Level.WARNING, e1.getMessage());
+			e1.printStackTrace();
+			return 0;
+		}
+		String destination = trip.getDays().get(0).getLocation();
 		try {
 			ticketPrice = new FlightFinderAdapter(new SkyscannerAPI()).getFlightPrice(userLocation, destination, trip.getDepartureDate());
 			trip.setTicketPrice(ticketPrice);
@@ -67,7 +75,14 @@ public class FlightController {
 	
 	public String retrieveFlightOrigin(TripBean bean) {
 		// Retrieve flight origin airport name
-		Trip trip = dao.getTrip(bean.getTitle());
+		Trip trip;
+		try {
+			trip = dao.getTrip(bean.getTitle());
+		} catch (SerializationException e1) {
+			Logger.getGlobal().log(Level.WARNING, e1.getMessage());
+			e1.printStackTrace();
+			return ND;
+		}
 		String destination = trip.getDays().get(0).getLocation();
 		try {
 			return new FlightFinderAdapter(new SkyscannerAPI()).getFlightOrigin(userLocation, destination, trip.getDepartureDate());
@@ -80,7 +95,14 @@ public class FlightController {
 	
 	public String retrieveFlightDestination(TripBean bean) {
 		// Retrieve flight destination airport name
-		Trip trip = dao.getTrip(bean.getTitle());
+		Trip trip;
+		try {
+			trip = dao.getTrip(bean.getTitle());
+		} catch (SerializationException e1) {
+			Logger.getGlobal().log(Level.WARNING, e1.getMessage());
+			e1.printStackTrace();
+			return ND;
+		}
 		String destination = trip.getDays().get(0).getLocation();
 		try {
 			return new FlightFinderAdapter(new SkyscannerAPI()).getFlightDestination(userLocation, destination, trip.getDepartureDate());
@@ -93,7 +115,14 @@ public class FlightController {
 	
 	public String retrieveFlightCarrier(TripBean bean) {
 		// Retrieve flight carrier name
-		Trip trip = dao.getTrip(bean.getTitle());
+		Trip trip;
+		try {
+			trip = dao.getTrip(bean.getTitle());
+		} catch (SerializationException e1) {
+			Logger.getGlobal().log(Level.WARNING, e1.getMessage());
+			e1.printStackTrace();
+			return ND;
+		}
 		String destination = trip.getDays().get(0).getLocation();
 		try {
 			return new FlightFinderAdapter(new SkyscannerAPI()).getFlightCarrier(userLocation, destination, trip.getDepartureDate());

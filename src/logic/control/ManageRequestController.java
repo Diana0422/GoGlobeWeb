@@ -2,6 +2,7 @@ package logic.control;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import logic.bean.RequestBean;
@@ -15,6 +16,7 @@ import logic.dao.UserDAO;
 import logic.dao.UserDAOFile;
 import logic.model.Request;
 import logic.model.User;
+import logic.model.exceptions.SerializationException;
 
 public class ManageRequestController {
 
@@ -39,7 +41,7 @@ public class ManageRequestController {
 		return ConversionController.getInstance().convertToUserBean(sender);
 	}
 	
-	public synchronized void acceptRequest(RequestBean requestBean) {
+	public synchronized boolean acceptRequest(RequestBean requestBean) {
 		// get request from persistence
 		RequestDAO reqDao = new RequestDAOFile();
 		Request req = reqDao.getRequest(requestBean.getTripTitle(), requestBean.getSenderEmail(), requestBean.getReceiverEmail());
@@ -51,10 +53,13 @@ public class ManageRequestController {
 		TripDAO tripDao = new TripDAOFile();
 		
 		// Update trip in persistence
-		tripDao.updateTrip(req.getTarget(), req.getTarget().getTitle()); 
-		
-		// Delete request
-		reqDao.deleteRequest(req);
+		try {
+			return tripDao.updateTrip(req.getTarget(), req.getTarget().getTitle()) && reqDao.deleteRequest(req);
+		} catch (SerializationException e) {
+			Logger.getGlobal().log(Level.WARNING, e.getMessage());
+			e.printStackTrace();
+			return false;
+		}
 	}
 	
 	public synchronized void declineRequest(RequestBean requestBean) {

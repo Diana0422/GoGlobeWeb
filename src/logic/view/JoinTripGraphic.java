@@ -19,6 +19,7 @@ import javafx.scene.layout.Region;
 import logic.bean.SessionBean;
 import logic.bean.TripBean;
 import logic.control.JoinTripController;
+import logic.model.exceptions.SerializationException;
 
 public class JoinTripGraphic implements Initializable {
 	@FXML
@@ -62,7 +63,12 @@ public class JoinTripGraphic implements Initializable {
 	
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
-		this.tripBeans = JoinTripController.getInstance().searchTrips(txtSearch.getText());
+		try {
+			this.tripBeans = JoinTripController.getInstance().searchTrips(txtSearch.getText());
+		} catch (SerializationException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 	
 	@FXML

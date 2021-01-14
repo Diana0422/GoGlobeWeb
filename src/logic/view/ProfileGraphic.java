@@ -18,6 +18,7 @@ import logic.bean.SessionBean;
 import logic.bean.TripBean;
 import logic.bean.UserBean;
 import logic.control.ProfileController;
+import logic.model.exceptions.SerializationException;
 
 public class ProfileGraphic implements GraphicController {
 
@@ -122,12 +123,34 @@ public class ProfileGraphic implements GraphicController {
 	public void initializeData(Object recBundle, Object forBundle) {
 		UserBean user = (UserBean) recBundle;
 		this.bundle = forBundle;
-		List<TripBean> myTripBeans = ProfileController.getInstance().getMyTrips();
-		List<TripBean> upcomingTripBeans = ProfileController.getInstance().getUpcomingTrips();
-		List<TripBean> previousTripBeans = ProfileController.getInstance().getRecentTrips();
-		loadGrid(upcomingGrid, upcomingTripBeans);
-		loadGrid(myTripsGrid, myTripBeans);
-		loadGrid(previousGrid, previousTripBeans);
+		List<TripBean> myTripBeans = null;
+		List<TripBean> upcomingTripBeans = null;
+		List<TripBean> previousTripBeans = null;
+		
+		try {
+			myTripBeans = ProfileController.getInstance().getMyTrips();
+			loadGrid(myTripsGrid, myTripBeans);
+		} catch (SerializationException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	
+		try {
+			upcomingTripBeans = ProfileController.getInstance().getUpcomingTrips();
+			loadGrid(upcomingGrid, upcomingTripBeans);
+		} catch (SerializationException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		try {
+			previousTripBeans = ProfileController.getInstance().getRecentTrips();
+			loadGrid(previousGrid, previousTripBeans);
+		} catch (SerializationException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
 		txtNameSurname.setText(user.getName()+" "+user.getSurname());
 		txtAge.setText(Integer.toString(user.getAge()));	
 	}

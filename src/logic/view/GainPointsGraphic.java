@@ -13,6 +13,7 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Region;
 import logic.bean.TripBean;
 import logic.control.GainPointsController;
+import logic.model.exceptions.SerializationException;
 
 public class GainPointsGraphic implements GraphicController {
 	
@@ -80,7 +81,12 @@ public class GainPointsGraphic implements GraphicController {
 	
 	public void loadTrip() {
 		
-		setTrip(GainPointsController.getInstance().getTripOfTheDay(DesktopSessionContext.getInstance().getSession().getEmail()));
+		try {
+			setTrip(GainPointsController.getInstance().getTripOfTheDay(DesktopSessionContext.getInstance().getSession().getEmail()));
+		} catch (SerializationException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
 		System.out.println(getTrip());
 		if (getTrip() != null) {
 			int column = 0;

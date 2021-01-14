@@ -5,6 +5,8 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import logic.bean.SessionBean;
 import logic.bean.TripBean;
@@ -15,6 +17,7 @@ import logic.dao.UserDAO;
 import logic.dao.UserDAOFile;
 import logic.model.Trip;
 import logic.model.User;
+import logic.model.exceptions.SerializationException;
 
 public class GainPointsController {
 	
@@ -33,7 +36,7 @@ public class GainPointsController {
 	}
 	
 	
-	public TripBean getTripOfTheDay(String userEmail) {
+	public TripBean getTripOfTheDay(String userEmail) throws SerializationException {
 		Date today = new Date();
 		TripDAO tripDao = new TripDAOFile();
 		UserDAO userDao = new UserDAOFile();
@@ -76,7 +79,14 @@ public class GainPointsController {
 	}
 
 	public boolean verifyParticipation(SessionBean session, TripBean tripBean) {
-		Trip trip = ConversionController.getInstance().convertToTrip(tripBean);
+		Trip trip = null;
+		try {
+			trip = ConversionController.getInstance().convertToTrip(tripBean);
+		} catch (SerializationException e) {
+			Logger.getGlobal().log(Level.WARNING, e.getMessage());
+			e.printStackTrace();
+			return false;
+		}
 		if (ParticipationController.getInstance().checkParticipation(trip)) {
 			UserDAO userDao = new UserDAOFile();
 			User user = userDao.getUser(session.getEmail());

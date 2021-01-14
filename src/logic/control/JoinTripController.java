@@ -1,6 +1,7 @@
 package logic.control;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import logic.bean.SessionBean;
@@ -13,6 +14,7 @@ import logic.dao.UserDAO;
 import logic.dao.UserDAOFile;
 import logic.model.Request;
 import logic.model.Trip;
+import logic.model.exceptions.SerializationException;
  
 public class JoinTripController {
 	
@@ -28,7 +30,7 @@ public class JoinTripController {
 		return instance;
 	}
 
-	public List<TripBean> searchTrips(String value) {
+	public List<TripBean> searchTrips(String value) throws SerializationException {
 		String logStr = "Search trips by value started.\n";
 		Logger.getGlobal().info(logStr);
 		TripDAO dao = new TripDAOFile();
@@ -59,7 +61,14 @@ public class JoinTripController {
 		UserDAO userDao = new UserDAOFile();
 		
 		// Pick the trip corresponding to the tripBean from persistence
-		Trip trip = tripDao.getTrip(tripBean.getTitle());
+		Trip trip;
+		try {
+			trip = tripDao.getTrip(tripBean.getTitle());
+		} catch (SerializationException e) {
+			Logger.getGlobal().log(Level.WARNING, e.getMessage());
+			e.printStackTrace();
+			return false;
+		}
 		
 		if (!trip.getOrganizer().getEmail().equals(session.getEmail())) { // only if the user is not the organizer
 			// Instantiate a new request

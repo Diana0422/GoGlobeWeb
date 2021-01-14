@@ -18,6 +18,7 @@ import logic.model.Request;
 import logic.model.Trip;
 import logic.model.TripCategory;
 import logic.model.User;
+import logic.model.exceptions.SerializationException;
 
 public class ConversionController {
 
@@ -192,12 +193,17 @@ public class ConversionController {
 		return bean;
 	}
 
-	public Trip convertToTrip(TripBean tripBean) {
+	public Trip convertToTrip(TripBean tripBean) throws SerializationException {
 		TripDAO tripDao = new TripDAOFile();
-		List<Trip> list = tripDao.getAllTrips();
-		
-		for (Trip trip: list) {
-			if (tripBean.getTitle().equals(trip.getTitle())) return trip;
+		List<Trip> list;
+		try {
+			list = tripDao.getAllTrips();
+			
+			for (Trip trip: list) {
+				if (tripBean.getTitle().equals(trip.getTitle())) return trip;
+			}
+		} catch (SerializationException e) {
+			throw new SerializationException(e, "Error in trip conversion.");
 		}
 		return null;
 		

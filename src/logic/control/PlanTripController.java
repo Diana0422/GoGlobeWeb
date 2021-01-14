@@ -6,6 +6,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 import logic.bean.ActivityBean;
 import logic.bean.DayBean;
@@ -21,6 +22,7 @@ import logic.model.Location;
 import logic.model.Place;
 import logic.model.Trip;
 import logic.model.TripCategory;
+import logic.model.exceptions.SerializationException;
 import logic.model.factories.HereAdapterFactory;
 import logic.model.factories.TripFactory;
 import logic.model.interfaces.LocationFinder;
@@ -215,7 +217,13 @@ public class PlanTripController {
 		}
 
 		TripDAO tripDao = new TripDAOFile();
-		return tripDao.saveTrip(trip);
+		try {
+			return tripDao.saveTrip(trip);
+		} catch (SerializationException e) {
+			Logger.getGlobal().log(Level.WARNING, e.getMessage());
+			e.printStackTrace();
+			return false;
+		}
 		
 	}
 	
