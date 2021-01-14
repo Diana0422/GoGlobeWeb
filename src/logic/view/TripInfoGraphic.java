@@ -7,12 +7,14 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
 import logic.bean.ActivityBean;
@@ -77,10 +79,16 @@ public class TripInfoGraphic implements GraphicController {
     
     @FXML
     private VBox boxFlight;
+    
+    @FXML
+    private Button btnBack;
+
+    @FXML
+    void back(MouseEvent event) {
+    	DesktopSessionContext.getGuiLoader().loadGUI(null, null, GUIType.JOIN);
+    }
 	
 	private TripBean tripBean;
-	
-	private FXMLLoader thisLoader;
 	
 	public void setCategory1Image(Image cat1Img) {
 		imgCategory1.setImage(cat1Img);
@@ -182,7 +190,7 @@ public class TripInfoGraphic implements GraphicController {
 			JoinTripController.getInstance().joinTrip(getTripBean(), DesktopSessionContext.getInstance().getSession());
 		} else {
 			AlertGraphic alert = new AlertGraphic();
-			alert.display(GUIType.INFO, GUIType.LOGIN, getTripBean(), "You are not logged in.", "Register or login first.");
+			alert.display(GUIType.INFO, GUIType.LOGIN, null, getTripBean(), "You are not logged in.", "Register or login first.");
 		}
 	}
 	
@@ -196,7 +204,7 @@ public class TripInfoGraphic implements GraphicController {
 		try {
 			AnchorPane pane = loader.load();
 			UserItemGraphic graphic = loader.getController();
-			graphic.setData(organizer);
+			graphic.initializeData(organizer, trip);
 			boxOrganizer.getChildren().add(pane);
 			
 		} catch (IOException e) {
@@ -214,12 +222,12 @@ public class TripInfoGraphic implements GraphicController {
 		
 		if (participants != null) {
 			for (UserBean user: participants) {
-				displayParticipant(user);
+				displayParticipant(user, bean);
 			}
 		}
 	}
 
-	private void displayParticipant(UserBean user) {
+	private void displayParticipant(UserBean user, TripBean trip) {
 		FXMLLoader loader = new FXMLLoader();
 		loader.setLocation(getClass().getResource("/logic/view/UserItem.fxml"));
 		try {
@@ -227,7 +235,7 @@ public class TripInfoGraphic implements GraphicController {
 			
 			System.out.println("Bean: "+user);
 			UserItemGraphic graphic = loader.getController();
-			graphic.setData(user);
+			graphic.initializeData(user, trip);
 			boxTravelers.getChildren().add(anchor);
 		
 		} catch (IOException e) {
@@ -238,23 +246,14 @@ public class TripInfoGraphic implements GraphicController {
 	}
 
 	@Override
-	public void initializeData(FXMLLoader loader, Object bundle) {
-		TripBean bean = (TripBean) bundle;
+	public void initializeData(Object recBundle, Object forBundle) {
+		TripBean bean = (TripBean) recBundle;
 		setTripBean(bean);
-		setThisLoader(loader);
 		initializeParticipants(getTripBean());
 		initializeOrganizer(getTripBean());
 		initializeTripData();
 		addDayTabs(bean.getDays());
 		displayFlightInfo();
-	}
-
-	public FXMLLoader getThisLoader() {
-		return thisLoader;
-	}
-
-	public void setThisLoader(FXMLLoader thisLoader) {
-		this.thisLoader = thisLoader;
 	}
 
 }

@@ -5,6 +5,7 @@ import java.io.IOException;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
@@ -25,6 +26,16 @@ public class GainPointsGraphic implements GraphicController {
     private Label lblPoints;
     
     private TripBean trip;
+    
+    private Object bundle;
+
+    @FXML
+    private Button btnBack;
+
+    @FXML
+    void back(MouseEvent event) {
+    	DesktopSessionContext.getGuiLoader().loadGUI(null, this.bundle, null);
+    }
 
 	@FXML
 	void onGainPoints(MouseEvent event) {
@@ -34,7 +45,7 @@ public class GainPointsGraphic implements GraphicController {
 				loader.setLocation(getClass().getResource("/logic/view/Alert.fxml"));
 				AnchorPane pane = loader.load();
 				AlertGraphic graphic = loader.getController();
-				graphic.display(null, GUIType.HOME, DesktopSessionContext.getInstance().getSession(),  "Trip validated successfully.", "You gained 100 points");
+				graphic.display(GUIType.GAIN, GUIType.HOME, null, DesktopSessionContext.getInstance().getSession(),  "Trip validated successfully.", "You gained 100 points");
 				alertPane.getChildren().add(pane);
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
@@ -46,7 +57,7 @@ public class GainPointsGraphic implements GraphicController {
 				loader.setLocation(getClass().getResource("/logic/view/Alert.fxml"));
 				AnchorPane pane = loader.load();
 				AlertGraphic graphic = loader.getController();
-				graphic.display(null, GUIType.HOME, DesktopSessionContext.getInstance().getSession(), "Can't validate trip.", "You don't gain any points");
+				graphic.display(GUIType.GAIN, GUIType.HOME, null, DesktopSessionContext.getInstance().getSession(), "Can't validate trip.", "You don't gain any points");
 				alertPane.getChildren().add(pane);
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
@@ -106,8 +117,9 @@ public class GainPointsGraphic implements GraphicController {
 	}
 
 	@Override
-	public void initializeData(FXMLLoader loader, Object bundle) {
+	public void initializeData(Object recBundle, Object forBundle) {
 		loadTrip();
+		bundle = forBundle;
 		lblPoints.setText("You have "+DesktopSessionContext.getInstance().getSession().getPoints()+" points.");
 		System.out.println("initializing card data");
 	}

@@ -1,8 +1,6 @@
 package logic.view;
 
-import javafx.fxml.FXMLLoader;
-
 public interface GraphicController {
 
-	public void initializeData(FXMLLoader loader, Object bundle);
+	public void initializeData(Object recBundle, Object forBundle);
 }

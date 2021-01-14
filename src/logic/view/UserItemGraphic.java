@@ -5,7 +5,7 @@ import javafx.scene.control.Label;
 import javafx.scene.input.MouseEvent;
 import logic.bean.UserBean;
 
-public class UserItemGraphic {
+public class UserItemGraphic implements GraphicController{
 	
 	@FXML
 	private Label lblUserName;
@@ -14,10 +14,12 @@ public class UserItemGraphic {
 	private Label lblAge;
 	
 	private UserBean user;
+	
+	private Object prevBundle;
 
 	@FXML
 	void displayProfile(MouseEvent event) {
-		DesktopSessionContext.getGuiLoader().loadGUI(null, getUser(), GUIType.PROFILE);
+		DesktopSessionContext.getGuiLoader().loadGUIStateful(user, prevBundle, GUIType.PROFILE, GUIType.INFO);
 	}
 
 	public void setData(UserBean bean) {
@@ -33,6 +35,12 @@ public class UserItemGraphic {
 
 	public void setUser(UserBean user) {
 		this.user = user;
+	}
+
+	@Override
+	public void initializeData(Object recBundle, Object forBundle) {
+		prevBundle = forBundle;
+		setData((UserBean)recBundle);
 	}
 
 }

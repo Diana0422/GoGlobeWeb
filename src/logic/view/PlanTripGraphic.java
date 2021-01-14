@@ -172,8 +172,8 @@ public class PlanTripGraphic implements GraphicController{
 
 	
 	@Override
-	public void initializeData(FXMLLoader loader, Object bundle) {
-		this.planTripBean = (PlanTripBean) bundle;
+	public void initializeData(Object recBundle, Object forBundle) {
+		this.planTripBean = (PlanTripBean) recBundle;
 		
 		String logStr = "TRIP TITLE: " + this.planTripBean.getTripName();
 		Logger.getGlobal().info(logStr);

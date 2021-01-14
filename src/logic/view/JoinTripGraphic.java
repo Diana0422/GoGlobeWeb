@@ -36,6 +36,14 @@ public class JoinTripGraphic implements Initializable {
 	@FXML
     private GridPane cardsLayout;
 	
+    @FXML
+    private Button btnBack;
+
+    @FXML
+    void back(MouseEvent event) {
+    	DesktopSessionContext.getGuiLoader().loadGUI(null, DesktopSessionContext.getInstance().getSession(), GUIType.HOME);
+    }
+	
 	/* Beans */
 	
 	private List<TripBean> tripBeans;

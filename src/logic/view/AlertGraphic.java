@@ -26,7 +26,7 @@ public class AlertGraphic {
 	 private Button btnOption2;
 	
 	 
-	 public void setData(Stage alertStage, String message, String description, GUIType current, GUIType buttonOption2, Object bundle) {
+	 public void setData(Stage alertStage, String message, String description, GUIType current, GUIType buttonOption2, Object recBundle, Object forBundle) {
 		 String buttonOption1 = "Close";
 		 lblAlertMessage.setText(message);
 		 lblAlertDescription.setText(description);
@@ -34,8 +34,10 @@ public class AlertGraphic {
 		 btnOption2.setText(buttonOption2.toString());
 		 
 		 btnOption2.setOnAction(e -> {
-			 DesktopSessionContext.getGuiLoader().loadGUIStateful(bundle, buttonOption2, current);
+			 System.out.println("2 Using bundle: "+recBundle);
+			 System.out.println("2 Forwarding bundle: "+forBundle);
 			 alertStage.close();
+			 DesktopSessionContext.getGuiLoader().loadGUIStateful(recBundle, forBundle, buttonOption2, current);
 		 	}
 		 );
 		 
@@ -44,7 +46,7 @@ public class AlertGraphic {
 		 
 	 }
 	 
-	 public void display(GUIType current, GUIType forwardOption, Object bundle, String message, String description) {
+	 public void display(GUIType current, GUIType forwardOption, Object recBundle, Object forBundle, String message, String description) {
 		 Stage popup = new Stage();
 		 popup.initModality(Modality.APPLICATION_MODAL);
 		 popup.setTitle("Alert");
@@ -54,7 +56,9 @@ public class AlertGraphic {
 		 try {
 			Parent root = loader.load();
 			AlertGraphic alert = loader.getController();
-			alert.setData(popup, message, description, current, forwardOption, bundle);
+			System.out.println("1 Using bundle: "+recBundle);
+			System.out.println("1 Forwarding bundle: "+forBundle);
+			alert.setData(popup, message, description, current, forwardOption, recBundle, forBundle);
 			Scene scene = new Scene(root, 444,271);
 			popup.setScene(scene);
 			popup.show();

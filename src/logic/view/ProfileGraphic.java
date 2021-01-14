@@ -6,7 +6,9 @@ import java.util.List;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
+import javafx.scene.control.Button;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Region;
@@ -51,6 +53,16 @@ public class ProfileGraphic implements GraphicController {
 
     @FXML
     private ImageView ivProfilePic;
+    
+    @FXML
+    private Button btnBack;
+    
+    private Object bundle;
+
+    @FXML
+    void back(MouseEvent event) {
+    	DesktopSessionContext.getGuiLoader().loadGUI(null, this.bundle, null);
+    }
 
     /* Beans */
     private SessionBean session;
@@ -107,8 +119,9 @@ public class ProfileGraphic implements GraphicController {
 
 
 	@Override
-	public void initializeData(FXMLLoader loader, Object bundle) {
-		UserBean user = (UserBean) bundle;
+	public void initializeData(Object recBundle, Object forBundle) {
+		UserBean user = (UserBean) recBundle;
+		this.bundle = forBundle;
 		List<TripBean> myTripBeans = ProfileController.getInstance().getMyTrips();
 		List<TripBean> upcomingTripBeans = ProfileController.getInstance().getUpcomingTrips();
 		List<TripBean> previousTripBeans = ProfileController.getInstance().getRecentTrips();

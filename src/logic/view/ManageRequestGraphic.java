@@ -18,7 +18,7 @@ public class ManageRequestGraphic implements GraphicController {
 
 
 	@Override
-	public void initializeData(FXMLLoader loader, Object bundle) {
+	public void initializeData(Object recBundle, Object forBundle) {
 		List<RequestBean> inc = ManageRequestController.getInstance().getUserIncomingRequests(DesktopSessionContext.getInstance().getSession());
 		List<RequestBean> sent = ManageRequestController.getInstance().getUserSentRequests(DesktopSessionContext.getInstance().getSession());
 		

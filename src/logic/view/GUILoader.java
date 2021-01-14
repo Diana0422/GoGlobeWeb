@@ -24,11 +24,12 @@ public class GUILoader {
 		loadNavbar();
 	}
 	
-	public void loadGUIStateful(Object currentData, GUIType next, GUIType current) {
-		loadContent(next, currentData);
+	public void loadGUIStateful(Object currentData, Object forData, GUIType next, GUIType current) {
+		loadContent(next, currentData); 
 		setPrevState(current);
-		setPrevBundle(currentData);
+		setPrevBundle(forData);
 		System.out.println("NEXT GUI: "+current);
+		System.out.println("NEXT BUNDLE: "+forData);
 		loadNavbar();
 	}
 	
@@ -42,9 +43,12 @@ public class GUILoader {
 		String ui = null;
 		String logStr;
 		
+		System.out.println("Ripristino: "+getPrevState());
 		//Load previous user interface, if exists.
 		if (getPrevState() != null) {
 			GUIType previous = getPrevState();
+			System.out.println("Now next state:"+getPrevState());
+			System.out.println("Now next bundle:"+getPrevBundle());
 			setPrevState(null);
 			loadGUI(null, getPrevBundle(), previous);
 		}
@@ -63,7 +67,7 @@ public class GUILoader {
 				root = loadUI(loader);
 				logStr = "Loaded UI: "+ui;
 				HomeGraphic homeGraphic = loader.getController();
-				homeGraphic.initializeData(loader, bundle);
+				homeGraphic.initializeData(bundle, getPrevBundle());
 				Logger.getGlobal().info(logStr);
 				break;
 			case JOIN:
@@ -77,7 +81,7 @@ public class GUILoader {
 				root = loadUI(loader);
 				logStr = "Loaded UI: "+ui;
 				TripInfoGraphic infoGraphic = loader.getController();
-				infoGraphic.initializeData(loader, bundle);
+				infoGraphic.initializeData(bundle, getPrevBundle());
 				Logger.getGlobal().info(logStr);
 				break;
 			case PREFTRIP:
@@ -85,7 +89,7 @@ public class GUILoader {
 				root = loadUI(loader);
 				logStr = "Loaded UI: "+ui;
 				SelectTripPreferencesGraphic selGraphic = loader.getController();
-				selGraphic.initializeData(loader,bundle);
+				selGraphic.initializeData(bundle, null);
 				Logger.getGlobal().info(logStr);
 				break;
 			case PLAN:
@@ -93,7 +97,7 @@ public class GUILoader {
 				root = loadUI(loader);
 				logStr = "Loaded UI: "+ui;
 				PlanTripGraphic planGraphic = loader.getController();
-				planGraphic.initializeData(loader, bundle);
+				planGraphic.initializeData(bundle, null);
 				Logger.getGlobal().info(logStr);
 				break;
 			case SHARE:
@@ -101,7 +105,7 @@ public class GUILoader {
 				root = loadUI(loader);
 				logStr = "Loaded UI: "+ui;
 				ShareTripGraphic shareGraphic = loader.getController();
-				shareGraphic.initializeData(loader, bundle);
+				shareGraphic.initializeData(bundle, null);
 				Logger.getGlobal().info(logStr);
 				break;
 			case REQUESTS:
@@ -109,7 +113,7 @@ public class GUILoader {
 				root = loadUI(loader);
 				logStr = "Loaded UI: "+ui;
 				ManageRequestGraphic requestGraphic = loader.getController();
-				requestGraphic.initializeData(loader, bundle);
+				requestGraphic.initializeData(bundle, null);
 				Logger.getGlobal().info(logStr);
 				break;
 			case GAIN:
@@ -117,7 +121,7 @@ public class GUILoader {
 				root = loadUI(loader);
 				logStr = "Loaded UI: "+ui;
 				GainPointsGraphic pointsGraphic = loader.getController();
-				pointsGraphic.initializeData(loader, bundle);
+				pointsGraphic.initializeData(bundle, null);
 				Logger.getGlobal().info(logStr);
 				break;
 			case PROFILE:
@@ -125,7 +129,7 @@ public class GUILoader {
 				root = loadUI(loader);
 				logStr = "Loaded UI: "+ui;
 				ProfileGraphic profGraphic = loader.getController();
-				profGraphic.initializeData(loader, bundle);
+				profGraphic.initializeData(bundle, getPrevBundle());
 				Logger.getGlobal().info(logStr);
 				break;
 			case SETTINGS:
