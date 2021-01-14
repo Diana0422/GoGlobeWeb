@@ -1,6 +1,10 @@
 package logic.bean;
 
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 import logic.control.LoginController;
+import logic.model.exceptions.SerializationException;
 
 public class LoginBean {
 	
@@ -47,13 +51,21 @@ public class LoginBean {
 		
 		System.out.println("TRYING TO LOGIN AS: " + this.getUsername() + " " + this.getPassword());
 
-		LoginBean utenteTrovato = LoginController.getInstance().login(username, password);
-		if (utenteTrovato != null) {
-			setNome(utenteTrovato.getNome());
-			setCognome(utenteTrovato.getCognome());
-			setPoints(utenteTrovato.getPoints());
+		LoginBean utenteTrovato;
+		try {
+			utenteTrovato = LoginController.getInstance().login(username, password); 	//TODO move this into graphic controller
+
+			if (utenteTrovato != null) {
+				setNome(utenteTrovato.getNome());
+				setCognome(utenteTrovato.getCognome());
+				setPoints(utenteTrovato.getPoints());
+			}
+			return utenteTrovato != null;
+		} catch (SerializationException e) {
+			Logger.getGlobal().log(Level.WARNING, e.getMessage());
+			e.printStackTrace();
+			return false;
 		}
-		return utenteTrovato != null;
 		
 	}
 

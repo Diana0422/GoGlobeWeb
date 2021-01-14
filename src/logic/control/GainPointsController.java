@@ -89,11 +89,18 @@ public class GainPointsController {
 		}
 		if (ParticipationController.getInstance().checkParticipation(trip)) {
 			UserDAO userDao = new UserDAOFile();
-			User user = userDao.getUser(session.getEmail());
-			user.addPoints(100);
-			session.setPoints(user.getPoints());
-			userDao.updateUser(user, session.getEmail());
-			return true;
+			User user;
+			try {
+				user = userDao.getUser(session.getEmail());
+				user.addPoints(100);
+				session.setPoints(user.getPoints());
+				userDao.updateUser(user, session.getEmail());
+				return true;
+			} catch (SerializationException e) {
+				Logger.getGlobal().log(Level.WARNING, e.getMessage());
+				e.printStackTrace();
+				return false;
+			}
 		}
 		return false;
 	}

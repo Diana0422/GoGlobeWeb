@@ -35,7 +35,7 @@ public class ManageRequestController {
 	} 
 	
 	
-	public UserBean getSenderBean(RequestBean requestBean) {
+	public UserBean getSenderBean(RequestBean requestBean) throws SerializationException {
 		UserDAO userDao = new UserDAOFile();
 		User sender = userDao.getUser(requestBean.getSenderEmail());
 		return ConversionController.getInstance().convertToUserBean(sender);

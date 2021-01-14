@@ -169,7 +169,13 @@ public class PlanTripController {
 	public boolean saveTrip(TripBean tripBean, SessionBean organizerBean) {
 		Trip trip = TripFactory.getInstance().createTrip();
 		UserDAO userDao = new UserDAOFile();
-		trip.setOrganizer(userDao.getUser(organizerBean.getEmail()));
+		try {
+			trip.setOrganizer(userDao.getUser(organizerBean.getEmail()));
+		} catch (SerializationException e) {
+			Logger.getGlobal().log(Level.WARNING, e.getMessage());
+			e.printStackTrace();
+			return false;
+		}
 		trip.setTitle(tripBean.getTitle());
 		trip.setTripLength(tripBean.getTripLength());
 		

@@ -5,6 +5,7 @@ import java.util.List;
 import logic.bean.LoginBean;
 import logic.dao.UserDAOFile;
 import logic.model.User;
+import logic.model.exceptions.SerializationException;
 
 public class LoginController {
 	
@@ -21,7 +22,7 @@ public class LoginController {
 		return instance;
 	}
 	
-	public LoginBean login(String username, String password){ 
+	public LoginBean login(String username, String password) throws SerializationException{ 
 		
 		
 		LoginBean loginBean = new LoginBean();

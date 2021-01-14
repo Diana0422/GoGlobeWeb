@@ -9,6 +9,7 @@ import logic.bean.SessionBean;
 import logic.dao.UserDAO;
 import logic.dao.UserDAOFile;
 import logic.model.User;
+import logic.model.exceptions.SerializationException;
 
 public class RegistrationController {
 	
@@ -24,7 +25,7 @@ public class RegistrationController {
 		return instance;
 	}
 	
-	public synchronized SessionBean register(String email, String password, String name, String surname, String birthday) {
+	public synchronized SessionBean register(String email, String password, String name, String surname, String birthday) throws SerializationException {
 		User user;
 		DateFormat formatter = new SimpleDateFormat("dd/mm/yyyy");
 		Date birth;

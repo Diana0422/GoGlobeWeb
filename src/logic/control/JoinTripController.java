@@ -35,6 +35,7 @@ public class JoinTripController {
 		Logger.getGlobal().info(logStr);
 		TripDAO dao = new TripDAOFile();
 		List<Trip> trips = dao.getAllTrips();
+		System.out.println(trips);
 		List<Trip> filteredTrips = new ArrayList<>();
 		
 		for (Trip trip: trips) {
@@ -73,7 +74,13 @@ public class JoinTripController {
 		if (!trip.getOrganizer().getEmail().equals(session.getEmail())) { // only if the user is not the organizer
 			// Instantiate a new request
 			Request request = new Request();
-			request.setSender(userDao.getUser(session.getEmail()));
+			try {
+				request.setSender(userDao.getUser(session.getEmail()));
+			} catch (SerializationException e) {
+				Logger.getGlobal().log(Level.WARNING, e.getMessage());
+				e.printStackTrace();
+				return false;
+			}
 			request.setReceiver(trip.getOrganizer());
 			request.setTarget(trip);
 			

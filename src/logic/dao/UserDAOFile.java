@@ -8,36 +8,36 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import logic.control.PersistenceController;
 import logic.model.ModelClassType;
 import logic.model.User;
+import logic.model.exceptions.SerializationException;
+import logic.model.utils.UserSerialObject;
 
 public class UserDAOFile implements UserDAO{
 	
 	private PersistenceController pc = PersistenceController.getInstance();
 
-	@SuppressWarnings("unchecked")
 	@Override
-	public List<User> getAllUsers() {
+	public List<User> getAllUsers() throws SerializationException {
 		// Reads a list of trips from the back-end file
-		
 		List<User> empty = new ArrayList<>();
-		try (FileInputStream fis= new FileInputStream(pc.getBackendFile(ModelClassType.USER));
+		
+		try (FileInputStream fis = new FileInputStream(pc.getBackendFile(ModelClassType.USER));
 			ObjectInputStream ois = new ObjectInputStream(fis)) {
-					
 			if (fis.available() != 0) {
-				Logger.getGlobal().info("FileInputStream is available.");
 				Logger.getGlobal().info("ObjectInputStream is available.");
-				return (List<User>) ois.readObject();
-			} 
-		} catch (ClassNotFoundException | IOException e) {
-			// TODO Auto-generated catch block
+				UserSerialObject o = (UserSerialObject) ois.readObject();
+				return o.getList();
+			}
+		} catch (FileNotFoundException e) {
+			throw new SerializationException(e.getCause(), "The file specified was not found in the workingspace.");
+		} catch (IOException e) {
 			e.printStackTrace();
-			Logger.getGlobal().info("Returning empty");
-			return empty;
+		} catch (ClassNotFoundException e) {
+			throw new SerializationException(e.getCause(), "Error reading object from the specified file.");
 		}
 		Logger.getGlobal().info("Returning empty");
 		return empty;
@@ -45,7 +45,7 @@ public class UserDAOFile implements UserDAO{
 
 	
 	@Override
-	public User getUser(String email) {
+	public User getUser(String email) throws SerializationException {
 		// Gets a specific user from back-end file
 		
 		List<User> users = getAllUsers();
@@ -58,7 +58,7 @@ public class UserDAOFile implements UserDAO{
 	
 
 	@Override
-	public boolean updateUser(User newUser, String oldUserEmail) {
+	public boolean updateUser(User newUser, String oldUserEmail) throws SerializationException {
 		// Updates trip information into back-end file
 		
 		List<User> users = getAllUsers();
@@ -77,41 +77,33 @@ public class UserDAOFile implements UserDAO{
 				
 		try (ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream(pc.getBackendFile(ModelClassType.USER)))) {
 			Logger.getGlobal().info("Serializing instance of USER \n");
-			out.writeObject(users);
+			UserSerialObject o = new UserSerialObject(users);
+			out.writeObject(o);
 			return true;
 		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-			Logger.getGlobal().log(Level.SEVERE, "The file was not found.");
-			return false;
+			throw new SerializationException(e.getCause(), "The file specified was not found in the workingspace.");
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			Logger.getGlobal().log(Level.SEVERE, "Io Issue");
-			e.printStackTrace();
-			return false;
+			throw new SerializationException(e.getCause(), "Error opening the output stream to the specified file.");
 		}
 		
 	}
 	
 
 	@Override
-	public boolean saveUser(User user) {
+	public boolean saveUser(User user) throws SerializationException {
 		// Saves a trip into back-end file
 		List<User> users = getAllUsers();
 		users.add(user);
 				
 		try (ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream(pc.getBackendFile(ModelClassType.USER)))) {
 			Logger.getGlobal().info("Serializing instance of USER \n");
-			out.writeObject(users);
+			UserSerialObject o = new UserSerialObject(users);
+			out.writeObject(o);
 			return true;
 		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-			return false;
+			throw new SerializationException(e.getCause(), "The file specified was not found in the workingspace.");
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-			return false;
+			throw new SerializationException(e.getCause(), "Error opening the output stream to the specified file.");
 		}
 		
 	}

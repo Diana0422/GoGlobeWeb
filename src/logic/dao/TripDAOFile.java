@@ -1,5 +1,6 @@
 package logic.dao;
 
+import java.io.EOFException;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -26,14 +27,20 @@ public class TripDAOFile implements TripDAO {
 		// Reads a list of trips from the back-end file
 		List<Trip> empty = new ArrayList<>();
 		
-		try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream(pc.getBackendFile(ModelClassType.TRIP)))) {
-			if (ois.available() != 0) {
+		try (FileInputStream fis = new FileInputStream(pc.getBackendFile(ModelClassType.TRIP));
+			ObjectInputStream ois = new ObjectInputStream(fis)) {
+			if (fis.available() != 0) {
 				Logger.getGlobal().info("ObjectInputStream is available.");
 				TripSerialObject o = (TripSerialObject) ois.readObject();
+				System.out.println("Serialized object: "+o);
+				System.out.println("Serialized trips into object: "+o.getList());
 				return o.getList();
 			} 
 		} catch (FileNotFoundException e) {
 			throw new SerializationException(e.getCause(), "The file specified was not found in the workingspace.");
+		} catch (EOFException e) {
+			TripSerialObject o = new TripSerialObject(empty);
+			initializeFile(o);
 		} catch (IOException e) {
 			throw new SerializationException(e.getCause(), "Error in opening the stream to the file.");
 		} catch (ClassNotFoundException e) {
@@ -44,6 +51,17 @@ public class TripDAOFile implements TripDAO {
 	}
 
 	
+	private void initializeFile(TripSerialObject o) throws SerializationException {
+		try (ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream(pc.getBackendFile(ModelClassType.TRIP)))) {
+			Logger.getGlobal().info("Initializing trip file.");
+			out.writeObject(o);
+		} catch (IOException e) {
+			throw new SerializationException(e.getCause(),"Error initializing file.");
+		}
+		
+	}
+
+
 	@Override
 	public Trip getTrip(String title) throws SerializationException {
 		// Gets a specific trip from back-end file

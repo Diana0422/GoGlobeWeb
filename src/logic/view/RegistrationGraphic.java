@@ -7,6 +7,7 @@ import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import logic.bean.SessionBean;
 import logic.control.RegistrationController;
+import logic.model.exceptions.SerializationException;
 
 public class RegistrationGraphic {
 	@FXML
@@ -53,10 +54,16 @@ public class RegistrationGraphic {
 			lblMessage.setText("Input values not valid.");
 		} else {
 			/* Call the controller to register the user */
-			if ((setSession(RegistrationController.getInstance().register(email, password, name, surname, birthday)))!= null) {
-				DesktopSessionContext.getGuiLoader().loadGUI(null, DesktopSessionContext.getInstance().getSession(), GUIType.HOME);
-			} else {
-				lblMessage.setText("User already registered with this email.");
+			try {
+				if ((setSession(RegistrationController.getInstance().register(email, password, name, surname, birthday)))!= null) {
+					DesktopSessionContext.getInstance().setSession(getSession());
+					DesktopSessionContext.getGuiLoader().loadGUI(null, DesktopSessionContext.getInstance().getSession(), GUIType.HOME);
+				} else {
+					lblMessage.setText("User already registered with this email.");
+				}
+			} catch (SerializationException e) {
+				// TODO display error message on screen
+				e.printStackTrace();
 			}
 		}
 		
