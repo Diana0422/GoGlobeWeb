@@ -25,9 +25,6 @@ public class SuggestionCardGraphic {
     private Button btnAddSuggestion;
     
     public void setData(Place place) {
-    	System.out.println(place.getName());
-    	System.out.println(place.getAddress());
-    	System.out.println(place.getOpeningHours());
 
     	lblPlaceName.setText(place.getName());
     	lblPlaceAddress.setText(place.getAddress());

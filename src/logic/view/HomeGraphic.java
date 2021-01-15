@@ -47,8 +47,6 @@ public class HomeGraphic implements GraphicController {
 
 	@Override
 	public void initializeData(Object recBundle, Object forBundle) {
-		System.out.println("3 Using bundle:"+ recBundle);
-		System.out.println("3 Forwarding bundle: "+forBundle);
 		SessionBean session = (SessionBean) recBundle;
 		lblWelcome.setText("Welcome "+session.getName()+" "+session.getSurname());
 		lblPoints.setText(Integer.toString(session.getPoints()));
