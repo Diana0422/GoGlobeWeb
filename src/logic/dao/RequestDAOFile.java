@@ -1,6 +1,8 @@
 package logic.dao;
 
+import java.io.EOFException;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -12,31 +14,32 @@ import java.util.logging.Logger;
 import logic.control.PersistenceController;
 import logic.model.ModelClassType;
 import logic.model.Request;
+import logic.model.exceptions.SerializationException;
+import logic.model.utils.RequestSerialObject;
 
 public class RequestDAOFile implements RequestDAO {
 	
 	private PersistenceController pc = PersistenceController.getInstance();
 
 	@Override
-	public boolean saveRequest(Request request) {
+	public boolean saveRequest(Request request) throws SerializationException {
 		// Saves a trip into back-end file
 		List<Request> requests = getAllRequests();
 		requests.add(request);
 				
-		try (ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream(pc.getBackendFile(ModelClassType.REQUEST)))) {
+		try (FileOutputStream fos = new FileOutputStream(pc.getBackendFile(ModelClassType.REQUEST));
+			ObjectOutputStream out = new ObjectOutputStream(fos)) {
 			Logger.getGlobal().info("Serializing instance of request \n");
-			out.writeObject(requests);
+			RequestSerialObject o = new RequestSerialObject(requests);
+			out.writeObject(o);
 			return true;
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-			return false;
+			throw new SerializationException(e.getCause(), "Error in opening the stream to the file.");
 		}
 	}
-
-	@SuppressWarnings("unchecked")
+	
 	@Override
-	public List<Request> getAllRequests() {
+	public List<Request> getAllRequests() throws SerializationException {
 		// Reads a list of trips from the back-end file
 		List<Request> empty = new ArrayList<>();
 		try (FileInputStream fis= new FileInputStream(pc.getBackendFile(ModelClassType.REQUEST));
@@ -45,21 +48,35 @@ public class RequestDAOFile implements RequestDAO {
 			if (fis.available() != 0) {
 				Logger.getGlobal().info("FileInputStream is available.");
 				Logger.getGlobal().info("ObjectInputStream is available.");
-				return (List<Request>) ois.readObject();
+				RequestSerialObject o = (RequestSerialObject) ois.readObject();
+				return o.getList();
 			} 
-		} catch (ClassNotFoundException | IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-			Logger.getGlobal().info("Returning empty");
-			return empty;
+		} catch (FileNotFoundException e) {
+			throw new SerializationException(e.getCause(), "The file specified was not found in the workingspace.");
+		} catch (EOFException e) {
+			RequestSerialObject o = new RequestSerialObject(empty);
+			initializeFile(o);
+		} catch (IOException e) {
+			throw new SerializationException(e.getCause(), "Error in opening the stream to the file.");
+		} catch (ClassNotFoundException e) {
+			throw new SerializationException(e.getCause(), "Error reading object from the specified file.");
 		}
 				
 		Logger.getGlobal().info("Returning empty");
 		return empty;
 	}
 
+	private void initializeFile(RequestSerialObject o) throws SerializationException {
+		try (ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream(pc.getBackendFile(ModelClassType.REQUEST)))) {
+			Logger.getGlobal().info("Initializing requests file.");
+			out.writeObject(o);
+		} catch (IOException e) {
+			throw new SerializationException(e.getCause(),"Error initializing file.");
+		}
+	}
+
 	@Override
-	public Request getRequest(String tripTitle, String senderEmail, String receiverEmail) {
+	public Request getRequest(String tripTitle, String senderEmail, String receiverEmail) throws SerializationException {
 		// Gets a specific request from back-end file
 		
 		List<Request> requests = getAllRequests();
@@ -71,7 +88,7 @@ public class RequestDAOFile implements RequestDAO {
 	}
 
 	@Override
-	public boolean deleteRequest(Request request) {
+	public boolean deleteRequest(Request request) throws SerializationException {
 		// Delete the request from file
 	
 		List<Request> requests = getAllRequests();
@@ -86,12 +103,11 @@ public class RequestDAOFile implements RequestDAO {
 						
 		try (ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream(pc.getBackendFile(ModelClassType.REQUEST)))) {
 			Logger.getGlobal().info("Serializing instance of request \n");
-			out.writeObject(requests);
+			RequestSerialObject o = new RequestSerialObject(requests);
+			out.writeObject(o);
 			return true;
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-			return false;
+			throw new SerializationException(e.getCause(), "Error in opening the stream to the file.");
 		}
 	}
 

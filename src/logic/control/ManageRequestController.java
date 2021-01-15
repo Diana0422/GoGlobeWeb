@@ -44,7 +44,14 @@ public class ManageRequestController {
 	public synchronized boolean acceptRequest(RequestBean requestBean) {
 		// get request from persistence
 		RequestDAO reqDao = new RequestDAOFile();
-		Request req = reqDao.getRequest(requestBean.getTripTitle(), requestBean.getSenderEmail(), requestBean.getReceiverEmail());
+		Request req;
+		try {
+			req = reqDao.getRequest(requestBean.getTripTitle(), requestBean.getSenderEmail(), requestBean.getReceiverEmail());
+		} catch (SerializationException e1) {
+			Logger.getGlobal().log(Level.WARNING, e1.getMessage());
+			e1.printStackTrace();
+			return false;
+		}
 		
 		// Add sender user to trip participants
 		req.getTarget().addParticipant(req.getSender());
@@ -62,16 +69,23 @@ public class ManageRequestController {
 		}
 	}
 	
-	public synchronized void declineRequest(RequestBean requestBean) {
+	public synchronized boolean declineRequest(RequestBean requestBean) {
 		// get request from persistence
 		RequestDAO reqDao = new RequestDAOFile();
-		Request req = reqDao.getRequest(requestBean.getTripTitle(), requestBean.getSenderEmail(), requestBean.getReceiverEmail());
-				
-		// Delete request
-		reqDao.deleteRequest(req);
+		Request req;
+		try {
+			req = reqDao.getRequest(requestBean.getTripTitle(), requestBean.getSenderEmail(), requestBean.getReceiverEmail());
+			// Delete request
+			reqDao.deleteRequest(req);
+			return true;
+		} catch (SerializationException e) {
+			Logger.getGlobal().log(Level.WARNING, e.getMessage());
+			e.printStackTrace();
+			return false;
+		}
 	}
 	
-	public List<RequestBean> getUserIncomingRequests(SessionBean session) {
+	public List<RequestBean> getUserIncomingRequests(SessionBean session) throws SerializationException {
 		RequestDAO reqDao = new RequestDAOFile();
 		List<Request> requests = reqDao.getAllRequests();
 		List<Request> incRequests = new ArrayList<>();
@@ -84,7 +98,7 @@ public class ManageRequestController {
 	}
 	
 	
-	public List<RequestBean> getUserSentRequests(SessionBean session) {
+	public List<RequestBean> getUserSentRequests(SessionBean session) throws SerializationException {
 		RequestDAO reqDao = new RequestDAOFile();
 		List<Request> requests = reqDao.getAllRequests();
 		List<Request> sentRequests = new ArrayList<>();

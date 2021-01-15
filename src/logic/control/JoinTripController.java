@@ -83,7 +83,13 @@ public class JoinTripController {
 			
 			// Save the request in persistence
 			RequestDAO reqDao = new  RequestDAOFile();
-			if (reqDao.getRequest(request.getTarget().getTitle(), request.getSender().getEmail(), request.getReceiver().getEmail())== null) return reqDao.saveRequest(request);
+			try {
+				if (reqDao.getRequest(request.getTarget().getTitle(), request.getSender().getEmail(), request.getReceiver().getEmail())== null) return reqDao.saveRequest(request);
+			} catch (SerializationException e) {
+				Logger.getGlobal().log(Level.WARNING, e.getMessage());
+				e.printStackTrace();
+				return false;
+			}
 		} 
 		
 		return false;
