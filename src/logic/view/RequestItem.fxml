@@ -16,7 +16,7 @@
             <Button fx:id="btnDecline" mnemonicParsing="false" onMouseClicked="#decline" prefHeight="50.0" prefWidth="87.0" style="-fx-background-color: #dc3545; -fx-text-fill: #ffffff;" text="Decline" />
          </children>
       </HBox>
-      <VBox layoutX="14.0" layoutY="12.0" prefHeight="100.0" prefWidth="251.0">
+      <VBox layoutX="14.0" layoutY="12.0" prefHeight="100.0" prefWidth="220.0">
          <children>
             <Label fx:id="lblTitle" prefHeight="36.0" prefWidth="252.0" text="Trip Title">
                <font>
@@ -35,5 +35,10 @@
             </Label>
          </children>
       </VBox>
+      <Label fx:id="lblStatus" layoutX="258.0" layoutY="35.0" prefHeight="50.0" prefWidth="70.0" text="Accepted" visible="false">
+         <font>
+            <Font name="System Bold Italic" size="13.0" />
+         </font>
+      </Label>
    </children>
 </AnchorPane>

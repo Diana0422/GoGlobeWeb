@@ -1,13 +1,12 @@
 package logic.view;
 
-import java.io.IOException;
 import java.util.List;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
 import logic.bean.RequestBean;
 import logic.control.ManageRequestController;
+import logic.model.exceptions.LoadGraphicException;
 
 public class ManageRequestGraphic implements GraphicController {
 	@FXML
@@ -21,36 +20,31 @@ public class ManageRequestGraphic implements GraphicController {
 	public void initializeData(Object recBundle, Object forBundle) {
 		List<RequestBean> inc = ManageRequestController.getInstance().getUserIncomingRequests(DesktopSessionContext.getInstance().getSession());
 		List<RequestBean> sent = ManageRequestController.getInstance().getUserSentRequests(DesktopSessionContext.getInstance().getSession());
-		
-		try {
-			if (inc != null) {
-				for (int i=0; i<inc.size(); i++) {
-					FXMLLoader itemLoader = new FXMLLoader();
-					itemLoader.setLocation(getClass().getResource("/logic/view/RequestItem.fxml"));
-					
-					AnchorPane anchor = itemLoader.load();
-					RequestItemGraphic ric = itemLoader.getController();
-					ric.setData(inc.get(i));
-					
+		AnchorPane anchor;
+		if (inc != null) {
+			for (int i=0; i<inc.size(); i++) {
+				RequestItemGraphic graphic = new RequestItemGraphic();
+				try {
+					anchor = (AnchorPane) graphic.initializeNode(inc.get(i), RequestType.INCOMING);
 					incResults.getChildren().add(anchor);
+				} catch (LoadGraphicException e) {
+					AlertGraphic alert = new AlertGraphic();
+					alert.display(GUIType.REQUESTS, GUIType.HOME, null, DesktopSessionContext.getInstance().getSession(), "Widget loading error.", "Something unexpected occurred loading the requests.");
 				}
 			}
+		}
 			
-			if (sent != null) {
-				for (int i=0; i<sent.size(); i++) {
-					FXMLLoader itemLoader = new FXMLLoader();
-					itemLoader.setLocation(getClass().getResource("/logic/view/RequestItem.fxml"));
-					
-					AnchorPane anchor = itemLoader.load();
-					RequestItemGraphic ric = itemLoader.getController();
-					ric.setData(sent.get(i));
-					
+		if (sent != null) {
+			for (int i=0; i<sent.size(); i++) {
+				RequestItemGraphic graphic = new RequestItemGraphic();
+				try {
+					anchor = (AnchorPane) graphic.initializeNode(sent.get(i), RequestType.SENT);
 					sentResults.getChildren().add(anchor);
+				} catch (LoadGraphicException e) {
+					AlertGraphic alert = new AlertGraphic();
+					alert.display(GUIType.REQUESTS, GUIType.HOME, null, DesktopSessionContext.getInstance().getSession(), "Widget loading error.", "Something unexpected occurred loading the requests.");
 				}
 			}
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
 		}
 		
 	}

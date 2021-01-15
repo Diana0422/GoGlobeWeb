@@ -32,8 +32,6 @@ public class TripDAOFile implements TripDAO {
 			if (fis.available() != 0) {
 				Logger.getGlobal().info("ObjectInputStream is available.");
 				TripSerialObject o = (TripSerialObject) ois.readObject();
-				System.out.println("Serialized object: "+o);
-				System.out.println("Serialized trips into object: "+o.getList());
 				return o.getList();
 			} 
 		} catch (FileNotFoundException e) {

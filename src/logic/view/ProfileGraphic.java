@@ -1,10 +1,8 @@
 package logic.view;
 
-import java.io.IOException;
 import java.util.List;
 
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
 import javafx.scene.control.Button;
 import javafx.scene.image.ImageView;
@@ -18,6 +16,7 @@ import logic.bean.SessionBean;
 import logic.bean.TripBean;
 import logic.bean.UserBean;
 import logic.control.ProfileController;
+import logic.model.exceptions.LoadGraphicException;
 import logic.model.exceptions.SerializationException;
 
 public class ProfileGraphic implements GraphicController {
@@ -83,39 +82,34 @@ public class ProfileGraphic implements GraphicController {
 		int column = 0;
 		int row = 1;
 		
-		try {
-			for (int i=0; i<trips.size(); i++) {
+		for (int i=0; i<trips.size(); i++) {
 				
-				FXMLLoader loader = new FXMLLoader();
-				loader.setLocation(getClass().getResource("/logic/view/TripCard.fxml"));
-					
-				AnchorPane anchor = loader.load();
-					
-				CardGraphic cc = loader.getController();
-				cc.setData(trips.get(i));
-				
+			CardGraphic cc = new CardGraphic();
+			AnchorPane anchor;
+			try {
 				if (column == 3) {
 					row++;
 					column = 0;
 				}
 					
+				anchor = (AnchorPane) cc.initializeNode(trips.get(i));
 				tripsGrid.add(anchor, column++, row);
 				GridPane.setMargin(anchor, new Insets(20));
+			} catch (LoadGraphicException e) {
+				AlertGraphic graphic = new AlertGraphic();
+				graphic.display(GUIType.PROFILE, GUIType.HOME, null, DesktopSessionContext.getInstance().getSession(), "Widget loading error.", "Something unexpected occurred loading the trip cards.");
+			}
 					
-				// Set grid height
-				tripsGrid.setMaxHeight(Region.USE_PREF_SIZE);
-				tripsGrid.setPrefHeight(Region.USE_COMPUTED_SIZE);
-				tripsGrid.setMinHeight(Region.USE_COMPUTED_SIZE);
+			// Set grid height
+			tripsGrid.setMaxHeight(Region.USE_PREF_SIZE);
+			tripsGrid.setPrefHeight(Region.USE_COMPUTED_SIZE);
+			tripsGrid.setMinHeight(Region.USE_COMPUTED_SIZE);
 					
-				// Set grid width
-				tripsGrid.setMaxWidth(Region.USE_PREF_SIZE);
-				tripsGrid.setPrefWidth(Region.USE_COMPUTED_SIZE);
-				tripsGrid.setMinWidth(Region.USE_COMPUTED_SIZE);
-			}				
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+			// Set grid width
+			tripsGrid.setMaxWidth(Region.USE_PREF_SIZE);
+			tripsGrid.setPrefWidth(Region.USE_COMPUTED_SIZE);
+			tripsGrid.setMinWidth(Region.USE_COMPUTED_SIZE);
+		}				
 	}
 
 
@@ -131,24 +125,24 @@ public class ProfileGraphic implements GraphicController {
 			myTripBeans = ProfileController.getInstance().getMyTrips();
 			loadGrid(myTripsGrid, myTripBeans);
 		} catch (SerializationException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			AlertGraphic graphic = new AlertGraphic();
+			graphic.display(GUIType.PROFILE, GUIType.HOME, null, DesktopSessionContext.getInstance().getSession(), "Serialization Error", "Something unexpected occurred loading trips.");
 		}
 	
 		try {
 			upcomingTripBeans = ProfileController.getInstance().getUpcomingTrips();
 			loadGrid(upcomingGrid, upcomingTripBeans);
 		} catch (SerializationException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			AlertGraphic graphic = new AlertGraphic();
+			graphic.display(GUIType.PROFILE, GUIType.HOME, null, DesktopSessionContext.getInstance().getSession(), "Serialization Error", "Something unexpected occurred loading trips.");
 		}
 		
 		try {
 			previousTripBeans = ProfileController.getInstance().getRecentTrips();
 			loadGrid(previousGrid, previousTripBeans);
 		} catch (SerializationException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			AlertGraphic graphic = new AlertGraphic();
+			graphic.display(GUIType.JOIN, GUIType.HOME, null, DesktopSessionContext.getInstance().getSession(), "Serialization Error", "Something unexpected occurred loading trips.");
 		}
 
 		txtNameSurname.setText(user.getName()+" "+user.getSurname());

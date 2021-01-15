@@ -1,11 +1,9 @@
 package logic.view;
 
-import java.io.IOException;
 import java.util.List;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -23,6 +21,7 @@ import logic.bean.TripBean;
 import logic.bean.UserBean;
 import logic.control.FlightController;
 import logic.control.JoinTripController;
+import logic.model.exceptions.LoadGraphicException;
 
 public class TripInfoGraphic implements GraphicController {
 	
@@ -98,7 +97,7 @@ public class TripInfoGraphic implements GraphicController {
 		imgCategory2.setImage(cat2Img);
 	}
 	
-	public void initializeTripData() {
+	private void initializeTripData() {
 		lblTitle.setText(getTripBean().getTitle());
 		lblPrice.setText(getTripBean().getPrice()+"€");
 		lblDescription.setText(getTripBean().getDescription());
@@ -108,15 +107,15 @@ public class TripInfoGraphic implements GraphicController {
 		lblCategory2.setText(getTripBean().getCategory2());
 	}
 	
-	public TripBean getTripBean() {
+	private TripBean getTripBean() {
 		return tripBean;
 	}
 
-	public void setTripBean(TripBean tripBean) {
+	private void setTripBean(TripBean tripBean) {
 		this.tripBean = tripBean;
 	}
 	
-	public void addDayTabs(List<DayBean> days) {
+	private void addDayTabs(List<DayBean> days) {
 		for (int i=0; i<days.size(); i++) {
 			
 			VBox table = new VBox();
@@ -152,7 +151,7 @@ public class TripInfoGraphic implements GraphicController {
 	}
 	
 	
-	public void displayFlightInfo() {
+	private void displayFlightInfo() {
 		String notDefined = "N/D";
 		int price; 
 		
@@ -169,56 +168,46 @@ public class TripInfoGraphic implements GraphicController {
 	
 	
 	private void displayActivity(VBox vbox, ActivityBean activity) {
-		FXMLLoader loader = new FXMLLoader();
-		loader.setLocation(getClass().getResource("/logic/view/ActivityItem.fxml"));
+		ActivityItemGraphic graphic = new ActivityItemGraphic();
+		AnchorPane anchor;
 		try {
-			AnchorPane anchor = loader.load();
-			
-			System.out.println("Bean: "+activity);
-			ActivityItemGraphic graphic = loader.getController();
-			graphic.setData(activity);
+			anchor = (AnchorPane) graphic.initializeNode(activity);
 			vbox.getChildren().add(anchor);
-		
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+		} catch (LoadGraphicException e) {
+			AlertGraphic alert = new AlertGraphic();
+			alert.display(GUIType.JOIN, GUIType.HOME, null, DesktopSessionContext.getInstance().getSession(), "Widget loading error.", "Something unexpected occurred loading activity cards.");
 		}
 	}
 
 	public void joinTrip(ActionEvent e) {
 		if (DesktopSessionContext.getInstance().getSession() != null) {
-			JoinTripController.getInstance().joinTrip(getTripBean(), DesktopSessionContext.getInstance().getSession());
+			if (JoinTripController.getInstance().joinTrip(getTripBean(), DesktopSessionContext.getInstance().getSession())) {
+				AlertGraphic alert = new AlertGraphic();
+				alert.display(GUIType.INFO, GUIType.REQUESTS, null, getTripBean(), "Request sent to organizer.", "Choose an option.");
+			} else {
+				AlertGraphic alert = new AlertGraphic();
+				alert.display(GUIType.INFO, GUIType.REQUESTS, null, getTripBean(), "You are not eligible to join.", "Choose an option.");
+			}
 		} else {
 			AlertGraphic alert = new AlertGraphic();
 			alert.display(GUIType.INFO, GUIType.LOGIN, null, getTripBean(), "You are not logged in.", "Register or login first.");
 		}
 	}
 	
-	
-	public void initializeOrganizer(TripBean trip) {
+	private void displayOrganizer(TripBean trip) {
 		UserBean organizer = trip.getOrganizer();
-		
-		FXMLLoader loader = new FXMLLoader();
-		loader.setLocation(getClass().getResource("/logic/view/UserItem.fxml"));
-		
+		UserItemGraphic graphic = new UserItemGraphic();
 		try {
-			AnchorPane pane = loader.load();
-			UserItemGraphic graphic = loader.getController();
-			graphic.initializeData(organizer, trip);
-			boxOrganizer.getChildren().add(pane);
-			
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			AnchorPane anchor = (AnchorPane) graphic.initilizeNode(organizer, trip);
+			boxOrganizer.getChildren().add(anchor);
+		} catch (LoadGraphicException e) {
+			AlertGraphic alert = new AlertGraphic();
+			alert.display(GUIType.JOIN, GUIType.HOME, null, DesktopSessionContext.getInstance().getSession(), "Widget loading error.", "Something unexpected occurred displaying organizer.");
 		}
 	}
 	
-	public void initializeParticipants(TripBean bean) {
+	private void initializeParticipants(TripBean bean) {
 		List<UserBean> participants = bean.getParticipants();
-		System.out.println("Participants: "+participants);
-		
-		FXMLLoader loader = new FXMLLoader();
-		loader.setLocation(getClass().getResource("/logic/view/UserItem.fxml"));
 		
 		if (participants != null) {
 			for (UserBean user: participants) {
@@ -228,21 +217,15 @@ public class TripInfoGraphic implements GraphicController {
 	}
 
 	private void displayParticipant(UserBean user, TripBean trip) {
-		FXMLLoader loader = new FXMLLoader();
-		loader.setLocation(getClass().getResource("/logic/view/UserItem.fxml"));
+		UserItemGraphic graphic = new UserItemGraphic();
+		AnchorPane anchor;
 		try {
-			AnchorPane anchor = loader.load();
-			
-			System.out.println("Bean: "+user);
-			UserItemGraphic graphic = loader.getController();
-			graphic.initializeData(user, trip);
+			anchor = (AnchorPane) graphic.initilizeNode(user, trip);
 			boxTravelers.getChildren().add(anchor);
-		
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		
+		} catch (LoadGraphicException e) {
+			AlertGraphic alert = new AlertGraphic();
+			alert.display(GUIType.JOIN, GUIType.HOME, null, DesktopSessionContext.getInstance().getSession(), "Widget loading error.", "Something unexpected occurred displaying user.");
+		}	
 	}
 
 	@Override
@@ -250,7 +233,7 @@ public class TripInfoGraphic implements GraphicController {
 		TripBean bean = (TripBean) recBundle;
 		setTripBean(bean);
 		initializeParticipants(getTripBean());
-		initializeOrganizer(getTripBean());
+		displayOrganizer(getTripBean());
 		initializeTripData();
 		addDayTabs(bean.getDays());
 		displayFlightInfo();

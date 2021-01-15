@@ -35,12 +35,9 @@ public class JoinTripController {
 		Logger.getGlobal().info(logStr);
 		TripDAO dao = new TripDAOFile();
 		List<Trip> trips = dao.getAllTrips();
-		System.out.println(trips);
 		List<Trip> filteredTrips = new ArrayList<>();
 		
 		for (Trip trip: trips) {
-			//QUI QUI
-			System.out.println(trip.getTitle());
 			if (trip.getTitle().contains(value)) filteredTrips.add(trip);
 			
 		}

@@ -1,12 +1,10 @@
 package logic.view;
 
-import java.io.IOException;
 import java.net.URL;
 import java.util.List;
 import java.util.ResourceBundle;
 
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.geometry.Insets;
 import javafx.scene.control.Button;
@@ -19,6 +17,7 @@ import javafx.scene.layout.Region;
 import logic.bean.SessionBean;
 import logic.bean.TripBean;
 import logic.control.JoinTripController;
+import logic.model.exceptions.LoadGraphicException;
 import logic.model.exceptions.SerializationException;
 
 public class JoinTripGraphic implements Initializable {
@@ -66,13 +65,19 @@ public class JoinTripGraphic implements Initializable {
 		try {
 			this.tripBeans = JoinTripController.getInstance().searchTrips(txtSearch.getText());
 		} catch (SerializationException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			AlertGraphic graphic = new AlertGraphic();
+			graphic.display(GUIType.JOIN, GUIType.HOME, null, DesktopSessionContext.getInstance().getSession(), "Serialization Error", "Something unexpected occurred loading trips.");
 		}
 	}
 	
 	@FXML
 	public void search(MouseEvent event) {
+		try {
+			this.tripBeans = JoinTripController.getInstance().searchTrips(txtSearch.getText());
+		} catch (SerializationException e) {
+			AlertGraphic graphic = new AlertGraphic();
+			graphic.display(GUIType.JOIN, GUIType.HOME, null, DesktopSessionContext.getInstance().getSession(), "Serialization Error", "Something unexpected occurred loading trips.");
+		}
 		loadGrid(txtSearch.getText(), false);
 	}
 	
@@ -81,40 +86,34 @@ public class JoinTripGraphic implements Initializable {
 		int column = 0;
 		int row = 1;
 		
-		try {
-			for (int i=0; i<this.tripBeans.size(); i++) {
-				if (isFiltered(tripBeans.get(i), searchVal) || skipFilter) {
-					FXMLLoader loader = new FXMLLoader();
-					loader.setLocation(getClass().getResource("/logic/view/TripCard.fxml"));
-						
-					AnchorPane anchor = loader.load();
-						
-					CardGraphic cc = loader.getController();
-					cc.setData(tripBeans.get(i));
+		for (int i=0; i<this.tripBeans.size(); i++) {
+			if (isFiltered(tripBeans.get(i), searchVal) || skipFilter) {
+					CardGraphic cc = new CardGraphic();
+					AnchorPane anchor;
+				try {
 					if (column == 3) {
 						row++;
 						column = 0;
 					}
-						
+					anchor = (AnchorPane) cc.initializeNode(tripBeans.get(i));	
 					cardsLayout.add(anchor, column++, row);
 					GridPane.setMargin(anchor, new Insets(20));
-						
-					// Set grid height
-					cardsLayout.setMaxHeight(Region.USE_PREF_SIZE);
-					cardsLayout.setPrefHeight(Region.USE_COMPUTED_SIZE);
-					cardsLayout.setMinHeight(Region.USE_COMPUTED_SIZE);
-						
-					// Set grid width
-					cardsLayout.setMaxWidth(Region.USE_PREF_SIZE);
-					cardsLayout.setPrefWidth(Region.USE_COMPUTED_SIZE);
-					cardsLayout.setMinWidth(Region.USE_COMPUTED_SIZE);
+				} catch (LoadGraphicException e) {
+					AlertGraphic graphic = new AlertGraphic();
+					graphic.display(GUIType.JOIN, GUIType.HOME, null, DesktopSessionContext.getInstance().getSession(), "Widget loading error.", "Something unexpected occurred loading the trip cards.");
 				}
-					
+						
+				// Set grid height
+				cardsLayout.setMaxHeight(Region.USE_PREF_SIZE);
+				cardsLayout.setPrefHeight(Region.USE_COMPUTED_SIZE);
+				cardsLayout.setMinHeight(Region.USE_COMPUTED_SIZE);
+						
+				// Set grid width
+				cardsLayout.setMaxWidth(Region.USE_PREF_SIZE);
+				cardsLayout.setPrefWidth(Region.USE_COMPUTED_SIZE);
+				cardsLayout.setMinWidth(Region.USE_COMPUTED_SIZE);
 			}
-				
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+					
 		}
 	}
 

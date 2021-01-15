@@ -46,7 +46,6 @@ public class ConversionController {
 			day.setLocation(dayBeans.get(i).getLocation());
 			day.setActivities(convertActivityBeanList(dayBeans.get(i).getActivities()));
 			day.calclulateBudget();
-			System.out.println("Day price:"+day.getBudget());
 			days.add(day);
 
 		}

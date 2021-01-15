@@ -1,9 +1,16 @@
 package logic.view;
 
+import java.io.IOException;
+
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
 import javafx.scene.control.Label;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.AnchorPane;
+import logic.bean.TripBean;
 import logic.bean.UserBean;
+import logic.model.exceptions.LoadGraphicException;
 
 public class UserItemGraphic implements GraphicController{
 	
@@ -23,19 +30,25 @@ public class UserItemGraphic implements GraphicController{
 	}
 
 	public void setData(UserBean bean) {
-		setUser(bean);
+		this.user = bean;
 		lblUserName.setText(bean.getName()+" "+bean.getSurname());
 		lblAge.setText(Integer.toString(bean.getAge()));
 		
 	}
-
-	public UserBean getUser() {
-		return user;
+	
+	public Node initilizeNode(UserBean user, TripBean trip) throws LoadGraphicException {
+		FXMLLoader loader = new FXMLLoader();
+		loader.setLocation(getClass().getResource("/logic/view/UserItem.fxml"));
+		AnchorPane anchor;
+		try {
+			anchor = loader.load();
+			this.initializeData(user, trip);
+			return anchor;
+		} catch (IOException e) {
+			throw new LoadGraphicException(e.getMessage(), e);
+		}
 	}
-
-	public void setUser(UserBean user) {
-		this.user = user;
-	}
+	
 
 	@Override
 	public void initializeData(Object recBundle, Object forBundle) {
