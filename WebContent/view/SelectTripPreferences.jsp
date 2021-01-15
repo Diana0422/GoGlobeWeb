@@ -2,6 +2,7 @@
     pageEncoding="UTF-8"%>
     <%@page import="logic.control.PlanTripController"%>
         <%@page import="logic.bean.TripBean"%>
+        <%@page import="logic.model.exceptions.FormInputException"%>
     
    <jsp:useBean id="planTripBean" scope="session" class="logic.bean.PlanTripBean"/>  
    <jsp:setProperty name="planTripBean" property="*"/>
@@ -72,17 +73,22 @@
 	if (request.getParameter("next-btn") != null){
 		String projectPath = System.getProperty("user.dir");
 		System.out.println(projectPath);
-		if (planTripBean.validateForm()){
-			TripBean newTripBean = new TripBean();
-			planTripBean.setTripBean(newTripBean);
-			PlanTripController.getInstance().setupTripBean(planTripBean);
-			planTripBean.setPlanningDay(0);
+		try{
+			if (planTripBean.validateForm()){
+				TripBean newTripBean = new TripBean();
+				planTripBean.setTripBean(newTripBean);
+				PlanTripController.getInstance().setupTripBean(planTripBean);
+				planTripBean.setPlanningDay(0);
 %>			
-			<jsp:forward page="planTrip.jsp"/>
+				<jsp:forward page="planTrip.jsp"/>
+			
 <% 
-		}else{
+			}
+		}catch(FormInputException e){
+			e.printStackTrace();
+		
 %>
-			<p style="color: red"><jsp:getProperty name="planTripBean" property="errorMsg"/></p>
+			<p style="color: red"><%=e.getMessage() %></p>
 <%
 		}
 	}
@@ -92,8 +98,8 @@
                     <!-- Trip name-->
                     <div class="form-group col-md-6">
                         <label for="inputDepDate" ><h4>Trip Title</h4></label>
-                        <input type="text" class="form-control" name="tripName" id="tripName"
-                        placeholder="Enter trip name..." maxlength="25">
+                        <input type="text" class="form-control" name="tripName" id="tripName" maxlength="25">
+                        <!-- placeholder="Enter trip name..." --> 
                     </div>
                 </div>
 

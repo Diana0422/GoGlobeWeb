@@ -61,3 +61,16 @@
 #info {
 	-fx-text-fill: #fff;
 }
+
+/* Tab pane */
+.tab .tab-label { 
+    -fx-alignment: CENTER;
+    -fx-text-fill: white;
+    -fx-font-size: 12px;
+    font-size: 12px;
+    -fx-font-weight: bold;
+    font-weight: bold;
+}
+
+
+

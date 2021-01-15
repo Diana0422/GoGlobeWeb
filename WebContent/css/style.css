@@ -176,6 +176,7 @@ label.star:before {
 	width: inherit;
 	overflow: scroll;
 	text-align: left;
+	background: white;
 	
 }
 
@@ -221,4 +222,10 @@ label.star:before {
 .bordered-bottom {
 	border-bottom: 2px solid lightgrey;
 	border-radius: 5px;
+}
+
+.form {
+	background: white;
+	border-radius: 10px;
+	padding: 2%;
 }

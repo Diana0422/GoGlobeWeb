@@ -12,6 +12,7 @@
 <%@page import="java.util.Iterator"%> 
 <%@page import="logic.model.Trip"%>
 <%@page import="logic.model.Day"%>
+<%@page import="logic.model.Place"%>
 <%@page import="logic.control.PlanTripController"%>
 
 
@@ -25,6 +26,8 @@
     <link rel="icon" href="../res/images/favicon.ico">
     <link rel="stylesheet" href="../bootstrap-css/bootstrap.css">
     <link rel="stylesheet" href="../css/planTrip.css">
+    <link rel="stylesheet" href="../css/style.css">
+    
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.min.js"></script>
@@ -34,7 +37,7 @@
 	<!-- navigation bar -->
     <nav class="navbar navbar-expand-sm navbar-light bg-light sticky-top">
         <div class="app">
-            <img id="logo-img" src="../res/images/icons8-around-the-globe-50.png">
+            <img id="logo-img" src="../res/images/icons8-around-the-globe-50.png" alt="">
             <a href="#" id="logo" class="navbar-brand">GoGlobe</a>
         </div>
         <!--toggler for shorter screens -->
@@ -102,6 +105,7 @@ if (request.getParameter("daybtn") != null){
             <!-- DAY DESCRIPTION-->
             
             <div class="day" id="day">
+            	<div class="form">
 	            <h1 id="trip-title"><%= planTripBean.getTripName() %></h1>
 	           
 	           <!--  IF SAVE TRIP IS CLICKED -->  
@@ -141,7 +145,7 @@ if (request.getParameter("daybtn") != null){
 %>
 
 	            <h2>Day <%= planTripBean.getPlanningDay() + 1 %></h2>   
-  
+  		
  <%		
 		 if (request.getParameter("save-location-btn") != null){
 			 if (planTripBean.validateLocation()){
@@ -155,7 +159,7 @@ if (request.getParameter("daybtn") != null){
  %>             
                	<!--  Location Form -->
 			   <form method="POST" action="planTrip.jsp">
-			   	 <div class="location-form">
+			   	 <div class="location-form form">
 <%
 					
 %>
@@ -174,6 +178,7 @@ if (request.getParameter("daybtn") != null){
  %>            
                
              	<h3>Location: <%=planTripBean.getDayLocation() %></h3>
+             </div>
                 <div class="day-plan">
                 	<!-- NEW ACTIVITY FORM -->
                 	<form action="planTrip.jsp" method="POST">
@@ -219,16 +224,16 @@ if (request.getParameter("daybtn") != null){
 						int activitiesNum = planTripBean.getActivitiesNum();
 					 	for ( int j = 0; j < activitiesNum; j++){ 
 					 		System.out.println("Activity Found!\n");
-	            			System.out.println("title: " + planTripBean.displayActivityTitle(j) + "\n");
+	            			System.out.println("title: " +planTripBean.displayActivityTitle(j) + "\n");
 	            			System.out.println("time: "+ planTripBean.displayActivityTime(j) + "\n");
 	            			System.out.println("time: "+ planTripBean.displayActivityTime(j) + "\n");
 	            			System.out.println("cost: "+ planTripBean.displayActivityCost(j) + "\n");
 %>		
 	            			  
-	            			<div class="activity">		
+	            			<div class="activity form">		
 		            			<h2><%=planTripBean.displayActivityTitle(j) %></h2>
 		            			<h3><%=planTripBean.displayActivityTime(j) %></h3>
-		            			<h3><%=planTripBean.displayActivityCost(j) %></h3>
+		            			<h3><%=planTripBean.displayActivityCost(j) + "€" %></h3>
 		            			<div class="description">
 		            				<p><%=planTripBean.displayActivityDescription(j)%></p>
 		            			</div>		            			
@@ -241,6 +246,33 @@ if (request.getParameter("daybtn") != null){
 	            </div>	            
 		     </div>
 		  </div>
+		  <div class="place-suggestions scrollable">
+<%
+		if (!(planTripBean.checkDay())){
+					
+			List<Place> suggestions = PlanTripController.getInstance().getNearbyPlaces(planTripBean.getDayLocation(), planTripBean.getCategory1());
+			for (int i = 0; i < suggestions.size(); i++){
+%>
+				
+				<!--  INSERIRE LAYOUT SUGGESTION QUI -->
+				
+		        <div class = "suggestion-card">
+		            <div class="ic-container">
+		                <img class="suggestion-icon" src=<%= suggestions.get(i).getIcCategoryRef() %> alt=""> 
+		            </div>
+		            <div class="suggestion-info">
+		                <p><%= suggestions.get(i).getName() %></p>
+		                <p><%= suggestions.get(i).getAddress() %></p>
+		                <p><%= suggestions.get(i).getOpeningHours() %></p>
+		            </div>
+		       </div>
+<% 			
+			}
+%>		  		  
+		  </div>
+<%
+		}
+%>
 	   </div>
 	  
     

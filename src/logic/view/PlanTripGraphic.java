@@ -10,6 +10,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
@@ -23,6 +24,7 @@ import logic.control.PlanTripController;
 import logic.model.Location;
 import logic.model.Place;
 import logic.model.adapters.HereAPIAdapter;
+import logic.model.exceptions.FormInputException;
 import logic.model.factories.HereAdapterFactory;
 import logic.view.threads.LoadVBox;
 
@@ -41,6 +43,9 @@ public class PlanTripGraphic implements GraphicController{
 
     @FXML
     private TextField tfLocation;
+    
+    @FXML 
+    private Label lblErrorMsg;
 
     @FXML
     private VBox vbActivities;
@@ -96,11 +101,16 @@ public class PlanTripGraphic implements GraphicController{
     	newActivity.setDescription(taActivityDescription.getText());
     	newActivity.setEstimatedCost(tfActivityCost.getText());
  
-    	if (newActivity.validateActivity()) {
-    		//planTripBean.addActivity(newActivity);  ULTIMO CAMBIAMENTO
-    		PlanTripController.getInstance().addActivity(this.planTripBean, newActivity);
-    		loadActivity(newActivity);
-    	}	
+    	try {
+			if (newActivity.validateActivity()) {
+				//planTripBean.addActivity(newActivity);  ULTIMO CAMBIAMENTO
+				PlanTripController.getInstance().addActivity(this.planTripBean, newActivity);
+				loadActivity(newActivity);
+				lblErrorMsg.setText("");
+			}
+		} catch (FormInputException e) {
+			lblErrorMsg.setText(e.getMessage());
+		}	
  
     	//reset activity form's text fields
     	tfActivityTitle.setText("");
@@ -112,8 +122,13 @@ public class PlanTripGraphic implements GraphicController{
     @FXML
     void saveLocation(ActionEvent event) {
     	planTripBean.setLocation(tfLocation.getText());
-    	if (planTripBean.validateLocation())
-    		planTripBean.saveLocation();
+    	try {
+			if (planTripBean.validateLocation())
+				planTripBean.saveLocation();
+		} catch (FormInputException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
     	refresh();
     }
     

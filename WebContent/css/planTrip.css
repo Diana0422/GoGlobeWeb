@@ -10,29 +10,6 @@
     src: url(../Html/fonts/Barlow/Barlow-Medium.ttf);
 }
 
-/* body{
-    font-family: BarlowMed;
-}
-
-#body .nav-link {
-    color: white;
-}
-
-#body .nav-item{
-    display: flex;
-    align-items: center;
-  
-}
-
-#navbar{
-    padding: 0 0 0 0;
-}
-
-.navbar-bg{
-    background: coral;
-}
-*/
-
 .btn-colors{
     color: #fff;
     background-color: #bc986a;
@@ -133,6 +110,7 @@
 	box-shadow: 2px 2px 5px #979ca5;		
 	margin-top: 3%;
     display:inline-block;
+    background: white;
 }
 
 .activity-plan{
@@ -141,36 +119,15 @@
     height: 200px;
 }
 
-.activity{
-	
-	display: inline-block;
-	border-radius: 5px;
-	box-shadow: 2px 2px 5px #979ca5;		
-	padding:20px;
-	margin-top: 3%;
-	width: inherit;
-	overflow: scroll;
-	text-align: left;
-	
-}
-
-.description{
-	width: inherit;
-	word-wrap: break-word;
-}
-
-.description p{
-	width: 600px;
-	word-wrap: break-word;
-}
-
-
 .flex-form-row{
 	display: inline-block;
 }
 
 .location-form {
 	margin-top: 30px;
+	background: white;
+	padding:20px;
+	border-radius:10px;
 }
 
 
@@ -242,3 +199,54 @@ html, body{
 .separator::after {
     margin-left: .25em;
 }
+
+/* SUGGESTION LIST */
+
+.place-suggestions{
+	width: 35%;
+	padding: 10px;
+	height: 700px;
+}
+
+.suggestion-card {
+    width: 100%;
+    margin: 0 auto;
+    height: fit-content;
+    border-radius: 20px;
+    background-color: white;
+    display: flex;
+    padding: 10px;
+    margin-bottom: 10px;
+}
+
+.ic-container{
+    width: 20%;
+    justify-content: center;
+    align-items: center;
+}
+
+.suggestion-icon{
+    margin:0 auto;
+    margin-top:50%
+}
+
+.suggestion-info{
+    display: flex ;
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

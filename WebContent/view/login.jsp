@@ -1,7 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 
 <!-- Dichiarazione e istanziazione di un loginBean -->
-<!-- class="NomePackage.Nomeclasse -->
 <!--  id è il nome della variabile che andiamo ad istanziare -->
 
 <jsp:useBean id="loginBean" scope="request" class="logic.bean.LoginBean"/>
@@ -15,6 +14,7 @@
 	System.out.println(sessionBean.getSurname());
 %>
 
+<!DOCTYPE html>
 <html lang="en">
 <head>
 	<meta charset="UTF-8">
@@ -32,7 +32,7 @@
 		<!-- navigation bar -->
     <nav class="navbar navbar-expand-sm navbar-light bg-light sticky-top">
         <div class="app">
-            <img id="logo-img" src="../res/images/icons8-around-the-globe-50.png">
+            <img id="logo-img" src="../res/images/icons8-around-the-globe-50.png" alt="">
             <a href="#" id="logo" class="navbar-brand">GoGlobe</a>
         </div>
         <!--toggler for shorter screens -->

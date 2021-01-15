@@ -2,6 +2,7 @@
 
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.Separator?>
 <?import javafx.scene.control.TextArea?>
@@ -11,7 +12,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="700.0" prefWidth="1300.0" style="-fx-background-color: white;" stylesheets="@css/application.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="logic.view.PlanTripGraphic">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="703.0" prefWidth="1298.0" style="-fx-background-color: white;" stylesheets="@css/application.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="logic.view.PlanTripGraphic">
    <children>
       <AnchorPane layoutX="212.0" layoutY="-2.0" prefHeight="663.0" prefWidth="1125.0" style="-fx-background-color: white;" AnchorPane.bottomAnchor="2.0" AnchorPane.leftAnchor="211.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
@@ -45,36 +46,36 @@
                   <Font size="27.0" />
                </font>
             </Text>
-            <AnchorPane id="form" fx:id="apActivityForm" layoutX="8.0" layoutY="132.0" prefHeight="318.0" prefWidth="537.0" style="-fx-border-color: gray; -fx-border-radius: 20px;" stylesheets="@css/application.css">
+            <AnchorPane id="form" fx:id="apActivityForm" layoutX="11.0" layoutY="121.0" prefHeight="318.0" prefWidth="537.0" style="-fx-border-color: gray; -fx-border-radius: 20px;" stylesheets="@css/application.css">
                <children>
-                  <Text layoutX="25.0" layoutY="33.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Title:">
+                  <Text layoutX="23.0" layoutY="34.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Title:">
                      <font>
                         <Font size="18.0" />
                      </font>
                   </Text>
-                  <Text layoutX="22.0" layoutY="66.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Time:">
+                  <Text layoutX="20.0" layoutY="68.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Time:">
                      <font>
                         <Font size="18.0" />
                      </font>
                   </Text>
-                  <Text layoutX="18.0" layoutY="142.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Description:">
+                  <Text layoutX="17.0" layoutY="148.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Description:">
                      <font>
                         <Font size="18.0" />
                      </font>
                   </Text>
-                  <TextField fx:id="tfActivityTitle" layoutX="74.0" layoutY="13.0" AnchorPane.leftAnchor="73.0" />
-                  <TextField fx:id="tfActivityTime" layoutX="73.0" layoutY="46.0" AnchorPane.leftAnchor="73.0" />
-                  <TextArea fx:id="taActivityDescription" layoutX="20.0" layoutY="148.0" prefHeight="95.0" prefWidth="476.0" />
-                  <Button id="btn" fx:id="btnAddActivity" layoutX="20.0" layoutY="252.0" mnemonicParsing="false" onAction="#addActivity" prefHeight="41.0" prefWidth="476.0" text="Add activity">
+                  <TextField fx:id="tfActivityTitle" layoutX="71.0" layoutY="14.0" AnchorPane.leftAnchor="71.0" />
+                  <TextField fx:id="tfActivityTime" layoutX="72.0" layoutY="48.0" AnchorPane.leftAnchor="72.0" />
+                  <TextArea fx:id="taActivityDescription" layoutX="22.0" layoutY="157.0" prefHeight="70.0" prefWidth="476.0" />
+                  <Button id="btn" fx:id="btnAddActivity" layoutX="26.0" layoutY="258.0" mnemonicParsing="false" onAction="#addActivity" prefHeight="41.0" prefWidth="476.0" text="Add activity">
                      <font>
                         <Font size="18.0" />
                      </font></Button>
-                  <Text layoutX="22.0" layoutY="103.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Cost:">
+                  <Text layoutX="20.0" layoutY="104.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Cost:">
                      <font>
                         <Font size="18.0" />
                      </font>
                   </Text>
-                  <TextField fx:id="tfActivityCost" layoutX="73.0" layoutY="83.0" />
+                  <TextField fx:id="tfActivityCost" layoutX="71.0" layoutY="84.0" prefHeight="27.0" prefWidth="164.0" />
                </children>
             </AnchorPane>
             <ScrollPane fx:id="spActivities" layoutX="16.0" layoutY="472.0" prefHeight="184.0" prefWidth="530.0" style="-fx-background-color: white;">
@@ -91,13 +92,18 @@
                   </VBox>
                </content>
             </ScrollPane>
+            <Label fx:id="lblErrorMsg" layoutX="34.0" layoutY="96.0" textFill="RED">
+               <font>
+                  <Font size="16.0" />
+               </font>
+            </Label>
          </children>
       </AnchorPane>
       <AnchorPane layoutX="5.0" layoutY="164.0" prefHeight="504.0" prefWidth="211.0" AnchorPane.bottomAnchor="-3.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="164.0">
          <children>
-            <ScrollPane prefHeight="544.0" prefWidth="211.0" AnchorPane.bottomAnchor="1.0" AnchorPane.leftAnchor="0.0">
+            <ScrollPane prefHeight="541.0" prefWidth="211.0" AnchorPane.bottomAnchor="4.0" AnchorPane.leftAnchor="0.0">
                <content>
-                  <VBox fx:id="vbDays" prefHeight="540.0" prefWidth="208.0" spacing="10.0" style="-fx-background-color: white;">
+                  <VBox fx:id="vbDays" prefHeight="536.0" prefWidth="208.0" spacing="10.0" style="-fx-background-color: white;">
                      <padding>
                         <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                      </padding>

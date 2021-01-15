@@ -15,6 +15,7 @@ import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import logic.bean.PlanTripBean;
 import logic.control.PlanTripController;
+import logic.model.exceptions.FormInputException;
 
 //TODO FARE IN MODO CHE LE VIEW PRENDANO IL VALORE DI ESTIMATEDCOST E INCLUDERE IL VALIDATE-COST NEL VALIDATE ACTIVITY
 
@@ -49,6 +50,9 @@ public class ShareTripGraphic implements GraphicController {
 
     @FXML
     private Label lblFilePath;
+    
+    @FXML 
+    private Label lblErrorMsg;
 
     @FXML
     void onCancelClick(ActionEvent event) {
@@ -61,14 +65,19 @@ public class ShareTripGraphic implements GraphicController {
     	planTripBean.setMaxAge(tfMaximumAge.getText());
     	planTripBean.setTripDescription(taTripDescription.getText());
     	planTripBean.setMaxParticipants(tfMaxParticipants.getText());
-
-    	if (planTripBean.validateSharingPref()){ 
-    		PlanTripController.getInstance().setSharingPreferences(planTripBean);
-    		PlanTripController.getInstance().saveTrip(planTripBean.getTripBean(), DesktopSessionContext.getInstance().getSession()); 
-			System.out.println("VIAGGIO SALVATO COME CONDIVISO");
-			
-			DesktopSessionContext.getGuiLoader().loadGUI(null, DesktopSessionContext.getInstance().getSession(), GUIType.HOME);
-    	}
+    	
+    	
+    	try {
+			if (planTripBean.validateSharingPref()){ 
+				PlanTripController.getInstance().setSharingPreferences(planTripBean);
+				PlanTripController.getInstance().saveTrip(planTripBean.getTripBean(), DesktopSessionContext.getInstance().getSession()); 
+				System.out.println("VIAGGIO SALVATO COME CONDIVISO");
+				
+				DesktopSessionContext.getGuiLoader().loadGUI(null, DesktopSessionContext.getInstance().getSession(), GUIType.HOME);
+			}
+		} catch (FormInputException e) {
+			lblErrorMsg.setText(e.getMessage());
+		}
     }
     
     @FXML 

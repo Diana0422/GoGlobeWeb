@@ -2,6 +2,8 @@ package logic.bean;
 
 import java.util.logging.Logger;
 
+import logic.model.exceptions.FormInputException;
+
 public class ActivityBean {
 	
 	private String time;
@@ -14,7 +16,7 @@ public class ActivityBean {
 		//Constructor of a bean must be empty 
 	}
 	
-	public boolean validateActivity() {
+	public boolean validateActivity() throws FormInputException {
 		String infoStr = "TITLE CHECK:" + validateTitle(this.title);
 		Logger.getGlobal().info(infoStr);
 		infoStr = "TIME CHECK:" + validateTime(this.time);
@@ -22,48 +24,72 @@ public class ActivityBean {
 		infoStr = "DESCRIPTION CHECK:" + validateDescription(this.description);
 		Logger.getGlobal().info(infoStr);
 		
-		return (validateTitle(this.title) && validateTime(this.time) && validateDescription(this.description) && validateCost(this.estimatedCost));
+//		return (validateTitle(this.title) && validateTime(this.time) && validateDescription(this.description) && validateCost(this.estimatedCost));
+		validateTitle(this.title);
+		validateTime(this.time);
+		validateDescription(this.description);
+		validateCost(this.estimatedCost);
+		return true;
 	}
 	
-	private boolean validateTitle(String title) {
-		return (!(title == null || title.equals("")  ));
+	private boolean validateTitle(String title) throws FormInputException {
+		if ((title == null || title.equals(""))){
+			throw new FormInputException("Insert an activity title.");
+		}else {
+			return true;
+		}
 		
 	}
 	
-	
-	private boolean validateDescription(String description) {
+	//Check if description is not null
+	private boolean validateDescription(String description) throws FormInputException {
 		
-		return(!(description == null || description.equals("") ));
+//		return(!(description == null || description.equals("") ));
+		if ((description == null || description.equals(""))){
+			throw new FormInputException("Insert a description for the activity.");	
+		}
+		
+		return true;
 	}
 	
-	private boolean validateTime (String time) {
-		if (time == null || time.equals("") || time.length() < 5) return false;
-		
+	//Check if the activity time is inserted according to hh:mm format
+	private boolean validateTime (String time) throws FormInputException {
+		if (time == null || time.equals("") || time.length() != 5) 
+			throw new FormInputException("Insert a valid time (hh:mm) for the activity.");	
 		try {
 			int hour = Integer.parseInt(time.substring(0, 2));
 			int minute = Integer.parseInt(time.substring(3));
-			return (validateHour(hour) && validateMinute(minute));
+				validateHour(hour);
+				validateMinute(minute);			
 		}catch(NumberFormatException e) {
-			return false;
+			throw new FormInputException("Time must follow the format: hh:mm");
 		}
+		
+		return true;
 	}
 		
-	private boolean validateCost(String strCost) {
+	private boolean validateCost(String strCost) throws FormInputException {
 		if (strCost == null || strCost.equals("")) {
-			return false;
+			throw new FormInputException("Insert a cost for the activity.");
 		}
 		try {
 			int cost = Integer.parseInt(strCost);
-			if (cost < 0) return false;			
+			if (cost < 0) 
+				throw new FormInputException("Insert a positive number as the activity cost.");
+
 		}catch(NumberFormatException e) {
-			return false;
+			throw new FormInputException("Insert a valid number as the activity cost.");
 		}
 		return true;
 		
 	}
 	
-	private boolean validateHour(int hour) {
-		return ((hour >= 0) && (hour < 24));
+	private boolean validateHour(int hour) throws FormInputException {
+		
+		if (!((hour >= 0) && (hour < 24))) {
+			throw new FormInputException("Insert a valid number as the activity cost.");
+		}		
+		return true;
 	}
 	
 	private boolean validateMinute(int minute) {

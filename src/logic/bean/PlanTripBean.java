@@ -8,6 +8,8 @@ import java.util.List;
 import java.util.logging.Logger;
 
 import logic.control.PlanTripController;
+import logic.model.exceptions.DateFormatException;
+import logic.model.exceptions.FormInputException;
 
 public class PlanTripBean {
 	
@@ -32,36 +34,32 @@ public class PlanTripBean {
 	}   
 	
 	//Validates all the fields in the share trip view
-	public boolean validateSharingPref() {
+	public boolean validateSharingPref() throws FormInputException {
 		if (this.tripDescription == null || this.tripDescription.equals("")) {
-			this.setErrorMsg("Error on trip description.");
-			return false;
+			throw new FormInputException("Error on trip description.");
 		}
 		
 		if (this.minAge == null || this.minAge.equals("")) {
-			this.setErrorMsg("Error on minimum age.");
-			return false;
+			throw new FormInputException("Error on minimum age.");
 		}
 		
 		if (this.maxAge == null || this.maxAge.equals("")) {
-			this.setErrorMsg("Error on maximum age.");
-			return false;
+			throw new FormInputException("Error on maximum age.");			
 		}
 		
 		if (this.maxParticipants == null || this.maxParticipants.equals("")) {
-			this.setErrorMsg("Insert maximum participants.");
-			return false;
+			throw new FormInputException("Insert maximum participants.");
 		}
-			
+		
 		try {
 			int min = Integer.parseInt(this.minAge);
 			int max = Integer.parseInt(this.maxAge);
 			if (min > max) {
-				this.setErrorMsg("Minimum age must be lesser than maximum age.");
-				return  false;
+				throw new FormInputException("Age input not valid.");
 			}
-		}catch (NumberFormatException e) {
-			return false;
+		}catch (NumberFormatException e){
+			throw new FormInputException("Age input not valid");
+
 		}
 			
 		String logStr = "SHARE FORM INFO: "+"trip description: " + this.tripDescription+" min age: " + this.minAge+" max age: " + this.maxAge;
@@ -71,100 +69,113 @@ public class PlanTripBean {
 	
 	
 	//Validates location string in the Plan trip view
-	public boolean validateLocation() {
-		return (!(this.location == null || this.location.equals("")));
+	public boolean validateLocation() throws FormInputException{
+		if ((this.location == null || this.location.equals(""))) {
+			throw new FormInputException("Insert a valid location");
+		}		
+		return true;
 	}
 
 	//Validates the whole trip 
-	public boolean validateTrip() {
+	public boolean validateTrip(){	
+		//TODO PENSARE AD EXCEPTION PER IL TRIP NON COMPLETATO
 		return this.tripBean.validateTrip();
 	}
 	
 	//Validate all the inputs in the form
-	public boolean validateForm(){
+	public boolean validateForm()throws FormInputException{
 		
 		Boolean res = validateData(this.tripName, this.departureDate, this.returnDate, this.category1, this.category2);
 		if (Boolean.TRUE.equals(res)){
-			return (validateDates(this.departureDate, this.returnDate) && validateCategories(this.category1, this.category2));
+			try {
+				validateDates(this.departureDate, this.returnDate);
+			}catch(DateFormatException e) {
+				throw new FormInputException(e.getMessage());
+			}
+			
+			return validateCategories(this.category1, this.category2);
+
+//			return (validateDates(this.departureDate, this.returnDate) && validateCategories(this.category1, this.category2));
 		}else{
 			return false;
 		}		
 	}
 	
 	//Check if the dates are set correctly
-	private boolean validateDates(String departureDate, String returnDate) {
+	private boolean validateDates(String departureDate, String returnDate) throws FormInputException, DateFormatException {
 			
 		try {
 			Date depDate = new SimpleDateFormat(DATE_FORMAT).parse(departureDate);
 			Date retDate = new SimpleDateFormat(DATE_FORMAT).parse(returnDate);
-//			Date currentDate = new Date();
-			
-			
-			
+//			Date currentDate = new Date();			
 //			if (depDate.before(currentDate)) {
 //				this.setErrorMsg("Departure date must be later than current date");
 //				return false;
 //			}
 			
 			if (retDate.before(depDate)) {
-				this.setErrorMsg("Return date must be later than departure date");
-				return false;
-			}
-				
-		} catch (ParseException e) {
-			this.setErrorMsg("Dates must follow the format " + DATE_FORMAT);
-			return false;
-		}			
+				throw new FormInputException("Return date must be later than departure date");
+			}			
+		} catch (ParseException e) {			
+			throw new DateFormatException(DATE_FORMAT);
+		}	
+		
 		return true;
+
 	}
 	
 	//Check if categories are not equal
-	private boolean validateCategories(String category1, String category2) {
+	private boolean validateCategories(String category1, String category2) throws FormInputException{
 		
 		
 		if (category1.equals(category2)) {
-			this.setErrorMsg("Categories");
-			return false;		
+			throw new FormInputException("Categories can not be of the same type.");	
 		}
+		
+		
 		return true;
 	}
 	
 	//Check if all the inputs have been inserted 
-	private Boolean validateData(String tripName, String departureDate, String returnDate, String category1, String category2) {
+	private Boolean validateData(String tripName, String departureDate, String returnDate, String category1, String category2) throws FormInputException {
 		
 		if (tripName == null || tripName.equals("")) {
-			this.setErrorMsg("Insert trip name");
-			return false;		
+			throw new FormInputException("Insert trip name");
 		}
+		
 		if (departureDate == null || departureDate.equals("")) {
-			this.setErrorMsg("Insert departure date");
-			return false;	
+			throw new FormInputException("Insert Departure date");
 		}
 		if (returnDate == null || returnDate.equals("")) {
-			this.setErrorMsg("Insert return date");
-			return false;	
+			throw new FormInputException("Insert return date");
 		}
-		if (!(validateDateString(departureDate) || validateDateString(returnDate))) {
-			this.setErrorMsg("Date format must follow the format dd/mm/yyyy");
-			return false;		
-		}	
-		if (category1.equals("none") || category2.equals("none")) {
-			this.setErrorMsg("Both categories must be selected");
-			return false;	
+		
+		try {
+//			if (!(validateDateString(departureDate) || validateDateString(returnDate))) {
+			validateDateString(departureDate);
+			validateDateString(returnDate);
+			
+		} catch (DateFormatException e) {
+			throw new FormInputException(e.getMessage());
+		} 
+		if (category1.equals("NONE") || category2.equals("NONE")) {
+			throw new FormInputException("Both categories must be selected");
 		}
 		return true;
 	}
 	
 	//Check if dates match the right format
-	private boolean validateDateString(String date) {
+	private boolean validateDateString(String date) throws DateFormatException {
 		
 		DateFormat format = new SimpleDateFormat(DATE_FORMAT);
 		format.setLenient(false);
-		try {
+		try {	
 			format.parse(date);
+			
 		}catch(ParseException e){
-			return false;	
+			throw new DateFormatException(DATE_FORMAT);
 		}
+		
 		return true;
 	}
 	
