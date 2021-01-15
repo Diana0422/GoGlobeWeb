@@ -28,8 +28,6 @@ public class GUILoader {
 		loadContent(next, currentData); 
 		setPrevState(current);
 		setPrevBundle(forData);
-		System.out.println("NEXT GUI: "+current);
-		System.out.println("NEXT BUNDLE: "+forData);
 		loadNavbar();
 	}
 	
@@ -41,14 +39,11 @@ public class GUILoader {
 		loader = new FXMLLoader();
 		Parent root = null;
 		String ui = null;
-		String logStr;
-		
-		System.out.println("Ripristino: "+getPrevState());
+		String logStr = "Loaded UI: ";
+
 		//Load previous user interface, if exists.
 		if (getPrevState() != null) {
 			GUIType previous = getPrevState();
-			System.out.println("Now next state:"+getPrevState());
-			System.out.println("Now next bundle:"+getPrevBundle());
 			setPrevState(null);
 			loadGUI(null, getPrevBundle(), previous);
 		}
@@ -58,14 +53,14 @@ public class GUILoader {
 				ui = "/logic/view/Main.fxml"; 
 				loader.setLocation(getClass().getResource(ui));
 				root = loadUI(loader);
-				logStr = "Loaded UI: "+ui;
+				logStr += ui;
 				Logger.getGlobal().info(logStr);
 				break;
 			case HOME:
 				ui = "/logic/view/Home.fxml";
 				loader.setLocation(getClass().getResource(ui));
 				root = loadUI(loader);
-				logStr = "Loaded UI: "+ui;
+				logStr += ui;
 				HomeGraphic homeGraphic = loader.getController();
 				homeGraphic.initializeData(bundle, getPrevBundle());
 				Logger.getGlobal().info(logStr);
@@ -73,13 +68,13 @@ public class GUILoader {
 			case JOIN:
 				loader.setLocation(getClass().getResource("/logic/view/JoinTrip.fxml"));
 				root = loadUI(loader);
-				logStr = "Loaded UI: "+ui;
+				logStr += ui;
 				Logger.getGlobal().info(logStr);
 				break;
 			case INFO:
 				loader.setLocation(getClass().getResource("/logic/view/TripInfo.fxml"));
 				root = loadUI(loader);
-				logStr = "Loaded UI: "+ui;
+				logStr += ui;
 				TripInfoGraphic infoGraphic = loader.getController();
 				infoGraphic.initializeData(bundle, getPrevBundle());
 				Logger.getGlobal().info(logStr);
@@ -87,7 +82,7 @@ public class GUILoader {
 			case PREFTRIP:
 				loader.setLocation(getClass().getResource("/logic/view/SelectTripPreferences.fxml"));
 				root = loadUI(loader);
-				logStr = "Loaded UI: "+ui;
+				logStr += ui;
 				SelectTripPreferencesGraphic selGraphic = loader.getController();
 				selGraphic.initializeData(bundle, null);
 				Logger.getGlobal().info(logStr);
@@ -95,7 +90,7 @@ public class GUILoader {
 			case PLAN:
 				loader.setLocation(getClass().getResource("/logic/view/PlanTrip.fxml"));
 				root = loadUI(loader);
-				logStr = "Loaded UI: "+ui;
+				logStr += ui;
 				PlanTripGraphic planGraphic = loader.getController();
 				planGraphic.initializeData(bundle, null);
 				Logger.getGlobal().info(logStr);
@@ -103,7 +98,7 @@ public class GUILoader {
 			case SHARE:
 				loader.setLocation(getClass().getResource("/logic/view/ShareTrip.fxml"));
 				root = loadUI(loader);
-				logStr = "Loaded UI: "+ui;
+				logStr += ui;
 				ShareTripGraphic shareGraphic = loader.getController();
 				shareGraphic.initializeData(bundle, null);
 				Logger.getGlobal().info(logStr);
@@ -111,7 +106,7 @@ public class GUILoader {
 			case REQUESTS:
 				loader.setLocation(getClass().getResource("/logic/view/ManageRequests.fxml"));
 				root = loadUI(loader);
-				logStr = "Loaded UI: "+ui;
+				logStr += ui;
 				ManageRequestGraphic requestGraphic = loader.getController();
 				requestGraphic.initializeData(bundle, null);
 				Logger.getGlobal().info(logStr);
@@ -119,7 +114,7 @@ public class GUILoader {
 			case GAIN:
 				loader.setLocation(getClass().getResource("/logic/view/GainPoints.fxml"));
 				root = loadUI(loader);
-				logStr = "Loaded UI: "+ui;
+				logStr += ui;
 				GainPointsGraphic pointsGraphic = loader.getController();
 				pointsGraphic.initializeData(bundle, null);
 				Logger.getGlobal().info(logStr);
@@ -127,7 +122,7 @@ public class GUILoader {
 			case PROFILE:
 				loader.setLocation(getClass().getResource("/logic/view/Profile.fxml"));
 				root = loadUI(loader);
-				logStr = "Loaded UI: "+ui;
+				logStr += ui;
 				ProfileGraphic profGraphic = loader.getController();
 				profGraphic.initializeData(bundle, getPrevBundle());
 				Logger.getGlobal().info(logStr);
@@ -135,20 +130,20 @@ public class GUILoader {
 			case SETTINGS:
 				loader.setLocation(getClass().getResource("/logic/view/Settings.fxml"));
 				root = loadUI(loader);
-				logStr = "Loaded UI: "+ui;
+				logStr += ui;
 				Logger.getGlobal().info(logStr);
 				break;
 			case LOGIN:
 				loader.setLocation(getClass().getResource("/logic/view/Login.fxml"));
 				root = loadUI(loader);
-				logStr = "Loaded UI: "+ui;
+				logStr += ui;
 				DesktopSessionContext.getInstance().setSession(null);
 				Logger.getGlobal().info(logStr);
 				break;
 			case REGISTER:
 				loader.setLocation(getClass().getResource("/logic/view/Registration.fxml"));
 				root = loadUI(loader);
-				logStr = "Loaded UI: "+ui;
+				logStr += ui;
 				DesktopSessionContext.getInstance().setSession(null);
 				Logger.getGlobal().info(logStr);
 				break;
@@ -174,8 +169,7 @@ public class GUILoader {
     	try {
 			return loader.load();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			Logger.getLogger(DesktopSessionContext.class.getName()).log(Level.SEVERE, null, e);
 			return null;
 		}
     }

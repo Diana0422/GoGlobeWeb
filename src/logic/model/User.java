@@ -37,8 +37,8 @@ public class User implements Serializable {
 		// Set default values for remaining attributes
 		this.points = 0;
 		this.bio ="";
-		this.request = new ArrayList<Request>();
-		this.redeemedPrizes = new ArrayList<Prize>();
+		this.request = new ArrayList<>();
+		this.redeemedPrizes = new ArrayList<>();
 	}
 	
 	public User() {

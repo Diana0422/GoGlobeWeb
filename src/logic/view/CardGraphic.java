@@ -72,8 +72,7 @@ public class CardGraphic implements Initializable {
 	}
 
 	private void setData(TripBean tripBean) {
-//		Image img = new Image(getClass().getResourceAsStream(tripBean.getImgSrc()));
-//    	imgTrip.setImage(img);
+		//TODO image setting
     	
     	setTripBean(tripBean);
     	lblTitle.setText(tripBean.getTitle());

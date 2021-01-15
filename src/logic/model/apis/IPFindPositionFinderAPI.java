@@ -15,8 +15,7 @@ import logic.model.exceptions.APIException;
 
 public class IPFindPositionFinderAPI {
 	
-//	private static final String APIKEY = "534948a4-7cc6-4cd6-b9ed-be250ff572f4";
-	private static final String APIKEY = "";
+	private static final String APIKEY = "534948a4-7cc6-4cd6-b9ed-be250ff572f4";
 
 	public String geolocateIP(String ip) throws APIException {
 		HttpRequest request2 = HttpRequest.newBuilder()

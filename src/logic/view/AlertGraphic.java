@@ -1,6 +1,8 @@
 package logic.view;
 
 import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -34,8 +36,6 @@ public class AlertGraphic {
 		 btnOption2.setText(buttonOption2.toString());
 		 
 		 btnOption2.setOnAction(e -> {
-			 System.out.println("2 Using bundle: "+recBundle);
-			 System.out.println("2 Forwarding bundle: "+forBundle);
 			 alertStage.close();
 			 DesktopSessionContext.getGuiLoader().loadGUIStateful(recBundle, forBundle, buttonOption2, current);
 		 	}
@@ -56,15 +56,13 @@ public class AlertGraphic {
 		 try {
 			Parent root = loader.load();
 			AlertGraphic alert = loader.getController();
-			System.out.println("1 Using bundle: "+recBundle);
-			System.out.println("1 Forwarding bundle: "+forBundle);
 			alert.setData(popup, message, description, current, forwardOption, recBundle, forBundle);
 			Scene scene = new Scene(root, 444,271);
 			popup.setScene(scene);
 			popup.show();
 			
 		} catch (IOException e1) {
-			// TODO Auto-generated catch block
+			Logger.getGlobal().log(Level.WARNING, e1.getMessage());
 			e1.printStackTrace();
 		}
 		 

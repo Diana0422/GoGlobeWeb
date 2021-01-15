@@ -57,11 +57,6 @@ public class GainPointsController {
 				return null;
 			}
 			
-			System.out.println(bean.getOrganizer());
-			System.out.println("Today: "+today);
-			System.out.println("Dep: "+dep);
-			System.out.println("Ret:"+ret);
-			
 			if (today.after(dep) && today.before(ret)) {
 				if (bean.getOrganizer().getEmail().equals(logged.getEmail())) return bean;
 				
