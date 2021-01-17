@@ -88,4 +88,5 @@ public class UserBean {
 	public void setTravRating(double travRating) {
 		this.travRating = travRating;
 	}
+
 }

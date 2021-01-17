@@ -8,6 +8,7 @@ import java.util.List;
 import logic.bean.ActivityBean;
 import logic.bean.DayBean;
 import logic.bean.RequestBean;
+import logic.bean.ReviewBean;
 import logic.bean.TripBean;
 import logic.bean.UserBean;
 import logic.dao.TripDAO;
@@ -15,6 +16,7 @@ import logic.dao.TripDAOFile;
 import logic.model.Activity;
 import logic.model.Day;
 import logic.model.Request;
+import logic.model.Review;
 import logic.model.Trip;
 import logic.model.TripCategory;
 import logic.model.User;
@@ -65,7 +67,6 @@ public class ConversionController {
 		}
 		
 		return activities;
-		
 	}
 	
 	
@@ -104,6 +105,7 @@ public class ConversionController {
 		for (int i=0; i<trips.size(); i++) {
 			Trip t = trips.get(i);
 			TripBean bean = new TripBean();
+			System.out.println("converting trip: "+t.getOrganizer().getReviews());
 			bean.setOrganizer(convertToUserBean(t.getOrganizer()));
 			bean.setParticipants(convertUserList(t.getParticipants()));
 			bean.setDescription(t.getDescription());
@@ -183,11 +185,30 @@ public class ConversionController {
 		bean.setBio(user.getBio());
 		bean.setPoints(user.getPoints());
 		bean.setAge(user.calculateUserAge());
-		System.out.println(user.getStats().getOrganizerRating());
-		System.out.println(user.getStats().getTravelerRating());
+		System.out.println("In conversion to user bean "+user.getReviews());
+		bean.setReviews(convertReviewList(user.getReviews()));
 		bean.setOrgRating(user.getStats().getOrganizerRating());
 		bean.setTravRating(user.getStats().getTravelerRating());
 		return bean;
+	}
+
+	private List<ReviewBean> convertReviewList(List<Review> reviews) {
+		List<ReviewBean> list = new ArrayList<>();
+		
+		for (Review rev: reviews) {
+			ReviewBean bean = new ReviewBean();
+			bean.setReviewerName(rev.getReviewer().getName());
+			bean.setReviewerSurname(rev.getReviewer().getSurname());
+			bean.setTitle(rev.getTitle());
+			bean.setComment(rev.getComment());
+			DateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
+	    	String date = formatter.format(rev.getDate());
+	    	bean.setDate(date);
+	    	bean.setVote(rev.getVote());
+	    	list.add(bean);
+		}
+		
+		return list;
 	}
 
 	public Trip convertToTrip(TripBean tripBean) throws SerializationException {

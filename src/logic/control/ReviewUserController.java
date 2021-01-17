@@ -27,8 +27,9 @@ public class ReviewUserController {
 		return instance;
 	}
 	
-	public boolean postReview(RoleType type, double rating, String comment, User target, String reviewerEmail, Observer o) throws SerializationException {
+	public boolean postReview(RoleType type, double rating, String comment, String title, String reviewerEmail, String targetEmail, Observer o) throws SerializationException {
 		User reviewer = dao.getUser(reviewerEmail);
+		User target = dao.getUser(targetEmail);
 		target.getStats().attach(o);
 		System.out.println(target);
 		System.out.println(reviewer);
@@ -41,6 +42,7 @@ public class ReviewUserController {
 		review.setVote(rating);
 		review.setDate(today);
 		review.setComment(comment);
+		review.setTitle(title);
 		
 		System.out.println("Review POSTED.");
 		return target.addReview(review);

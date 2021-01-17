@@ -1,5 +1,9 @@
 package logic.view;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 import org.controlsfx.control.Rating;
@@ -9,9 +13,9 @@ import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;
 import javafx.geometry.Insets;
 import javafx.scene.control.Button;
-import javafx.scene.control.Label;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.TextArea;
+import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
@@ -19,23 +23,22 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
+import logic.bean.ReviewBean;
 import logic.bean.SessionBean;
 import logic.bean.TripBean;
 import logic.bean.UserBean;
 import logic.control.ProfileController;
 import logic.control.ReviewUserController;
-import logic.dao.UserDAO;
-import logic.dao.UserDAOFile;
 import logic.model.RoleType;
-import logic.model.User;
 import logic.model.UserStats;
 import logic.model.exceptions.LoadGraphicException;
 import logic.model.exceptions.SerializationException;
 import logic.model.interfaces.Observer;
+import logic.model.interfaces.Subject;
 
 public class ProfileGraphic implements GraphicController, Observer {
 
-
+	
 	@FXML
     private VBox vbReviews;
     
@@ -53,6 +56,9 @@ public class ProfileGraphic implements GraphicController, Observer {
 
     @FXML
     private TextArea txtComment;
+    
+    @FXML
+    private TextField txtTitle;
 
     @FXML
     private GridPane upcomingGrid;
@@ -87,19 +93,18 @@ public class ProfileGraphic implements GraphicController, Observer {
     @FXML
     private Button btnBack;
     
-    @FXML
-    private Label lblTRating;
 
     @FXML
-    private Label lblORating;
+    private Rating ratingTra;
+
+    @FXML
+    private Rating ratingOrg;
     
     private Object bundle;
     
+    private UserBean target;
+    
     private Number vote;
-    
-    private UserStats userStats;
-    
-    private User target;
     
     private double obsOrgRating;
     
@@ -114,23 +119,45 @@ public class ProfileGraphic implements GraphicController, Observer {
     @FXML
     void postReview(MouseEvent event) {
     	double d = (double) getVote();
-    	System.out.println("vote: "+d);
-    	System.out.println("comment: "+txtComment.getText());
+    	
+    	Date today = Calendar.getInstance().getTime();
+    	DateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
+    	String date = formatter.format(today);
+    	
+    	ReviewBean bean = new ReviewBean();
+    	bean.setTitle(txtTitle.getText());
+    	bean.setVote(d);
+    	bean.setDate(date);
+    	bean.setComment(txtComment.getText());
+    	bean.setReviewerName(DesktopSessionContext.getInstance().getSession().getName());
+    	bean.setReviewerSurname(DesktopSessionContext.getInstance().getSession().getSurname());
+    	
     	if (rdTraveler.isSelected()) {
     		try {
-				ReviewUserController.getInstance().postReview(RoleType.TRAVELER, d, txtComment.getText(), target, DesktopSessionContext.getInstance().getSession().getEmail(), this);
+    			System.out.println(ReviewUserController.getInstance());
+				ReviewUserController.getInstance().postReview(RoleType.TRAVELER, d, txtComment.getText(), txtTitle.getText(), DesktopSessionContext.getInstance().getSession().getEmail(), target.getEmail(), this);
 			} catch (SerializationException e) {
 				AlertGraphic graphic = new AlertGraphic();
 				graphic.display(GUIType.PROFILE, GUIType.HOME, null, DesktopSessionContext.getInstance().getSession(), "Serialization Error", "Something unexpected occurred loading trips.");
 			}
     	} else {
     		try {
-				ReviewUserController.getInstance().postReview(RoleType.ORGANIZER, d, txtComment.getText(), target, DesktopSessionContext.getInstance().getSession().getEmail(), this);
+    			System.out.println(ReviewUserController.getInstance());
+				ReviewUserController.getInstance().postReview(RoleType.ORGANIZER, d, txtComment.getText(), txtTitle.getText(), DesktopSessionContext.getInstance().getSession().getEmail(), target.getEmail(), this);
 			} catch (SerializationException e) {
 				AlertGraphic graphic = new AlertGraphic();
 				graphic.display(GUIType.PROFILE, GUIType.HOME, null, DesktopSessionContext.getInstance().getSession(), "Serialization Error", "Something unexpected occurred loading trips.");
 			}
     	}
+    	
+    	ReviewItemGraphic graphic = new ReviewItemGraphic();
+		try {
+			AnchorPane anchor = (AnchorPane) graphic.initializeNode(bean);
+			vbReviews.getChildren().add(anchor);
+		} catch (LoadGraphicException e) {
+			AlertGraphic alert = new AlertGraphic();
+			alert.display(GUIType.PROFILE, GUIType.HOME, null, DesktopSessionContext.getInstance().getSession(), "Widget loading error.", "Something unexpected occurred displaying review.");
+		}
     }
 
     /* Beans */
@@ -182,21 +209,33 @@ public class ProfileGraphic implements GraphicController, Observer {
 	}
 	
 	private void displayOrganizerRating() {
-		lblORating.setText(Double.toString(obsOrgRating));
+		ratingOrg.setRating(obsOrgRating);
 		System.out.println("Organizer rating displayed.");
 	}
 	
 	private void displayTravelerRating() {
-		lblTRating.setText(Double.toString(obsTravRating));
+		ratingTra.setRating(obsTravRating);
 		System.out.println("Traveler rating displayed.");
+	}
+	
+	private void displayReviews(List<ReviewBean> list) {
+		ReviewItemGraphic graphic = new ReviewItemGraphic();
+		for (ReviewBean bean: list) {
+			try {
+				AnchorPane anchor = (AnchorPane) graphic.initializeNode(bean);
+				vbReviews.getChildren().add(anchor);
+			} catch (LoadGraphicException e) {
+				AlertGraphic alert = new AlertGraphic();
+				alert.display(GUIType.PROFILE, GUIType.HOME, null, DesktopSessionContext.getInstance().getSession(), "Widget loading error.", "Something unexpected occurred displaying review.");
+			}
+		}
 	}
 
 	/* Initialization method */
 	@Override
 	public void initializeData(Object recBundle, Object forBundle) {
-//		this.target = (UserBean) recBundle;
 		System.out.println(recBundle);
-		UserBean bean = (UserBean) recBundle;
+		this.target = (UserBean) recBundle;
 		this.bundle = forBundle;
 		List<TripBean> myTripBeans = null;
 		List<TripBean> upcomingTripBeans = null;
@@ -228,31 +267,21 @@ public class ProfileGraphic implements GraphicController, Observer {
 			AlertGraphic graphic = new AlertGraphic();
 			graphic.display(GUIType.JOIN, GUIType.HOME, null, DesktopSessionContext.getInstance().getSession(), "Serialization Error", "Something unexpected occurred loading trips.");
 		}
-
-		// Display user name, surname and age
-//		txtNameSurname.setText(target.getName()+" "+target.getSurname());
-//		txtAge.setText(Integer.toString(target.getAge()));
 		
-		txtNameSurname.setText(bean.getName()+" "+bean.getSurname());
-		txtAge.setText(Integer.toString(bean.getAge()));
+		txtNameSurname.setText(target.getName()+" "+target.getSurname());
+		txtAge.setText(Integer.toString(target.getAge()));
 		
-		//TODO BETTER
-		UserDAO dao = new UserDAOFile();
-		try {
-			this.target = dao.getUser(bean.getEmail());
-			userStats = target.getStats();
-			
-			// Display ratings
-			System.out.println(userStats.getOrganizerRating());
-			System.out.println(userStats.getTravelerRating());
-			this.obsOrgRating = userStats.getOrganizerRating();
-			this.obsTravRating = userStats.getTravelerRating();
-			displayOrganizerRating();
-			displayTravelerRating();
-		} catch (SerializationException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		}
+		// Display ratings
+		System.out.println(target.getOrgRating());
+		System.out.println(target.getTravRating());
+		this.obsOrgRating = target.getOrgRating();
+		this.obsTravRating = target.getTravRating();
+		displayOrganizerRating();
+		displayTravelerRating();
+		
+		// Fetch bean reviews and display them
+		System.out.println(target.getReviews());
+		displayReviews(target.getReviews());
 		
 		// Initialize listener on rating control.
 		rating.ratingProperty().addListener(new ChangeListener<Number>() {
@@ -276,12 +305,20 @@ public class ProfileGraphic implements GraphicController, Observer {
 	/* observer method */
 	
 	@Override
-	public void updateValue() {
+	public void updateValue(Subject s) {
 		System.out.println("Updating user profile.");
-		this.obsOrgRating = userStats.getOrganizerRating();
-		this.obsTravRating = userStats.getTravelerRating();
+		this.obsOrgRating = ((UserStats) s).getOrganizerRating();
+		this.obsTravRating = ((UserStats) s).getTravelerRating();
 		displayOrganizerRating();
 		displayTravelerRating();
+	}
+
+	public UserBean getTarget() {
+		return target;
+	}
+
+	public void setTarget(UserBean target) {
+		this.target = target;
 	}
 
 

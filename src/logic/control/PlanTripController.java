@@ -171,6 +171,7 @@ public class PlanTripController {
 		UserDAO userDao = new UserDAOFile();
 		try {
 			trip.setOrganizer(userDao.getUser(organizerBean.getEmail()));
+			System.out.println("trip organizer: "+trip.getOrganizer().getReviews());
 		} catch (SerializationException e) {
 			Logger.getGlobal().log(Level.WARNING, e.getMessage());
 			e.printStackTrace();

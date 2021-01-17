@@ -8,6 +8,7 @@ public class Review implements Serializable{
 	private static final long serialVersionUID = 1L;
 	
 	private double vote;
+	private String title;
 	private String comment;
 	private Date date;
 	private RoleType type;
@@ -51,6 +52,14 @@ public class Review implements Serializable{
 
 	public void setReviewer(User reviewer) {
 		this.reviewer = reviewer;
+	}
+
+	public String getTitle() {
+		return title;
+	}
+
+	public void setTitle(String title) {
+		this.title = title;
 	}
 
 }

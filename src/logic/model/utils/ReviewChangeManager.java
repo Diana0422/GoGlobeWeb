@@ -37,7 +37,7 @@ public class ReviewChangeManager {
 		for (Subject tmp: subjectList) {
 			if (tmp.equals(s)) {
 				Observer o = map.get(tmp);
-				o.updateValue();
+				o.updateValue(s);
 			}
 		}
 	}

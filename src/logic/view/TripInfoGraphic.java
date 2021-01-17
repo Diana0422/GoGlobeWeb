@@ -197,6 +197,7 @@ public class TripInfoGraphic implements GraphicController {
 	private void displayOrganizer(TripBean trip) {
 		UserBean organizer = trip.getOrganizer();
 		System.out.println("organizer:"+trip.getOrganizer());
+		System.out.println("organizer reviews:"+trip.getOrganizer().getReviews());
 		UserItemGraphic graphic = new UserItemGraphic();
 		try {
 			AnchorPane anchor = (AnchorPane) graphic.initializeNode(organizer, trip);

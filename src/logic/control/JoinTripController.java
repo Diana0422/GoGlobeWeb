@@ -44,6 +44,7 @@ public class JoinTripController {
 		
 		/* Convert List<Trip> into List<TripBean> */
 		List<TripBean> list = ConversionController.getInstance().convertTripList(filteredTrips);
+
 		
 		logStr = "Trip Beans: "+list;
 		Logger.getGlobal().info(logStr);
