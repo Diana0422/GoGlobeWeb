@@ -36,13 +36,14 @@ public class UserItemGraphic implements GraphicController{
 		
 	}
 	
-	public Node initilizeNode(UserBean user, TripBean trip) throws LoadGraphicException {
+	public Node initializeNode(UserBean user, TripBean trip) throws LoadGraphicException {
 		FXMLLoader loader = new FXMLLoader();
 		loader.setLocation(getClass().getResource("/logic/view/UserItem.fxml"));
 		AnchorPane anchor;
 		try {
 			anchor = loader.load();
-			this.initializeData(user, trip);
+			UserItemGraphic graphic = loader.getController();
+			graphic.initializeData(user, trip);
 			return anchor;
 		} catch (IOException e) {
 			throw new LoadGraphicException(e.getMessage(), e);

@@ -51,7 +51,16 @@ public class UserDAOFile implements UserDAO{
 		List<User> users = getAllUsers();
 				
 		for (User user : users) {
-			if (user.getEmail().equals(email)) return user;
+			if (user.getEmail().equals(email)) {
+				System.out.println("Got USER:");
+				System.out.println("name: "+user.getName());
+				System.out.println("surname: "+user.getSurname());
+				System.out.println("points:"+user.getPoints());
+				System.out.println("birthday:"+user.getBirthday());
+				System.out.println("reviews: "+user.getReviews());
+				System.out.println("stats: "+user.getStats().getOrganizerRating()+" "+user.getStats().getTravelerRating());
+				return user;
+			}
 		}
 		return null;
 	}
@@ -69,12 +78,19 @@ public class UserDAOFile implements UserDAO{
 				tmp.setSurname(newUser.getSurname());
 				tmp.setPoints(newUser.getPoints());
 				tmp.setBirthday(newUser.getBirthday());
-				tmp.setRedeemedPrizes(newUser.getRedeemedPrizes());
+				tmp.setReviews(newUser.getReviews());
+				tmp.setStats(newUser.getStats());
+				System.out.println("Updated USER:");
+				System.out.println("name: "+tmp.getName());
+				System.out.println("surname: "+tmp.getSurname());
+				System.out.println("points:"+tmp.getPoints());
+				System.out.println("birthday:"+tmp.getBirthday());
+				System.out.println("reviews: "+tmp.getReviews());
+				System.out.println("stats: "+tmp.getStats().getOrganizerRating()+" "+tmp.getStats().getTravelerRating());
 				Logger.getGlobal().info("Add update profile picture.");
 				break;
 			}
 		}
-				
 		try (ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream(pc.getBackendFile(ModelClassType.USER)))) {
 			Logger.getGlobal().info("Serializing instance of USER \n");
 			UserSerialObject o = new UserSerialObject(users);
@@ -85,7 +101,6 @@ public class UserDAOFile implements UserDAO{
 		} catch (IOException e) {
 			throw new SerializationException(e.getCause(), "Error opening the output stream to the specified file.");
 		}
-		
 	}
 	
 

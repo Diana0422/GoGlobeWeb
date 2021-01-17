@@ -7,12 +7,14 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
+import logic.dao.UserDAO;
+import logic.dao.UserDAOFile;
+import logic.model.exceptions.SerializationException;
+
+
 
 public class User implements Serializable {
 	
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 1L;
 	private String name;
 	private String surname;
@@ -22,7 +24,8 @@ public class User implements Serializable {
 	private int points;
 	private String bio;
 	private List<Request> request;
-	private List<Prize> redeemedPrizes;
+	private List<Review> reviews;
+	private UserStats stats;
 	private Map<TripCategory, String> attitude;
 	
 	
@@ -38,7 +41,8 @@ public class User implements Serializable {
 		this.points = 0;
 		this.bio ="";
 		this.request = new ArrayList<>();
-		this.redeemedPrizes = new ArrayList<>();
+		this.reviews = new ArrayList<>();
+		this.stats = new UserStats();
 	}
 	
 	public User() {
@@ -53,7 +57,55 @@ public class User implements Serializable {
 		int birth = c.get(Calendar.YEAR);
 		return today-birth;
 	}
+	
+	public void addPoints(int i) {
+		setPoints(getPoints()+i);
+	}
 
+	public boolean addReview(Review rev) {
+		reviews.add(rev);
+		System.out.println("Added review to user:"+this);
+		calculateAverageRating(rev.getType());
+		UserDAO dao = new UserDAOFile();
+		try {
+			dao.updateUser(this, email);
+		} catch (SerializationException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return false;
+		
+	}
+	
+	private void calculateAverageRating(RoleType role) {
+		float sum = 0;
+		float avg = 0;
+		int count = 0;
+		
+		for (Review review: this.reviews) {
+			if (review.getType() == role){
+				sum += review.getVote();
+				count++;
+			}
+		}
+		
+		if (count != 0) {
+			avg = sum/count;
+		}
+		
+		if (role == RoleType.ORGANIZER) {
+			System.out.println("Setting average organizer rating:"+avg);
+			stats.setOrganizerRating(avg);
+			System.out.println(stats.getOrganizerRating());
+		} else {
+			System.out.println("Setting average traveler rating:"+avg);
+			stats.setTravelerRating(avg);
+			System.out.println(stats.getTravelerRating());
+		}
+	}
+ 	
+	/* getters and setters */
+	
 	public String getName() {
 		return name;
 	}
@@ -94,14 +146,6 @@ public class User implements Serializable {
 		this.request = request;
 	}
 
-	public List<Prize> getRedeemedPrizes() {
-		return redeemedPrizes;
-	}
-
-	public void setRedeemedPrizes(List<Prize> redeemedPrizes) {
-		this.redeemedPrizes = redeemedPrizes;
-	}
-
 	public Map<TripCategory, String> getAttitude() {
 		return attitude;
 	}
@@ -130,7 +174,19 @@ public class User implements Serializable {
 		this.birthday = birthday;
 	}
 
-	public void addPoints(int i) {
-		setPoints(getPoints()+i);
+	public List<Review> getReviews() {
+		return reviews;
+	}
+
+	public void setReviews(List<Review> reviews) {
+		this.reviews = reviews;
+	}
+
+	public UserStats getStats() {
+		return stats;
+	}
+
+	public void setStats(UserStats stats) {
+		this.stats = stats;
 	}
 }

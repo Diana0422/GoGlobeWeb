@@ -196,9 +196,10 @@ public class TripInfoGraphic implements GraphicController {
 	
 	private void displayOrganizer(TripBean trip) {
 		UserBean organizer = trip.getOrganizer();
+		System.out.println("organizer:"+trip.getOrganizer());
 		UserItemGraphic graphic = new UserItemGraphic();
 		try {
-			AnchorPane anchor = (AnchorPane) graphic.initilizeNode(organizer, trip);
+			AnchorPane anchor = (AnchorPane) graphic.initializeNode(organizer, trip);
 			boxOrganizer.getChildren().add(anchor);
 		} catch (LoadGraphicException e) {
 			AlertGraphic alert = new AlertGraphic();
@@ -208,7 +209,7 @@ public class TripInfoGraphic implements GraphicController {
 	
 	private void initializeParticipants(TripBean bean) {
 		List<UserBean> participants = bean.getParticipants();
-		
+		System.out.println("participants:"+participants);
 		if (participants != null) {
 			for (UserBean user: participants) {
 				displayParticipant(user, bean);
@@ -220,7 +221,7 @@ public class TripInfoGraphic implements GraphicController {
 		UserItemGraphic graphic = new UserItemGraphic();
 		AnchorPane anchor;
 		try {
-			anchor = (AnchorPane) graphic.initilizeNode(user, trip);
+			anchor = (AnchorPane) graphic.initializeNode(user, trip);
 			boxTravelers.getChildren().add(anchor);
 		} catch (LoadGraphicException e) {
 			AlertGraphic alert = new AlertGraphic();
@@ -232,6 +233,7 @@ public class TripInfoGraphic implements GraphicController {
 	public void initializeData(Object recBundle, Object forBundle) {
 		TripBean bean = (TripBean) recBundle;
 		setTripBean(bean);
+		System.out.println(getTripBean());
 		initializeParticipants(getTripBean());
 		displayOrganizer(getTripBean());
 		initializeTripData();

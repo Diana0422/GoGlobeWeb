@@ -3,18 +3,22 @@
 <?import java.net.URL?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.RadioButton?>
 <?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.Separator?>
 <?import javafx.scene.control.Tab?>
 <?import javafx.scene.control.TabPane?>
+<?import javafx.scene.control.TextArea?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
+<?import org.controlsfx.control.Rating?>
 
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="logic.view.ProfileGraphic">
    <children>
@@ -39,11 +43,31 @@
                         </Tab>
                         <Tab text="Reviews">
                            <content>
-                              <ScrollPane prefHeight="200.0" prefWidth="200.0">
-                                 <content>
-                                    <VBox fx:id="vbReviews" prefHeight="422.0" prefWidth="754.0" />
-                                 </content>
-                              </ScrollPane>
+                              <BorderPane prefHeight="200.0" prefWidth="200.0">
+                                 <center>
+                                    <ScrollPane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+                                       <content>
+                                          <VBox fx:id="vbReviews" prefHeight="422.0" prefWidth="754.0" />
+                                       </content>
+                                    </ScrollPane>
+                                 </center>
+                                 <top>
+                                    <AnchorPane prefHeight="226.0" prefWidth="1066.0" BorderPane.alignment="CENTER">
+                                       <children>
+                                          <Label layoutX="31.0" layoutY="14.0" prefHeight="42.0" prefWidth="324.0" text="Post a review:">
+                                             <font>
+                                                <Font name="System Bold" size="24.0" />
+                                             </font>
+                                          </Label>
+                                          <RadioButton fx:id="rdTraveler" layoutX="31.0" layoutY="66.0" mnemonicParsing="false" text="As traveler" />
+                                          <RadioButton fx:id="rdOrganizer" layoutX="31.0" layoutY="92.0" mnemonicParsing="false" text="As organizer" />
+                                          <Rating fx:id="rating" layoutX="31.0" layoutY="124.0" />
+                                          <Button fx:id="btnPost" layoutX="31.0" layoutY="176.0" mnemonicParsing="false" onMouseClicked="#postReview" prefHeight="32.0" prefWidth="72.0" text="Post" />
+                                          <TextArea fx:id="txtComment" layoutX="255.0" layoutY="13.0" prefHeight="200.0" prefWidth="789.0" promptText="Add a comment..." />
+                                       </children>
+                                    </AnchorPane>
+                                 </top>
+                              </BorderPane>
                            </content>
                         </Tab>
                         <Tab text="Upcoming Trips">
@@ -142,6 +166,8 @@
                                     <Font name="System Bold Italic" size="18.0" />
                                  </font>
                               </Text>
+                              <Label fx:id="lblTRating" layoutX="15.0" layoutY="218.0" prefHeight="32.0" prefWidth="106.0" />
+                              <Label fx:id="lblORating" layoutX="15.0" layoutY="284.0" prefHeight="32.0" prefWidth="106.0" />
                            </children>
                         </AnchorPane>
                      </content>

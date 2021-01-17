@@ -140,13 +140,7 @@ public class ConversionController {
 		List<UserBean> beans = new ArrayList<>();
 		
 		for (User user: users) {
-			UserBean bean = new UserBean();
-			bean.setEmail(user.getEmail());
-			bean.setName(user.getName());
-			bean.setSurname(user.getSurname());
-			bean.setAge(user.calculateUserAge());
-			bean.setBio(user.getBio());
-			bean.setPoints(user.getPoints());
+			UserBean bean = convertToUserBean(user);
 			beans.add(bean);
 		}
 		
@@ -189,6 +183,10 @@ public class ConversionController {
 		bean.setBio(user.getBio());
 		bean.setPoints(user.getPoints());
 		bean.setAge(user.calculateUserAge());
+		System.out.println(user.getStats().getOrganizerRating());
+		System.out.println(user.getStats().getTravelerRating());
+		bean.setOrgRating(user.getStats().getOrganizerRating());
+		bean.setTravRating(user.getStats().getTravelerRating());
 		return bean;
 	}
 

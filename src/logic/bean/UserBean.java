@@ -9,6 +9,8 @@ public class UserBean {
 	private int age;
 	private int points;
 	private String bio;
+	private double orgRating;
+	private double travRating;
 	private List<ReviewBean> reviews;
 	
 	public UserBean() {
@@ -69,5 +71,21 @@ public class UserBean {
 
 	public void setReviews(List<ReviewBean> reviews) {
 		this.reviews = reviews;
+	}
+
+	public double getOrgRating() {
+		return orgRating;
+	}
+
+	public void setOrgRating(double orgRating) {
+		this.orgRating = orgRating;
+	}
+
+	public double getTravRating() {
+		return travRating;
+	}
+
+	public void setTravRating(double travRating) {
+		this.travRating = travRating;
 	}
 }
