@@ -4,7 +4,7 @@
 <!-- declaration of a join trip bean -->
 <jsp:useBean id="joinTripBean" scope="session" class="logic.bean.JoinTripBean"/>
 <jsp:useBean id="sessionBean" scope="session" class="logic.bean.SessionBean"/>
-<jsp:useBean id="profileBean" scope="request" class="logic.bean.ProfileBean"/>
+<jsp:useBean id="profileBean" scope="session" class="logic.bean.ProfileBean"/>
 
 <%@page import="java.util.List"%>      <%--Importing all the dependent classes--%> 
 <%@page import="logic.bean.DayBean"%>

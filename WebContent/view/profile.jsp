@@ -1,7 +1,19 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
     
-<jsp:useBean id="profileBean" scope="request" class="logic.bean.ProfileBean"/>
+<jsp:useBean id="profileBean" scope="session" class="logic.bean.ProfileBean"/>
+<jsp:useBean id="userBean" scope="session" class="logic.bean.UserBean"/>
+<jsp:useBean id="sessionBean" scope="session" class="logic.bean.SessionBean"/>
+
+<%@page import="logic.bean.ReviewBean"%>
+<%@page import="logic.control.ReviewUserController"%>
+
+<jsp:setProperty name="profileBean" property="comment"/>
+<jsp:setProperty name="profileBean" property="title"/>
+
+<%
+	userBean = profileBean.getUser();
+%>
 
 <!DOCTYPE html>
 <html>
@@ -16,6 +28,7 @@
     <link rel="stylesheet" href="../css/review.css">
     <link rel="stylesheet" href="../css/style.css">
     <link rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.min.js"></script>
@@ -98,6 +111,44 @@
                             </li>
                         </ul>
                     </div>
+                    
+                    <div class="organizerRating">
+                    	<h4>Organizer Rating:</h4>
+                    	<%
+                    		int count = 5;
+                    		for (double d=0; d<profileBean.getUser().getOrgRating(); d++) {
+                    			count--;
+                    			%>
+                    			<span class="fa fa-star checked"></span>
+                    			<% 
+                    		}
+                    		
+                    		for (int i=0; i<count; i++) {
+                    			%>
+                    			<span class="fa fa-star"></span>
+                    			<%
+                    		}
+                    	%>
+                    </div>
+                    
+                    <div class="travelerRating">
+                    	<h4>Traveler Rating:</h4>
+                    	<%
+                    		int count2 = 5;
+                    		for (double d=0; d<profileBean.getUser().getTravRating(); d++) {
+                    			count2--;
+                    			%>
+                    			<span class="fa fa-star checked"></span>
+                    			<% 
+                    		}
+                    		
+                    		for (int i=0; i<count2; i++) {
+                    			%>
+                    			<span class="fa fa-star"></span>
+                    			<%
+                    		}
+                    	%>
+                    </div>
 
                     <form method="POST" action="profile.jsp">
                         <button type="submit" name="change-btn" class="btn btn-light">
@@ -142,21 +193,22 @@
                         <!-- review form-->
                         <div class="review-form card">
                             <h3>Post a review</h3>
-                            <form action="postReview.jsp" method="POST">
+                            <form action="profile.jsp" method="POST">
             
                                 <div class="post-card">
-                                    <!-- type of review input-->
-                                    <div class="form-check">
-                                        <input class="form-check-input" type="radio" name="type-radio" id="traveler" value="traveler" checked>
-                                        <label class="form-check-label" for="traveler">As traveler</label>
-                                    </div>
-                                    <div class="form-check">
-                                        <input class="form-check-input" type="radio" name="type-radio" id="organizer" value="organizer">
-                                        <label class="form-check-label" for="organizer">As organizer</label>
-                                    </div>
+                                    <div class="review-part1">
+                                    	<!-- type of review input-->
+                                    	<div class="form-check">
+                                        	<input class="form-check-input" type="radio" name="type-radio" id="traveler" value="TRAVELER" checked>
+                                        	<label class="form-check-label" for="traveler">As traveler</label>
+                                    	</div>
+                                    	<div class="form-check">
+                                        	<input class="form-check-input" type="radio" name="type-radio" id="organizer" value="ORGANIZER">
+                                        	<label class="form-check-label" for="organizer">As organizer</label>
+                                    	</div>
                 
-                                    <!-- star rating input -->
-                                    <div class="stars">
+                                    	<!-- star rating input -->
+                                    	<div class="stars">
                                             <input class="star star-5" id="star-5" type="radio" name="star" value="5"/>
                                             <label class="star star-5" for="star-5"></label>
                                             <input class="star star-4" id="star-4" type="radio" name="star" value="4"/>
@@ -167,43 +219,77 @@
                                             <label class="star star-2" for="star-2"></label>
                                             <input class="star star-1" id="star-1" type="radio" name="star" value="1"/>
                                             <label class="star star-1" for="star-1"></label>
+                                    	</div>
                                     </div>
                 
-                                    <!-- text area for comment-->
-                                    <div class="input-group">
-                                        <div class="input-group-prepend">
-                                            <span class="input-group-text">Comment</span>
-                                        </div>
-                                        <textarea class="form-control" aria-label="Comment"></textarea>
+                                    <div class="review-part2">
+                                    	<!-- input for review title -->
+                                    	<input name="title" type="text" class="form-control" id="reviewTitle" placeholder="Add a title for the review...">
+                                    
+                                    	<textarea name="comment" class="form-control" id="reviewComment" placeholder="Add a comment..."></textarea>     
                                     </div>
                                 </div>
                                 
                                 <button type="submit" class="btn btn-primary" name="reviewbtn">Post</button>
+                                
+                                <%
+                                	if (request.getParameter("reviewbtn") != null) {
+                                		profileBean.setVote(Double.parseDouble(request.getParameter("star")));
+                                		// Date
+                                		
+                                		ReviewBean review = new ReviewBean();
+                                		review.setTitle(profileBean.getTitle());
+                                		review.setComment(profileBean.getComment());
+                                		review.setDate(profileBean.getDate());
+                                		review.setReviewerName(sessionBean.getName());
+                                		review.setReviewerSurname(sessionBean.getSurname());
+                                		review.setVote(profileBean.getVote());
+                                		profileBean.getUser().getReviews().add(review);
+                           
+                                		ReviewUserController.getInstance().postReview(request.getParameter("type-radio"), profileBean.getVote(), profileBean.getComment(), profileBean.getTitle(), sessionBean.getEmail(), userBean.getEmail(), null);
+                                		
+                                	}
+                                
+                                %>
                             </form>
                         </div>
 
                         <!-- review list-->
                         <div class="reviews scrollable">
 
-                            <!--SINGLE REVIEW CARD (repeatable)-->
-                            <div class="review card">
-                                <h4 id="user">Pippo Baudo</h4>
-                                <div class="stars">
-                                    <label class="star star-5"></label>
-                                    <label class="star star-4"></label>
-                                    <label class="star star-3"></label>
-                                    <label class="star star-2"></label>
-                                    <label class="star star-1"></label>
-                                </div>
-                                <div class="review-text">
-                                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc volutpat eget eros quis dignissim. Vivamus condimentum vulputate eros, vitae congue sapien dapibus eget. Suspendisse potenti. Donec eget sodales nisl. Praesent vel accumsan urna. Fusce tincidunt ut orci eu aliquet. 
-                                    Donec quis orci erat. Vestibulum ullamcorper mattis ante, sit amet lobortis lectus ornare et.
-                                    Pellentesque id nisi non lacus finibus sagittis eu eget enim. Praesent tellus velit, molestie vitae nunc a, pulvinar iaculis urna. Ut tempor porttitor metus, quis gravida urna cursus vel. Donec eleifend varius ultrices. 
-                                    Aenean bibendum consequat nisl in posuere. Aenean facilisis mauris a bibendum dapibus. 
-                                    In eget turpis ornare mauris bibendum pulvinar ut at augue. Nam volutpat enim at turpis fermentum lobortis sit amet eget nisl.</p>
-                                </div>
-                            </div>
-
+                            <%
+                            	for (ReviewBean bean: profileBean.getUser().getReviews()) {
+                            		%>
+                            		<!--SINGLE REVIEW CARD (repeatable)-->
+                            		<div class="review card">
+                                		<h4 id="user"><%= bean.getReviewerName()+" "+bean.getReviewerSurname() %></h4>
+                               			<div class="stars">
+                                   			<%
+                    							int max = 5;
+                    							for (double d=0; d<bean.getVote(); d++) {
+                    								max--;
+                    						%>
+                    							<span class="fa fa-star checked"></span>
+                    						<% 
+                    							}
+                    		
+                    							for (int i=0; i<max; i++) {
+                    							%>
+                    								<span class="fa fa-star"></span>
+                    							<%
+                    							}
+                    						%>
+                                		</div>
+                                		<div class="review-text">
+                                    		<p><%= bean.getComment() %></p>
+                                		</div>
+                            		</div>
+                            		
+                            		
+                            		<% 
+                            	}
+                            
+                            %>
 
                         </div>
 

@@ -51,12 +51,22 @@ public class ManageRequestGraphic implements GraphicController {
 	private void displayRequests(RequestType type, RequestBean bean) {
 		AnchorPane anchor;
 		RequestItemGraphic graphic = new RequestItemGraphic();
-		try {
-			anchor = (AnchorPane) graphic.initializeNode(bean, type);
-			sentResults.getChildren().add(anchor);
-		} catch (LoadGraphicException e) {
-			AlertGraphic alert = new AlertGraphic();
-			alert.display(GUIType.REQUESTS, GUIType.HOME, null, DesktopSessionContext.getInstance().getSession(), "Widget loading error.", "Something unexpected occurred loading the requests.");
+		if (type == RequestType.INCOMING) {
+			try {
+				anchor = (AnchorPane) graphic.initializeNode(bean, type);
+				incResults.getChildren().add(anchor);
+			} catch (LoadGraphicException e) {
+				AlertGraphic alert = new AlertGraphic();
+				alert.display(GUIType.REQUESTS, GUIType.HOME, null, DesktopSessionContext.getInstance().getSession(), "Widget loading error.", "Something unexpected occurred loading the requests.");
+			}
+		} else {
+			try {
+				anchor = (AnchorPane) graphic.initializeNode(bean, type);
+				sentResults.getChildren().add(anchor);
+			} catch (LoadGraphicException e) {
+				AlertGraphic alert = new AlertGraphic();
+				alert.display(GUIType.REQUESTS, GUIType.HOME, null, DesktopSessionContext.getInstance().getSession(), "Widget loading error.", "Something unexpected occurred loading the requests.");
+			}
 		}
 	}
 }

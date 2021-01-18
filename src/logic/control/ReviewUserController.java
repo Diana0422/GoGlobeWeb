@@ -27,10 +27,12 @@ public class ReviewUserController {
 		return instance;
 	}
 	
-	public boolean postReview(RoleType type, double rating, String comment, String title, String reviewerEmail, String targetEmail, Observer o) throws SerializationException {
+	public boolean postReview(String type, double rating, String comment, String title, String reviewerEmail, String targetEmail, Observer o) throws SerializationException {
 		User reviewer = dao.getUser(reviewerEmail);
 		User target = dao.getUser(targetEmail);
-		target.getStats().attach(o);
+		if (o != null) {
+			target.getStats().attach(o);
+		}
 		System.out.println(target);
 		System.out.println(reviewer);
 		
@@ -38,7 +40,11 @@ public class ReviewUserController {
 		
 		Review review = new Review();
 		review.setReviewer(reviewer);
-		review.setType(type);
+		if (type.equalsIgnoreCase("traveler")) {
+			review.setType(RoleType.TRAVELER);
+		}else {
+			review.setType(RoleType.ORGANIZER);
+		}
 		review.setVote(rating);
 		review.setDate(today);
 		review.setComment(comment);

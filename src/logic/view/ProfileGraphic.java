@@ -29,7 +29,6 @@ import logic.bean.TripBean;
 import logic.bean.UserBean;
 import logic.control.ProfileController;
 import logic.control.ReviewUserController;
-import logic.model.RoleType;
 import logic.model.UserStats;
 import logic.model.exceptions.LoadGraphicException;
 import logic.model.exceptions.SerializationException;
@@ -135,7 +134,7 @@ public class ProfileGraphic implements GraphicController, Observer {
     	if (rdTraveler.isSelected()) {
     		try {
     			System.out.println(ReviewUserController.getInstance());
-				ReviewUserController.getInstance().postReview(RoleType.TRAVELER, d, txtComment.getText(), txtTitle.getText(), DesktopSessionContext.getInstance().getSession().getEmail(), target.getEmail(), this);
+				ReviewUserController.getInstance().postReview("TRAVELER", d, txtComment.getText(), txtTitle.getText(), DesktopSessionContext.getInstance().getSession().getEmail(), target.getEmail(), this);
 			} catch (SerializationException e) {
 				AlertGraphic graphic = new AlertGraphic();
 				graphic.display(GUIType.PROFILE, GUIType.HOME, null, DesktopSessionContext.getInstance().getSession(), "Serialization Error", "Something unexpected occurred loading trips.");
@@ -143,7 +142,7 @@ public class ProfileGraphic implements GraphicController, Observer {
     	} else {
     		try {
     			System.out.println(ReviewUserController.getInstance());
-				ReviewUserController.getInstance().postReview(RoleType.ORGANIZER, d, txtComment.getText(), txtTitle.getText(), DesktopSessionContext.getInstance().getSession().getEmail(), target.getEmail(), this);
+				ReviewUserController.getInstance().postReview("ORGANIZER", d, txtComment.getText(), txtTitle.getText(), DesktopSessionContext.getInstance().getSession().getEmail(), target.getEmail(), this);
 			} catch (SerializationException e) {
 				AlertGraphic graphic = new AlertGraphic();
 				graphic.display(GUIType.PROFILE, GUIType.HOME, null, DesktopSessionContext.getInstance().getSession(), "Serialization Error", "Something unexpected occurred loading trips.");
