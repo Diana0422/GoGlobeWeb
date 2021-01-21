@@ -7,6 +7,7 @@
 <%@page import="java.util.List"%>      <%--Importing all the dependent classes--%>
 <%@page import="java.util.Iterator"%> 
 <%@page import="logic.bean.TripBean"%>
+<%@page import="logic.control.JoinTripController"%>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -96,7 +97,9 @@
         	    	<!-- map class attributes to values of the form -->
 					<jsp:setProperty name="joinTripBean" property="searchVal"/>
 			<%
-        			if(joinTripBean.searchTripsByValue()) {
+					System.out.println(joinTripBean.getSearchVal());
+					joinTripBean.setObjects(JoinTripController.getInstance().searchTrips(joinTripBean.getSearchVal()));
+        			if(!joinTripBean.getObjects().isEmpty()) {
         				List<TripBean> trips = joinTripBean.getObjects();
         				System.out.println("jsp: trips = "+trips);
         				if (trips != null) {

@@ -52,5 +52,6 @@
 	<classpathentry kind="lib" path="lib/httpclient/slf4j-api-1.7.25.jar"/>
 	<classpathentry kind="lib" path="lib/httpclient/slf4j-nop-1.7.9.jar"/>
 	<classpathentry kind="lib" path="lib/controlsfx/controlsfx-11.0.3.jar"/>
+	<classpathentry kind="lib" path="WebContent/WEB-INF/lib/mysql-connector-java-8.0.22.jar"/>
 	<classpathentry kind="output" path="build/classes"/>
 </classpath>

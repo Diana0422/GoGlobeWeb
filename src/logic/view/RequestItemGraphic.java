@@ -66,6 +66,10 @@ public class RequestItemGraphic implements Initializable {
     
     @FXML
     public void accept(MouseEvent event) {
+    	System.out.println(getRequest().getReceiverEmail());
+    	System.out.println(getRequest().getSenderEmail());
+    	System.out.println(getRequest().getSenderAge());
+    	System.out.println(getRequest().getTripTitle());
     	ManageRequestController.getInstance().acceptRequest(getRequest());
     	lblStatus.setVisible(true);
     	lblStatus.setText("Accepted");
@@ -94,6 +98,7 @@ public class RequestItemGraphic implements Initializable {
 			node = itemLoader.load();
 			RequestItemGraphic ric = itemLoader.getController();
 			ric.setData(bean, type);
+			System.out.println("Initialized node with request bean:"+bean);
 			return node;
 		} catch (IOException e) {
 			throw new LoadGraphicException(e.getMessage(), e);

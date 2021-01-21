@@ -9,6 +9,8 @@
 <!-- Mappare gli attributi di un oggetto sui campi della form -->
 <jsp:setProperty name="loginBean" property="*"/>
 
+<%@page import="logic.control.LoginController"%>
+
 <%
 	System.out.println(sessionBean.getName());
 	System.out.println(sessionBean.getSurname());
@@ -67,9 +69,11 @@
 <%
 	if (request.getParameter("signin") != null){
 		if (loginBean.validate()){
-			sessionBean.setName(loginBean.getNome());
-			sessionBean.setSurname(loginBean.getCognome());
-			sessionBean.setEmail(loginBean.getUsername());
+			if ((loginBean = LoginController.getInstance().login(loginBean.getUsername(), loginBean.getPassword())) != null) {
+				sessionBean.setName(loginBean.getNome());
+				sessionBean.setSurname(loginBean.getCognome());
+				sessionBean.setEmail(loginBean.getUsername());
+			}
 %>
 	<jsp:forward page="home.jsp"/>
 <%	

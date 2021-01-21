@@ -41,6 +41,7 @@
                </font>
             </Label>
             <PasswordField id="psw_pf" fx:id="pfPassword" layoutX="28.0" layoutY="192.0" />
+            <Label fx:id="lblError" layoutX="130.0" layoutY="49.0" prefHeight="17.0" prefWidth="186.0" text="Label" textFill="#e40f0f" visible="false" />
          </children>
       </AnchorPane>
    </children>

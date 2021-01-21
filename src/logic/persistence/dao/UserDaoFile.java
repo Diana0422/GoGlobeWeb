@@ -1,4 +1,4 @@
-package logic.dao;
+package logic.persistence.dao;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -16,11 +16,11 @@ import logic.model.User;
 import logic.model.exceptions.SerializationException;
 import logic.model.utils.UserSerialObject;
 
-public class UserDAOFile implements UserDAO{
+public class UserDaoFile {
 	
 	private PersistenceController pc = PersistenceController.getInstance();
 
-	@Override
+	
 	public List<User> getAllUsers() throws SerializationException {
 		// Reads a list of trips from the back-end file
 		List<User> empty = new ArrayList<>();
@@ -44,7 +44,6 @@ public class UserDAOFile implements UserDAO{
 	}
 
 	
-	@Override
 	public User getUser(String email) throws SerializationException {
 		// Gets a specific user from back-end file
 		
@@ -66,7 +65,6 @@ public class UserDAOFile implements UserDAO{
 	}
 	
 
-	@Override
 	public boolean updateUser(User newUser, String oldUserEmail) throws SerializationException {
 		// Updates trip information into back-end file
 		
@@ -104,7 +102,6 @@ public class UserDAOFile implements UserDAO{
 	}
 	
 
-	@Override
 	public boolean saveUser(User user) throws SerializationException {
 		// Saves a trip into back-end file
 		List<User> users = getAllUsers();

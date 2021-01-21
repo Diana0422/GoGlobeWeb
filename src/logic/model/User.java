@@ -7,9 +7,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
-import logic.dao.UserDAO;
-import logic.dao.UserDAOFile;
-import logic.model.exceptions.SerializationException;
+import logic.persistence.dao.UserStatsDao;
 
 
 
@@ -46,7 +44,9 @@ public class User implements Serializable {
 	}
 	
 	public User() {
-		// Empty Constructor
+		this.request = new ArrayList<>();
+		this.reviews = new ArrayList<>();
+		this.stats = new UserStats();
 	}
 	
 	public int calculateUserAge() {
@@ -66,13 +66,6 @@ public class User implements Serializable {
 		reviews.add(rev);
 		System.out.println("Added review to user:"+this);
 		calculateAverageRating(rev.getType());
-		UserDAO dao = new UserDAOFile();
-		try {
-			dao.updateUser(this, email);
-		} catch (SerializationException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
 		return false;
 		
 	}
@@ -96,10 +89,12 @@ public class User implements Serializable {
 		if (role == RoleType.ORGANIZER) {
 			System.out.println("Setting average organizer rating:"+avg);
 			stats.setOrganizerRating(avg);
+			UserStatsDao.getInstance().updateStats(this.getEmail(), this.getPoints(), this.getStats().getOrganizerRating(), this.getStats().getTravelerRating());
 			System.out.println(stats.getOrganizerRating());
 		} else {
 			System.out.println("Setting average traveler rating:"+avg);
 			stats.setTravelerRating(avg);
+			UserStatsDao.getInstance().updateStats(this.getEmail(), this.getPoints(), this.getStats().getOrganizerRating(), this.getStats().getTravelerRating());
 			System.out.println(stats.getTravelerRating());
 		}
 	}

@@ -36,7 +36,7 @@ public class UserStats implements Subject, Serializable{
 		return organizerRating;
 	}
 	
-	public void setOrganizerRating(float organizerRating) {
+	public void setOrganizerRating(double organizerRating) {
 		System.out.println("Organizer rating adjourned");
 		this.organizerRating = organizerRating;
 		this.notifyState();
@@ -46,7 +46,7 @@ public class UserStats implements Subject, Serializable{
 		return travelerRating;
 	}
 	
-	public void setTravelerRating(float travelerRating) {
+	public void setTravelerRating(double travelerRating) {
 		System.out.println("Traveler rating adjourned");
 		this.travelerRating = travelerRating;
 		this.notifyState();

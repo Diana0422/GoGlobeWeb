@@ -226,7 +226,7 @@
     			%>
     				<div class="tab-pane" role="tabpanel" id=<%= "day"+i+1 %>>
     					<h3 id="panel-title">Location:</h3>
-    					<h4><%= dayBean.getLocation() %></h4>
+    					<h4><%= dayBean.getLocationCity() %></h4>
     					<h3 id="panel-title">Activities of the day:</h3>
     					<div class="list scrollable">
     					
@@ -269,13 +269,13 @@
 	            							<div class="organizer user-tag">
 	            								<h4 style="margin-right: 10px;"><%= bean.getName() %></h4>
 	            								<h4 style="margin-right: 10px;"><%= bean.getSurname() %></h4>
-	            								<button type="submit" class="btn btn-primary" name="viewprofile">profile</button>
+	            								<button type="submit" class="btn btn-primary" name="viewparticipant">profile</button>
 	            							</div>
 	            				
 	            							<%
-	            								if (request.getParameter("viewprofile") != null) {
-	            									System.out.println(joinTripBean.getTrip().getOrganizer().getName());
-	            									profileBean.setUser(joinTripBean.getTrip().getOrganizer());
+	            								if (request.getParameter("viewparticipant") != null) {
+	            									System.out.println(bean.getName()+bean.getSurname());
+	            									profileBean.setUser(bean);
 	            							%>
 	            									<jsp:forward page="profile.jsp"/>
 	            							<% 

@@ -2,15 +2,14 @@ package logic.model;
 
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 public class Day implements Serializable{
 	
 	private static final long serialVersionUID = 1L;
-	private String location;
+	private int id;
+	private Location location;
 	private List<Activity> activities;
-	private Date date;
 	private int budget;
 	
 	public Day() {
@@ -26,21 +25,13 @@ public class Day implements Serializable{
 	}
 
 
-	public String getLocation() {
+	public Location getLocation() {
 		return location;
 	}
 
 
-	public void setLocation(String location) {
+	public void setLocation(Location location) {
 		this.location = location;
-	}
-
-	public Date getDate() {
-		return date;
-	}
-
-	public void setDate(Date date) {
-		this.date = date;
 	}
 
 	public int getBudget() {
@@ -60,6 +51,14 @@ public class Day implements Serializable{
 		setBudget(costSum);
 		return costSum;
 		
+	}
+
+	public int getId() {
+		return id;
+	}
+
+	public void setId(int id) {
+		this.id = id;
 	}
 	
 }

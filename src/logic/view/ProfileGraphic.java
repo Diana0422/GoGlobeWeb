@@ -241,31 +241,16 @@ public class ProfileGraphic implements GraphicController, Observer {
 		List<TripBean> previousTripBeans = null;
 		
 		// Display trips planned by user
-		try {
-			myTripBeans = ProfileController.getInstance().getMyTrips();
-			loadGrid(myTripsGrid, myTripBeans);
-		} catch (SerializationException e) {
-			AlertGraphic graphic = new AlertGraphic();
-			graphic.display(GUIType.PROFILE, GUIType.HOME, null, DesktopSessionContext.getInstance().getSession(), "Serialization Error", "Something unexpected occurred loading trips.");
-		}
+		myTripBeans = ProfileController.getInstance().getMyTrips();
+		loadGrid(myTripsGrid, myTripBeans);
 	
 		// Display target user's upcoming trips
-		try {
-			upcomingTripBeans = ProfileController.getInstance().getUpcomingTrips();
-			loadGrid(upcomingGrid, upcomingTripBeans);
-		} catch (SerializationException e) {
-			AlertGraphic graphic = new AlertGraphic();
-			graphic.display(GUIType.PROFILE, GUIType.HOME, null, DesktopSessionContext.getInstance().getSession(), "Serialization Error", "Something unexpected occurred loading trips.");
-		}
+		upcomingTripBeans = ProfileController.getInstance().getUpcomingTrips();
+		loadGrid(upcomingGrid, upcomingTripBeans);
 		
 		// Display target user's passed trips
-		try {
-			previousTripBeans = ProfileController.getInstance().getRecentTrips();
-			loadGrid(previousGrid, previousTripBeans);
-		} catch (SerializationException e) {
-			AlertGraphic graphic = new AlertGraphic();
-			graphic.display(GUIType.JOIN, GUIType.HOME, null, DesktopSessionContext.getInstance().getSession(), "Serialization Error", "Something unexpected occurred loading trips.");
-		}
+		previousTripBeans = ProfileController.getInstance().getRecentTrips();
+		loadGrid(previousGrid, previousTripBeans);
 		
 		txtNameSurname.setText(target.getName()+" "+target.getSurname());
 		txtAge.setText(Integer.toString(target.getAge()));

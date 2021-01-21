@@ -22,7 +22,6 @@ public class Trip implements Serializable {
 	private Date departureDate;
 	private Date returnDate;	
 	private List<Day> days;	
-	private long tripLength;
 	
 	/* SHARED TRIP ELEMENTS */
 	private boolean shared;
@@ -102,19 +101,14 @@ public class Trip implements Serializable {
 
 	public void setDays(List<Day> days) {
 		this.days = days;
-		this.calculatePrice();
 	}
 	
 	public int getPrice() {
 		return price;
 	}
-
-	public void calculatePrice() {
-		int sumPrice = 0;
-		for (int i=0; i<getDays().size(); i++) {
-			sumPrice += getDays().get(i).getBudget();
-		}
-		this.price = sumPrice;
+	
+	public void setPrice(int price) {
+		this.price = price;
 	}
 
 	public Date getDepartureDate() {
@@ -131,14 +125,6 @@ public class Trip implements Serializable {
 
 	public void setReturnDate(Date returnDate) {
 		this.returnDate = returnDate;
-	}
-
-	public long getTripLength() {
-		return tripLength;
-	}
-
-	public void setTripLength(long tripLength) {
-		this.tripLength = tripLength;
 	}
 
 	public String getImgSrc() {

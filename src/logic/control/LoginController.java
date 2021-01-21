@@ -1,11 +1,8 @@
 package logic.control;
 
-import java.util.List;
-
 import logic.bean.LoginBean;
-import logic.dao.UserDAOFile;
+import logic.persistence.dao.UserDaoDB;
 import logic.model.User;
-import logic.model.exceptions.SerializationException;
 
 public class LoginController {
 	
@@ -22,24 +19,22 @@ public class LoginController {
 		return instance;
 	}
 	
-	public LoginBean login(String username, String password) throws SerializationException{ 
+	public LoginBean login(String username, String password) { 
 		
 		
 		LoginBean loginBean = new LoginBean();
-		
-		List<User> users = (new UserDAOFile()).getAllUsers();	
-		
-		for (int i = 0; i < users.size(); i++) {
-			User tempUser = users.get(i);
+		User tempUser = null;
+		if ((tempUser = UserDaoDB.getInstance().get(username)) != null) {
 			if (tempUser.getEmail().equals(username) && tempUser.getPassword().equals(password)){
-					loginBean.setNome(tempUser.getName());
-					loginBean.setCognome(tempUser.getSurname());
-					loginBean.setPoints(tempUser.getPoints());
-					return loginBean;			
-			}	
-			
+				loginBean.setUsername(username);
+				loginBean.setPassword(password);
+				loginBean.setNome(tempUser.getName());
+				loginBean.setCognome(tempUser.getSurname());
+				loginBean.setPoints(tempUser.getPoints());			
+			}
+		} else {
+			loginBean = null;
 		}
-		loginBean = null;
 		return loginBean;
 	}	
 }

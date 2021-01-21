@@ -2,13 +2,11 @@ package logic.model.factories;
 
 import logic.model.Trip;
 
-public class TripFactory {
+public class TripFactory implements ModelFactory {
 	
 	private static TripFactory instance;
 	
-	private TripFactory() {
-		
-	}
+	private TripFactory() {}
 	
 	public static synchronized TripFactory getInstance() {
 		if (instance == null) {
@@ -16,9 +14,9 @@ public class TripFactory {
 		}
 		return instance;		
 	}
-	
-	
-	public Trip createTrip() {
+
+	@Override
+	public Trip createModel() {
 		return new Trip();
 	}
 	

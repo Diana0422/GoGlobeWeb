@@ -15,12 +15,18 @@ import logic.dao.TripDAO;
 import logic.dao.TripDAOFile;
 import logic.model.Activity;
 import logic.model.Day;
+import logic.model.Location;
 import logic.model.Request;
 import logic.model.Review;
 import logic.model.Trip;
 import logic.model.TripCategory;
 import logic.model.User;
 import logic.model.exceptions.SerializationException;
+import logic.persistence.dao.ActivityDao;
+import logic.persistence.dao.DayDao;
+import logic.persistence.dao.ReviewDao;
+import logic.persistence.dao.UserDaoDB;
+import logic.persistence.dao.UserStatsDao;
 
 public class ConversionController {
 
@@ -41,21 +47,29 @@ public class ConversionController {
 	
 	/* Controller METHODS */
 	
-	public List<Day> convertDayBeanList(List<DayBean> dayBeans){
+	public List<Day> convertDayBeanList(List<DayBean> dayBeans, String tripTitle){
 		List<Day> days = new ArrayList<>();
 		for (int i = 0; i < dayBeans.size(); i++) {
 			Day day = new Day();
-			day.setLocation(dayBeans.get(i).getLocation());
-			day.setActivities(convertActivityBeanList(dayBeans.get(i).getActivities()));
+			day.setId(i+1);
+			Location loc = new Location(dayBeans.get(i).getLocationCity(), dayBeans.get(i).getLocationCountry(), null);
+			day.setLocation(loc);
 			day.calclulateBudget();
+			
+			// save day to persistence
+			if (DayDao.getInstance().saveDay(day, tripTitle)) {
+				System.out.println("day saved.");
+			} else {
+				System.out.println("day not saved");
+			}
+			day.setActivities(convertActivityBeanList(dayBeans.get(i).getActivities(), day.getId(), tripTitle));
 			days.add(day);
-
 		}
 		return days;
 	}
 	
 	
-	private List<Activity> convertActivityBeanList(List<ActivityBean> activityBeans){
+	private List<Activity> convertActivityBeanList(List<ActivityBean> activityBeans, int dayId, String tripTitle){
 		List<Activity> activities = new ArrayList<>();
 		for (int i = 0; i < activityBeans.size(); i++) {
 			String title = activityBeans.get(i).getTitle();
@@ -63,19 +77,26 @@ public class ConversionController {
 			String description = activityBeans.get(i).getDescription();
 			int cost = Integer.parseInt(activityBeans.get(i).getEstimatedCost());
 			Activity activity = new Activity(title, time, description, cost);
-			activities.add(activity);			
+			activities.add(activity);
+			
+			//save the activity in persistence
+			if (ActivityDao.getInstance().saveActivity(activity, dayId, tripTitle)) {
+				System.out.println("activity saved.");
+			}
 		}
 		
 		return activities;
 	}
 	
 	
-	public List<DayBean> convertDayList(List<Day> days){
+	public List<DayBean> convertDayList(List<Day> days, String tripTitle){
 		List<DayBean> dayBeans = new ArrayList<>();
 		for (int i = 0; i < days.size(); i++) {
+			int dayNum = i+1;
 			DayBean dayBean = new DayBean();
-			dayBean.setLocation(days.get(i).getLocation());
-			dayBean.setActivities(convertActivityList(days.get(i).getActivities()));
+			dayBean.setLocationCity(days.get(i).getLocation().getCity());
+			dayBean.setLocationCountry(days.get(i).getLocation().getCountry());
+			dayBean.setActivities(convertActivityList(ActivityDao.getInstance().getActivitiesByTrip(tripTitle, dayNum)));
 			dayBeans.add(dayBean);
 		}
 		return dayBeans;
@@ -105,9 +126,9 @@ public class ConversionController {
 		for (int i=0; i<trips.size(); i++) {
 			Trip t = trips.get(i);
 			TripBean bean = new TripBean();
-			System.out.println("converting trip: "+t.getOrganizer().getReviews());
-			bean.setOrganizer(convertToUserBean(t.getOrganizer()));
-			bean.setParticipants(convertUserList(t.getParticipants()));
+			bean.setOrganizer(convertToUserBean(UserDaoDB.getInstance().getTripOrganizer(t.getTitle())));
+			bean.setDays(convertDayList(DayDao.getInstance().getTripDays(t.getTitle()), t.getTitle()));
+			bean.setParticipants(convertUserList(UserDaoDB.getInstance().getTripParticipants(t.getTitle())));
 			bean.setDescription(t.getDescription());
 			bean.setId(t.getId());
 			bean.setTitle(t.getTitle());
@@ -127,10 +148,8 @@ public class ConversionController {
 			String retDateStr = formatter.format(t.getReturnDate());
 			bean.setDepartureDate(depDateStr);
 			bean.setReturnDate(retDateStr);
-			bean.setTripLength(t.getTripLength());
+//			bean.setTripLength(t.getTripLength());
 			
-			// Adding days and activities to the trip bean
-			bean.setDays(ConversionController.getInstance().convertDayList(t.getDays()));
 			tripBeans.add(bean);
 		}
 		return tripBeans;
@@ -155,15 +174,21 @@ public class ConversionController {
 		for (Request req: requests) {
 			RequestBean bean = new RequestBean();
 			bean.setTripTitle(req.getTarget().getTitle());
-			bean.setSenderName(req.getSender().getName());
-			bean.setSenderSurname(req.getSender().getSurname());
-			bean.setSenderEmail(req.getSender().getEmail());
-			bean.setReceiverEmail(req.getReceiver().getEmail());
-			bean.setReceiverName(req.getReceiver().getName());
-			bean.setReceiverSurname(req.getReceiver().getSurname());
-			bean.setSenderAge(req.getSender().calculateUserAge());
+			if (req.getSender() != null) {
+				bean.setSenderName(req.getSender().getName());
+				bean.setSenderSurname(req.getSender().getSurname());
+				bean.setSenderEmail(req.getSender().getEmail());
+				bean.setSenderAge(req.getSender().calculateUserAge());	
+			}
+			
+			if (req.getReceiver() != null) {
+				bean.setReceiverEmail(req.getReceiver().getEmail());
+				bean.setReceiverName(req.getReceiver().getName());
+				bean.setReceiverSurname(req.getReceiver().getSurname());
+			}
 			requestBeans.add(bean);
 		}
+		System.out.println(requestBeans);
 		return requestBeans;
 		
 	}
@@ -185,16 +210,16 @@ public class ConversionController {
 		bean.setBio(user.getBio());
 		bean.setPoints(user.getPoints());
 		bean.setAge(user.calculateUserAge());
-		System.out.println("In conversion to user bean "+user.getReviews());
-		bean.setReviews(convertReviewList(user.getReviews()));
-		bean.setOrgRating(user.getStats().getOrganizerRating());
-		bean.setTravRating(user.getStats().getTravelerRating());
+		System.out.println("In conversion to user bean reviews:"+user.getReviews());
+		bean.setReviews(convertReviewList(ReviewDao.getInstance().getUserReviews(user.getEmail())));
+		bean.setOrgRating(UserStatsDao.getInstance().getUserStats(user.getEmail()).getOrganizerRating());
+		bean.setTravRating(UserStatsDao.getInstance().getUserStats(user.getEmail()).getTravelerRating());
 		return bean;
 	}
 
-	private List<ReviewBean> convertReviewList(List<Review> reviews) {
+	public List<ReviewBean> convertReviewList(List<Review> reviews) {
 		List<ReviewBean> list = new ArrayList<>();
-		
+		if (reviews.isEmpty()) return list;
 		for (Review rev: reviews) {
 			ReviewBean bean = new ReviewBean();
 			bean.setReviewerName(rev.getReviewer().getName());

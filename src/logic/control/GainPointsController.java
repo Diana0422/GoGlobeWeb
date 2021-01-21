@@ -13,8 +13,8 @@ import logic.bean.TripBean;
 import logic.bean.UserBean;
 import logic.dao.TripDAO;
 import logic.dao.TripDAOFile;
-import logic.dao.UserDAO;
-import logic.dao.UserDAOFile;
+import logic.persistence.dao.UserDaoDB;
+import logic.persistence.dao.UserStatsDao;
 import logic.model.Trip;
 import logic.model.User;
 import logic.model.exceptions.SerializationException;
@@ -39,9 +39,8 @@ public class GainPointsController {
 	public TripBean getTripOfTheDay(String userEmail) throws SerializationException {
 		Date today = new Date();
 		TripDAO tripDao = new TripDAOFile();
-		UserDAO userDao = new UserDAOFile();
 		
-		UserBean logged = ConversionController.getInstance().convertToUserBean(userDao.getUser(userEmail));
+		UserBean logged = ConversionController.getInstance().convertToUserBean(UserDaoDB.getInstance().get(userEmail));
 		
 		List<TripBean> list = ConversionController.getInstance().convertTripList(tripDao.getAllTrips());
 		for (TripBean bean: list) {
@@ -83,19 +82,13 @@ public class GainPointsController {
 			return false;
 		}
 		if (ParticipationController.getInstance().checkParticipation(trip)) {
-			UserDAO userDao = new UserDAOFile();
+			
 			User user;
-			try {
-				user = userDao.getUser(session.getEmail());
-				user.addPoints(100);
-				session.setPoints(user.getPoints());
-				userDao.updateUser(user, session.getEmail());
-				return true;
-			} catch (SerializationException e) {
-				Logger.getGlobal().log(Level.WARNING, e.getMessage());
-				e.printStackTrace();
-				return false;
-			}
+			user = UserDaoDB.getInstance().get(session.getEmail());
+			user.addPoints(100);
+			session.setPoints(user.getPoints());
+			UserStatsDao.getInstance().updateStats(session.getEmail(), user.getPoints(), user.getStats().getOrganizerRating(), user.getStats().getTravelerRating());
+			return true;
 		}
 		return false;
 	}

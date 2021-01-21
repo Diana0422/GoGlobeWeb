@@ -32,7 +32,7 @@ public class ParticipationController {
 	}
 	
 	public boolean checkParticipation(Trip trip) {
-		String userIP = null;
+	/*	String userIP = null;
 		String userPos = null;
 		List<Day> days = trip.getDays();
 		
@@ -71,8 +71,7 @@ public class ParticipationController {
 		}
 		
 		Logger.getGlobal().log(Level.SEVERE, "This trip is not happening today.");
-		return false;
-		
+		*/
+		return false;	
 	}
-
 }

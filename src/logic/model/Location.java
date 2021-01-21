@@ -2,25 +2,15 @@ package logic.model;
 
 public class Location {
 	
-	private String name;
 	private String city;
 	private String country;
 	private String coordinates;
 	
-	public Location(String name, String country, String coordinates){
-        this.name = name;
+	public Location(String city, String country, String coordinates){
+        this.city = city;
         this.country = country;
         this.setCoordinates(coordinates);
-
     }
-	
-	public String getName() {
-		return name;
-	}
-	
-	public void setName(String name) {
-		this.name = name;
-	}
 	
 	public String getCity() {
 		return city;

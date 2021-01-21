@@ -129,7 +129,7 @@ public class TripInfoGraphic implements GraphicController {
 			container.getChildren().add(locationTitle);
 			
 			Label location = new Label();
-			location.setText(days.get(i).getLocation());
+			location.setText(days.get(i).getLocationCity());
 			container.getChildren().add(location);
 			
 			Label activitiesTitle = new Label("Activities of the day:");

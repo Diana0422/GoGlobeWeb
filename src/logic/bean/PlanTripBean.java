@@ -182,12 +182,12 @@ public class PlanTripBean {
 	public void saveLocation() {
 		String logStr = "SAVING LOCATION: " + this.location;
 		Logger.getGlobal().info(logStr);
-		this.tripBean.getDays().get(planningDay).setLocation(location);
+		this.tripBean.getDays().get(planningDay).setLocationCity(location);
 	}
 	
 	//Checks if the day has a location 
 	public boolean checkDay() {
-		String locationCheck = tripBean.getDays().get(planningDay).getLocation();
+		String locationCheck = tripBean.getDays().get(planningDay).getLocationCity();
 		String logStr = "LOCATION CHECK: " + locationCheck;
 		Logger.getGlobal().info(logStr);
 		return (locationCheck == null || locationCheck.equals(""));
@@ -195,7 +195,7 @@ public class PlanTripBean {
 	
 	//Gets the location for the current planning day
 	public String getDayLocation() {
-		return this.tripBean.getDays().get(planningDay).getLocation();
+		return this.tripBean.getDays().get(planningDay).getLocationCity();
 	}
 	
 	//GUI CONTROLLER

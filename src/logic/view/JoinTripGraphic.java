@@ -18,7 +18,6 @@ import logic.bean.SessionBean;
 import logic.bean.TripBean;
 import logic.control.JoinTripController;
 import logic.model.exceptions.LoadGraphicException;
-import logic.model.exceptions.SerializationException;
 
 public class JoinTripGraphic implements Initializable {
 	@FXML
@@ -62,22 +61,12 @@ public class JoinTripGraphic implements Initializable {
 	
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
-		try {
-			this.tripBeans = JoinTripController.getInstance().searchTrips(txtSearch.getText());
-		} catch (SerializationException e) {
-			AlertGraphic graphic = new AlertGraphic();
-			graphic.display(GUIType.JOIN, GUIType.HOME, null, DesktopSessionContext.getInstance().getSession(), "Serialization Error", "Something unexpected occurred loading trips.");
-		}
+		this.tripBeans = JoinTripController.getInstance().searchTrips(txtSearch.getText());
 	}
 	
 	@FXML
 	public void search(MouseEvent event) {
-		try {
-			this.tripBeans = JoinTripController.getInstance().searchTrips(txtSearch.getText());
-		} catch (SerializationException e) {
-			AlertGraphic graphic = new AlertGraphic();
-			graphic.display(GUIType.JOIN, GUIType.HOME, null, DesktopSessionContext.getInstance().getSession(), "Serialization Error", "Something unexpected occurred loading trips.");
-		}
+		this.tripBeans = JoinTripController.getInstance().searchTrips(txtSearch.getText());
 		loadGrid(txtSearch.getText(), false);
 	}
 	

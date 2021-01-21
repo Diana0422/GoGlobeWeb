@@ -1,22 +1,16 @@
 package logic.control;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import logic.bean.RequestBean;
 import logic.bean.SessionBean;
 import logic.bean.UserBean;
-import logic.dao.RequestDAO;
-import logic.dao.RequestDAOFile;
-import logic.dao.TripDAO;
-import logic.dao.TripDAOFile;
-import logic.dao.UserDAO;
-import logic.dao.UserDAOFile;
+import logic.persistence.dao.RequestDao;
+import logic.persistence.dao.TripDao;
+import logic.persistence.dao.UserDaoDB;
 import logic.model.Request;
 import logic.model.User;
-import logic.model.exceptions.SerializationException;
 
 public class ManageRequestController {
 
@@ -35,78 +29,45 @@ public class ManageRequestController {
 	} 
 	
 	
-	public UserBean getSenderBean(RequestBean requestBean) throws SerializationException {
-		UserDAO userDao = new UserDAOFile();
-		User sender = userDao.getUser(requestBean.getSenderEmail());
+	public UserBean getSenderBean(RequestBean requestBean) {
+		User sender = UserDaoDB.getInstance().get(requestBean.getSenderEmail());
 		return ConversionController.getInstance().convertToUserBean(sender);
 	}
 	
 	public synchronized boolean acceptRequest(RequestBean requestBean) {
+		System.out.println("request bean:"+requestBean);
 		// get request from persistence
-		RequestDAO reqDao = new RequestDAOFile();
-		Request req;
-		try {
-			req = reqDao.getRequest(requestBean.getTripTitle(), requestBean.getSenderEmail(), requestBean.getReceiverEmail());
-		} catch (SerializationException e1) {
-			Logger.getGlobal().log(Level.WARNING, e1.getMessage());
-			e1.printStackTrace();
-			return false;
-		}
+		Request req = RequestDao.getInstance().getRequest(requestBean.getSenderEmail(), requestBean.getTripTitle());
+		System.out.println("Got request:"+req);
+		//Add sender and target to request
+		req.setSender(UserDaoDB.getInstance().get(requestBean.getSenderEmail()));
+		req.setTarget(TripDao.getInstance().getTripByTitle(requestBean.getTripTitle()));
 		
 		// Add sender user to trip participants
 		req.getTarget().addParticipant(req.getSender());
 		String logStr = "Participants: "+req.getTarget().getParticipants();
 		Logger.getGlobal().info(logStr);
-		TripDAO tripDao = new TripDAOFile();
 		
-		// Update trip in persistence
-		try {
-			return tripDao.updateTrip(req.getTarget(), req.getTarget().getTitle()) && reqDao.deleteRequest(req);
-		} catch (SerializationException e) {
-			Logger.getGlobal().log(Level.WARNING, e.getMessage());
-			e.printStackTrace();
-			return false;
-		}
+		// Update trip's participant users in persistence
+		return TripDao.getInstance().saveParticipant(req.getSender().getEmail(), req.getTarget().getTitle()) && RequestDao.getInstance().delete(req);
 	}
 	
 	public synchronized boolean declineRequest(RequestBean requestBean) {
 		// get request from persistence
-		RequestDAO reqDao = new RequestDAOFile();
-		Request req;
-		try {
-			req = reqDao.getRequest(requestBean.getTripTitle(), requestBean.getSenderEmail(), requestBean.getReceiverEmail());
-			// Delete request
-			reqDao.deleteRequest(req);
-			return true;
-		} catch (SerializationException e) {
-			Logger.getGlobal().log(Level.WARNING, e.getMessage());
-			e.printStackTrace();
-			return false;
-		}
+		Request r = RequestDao.getInstance().getRequest(requestBean.getSenderEmail(), requestBean.getTripTitle());
+
+		// Delete request
+		return RequestDao.getInstance().delete(r);
 	}
 	
-	public List<RequestBean> getUserIncomingRequests(SessionBean session) throws SerializationException {
-		RequestDAO reqDao = new RequestDAOFile();
-		List<Request> requests = reqDao.getAllRequests();
-		List<Request> incRequests = new ArrayList<>();
-		
-		for (Request req: requests) {
-			if (req.getReceiver().getEmail().equals(session.getEmail())) incRequests.add(req);
-		}
-		
+	public List<RequestBean> getUserIncomingRequests(SessionBean session) {
+		List<Request> incRequests = RequestDao.getInstance().getRequestsByReceiver(session.getEmail());
 		return ConversionController.getInstance().convertRequestList(incRequests);
 	}
 	
 	
-	public List<RequestBean> getUserSentRequests(SessionBean session) throws SerializationException {
-		RequestDAO reqDao = new RequestDAOFile();
-		List<Request> requests = reqDao.getAllRequests();
-		List<Request> sentRequests = new ArrayList<>();
-		
-		for (Request req: requests) {
-			if (req.getSender().getEmail().equals(session.getEmail())) sentRequests.add(req);
-		}
-		
+	public List<RequestBean> getUserSentRequests(SessionBean session) {
+		List<Request> sentRequests = RequestDao.getInstance().getRequestsBySender(session.getEmail());
 		return ConversionController.getInstance().convertRequestList(sentRequests);
 	}
 }

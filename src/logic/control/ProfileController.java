@@ -3,9 +3,8 @@ package logic.control;
 import java.util.List;
 
 import logic.bean.TripBean;
-import logic.dao.TripDAOFile;
 import logic.model.Trip;
-import logic.model.exceptions.SerializationException;
+import logic.persistence.dao.TripDao;
 
 public class ProfileController {
 	
@@ -19,21 +18,18 @@ public class ProfileController {
     	return instance;
     }
    
-   public List<TripBean> getRecentTrips() throws SerializationException{
-	   TripDAOFile dao = new TripDAOFile();
-	   List<Trip> trips = dao.getAllTrips();
+   public List<TripBean> getRecentTrips() {
+	   List<Trip> trips = TripDao.getInstance().getTrips();
 	   return ConversionController.getInstance().convertTripList(trips);
    }
    
-	public List<TripBean> getUpcomingTrips() throws SerializationException{
-	   TripDAOFile dao = new TripDAOFile();
-	   List<Trip> trips = dao.getAllTrips();
+	public List<TripBean> getUpcomingTrips() {
+	   List<Trip> trips = TripDao.getInstance().getTrips();
 	   return ConversionController.getInstance().convertTripList(trips);
    }
 	
-	public List<TripBean> getMyTrips() throws SerializationException{
-	   TripDAOFile dao = new TripDAOFile();
-	   List<Trip> trips = dao.getAllTrips();
+	public List<TripBean> getMyTrips() {
+	   List<Trip> trips = TripDao.getInstance().getTrips();
 	   return ConversionController.getInstance().convertTripList(trips);
 
 	}

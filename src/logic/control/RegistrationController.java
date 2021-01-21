@@ -6,8 +6,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import logic.bean.SessionBean;
-import logic.dao.UserDAO;
-import logic.dao.UserDAOFile;
+import logic.persistence.dao.UserDaoDB;
 import logic.model.User;
 import logic.model.exceptions.SerializationException;
 
@@ -27,13 +26,12 @@ public class RegistrationController {
 	
 	public synchronized SessionBean register(String email, String password, String name, String surname, String birthday) throws SerializationException {
 		User user;
-		DateFormat formatter = new SimpleDateFormat("dd/mm/yyyy");
+		DateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
 		Date birth;
 		try {
 			birth = formatter.parse(birthday);
 			user = new User(name, surname, birth, email, password);
-			UserDAO dao = new UserDAOFile();
-			if (dao.getUser(email) == null && dao.saveUser(user)) {
+			if (UserDaoDB.getInstance().save(user)) {
 				SessionBean session = new SessionBean(); 
 				session.setEmail(email);
 				session.setName(name);

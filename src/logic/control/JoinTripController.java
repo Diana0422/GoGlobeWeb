@@ -1,20 +1,15 @@
 package logic.control;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import logic.bean.SessionBean;
 import logic.bean.TripBean;
-import logic.dao.RequestDAO;
-import logic.dao.RequestDAOFile;
-import logic.dao.TripDAO;
-import logic.dao.TripDAOFile;
-import logic.dao.UserDAO;
-import logic.dao.UserDAOFile;
+import logic.persistence.dao.RequestDao;
+import logic.persistence.dao.TripDao;
+import logic.persistence.dao.UserDaoDB;
 import logic.model.Request;
 import logic.model.Trip;
-import logic.model.exceptions.SerializationException;
  
 public class JoinTripController {
 	
@@ -30,14 +25,15 @@ public class JoinTripController {
 		return instance;
 	}
 
-	public List<TripBean> searchTrips(String value) throws SerializationException {
+	public List<TripBean> searchTrips(String value) {
 		String logStr = "Search trips by value started.\n";
 		Logger.getGlobal().info(logStr);
-		TripDAO dao = new TripDAOFile();
-		List<Trip> trips = dao.getAllTrips();
+		List<Trip> trips = TripDao.getInstance().getTrips();
+		System.out.println("trips:"+trips);
 		List<Trip> filteredTrips = new ArrayList<>();
 		
 		for (Trip trip: trips) {
+			System.out.println("trip price:"+trip.getPrice());
 			if (trip.getTitle().contains(value)) filteredTrips.add(trip);
 			
 		}
@@ -56,44 +52,32 @@ public class JoinTripController {
 	}
 	
 	public boolean joinTrip(TripBean tripBean, SessionBean session) {
-		TripDAO tripDao = new TripDAOFile();
-		UserDAO userDao = new UserDAOFile();
 		
 		// Pick the trip corresponding to the tripBean from persistence
-		Trip trip;
-		try {
-			trip = tripDao.getTrip(tripBean.getTitle());
-		} catch (SerializationException e) {
-			Logger.getGlobal().log(Level.WARNING, e.getMessage());
-			e.printStackTrace();
-			return false;
-		}
+		Trip trip = TripDao.getInstance().getTripByTitle(tripBean.getTitle());
+		// Set the organizer
+		trip.setOrganizer(UserDaoDB.getInstance().getTripOrganizer(tripBean.getTitle()));
 		
 		if (!trip.getOrganizer().getEmail().equals(session.getEmail())) { // only if the user is not the organizer
 			// Instantiate a new request
 			Request request = new Request();
-			try {
-				request.setSender(userDao.getUser(session.getEmail()));
-			} catch (SerializationException e) {
-				Logger.getGlobal().log(Level.WARNING, e.getMessage());
-				e.printStackTrace();
-				return false;
-			}
+			request.setSender(UserDaoDB.getInstance().get(session.getEmail()));
 			request.setReceiver(trip.getOrganizer());
 			request.setTarget(trip);
 			
 			// Save the request in persistence
-			RequestDAO reqDao = new  RequestDAOFile();
-			try {
-				if (reqDao.getRequest(request.getTarget().getTitle(), request.getSender().getEmail(), request.getReceiver().getEmail())== null) return reqDao.saveRequest(request);
-			} catch (SerializationException e) {
-				Logger.getGlobal().log(Level.WARNING, e.getMessage());
-				e.printStackTrace();
-				return false;
-			}
+			if (RequestDao.getInstance().getRequest(request.getTarget().getTitle(), request.getSender().getEmail())== null) return RequestDao.getInstance().save(request);
 		} 
 		
 		return false;
 		
+	}
+	
+	public static void main(String [] args) {
+		SessionBean session = new SessionBean();
+		session.setEmail("diamerita@gmail.com");
+		
+		List<TripBean> trips = JoinTripController.getInstance().searchTrips("Viaggio");
+		System.out.println(trips);
 	}
 }

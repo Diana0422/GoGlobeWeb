@@ -1,27 +1,26 @@
-package logic.control;
+package logic.persistence;
 
 import java.io.File;
 import java.util.logging.Logger;
 import logic.model.ModelClassType;
 
-public class PersistenceController {
+public class FileSystemManager {
 	
-    private static final String PROJ_PATH = "user.dir";
-
-	private static PersistenceController instance = null;
+    private String projPath = "user.dir";
+	private static FileSystemManager instance = null;
 	
-	private PersistenceController() {}
+	private FileSystemManager() {}
 	
-	public static PersistenceController getInstance() {
+	public static FileSystemManager getInstance() {
 		if (instance == null) {
-			instance = new PersistenceController();
+			instance = new FileSystemManager();
 		}
 		
 		return instance;
 	}
 	
 	public File getBackendFile(ModelClassType type) {
-		String projectPath = System.getProperty(PROJ_PATH);
+		String projectPath = System.getProperty(projPath);
 		Logger.getGlobal().info(projectPath);
 		
 		switch(type) {
