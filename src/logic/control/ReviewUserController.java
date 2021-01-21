@@ -12,7 +12,6 @@ import logic.bean.UserBean;
 import logic.model.Review;
 import logic.model.RoleType;
 import logic.model.User;
-import logic.model.exceptions.SerializationException;
 import logic.model.interfaces.Observer;
 
 public class ReviewUserController {
@@ -29,9 +28,10 @@ public class ReviewUserController {
 		return instance;
 	}
 	
-	public boolean postReview(String type, double rating, String comment, String title, String reviewerEmail, String targetEmail, Observer o) throws SerializationException {
+	public boolean postReview(String type, double rating, String comment, String title, String reviewerEmail, String targetEmail, Observer o) {
 		User reviewer = UserDaoDB.getInstance().get(reviewerEmail);
 		User target = UserDaoDB.getInstance().get(targetEmail);
+		target.setReviews(ReviewDao.getInstance().getUserReviews(targetEmail));
 		target.setStats(UserStatsDao.getInstance().getUserStats(targetEmail));
 		if (o != null) {
 			target.getStats().attach(o);

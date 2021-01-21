@@ -116,7 +116,7 @@
                     	<h4>Organizer Rating:</h4>
                     	<%
                     		int count = 5;
-                    		for (double d=0; d<profileBean.getUser().getOrgRating(); d++) {
+                    		for (double d=0; d<profileBean.getUser().getStatsBean().getOrgRating(); d++) {
                     			count--;
                     			%>
                     			<span class="fa fa-star checked"></span>
@@ -135,7 +135,7 @@
                     	<h4>Traveler Rating:</h4>
                     	<%
                     		int count2 = 5;
-                    		for (double d=0; d<profileBean.getUser().getTravRating(); d++) {
+                    		for (double d=0; d<profileBean.getUser().getStatsBean().getTravRating(); d++) {
                     			count2--;
                     			%>
                     			<span class="fa fa-star checked"></span>
@@ -244,10 +244,10 @@
                                 		review.setReviewerName(sessionBean.getName());
                                 		review.setReviewerSurname(sessionBean.getSurname());
                                 		review.setVote(profileBean.getVote());
-                                		profileBean.getUser().getReviews().add(review);
-                           
-                                		ReviewUserController.getInstance().postReview(request.getParameter("type-radio"), profileBean.getVote(), profileBean.getComment(), profileBean.getTitle(), sessionBean.getEmail(), userBean.getEmail(), null);
-                                		
+                                		profileBean.getUser().getReviews().add(review);                  
+                                		ReviewUserController.getInstance().postReview(request.getParameter("type-radio"), profileBean.getVote(), profileBean.getComment(), profileBean.getTitle(), sessionBean.getEmail(), userBean.getEmail(), profileBean.getUser());
+                                		System.out.println("web view: org rating:"+profileBean.getUser().getStatsBean().getOrgRating()+" trav rating:"+profileBean.getUser().getStatsBean().getTravRating());
+                                		response.setIntHeader("Refresh",0);
                                 	}
                                 
                                 %>

@@ -11,6 +11,7 @@ import logic.bean.RequestBean;
 import logic.bean.ReviewBean;
 import logic.bean.TripBean;
 import logic.bean.UserBean;
+import logic.bean.UserStatsBean;
 import logic.dao.TripDAO;
 import logic.dao.TripDAOFile;
 import logic.model.Activity;
@@ -204,6 +205,7 @@ public class ConversionController {
 	
 	public UserBean convertToUserBean(User user) {
 		UserBean bean = new UserBean();
+		UserStatsBean statsBean = new UserStatsBean();
 		bean.setEmail(user.getEmail());
 		bean.setName(user.getName());
 		bean.setSurname(user.getSurname());
@@ -212,8 +214,9 @@ public class ConversionController {
 		bean.setAge(user.calculateUserAge());
 		System.out.println("In conversion to user bean reviews:"+user.getReviews());
 		bean.setReviews(convertReviewList(ReviewDao.getInstance().getUserReviews(user.getEmail())));
-		bean.setOrgRating(UserStatsDao.getInstance().getUserStats(user.getEmail()).getOrganizerRating());
-		bean.setTravRating(UserStatsDao.getInstance().getUserStats(user.getEmail()).getTravelerRating());
+		bean.setStatsBean(statsBean);
+		bean.getStatsBean().setOrgRating(UserStatsDao.getInstance().getUserStats(user.getEmail()).getOrganizerRating());
+		bean.getStatsBean().setTravRating(UserStatsDao.getInstance().getUserStats(user.getEmail()).getTravelerRating());
 		return bean;
 	}
 

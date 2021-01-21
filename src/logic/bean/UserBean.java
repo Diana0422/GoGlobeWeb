@@ -2,16 +2,21 @@ package logic.bean;
 
 import java.util.List;
 
-public class UserBean {
+import logic.model.UserStats;
+import logic.model.interfaces.Observer;
+import logic.model.interfaces.Subject;
+import logic.view.ProfileGraphic;
+
+public class UserBean implements Observer {
 	private String email;
 	private String name;
 	private String surname;
 	private int age;
 	private int points;
 	private String bio;
-	private double orgRating;
-	private double travRating;
+	private UserStatsBean statsBean;
 	private List<ReviewBean> reviews;
+	private ProfileGraphic graphic;
 	
 	public UserBean() {
 		//empty constructor
@@ -73,20 +78,35 @@ public class UserBean {
 		this.reviews = reviews;
 	}
 
-	public double getOrgRating() {
-		return orgRating;
+	@Override
+	public void updateValue(Subject s) {
+		System.out.println("Updating value in bean:");
+		System.out.println("Before:"+getStatsBean().getTravRating());
+		getStatsBean().setTravRating(((UserStats) s).getTravelerRating());
+		System.out.println("After:"+getStatsBean().getTravRating());
+		System.out.println("Before:"+getStatsBean().getOrgRating());
+		getStatsBean().setOrgRating(((UserStats) s).getOrganizerRating());
+		System.out.println("After:"+getStatsBean().getOrgRating());
+		if (getGraphic()!= null) {
+			getGraphic().displayOrganizerRating(getStatsBean().getOrgRating());
+			getGraphic().displayTravelerRating(getStatsBean().getTravRating());
+		}
 	}
 
-	public void setOrgRating(double orgRating) {
-		this.orgRating = orgRating;
+	public ProfileGraphic getGraphic() {
+		return graphic;
 	}
 
-	public double getTravRating() {
-		return travRating;
+	public void setGraphic(ProfileGraphic graphic) {
+		this.graphic = graphic;
 	}
 
-	public void setTravRating(double travRating) {
-		this.travRating = travRating;
+	public UserStatsBean getStatsBean() {
+		return statsBean;
+	}
+
+	public void setStatsBean(UserStatsBean statsBean) {
+		this.statsBean = statsBean;
 	}
 
 }
