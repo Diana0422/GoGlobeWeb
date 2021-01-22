@@ -29,11 +29,9 @@ public class JoinTripController {
 		String logStr = "Search trips by value started.\n";
 		Logger.getGlobal().info(logStr);
 		List<Trip> trips = TripDao.getInstance().getTrips();
-		System.out.println("trips:"+trips);
 		List<Trip> filteredTrips = new ArrayList<>();
 		
 		for (Trip trip: trips) {
-			System.out.println("trip price:"+trip.getPrice());
 			if (trip.getTitle().contains(value)) filteredTrips.add(trip);
 			
 		}
@@ -58,10 +56,10 @@ public class JoinTripController {
 		// Set the organizer
 		trip.setOrganizer(UserDaoDB.getInstance().getTripOrganizer(tripBean.getTitle()));
 		
-		if (!trip.getOrganizer().getEmail().equals(session.getEmail())) { // only if the user is not the organizer
+		if (!trip.getOrganizer().getEmail().equals(session.getSessionEmail())) { // only if the user is not the organizer
 			// Instantiate a new request
 			Request request = new Request();
-			request.setSender(UserDaoDB.getInstance().get(session.getEmail()));
+			request.setSender(UserDaoDB.getInstance().get(session.getSessionEmail()));
 			request.setReceiver(trip.getOrganizer());
 			request.setTarget(trip);
 			
@@ -71,13 +69,5 @@ public class JoinTripController {
 		
 		return false;
 		
-	}
-	
-	public static void main(String [] args) {
-		SessionBean session = new SessionBean();
-		session.setEmail("diamerita@gmail.com");
-		
-		List<TripBean> trips = JoinTripController.getInstance().searchTrips("Viaggio");
-		System.out.println(trips);
 	}
 }

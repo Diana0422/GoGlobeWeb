@@ -12,8 +12,6 @@ import logic.bean.ReviewBean;
 import logic.bean.TripBean;
 import logic.bean.UserBean;
 import logic.bean.UserStatsBean;
-import logic.dao.TripDAO;
-import logic.dao.TripDAOFile;
 import logic.model.Activity;
 import logic.model.Day;
 import logic.model.Location;
@@ -22,10 +20,10 @@ import logic.model.Review;
 import logic.model.Trip;
 import logic.model.TripCategory;
 import logic.model.User;
-import logic.model.exceptions.SerializationException;
 import logic.persistence.dao.ActivityDao;
 import logic.persistence.dao.DayDao;
 import logic.persistence.dao.ReviewDao;
+import logic.persistence.dao.TripDao;
 import logic.persistence.dao.UserDaoDB;
 import logic.persistence.dao.UserStatsDao;
 
@@ -58,11 +56,7 @@ public class ConversionController {
 			day.calclulateBudget();
 			
 			// save day to persistence
-			if (DayDao.getInstance().saveDay(day, tripTitle)) {
-				System.out.println("day saved.");
-			} else {
-				System.out.println("day not saved");
-			}
+			DayDao.getInstance().saveDay(day, tripTitle);
 			day.setActivities(convertActivityBeanList(dayBeans.get(i).getActivities(), day.getId(), tripTitle));
 			days.add(day);
 		}
@@ -81,9 +75,7 @@ public class ConversionController {
 			activities.add(activity);
 			
 			//save the activity in persistence
-			if (ActivityDao.getInstance().saveActivity(activity, dayId, tripTitle)) {
-				System.out.println("activity saved.");
-			}
+			ActivityDao.getInstance().saveActivity(activity, dayId, tripTitle);
 		}
 		
 		return activities;
@@ -149,8 +141,6 @@ public class ConversionController {
 			String retDateStr = formatter.format(t.getReturnDate());
 			bean.setDepartureDate(depDateStr);
 			bean.setReturnDate(retDateStr);
-//			bean.setTripLength(t.getTripLength());
-			
 			tripBeans.add(bean);
 		}
 		return tripBeans;
@@ -189,7 +179,6 @@ public class ConversionController {
 			}
 			requestBeans.add(bean);
 		}
-		System.out.println(requestBeans);
 		return requestBeans;
 		
 	}
@@ -212,7 +201,6 @@ public class ConversionController {
 		bean.setBio(user.getBio());
 		bean.setPoints(user.getPoints());
 		bean.setAge(user.calculateUserAge());
-		System.out.println("In conversion to user bean reviews:"+user.getReviews());
 		bean.setReviews(convertReviewList(ReviewDao.getInstance().getUserReviews(user.getEmail())));
 		bean.setStatsBean(statsBean);
 		bean.getStatsBean().setOrgRating(UserStatsDao.getInstance().getUserStats(user.getEmail()).getOrganizerRating());
@@ -239,19 +227,7 @@ public class ConversionController {
 		return list;
 	}
 
-	public Trip convertToTrip(TripBean tripBean) throws SerializationException {
-		TripDAO tripDao = new TripDAOFile();
-		List<Trip> list;
-		try {
-			list = tripDao.getAllTrips();
-			
-			for (Trip trip: list) {
-				if (tripBean.getTitle().equals(trip.getTitle())) return trip;
-			}
-		} catch (SerializationException e) {
-			throw new SerializationException(e, "Error in trip conversion.");
-		}
-		return null;
-		
+	public Trip convertToTrip(TripBean tripBean) {
+		return TripDao.getInstance().getTripByTitle(tripBean.getTitle());
 	}
 }

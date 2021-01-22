@@ -9,7 +9,6 @@ import org.json.JSONObject;
 import logic.model.Location;
 import logic.model.Place;
 import logic.model.apis.HereImplementation;
-import logic.model.factories.HereAdapterFactory;
 import logic.model.interfaces.LocationFinder;
 
 public class HereAPIAdapter implements LocationFinder{
@@ -46,14 +45,10 @@ public class HereAPIAdapter implements LocationFinder{
 			
 			JSONObject place = items.getJSONObject(i);			
 			placeName = place.getString("title");
-			System.out.println(placeName);
 			placeAddress = place.getString("vicinity");
-			System.out.println(placeAddress);
 			iconRef = place.getString("icon");
-			System.out.println(iconRef);
 			try {
 				openingHours = place.getJSONObject("openingHours").getString("text");
-				System.out.println(openingHours);
 			}catch(JSONException e){
 				 openingHours = "";
 			}

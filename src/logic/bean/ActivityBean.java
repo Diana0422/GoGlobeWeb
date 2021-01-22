@@ -23,8 +23,6 @@ public class ActivityBean {
 		Logger.getGlobal().info(infoStr);
 		infoStr = "DESCRIPTION CHECK:" + validateDescription(this.description);
 		Logger.getGlobal().info(infoStr);
-		
-//		return (validateTitle(this.title) && validateTime(this.time) && validateDescription(this.description) && validateCost(this.estimatedCost));
 		validateTitle(this.title);
 		validateTime(this.time);
 		validateDescription(this.description);
@@ -44,7 +42,6 @@ public class ActivityBean {
 	//Check if description is not null
 	private boolean validateDescription(String description) throws FormInputException {
 		
-//		return(!(description == null || description.equals("") ));
 		if ((description == null || description.equals(""))){
 			throw new FormInputException("Insert a description for the activity.");	
 		}

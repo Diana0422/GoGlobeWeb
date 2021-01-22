@@ -241,11 +241,11 @@
                                 		review.setTitle(profileBean.getTitle());
                                 		review.setComment(profileBean.getComment());
                                 		review.setDate(profileBean.getDate());
-                                		review.setReviewerName(sessionBean.getName());
-                                		review.setReviewerSurname(sessionBean.getSurname());
+                                		review.setReviewerName(sessionBean.getSessionName());
+                                		review.setReviewerSurname(sessionBean.getSessionSurname());
                                 		review.setVote(profileBean.getVote());
                                 		profileBean.getUser().getReviews().add(review);                  
-                                		ReviewUserController.getInstance().postReview(request.getParameter("type-radio"), profileBean.getVote(), profileBean.getComment(), profileBean.getTitle(), sessionBean.getEmail(), userBean.getEmail(), profileBean.getUser());
+                                		ReviewUserController.getInstance().postReview(request.getParameter("type-radio"), profileBean.getVote(), profileBean.getComment(), profileBean.getTitle(), sessionBean.getSessionEmail(), userBean.getEmail(), profileBean.getUser());
                                 		System.out.println("web view: org rating:"+profileBean.getUser().getStatsBean().getOrgRating()+" trav rating:"+profileBean.getUser().getStatsBean().getTravRating());
                                 		response.setIntHeader("Refresh",0);
                                 	}

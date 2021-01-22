@@ -80,13 +80,8 @@ public class UserBean implements Observer {
 
 	@Override
 	public void updateValue(Subject s) {
-		System.out.println("Updating value in bean:");
-		System.out.println("Before:"+getStatsBean().getTravRating());
 		getStatsBean().setTravRating(((UserStats) s).getTravelerRating());
-		System.out.println("After:"+getStatsBean().getTravRating());
-		System.out.println("Before:"+getStatsBean().getOrgRating());
 		getStatsBean().setOrgRating(((UserStats) s).getOrganizerRating());
-		System.out.println("After:"+getStatsBean().getOrgRating());
 		if (getGraphic()!= null) {
 			getGraphic().displayOrganizerRating(getStatsBean().getOrgRating());
 			getGraphic().displayTravelerRating(getStatsBean().getTravRating());

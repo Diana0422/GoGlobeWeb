@@ -2,7 +2,6 @@ package logic.view;
 
 import java.util.List;
 
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.geometry.Insets;
 import javafx.scene.control.Button;
@@ -81,6 +80,8 @@ public class TripInfoGraphic implements GraphicController {
     
     @FXML
     private Button btnBack;
+    
+    public static final String WIDGET_ERROR = "Widget loading error.";
 
     @FXML
     void back(MouseEvent event) {
@@ -175,11 +176,12 @@ public class TripInfoGraphic implements GraphicController {
 			vbox.getChildren().add(anchor);
 		} catch (LoadGraphicException e) {
 			AlertGraphic alert = new AlertGraphic();
-			alert.display(GUIType.JOIN, GUIType.HOME, null, DesktopSessionContext.getInstance().getSession(), "Widget loading error.", "Something unexpected occurred loading activity cards.");
+			alert.display(GUIType.JOIN, GUIType.HOME, null, DesktopSessionContext.getInstance().getSession(), WIDGET_ERROR, "Something unexpected occurred loading activity cards.");
 		}
 	}
 
-	public void joinTrip(ActionEvent e) {
+	@FXML
+	void joinTrip(MouseEvent event) {
 		if (DesktopSessionContext.getInstance().getSession() != null) {
 			if (JoinTripController.getInstance().joinTrip(getTripBean(), DesktopSessionContext.getInstance().getSession())) {
 				AlertGraphic alert = new AlertGraphic();
@@ -196,21 +198,18 @@ public class TripInfoGraphic implements GraphicController {
 	
 	private void displayOrganizer(TripBean trip) {
 		UserBean organizer = trip.getOrganizer();
-		System.out.println("organizer:"+trip.getOrganizer());
-		System.out.println("organizer reviews:"+trip.getOrganizer().getReviews());
 		UserItemGraphic graphic = new UserItemGraphic();
 		try {
 			AnchorPane anchor = (AnchorPane) graphic.initializeNode(organizer, trip);
 			boxOrganizer.getChildren().add(anchor);
 		} catch (LoadGraphicException e) {
 			AlertGraphic alert = new AlertGraphic();
-			alert.display(GUIType.JOIN, GUIType.HOME, null, DesktopSessionContext.getInstance().getSession(), "Widget loading error.", "Something unexpected occurred displaying organizer.");
+			alert.display(GUIType.JOIN, GUIType.HOME, null, DesktopSessionContext.getInstance().getSession(), WIDGET_ERROR, "Something unexpected occurred displaying organizer.");
 		}
 	}
 	
 	private void initializeParticipants(TripBean bean) {
 		List<UserBean> participants = bean.getParticipants();
-		System.out.println("participants:"+participants);
 		if (participants != null) {
 			for (UserBean user: participants) {
 				displayParticipant(user, bean);
@@ -226,7 +225,7 @@ public class TripInfoGraphic implements GraphicController {
 			boxTravelers.getChildren().add(anchor);
 		} catch (LoadGraphicException e) {
 			AlertGraphic alert = new AlertGraphic();
-			alert.display(GUIType.JOIN, GUIType.HOME, null, DesktopSessionContext.getInstance().getSession(), "Widget loading error.", "Something unexpected occurred displaying user.");
+			alert.display(GUIType.JOIN, GUIType.HOME, null, DesktopSessionContext.getInstance().getSession(), WIDGET_ERROR, "Something unexpected occurred displaying user.");
 		}	
 	}
 
@@ -234,7 +233,6 @@ public class TripInfoGraphic implements GraphicController {
 	public void initializeData(Object recBundle, Object forBundle) {
 		TripBean bean = (TripBean) recBundle;
 		setTripBean(bean);
-		System.out.println(getTripBean());
 		initializeParticipants(getTripBean());
 		displayOrganizer(getTripBean());
 		initializeTripData();

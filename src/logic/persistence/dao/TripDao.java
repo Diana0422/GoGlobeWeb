@@ -19,6 +19,13 @@ public class TripDao {
 	public static final String GET_TRIPS = "call fetch_trips()";
 	public static final String GET_SHARED_TRIPS = "call fetch_shared_trips()";
 	public static final String STORE_PARTICIPANT = "call register_trip_participation(?, ?)";
+	public static final String TITLE_COLUMN = "title";
+	public static final String PRICE_COLUMN = "price";
+	public static final String DEPARTURE_COLUMN = "departure";
+	public static final String RETURN_COLUMN = "return_date";
+	public static final String CATEGORY1_COLUMN = "category1";
+	public static final String CATEGORY2_COLUMN = "category2";
+	
 	
 	private static TripDao instance = null;
 	
@@ -34,12 +41,6 @@ public class TripDao {
 	public boolean saveTrip(Trip t) {
 		try (Connection conn = ConnectionManager.getInstance().getConnection();
 			CallableStatement stmt = conn.prepareCall(STORE_TRIP)) {
-			System.out.println("trip title:"+t.getTitle());
-			System.out.println("trip cat1:"+t.getCategory1().toString());
-			System.out.println("trip cat2:"+t.getCategory2().toString());
-			System.out.println("trip dep:"+new java.sql.Date(t.getDepartureDate().getTime()));
-			System.out.println("trip ret:"+new java.sql.Date(t.getReturnDate().getTime()));
-			System.out.println("org email:"+t.getOrganizer().getEmail());
 			stmt.setString(1, t.getTitle());
 			stmt.setString(2, t.getCategory1().toString());
 			stmt.setString(3, t.getCategory2().toString());
@@ -64,26 +65,17 @@ public class TripDao {
 			if (stmt.execute()) rs = stmt.getResultSet();
 			if (rs != null) {
 				rs.first();
-				int price = rs.getInt("price");
-				Date dep = rs.getDate("departure");
-				Date ret = rs.getDate("return_date");
-				TripCategory cat1 = TripCategory.valueOf(rs.getString("category1"));
-				TripCategory cat2 = TripCategory.valueOf(rs.getString("category2"));
-//				String description = rs.getString("description");
-//				int minAge = rs.getInt("min_age");
-//				int maxAge = rs.getInt("max_age");
-//				int maxPart = rs.getInt("max_participants");
-				
+				int price = rs.getInt(PRICE_COLUMN);
+				Date dep = rs.getDate(DEPARTURE_COLUMN);
+				Date ret = rs.getDate(RETURN_COLUMN);
+				TripCategory cat1 = TripCategory.valueOf(rs.getString(CATEGORY1_COLUMN));
+				TripCategory cat2 = TripCategory.valueOf(rs.getString(CATEGORY2_COLUMN));
 				trip.setTitle(tripTitle);
 				trip.setPrice(price);
 				trip.setCategory1(cat1);
 				trip.setCategory2(cat2);
 				trip.setDepartureDate(dep);
 				trip.setReturnDate(ret);
-//				trip.setDescription(description);
-//				trip.setMinAge(minAge);
-//				trip.setMaxAge(maxAge);
-//				trip.setMaxParticipants(maxPart);
 			}
 			
 			return trip;
@@ -102,28 +94,18 @@ public class TripDao {
 			CallableStatement stmt = conn.prepareCall(GET_TRIPS, ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY)) {
 			
 			if (stmt.execute()) {
-				System.out.println("Statement executed.");
 				rs = stmt.getResultSet();
-				System.out.println(rs);
 			}
-			System.out.println("Here");
 			if (rs != null) {
-				System.out.println("rs is not null.");
-				System.out.println(rs.first());
 				rs.first();
 				do {
 					// reading columns
-					String title = rs.getString("title");
-					System.out.println("title:"+title);
-					Date departure = rs.getDate("departure");
-					System.out.println("departure:"+departure);
-					Date returnDate = rs.getDate("return_date");
-					System.out.println("return:"+returnDate);
-					TripCategory cat1 = TripCategory.valueOf(rs.getString("category1"));
-					System.out.println("category1:"+cat1);
-					TripCategory cat2 = TripCategory.valueOf(rs.getString("category2"));
-					System.out.println("category2:"+cat2);
-					int price = rs.getInt("price");
+					String title = rs.getString(TITLE_COLUMN);
+					Date departure = rs.getDate(DEPARTURE_COLUMN);
+					Date returnDate = rs.getDate(RETURN_COLUMN);
+					TripCategory cat1 = TripCategory.valueOf(rs.getString(CATEGORY1_COLUMN));
+					TripCategory cat2 = TripCategory.valueOf(rs.getString(CATEGORY2_COLUMN));
+					int price = rs.getInt(PRICE_COLUMN);
 					
 					// Instantiate new trip
 					Trip t = new Trip();
@@ -142,7 +124,7 @@ public class TripDao {
 			return trips;
 		} catch (SQLException e) {
 			//TODO
-			return null;
+			return trips;
 		}
 	}
 	
@@ -162,11 +144,11 @@ public class TripDao {
 				rs.first();
 				do {
 					// reading columns
-					String title = rs.getString("title");
-					Date departure = rs.getDate("departure");
-					Date returnDate = rs.getDate("return_date");
-					TripCategory cat1 = TripCategory.valueOf(rs.getString("category1"));
-					TripCategory cat2 = TripCategory.valueOf(rs.getString("category2"));
+					String title = rs.getString(TITLE_COLUMN);
+					Date departure = rs.getDate(DEPARTURE_COLUMN);
+					Date returnDate = rs.getDate(RETURN_COLUMN);
+					TripCategory cat1 = TripCategory.valueOf(rs.getString(CATEGORY1_COLUMN));
+					TripCategory cat2 = TripCategory.valueOf(rs.getString(CATEGORY2_COLUMN));
 					String desc = rs.getString("description");
 					int minAge = rs.getInt("min_age");
 					int maxAge = rs.getInt("max_age");
@@ -193,7 +175,7 @@ public class TripDao {
 			return trips;
 		} catch (SQLException e) {
 			//TODO
-			return null;
+			return trips;
 		}
 	}
 	

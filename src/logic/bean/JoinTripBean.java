@@ -37,17 +37,4 @@ public class JoinTripBean {
 	public void setTrip(TripBean trip) {
 		this.trip = trip;
 	}
-	
-//	public boolean searchTripsByValue() {
-//		// Calls the controller to search list of available trips
-//		//TODO MOVE TO GRAPHIC CONTROLLERS
-//		try {
-//			this.setObjects(JoinTripController.getInstance().searchTrips(this.searchVal));
-//			return !this.getObjects().isEmpty();
-//		} catch (SerializationException e) {
-//			Logger.getGlobal().log(Level.WARNING, e.getMessage());
-//			e.printStackTrace();
-//			return false;
-//		}
-//	}
 }

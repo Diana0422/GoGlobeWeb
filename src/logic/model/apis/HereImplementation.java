@@ -12,7 +12,7 @@ import org.json.JSONObject;
 public class HereImplementation {
 	
 	
-	private static final String apiKey = "oDbN2CPeuk1ebsCIJhhcaxEKnKuGCJiUVQB9KYkjAYY";
+	private static final String API_KEY = "oDbN2CPeuk1ebsCIJhhcaxEKnKuGCJiUVQB9KYkjAYY";
 	
 	
 	public JSONObject getNearbyPlaces(String coordinates, String category) {
@@ -20,7 +20,7 @@ public class HereImplementation {
         {
         	HttpRequest request = HttpRequest.newBuilder()
         			.uri(URI.create("https://places.ls.hereapi.com/places/v1/discover/explore"
-        					+ "?apiKey="+ apiKey
+        					+ "?apiKey="+ API_KEY
         					+ "&in=" + coordinates + ";r=80000" // r=80000 for category Adventure, Relax; r=15000 other
 //        					+ "&cat=natural-geographical" // --> for category Adventure
 //        					+ "&cat=sights-museums" // --> for category Culture
@@ -35,7 +35,6 @@ public class HereImplementation {
  
         
         	HttpResponse<String> response = HttpClient.newHttpClient().send(request, HttpResponse.BodyHandlers.ofString());
-        	System.out.println(request.toString());
         	
         	return new JSONObject(response.body());
         }
@@ -65,7 +64,7 @@ public class HereImplementation {
 					.uri(URI.create("https://geocode.search.hereapi.com/v1/"
 							+"geocode" 
 							+"?q=" + locationName
-							+"&apiKey=" + apiKey))
+							+"&apiKey=" + API_KEY))
 					.method("GET", HttpRequest.BodyPublishers.noBody())
 					.build();       
         	HttpResponse<String> response = HttpClient.newHttpClient()

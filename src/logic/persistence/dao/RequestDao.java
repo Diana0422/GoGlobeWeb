@@ -23,6 +23,14 @@ public class RequestDao {
 	private static final String GET_SENT = "call fetch_sent_requests(?)";
 	private static final String STORE_REQUEST = "call register_request(?, ?)";
 	private static final String DELETE_REQUEST = "call delete_request(?, ?)";
+	private static final String ID_COLUMN = "id";
+	private static final String STATE_COLUMN ="state";
+	private static final String TRIP_COLUMN = "trip_target";
+	private static final String SEND_EMAIL_COLUMN = "user_email";
+	private static final String USER_NAME_COLUMN = "name";
+	private static final String USER_SURNAME_COLUMN = "surname";
+	private static final String USER_BIRTH_COLUMN = "birthday";
+	private static final String ORGANIZATOR_COLUMN = "organizator";
 	
 	private static RequestDao instance = null;
 	
@@ -50,13 +58,12 @@ public class RequestDao {
 			
 			if (rs != null) {
 				rs.first();
-				int id = rs.getInt("id");
-				boolean state = rs.getBoolean("state");
+				int id = rs.getInt(ID_COLUMN);
+				boolean state = rs.getBoolean(STATE_COLUMN);
 				r = new Request();
 				r.setAccepted(state);
 				r.setId(id);
 			}
-			System.out.println("Returning request:"+r);
 			return r;
 		} catch (SQLException e) {
 			//TODO
@@ -77,12 +84,12 @@ public class RequestDao {
 				if (!rs.next()) return list;
 				rs.first();
 				do {
-					boolean state = rs.getBoolean("state");
-					String tripTitle = rs.getString("trip_target");
-					String sender = rs.getString("user_email");
-					String senderName = rs.getString("name");
-					String senderSurname = rs.getString("surname");
-					Date birth = rs.getDate("birthday");
+					boolean state = rs.getBoolean(STATE_COLUMN);
+					String tripTitle = rs.getString(TRIP_COLUMN);
+					String sender = rs.getString(SEND_EMAIL_COLUMN);
+					String senderName = rs.getString(USER_NAME_COLUMN);
+					String senderSurname = rs.getString(USER_SURNAME_COLUMN);
+					Date birth = rs.getDate(USER_BIRTH_COLUMN);
 					
 					Request r = RequestFactory.getInstance().createModel();
 					User u = UserFactory.getInstance().createModel();
@@ -123,12 +130,12 @@ public class RequestDao {
 				if (!rs.next()) return list;
 				rs.first();
 				do {
-					boolean state = rs.getBoolean("state");
-					String tripTitle = rs.getString("trip_target");
-					String receiver = rs.getString("organizator");
-					String receiverName = rs.getString("name");
-					String receiverSurname = rs.getString("surname");
-					Date birth = rs.getDate("birthday");
+					boolean state = rs.getBoolean(STATE_COLUMN);
+					String tripTitle = rs.getString(TRIP_COLUMN);
+					String receiver = rs.getString(ORGANIZATOR_COLUMN);
+					String receiverName = rs.getString(USER_NAME_COLUMN);
+					String receiverSurname = rs.getString(USER_SURNAME_COLUMN);
+					Date birth = rs.getDate(USER_BIRTH_COLUMN);
 					
 					Request r = RequestFactory.getInstance().createModel();
 					User u = UserFactory.getInstance().createModel();

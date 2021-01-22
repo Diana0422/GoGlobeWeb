@@ -30,7 +30,7 @@
             <Label layoutX="191.0" layoutY="128.0" prefHeight="17.0" prefWidth="111.0" text="Surname" />
             <Label layoutX="37.0" layoutY="185.0" prefHeight="17.0" prefWidth="111.0" text="Birthday" />
             <Line endX="153.0" layoutX="138.0" layoutY="250.0" opacity="0.26" startX="-100.0" strokeWidth="0.5" />
-            <Button id="btn" fx:id="btnSignIn" layoutX="38.0" layoutY="284.0" mnemonicParsing="false" onAction="#validate" text="Sign in">
+            <Button id="btn" fx:id="btnSignIn" layoutX="38.0" layoutY="284.0" mnemonicParsing="false" onMouseClicked="#validate" text="Sign in">
                <font>
                   <Font size="14.0" />
                </font>

@@ -65,10 +65,6 @@ public class ActivityDao {
 					String time = rs.getTime("time").toString();
 					String description = rs.getString("description");
 					int cost = rs.getInt("estimated_cost");
-					System.out.println("activity title:"+title);
-					System.out.println("activity time:"+time);
-					System.out.println("activity cost:"+cost);
-					System.out.println("activity description:"+ description);
 					
 					//Instantiate new activity
 					Activity a = new Activity(title, time, description, cost);
@@ -81,7 +77,7 @@ public class ActivityDao {
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-			return null;
+			return activities;
 		}
 		
 		

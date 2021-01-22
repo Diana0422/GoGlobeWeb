@@ -1,11 +1,7 @@
 package logic.view;
 
-import java.net.URL;
-import java.util.ResourceBundle;
-
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
@@ -16,7 +12,7 @@ import logic.control.PlanTripController;
 import logic.model.TripCategory;
 import logic.model.exceptions.FormInputException;
 
-public class SelectTripPreferencesGraphic implements GraphicController, Initializable {
+public class SelectTripPreferencesGraphic implements GraphicController {
 
     @FXML
     private TextField tfTripTitle;
@@ -72,11 +68,6 @@ public class SelectTripPreferencesGraphic implements GraphicController, Initiali
 
 	@Override
 	public void initializeData(Object recBundle, Object forBundle) {
-		
-	}
-
-	@Override
-	public void initialize(URL arg0, ResourceBundle arg1) {
 		TripCategory[] categories = TripCategory.values();
 		for (int i = 0; i < categories.length; i++) {
 			cbCategory1.getItems().add((categories[i].toString()));

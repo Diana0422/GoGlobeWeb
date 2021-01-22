@@ -63,7 +63,7 @@ public class GainPointsGraphic implements GraphicController {
 	public void loadTrip() {
 		
 		try {
-			setTrip(GainPointsController.getInstance().getTripOfTheDay(DesktopSessionContext.getInstance().getSession().getEmail()));
+			setTrip(GainPointsController.getInstance().getTripOfTheDay(DesktopSessionContext.getInstance().getSession().getSessionEmail()));
 		} catch (SerializationException e1) {
 			AlertGraphic graphic = new AlertGraphic();
 			graphic.display(GUIType.JOIN, GUIType.HOME, null, DesktopSessionContext.getInstance().getSession(), "Serialization Error", "Something unexpected occurred loading trip.");
@@ -100,7 +100,7 @@ public class GainPointsGraphic implements GraphicController {
 	public void initializeData(Object recBundle, Object forBundle) {
 		loadTrip();
 		bundle = forBundle;
-		lblPoints.setText("You have "+DesktopSessionContext.getInstance().getSession().getPoints()+" points.");
+		lblPoints.setText("You have "+DesktopSessionContext.getInstance().getSession().getSessionPoints()+" points.");
 	}
 				
 }

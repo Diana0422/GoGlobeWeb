@@ -71,7 +71,6 @@ public class ShareTripGraphic implements GraphicController {
 			if (planTripBean.validateSharingPref()){ 
 				PlanTripController.getInstance().setSharingPreferences(planTripBean);
 				PlanTripController.getInstance().saveTrip(planTripBean.getTripBean(), DesktopSessionContext.getInstance().getSession()); 
-				System.out.println("VIAGGIO SALVATO COME CONDIVISO");
 				
 				DesktopSessionContext.getGuiLoader().loadGUI(null, DesktopSessionContext.getInstance().getSession(), GUIType.HOME);
 			}

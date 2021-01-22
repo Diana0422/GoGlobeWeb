@@ -1,6 +1,9 @@
 package logic.model;
 
 import java.io.Serializable;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 import logic.model.interfaces.Observer;
 import logic.model.interfaces.Subject;
 import logic.model.utils.ReviewChangeManager;
@@ -15,19 +18,21 @@ public class UserStats implements Subject, Serializable{
 	@Override
 	public void attach(Observer o) {
 		ReviewChangeManager.getInstance().register(this, o);
-		System.out.println("Observer: "+o+" subscribed.");
-		
+		String logStr = "Observer "+o+" subscribed.";
+		Logger.getGlobal().log(Level.INFO, logStr);
 	}
 	
 	@Override
 	public void detach(Observer o) {
 		ReviewChangeManager.getInstance().unregister(this, o);
-		System.out.println("Observer: "+o+" unsubscribed.");
+		String logStr = "Observer "+o+" unsubscribed.";
+		Logger.getGlobal().log(Level.INFO, logStr);
 	}
 	
 	@Override
 	public void notifyState() {
-		System.out.println("Notifing to observers.");
+		String logStr = "Notifing to observers.";
+		Logger.getGlobal().log(Level.INFO, logStr);
 		ReviewChangeManager.getInstance().notifySubject(this);
 		
 	}
@@ -37,7 +42,6 @@ public class UserStats implements Subject, Serializable{
 	}
 	
 	public void setOrganizerRating(double organizerRating) {
-		System.out.println("Organizer rating adjourned");
 		this.organizerRating = organizerRating;
 		this.notifyState();
 	}
@@ -47,7 +51,6 @@ public class UserStats implements Subject, Serializable{
 	}
 	
 	public void setTravelerRating(double travelerRating) {
-		System.out.println("Traveler rating adjourned");
 		this.travelerRating = travelerRating;
 		this.notifyState();
 	}

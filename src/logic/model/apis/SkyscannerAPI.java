@@ -20,6 +20,7 @@ public class SkyscannerAPI {
 	private JSONObject flight;
 	private JSONArray carriers;
 	private JSONArray places;
+	private static final String FLIGHT_OBJ = "OutboundLeg";
 
 	public String getOriginCityId() {
 		return originCityId;
@@ -132,7 +133,7 @@ public class SkyscannerAPI {
 
 	public String getOrigin(JSONObject flight)  {
 		
-		JSONObject details = flight.getJSONObject("OutboundLeg");
+		JSONObject details = flight.getJSONObject(FLIGHT_OBJ);
     	int originId = details.getInt("OriginId");
 		
     	for (int i=0; i<getPlaces().length(); i++) {
@@ -145,7 +146,7 @@ public class SkyscannerAPI {
 	
 	public String getDestination(JSONObject flight) {
 		
-		JSONObject details = flight.getJSONObject("OutboundLeg");
+		JSONObject details = flight.getJSONObject(FLIGHT_OBJ);
 		int destId = details.getInt("DestinationId");
 		
 		for (int i=0; i<getPlaces().length(); i++) {
@@ -159,7 +160,7 @@ public class SkyscannerAPI {
 
 
 	public String getCarrierName(JSONObject flight) {
-		JSONObject details = flight.getJSONObject("OutboundLeg");
+		JSONObject details = flight.getJSONObject(FLIGHT_OBJ);
 		int carrierId = details.getJSONArray("CarrierIds").getInt(0);
 		
 		for (int i=0; i<getCarriers().length(); i++) {

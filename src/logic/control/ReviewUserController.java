@@ -36,8 +36,6 @@ public class ReviewUserController {
 		if (o != null) {
 			target.getStats().attach(o);
 		}
-		System.out.println(target);
-		System.out.println(reviewer);
 		
 		Date today = Calendar.getInstance().getTime();
 		
@@ -52,8 +50,6 @@ public class ReviewUserController {
 		review.setDate(today);
 		review.setComment(comment);
 		review.setTitle(title);
-		
-		System.out.println("Review POSTED.");
 		target.addReview(review);
 		return ReviewDao.getInstance().save(review, target.getEmail());
 		

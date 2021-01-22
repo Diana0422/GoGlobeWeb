@@ -32,7 +32,7 @@ public class ParticipationController {
 	}
 	
 	public boolean checkParticipation(Trip trip) {
-	/*	String userIP = null;
+		String userIP = null;
 		String userPos = null;
 		List<Day> days = trip.getDays();
 		
@@ -41,8 +41,8 @@ public class ParticipationController {
 		String todayStr = formatter.format(today);
 		
 		for (Day day: days) {
-			Logger.getGlobal().info("Date associated: "+day.getDate());
-			String dayStr = formatter.format(day.getDate());
+			// TODO prelevare data del giorno
+			String dayStr = "";
 			
 			if (dayStr.equals(todayStr)) {
 				//TODO FARE IN MODO CHE LA POSIZIONE VENGA PRELEVATA 1 VOLTA SOLA AL MOMENTO DEL LOGIN E SIA FISSA PER L'INTERA SESSIONE
@@ -60,7 +60,7 @@ public class ParticipationController {
 				}
 				Logger.getGlobal().info(userPos);
 				
-				if (userPos.equals(day.getLocation())) {
+				if (userPos.equals(day.getLocation().getCity())) {
 					Logger.getGlobal().log(Level.INFO, "VALID PARTICIPATION. You are participating to this trip.");
 					return true;
 				} else {
@@ -71,7 +71,6 @@ public class ParticipationController {
 		}
 		
 		Logger.getGlobal().log(Level.SEVERE, "This trip is not happening today.");
-		*/
 		return false;	
 	}
 }

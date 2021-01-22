@@ -1,13 +1,12 @@
 package logic.view;
 
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
+import javafx.scene.input.MouseEvent;
 import logic.bean.SessionBean;
 import logic.control.RegistrationController;
-import logic.model.exceptions.SerializationException;
 
 public class RegistrationGraphic {
 	@FXML
@@ -43,7 +42,8 @@ public class RegistrationGraphic {
 	
 	/* Action methods */
 	
-	public void validate(ActionEvent event) {
+    @FXML
+    void validate(MouseEvent event) {
 		String email = txtEmail.getText();
 		String password = txtPassword.getText();
 		String name = txtName.getText();
@@ -54,18 +54,12 @@ public class RegistrationGraphic {
 			lblMessage.setText("Input values not valid.");
 		} else {
 			/* Call the controller to register the user */
-			try {
-				if ((setSession(RegistrationController.getInstance().register(email, password, name, surname, birthday)))!= null) {
-					DesktopSessionContext.getInstance().setSession(getSession());
-					DesktopSessionContext.getGuiLoader().loadGUI(null, DesktopSessionContext.getInstance().getSession(), GUIType.HOME);
-				} else {
-					lblMessage.setText("User already registered with this email.");
-				}
-			} catch (SerializationException e) {
-				// TODO display error message on screen
-				e.printStackTrace();
+			if ((setSession(RegistrationController.getInstance().register(email, password, name, surname, birthday)))!= null) {
+				DesktopSessionContext.getInstance().setSession(getSession());
+				DesktopSessionContext.getGuiLoader().loadGUI(null, DesktopSessionContext.getInstance().getSession(), GUIType.HOME);
+			} else {
+				lblMessage.setText("User already registered with this email.");
 			}
 		}
-		
-	}
+    }
 }

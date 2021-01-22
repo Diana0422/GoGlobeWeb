@@ -52,10 +52,6 @@ public class FlightController {
 		int ticketPrice;
 		trip = TripDao.getInstance().getTripByTitle(bean.getTitle()); //get trip
 		trip.setDays(DayDao.getInstance().getTripDays(trip.getTitle()));
-		System.out.println(trip.getDays());
-		System.out.println(trip.getDays().get(0));
-		System.out.println(trip.getDays().get(0).getLocation());
-		System.out.println(trip.getPrice());
 		String destination = trip.getDays().get(0).getLocation().getCity();
 		try {
 			ticketPrice = new FlightFinderAdapter(new SkyscannerAPI()).getFlightPrice(userLocation, destination, trip.getDepartureDate());

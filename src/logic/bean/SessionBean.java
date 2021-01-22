@@ -4,10 +4,10 @@ import logic.model.User;
 
 public class SessionBean {
 	private User loggedUser;
-	private String name;
-	private String surname;
-	private String email;
-	private int points;
+	private String sessionName;
+	private String sessionSurname;
+	private String sessionEmail;
+	private int sessionPoints;
 	
 	public SessionBean() {
 		// empty constructor
@@ -19,45 +19,46 @@ public class SessionBean {
 
 	public void setLoggedUser(User loggedUser) {
 		this.loggedUser = loggedUser;
-		setName(loggedUser.getName());
-		setSurname(loggedUser.getSurname());
+		setSessionName(loggedUser.getName());
+		setSessionSurname(loggedUser.getSurname());
 	}
 
-	public String getName() {
-		return name;
-	}
-
-	public void setName(String name) {
-		this.name = name;
-	}
-
-	public String getSurname() {
-		return surname;
-	}
-
-	public void setSurname(String surname) {
-		this.surname = surname;
-	}
-
-	public String getEmail() {
-		return email;
-	}
-
-	public void setEmail(String email) {
-		this.email = email;
-	}
-
-	public int getPoints() {
-		return points;
-	}
-
-	public void setPoints(int points) {
-		this.points = points;
-	}
 
 	public String getUserLocation() {
 		// TODO Auto-generated method stub
 		return null;
+	}
+
+	public String getSessionName() {
+		return sessionName;
+	}
+
+	public void setSessionName(String sessionName) {
+		this.sessionName = sessionName;
+	}
+
+	public String getSessionSurname() {
+		return sessionSurname;
+	}
+
+	public void setSessionSurname(String sessionSurname) {
+		this.sessionSurname = sessionSurname;
+	}
+
+	public String getSessionEmail() {
+		return sessionEmail;
+	}
+
+	public void setSessionEmail(String sessionEmail) {
+		this.sessionEmail = sessionEmail;
+	}
+
+	public int getSessionPoints() {
+		return sessionPoints;
+	}
+
+	public void setSessionPoints(int sessionPoints) {
+		this.sessionPoints = sessionPoints;
 	}
 	
 	

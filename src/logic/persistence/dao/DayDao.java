@@ -31,10 +31,6 @@ public class DayDao {
 	public boolean saveDay(Day day, String tripTitle) {
 		try (Connection conn = ConnectionManager.getInstance().getConnection();
 			CallableStatement stmt = conn.prepareCall(STORE_DAY)) {
-			System.out.println("dayId:"+day.getId());
-			System.out.println("tripTitle:"+tripTitle);
-			System.out.println("day location city:"+day.getLocation().getCity());
-			System.out.println("day location country:"+day.getLocation().getCountry());
 			stmt.setInt(1, day.getId());
 			stmt.setString(2, tripTitle);
 			stmt.setString(3, day.getLocation().getCity());
@@ -77,7 +73,7 @@ public class DayDao {
 			return days;
 		} catch (SQLException e) {
 			//TODO
-			return null;
+			return days;
 		}
 	}
 	

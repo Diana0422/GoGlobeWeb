@@ -18,6 +18,13 @@ public class UserDaoDB {
 	private static final String DELETE_USER = "call delete_user(?)";
 	private static final String GET_ORGANIZER = "call fetch_trip_organizer(?)";
 	private static final String GET_PARTICIPANTS = "call fetch_trip_participants(?)";
+	private static final String EMAIL_COLUMN = "email";
+	private static final String NAME_COLUMN = "name";
+	private static final String SURNAME_COLUMN = "surname";
+	private static final String PASS_COLUMN = "password";
+	private static final String BIRTH_COLUMN = "birthday";
+	private static final String BIO_COLUMN = "bio";
+	private static final String POINTS_COLUMN = "points";
 	
 	private static UserDaoDB instance = null;
 	
@@ -46,13 +53,13 @@ public class UserDaoDB {
 			if (rs != null) {
 				if (!rs.first()) return null;
 				
-				String email = rs.getString("email");
-				String name = rs.getString("name");
-				String surname = rs.getString("surname");
-				String password = rs.getNString("password");
-				Date date = rs.getDate("birthday");
-				String bio = rs.getString("bio");
-				int points = rs.getInt("points");
+				String email = rs.getString(EMAIL_COLUMN);
+				String name = rs.getString(NAME_COLUMN);
+				String surname = rs.getString(SURNAME_COLUMN);
+				String password = rs.getNString(PASS_COLUMN);
+				Date date = rs.getDate(BIRTH_COLUMN);
+				String bio = rs.getString(BIO_COLUMN);
+				int points = rs.getInt(POINTS_COLUMN);
 			
 				u = new User();				
 					
@@ -64,14 +71,12 @@ public class UserDaoDB {
 				u.setBio(bio);
 				u.setPoints(points);
 			}
-
-			System.out.println(u.getName()+" "+u.getSurname()+" "+u.getEmail()+" "+u.getPassword()+" "+u.getPoints()+" "+u.getBirthday()+" "+u.getBio());
-				
+			return u;
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+			return u;
 		}
-		return u;
 		
 	}
 
@@ -140,12 +145,12 @@ public class UserDaoDB {
 			if (rs != null) {
 				rs.first();
 				// Only one row: fetch columns
-				String email = rs.getString("email");
-				String pass = rs.getString("password");
-				String name = rs.getString("name");
-				String surname = rs.getString("surname");
-				Date birthday = rs.getDate("birthday");
-				String bio = rs.getString("bio");
+				String email = rs.getString(EMAIL_COLUMN);
+				String pass = rs.getString(PASS_COLUMN);
+				String name = rs.getString(NAME_COLUMN);
+				String surname = rs.getString(SURNAME_COLUMN);
+				Date birthday = rs.getDate(BIRTH_COLUMN);
+				String bio = rs.getString(BIO_COLUMN);
 				
 				u = new User();
 				u.setEmail(email);
@@ -160,7 +165,7 @@ public class UserDaoDB {
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-			return null;
+			return u;
 		}
 	}
 	
@@ -180,12 +185,12 @@ public class UserDaoDB {
 			if (rs != null) {
 				rs.first();
 				do {
-					String name = rs.getString("name");
-					String surname = rs.getString("surname");
-					String email = rs.getString("email");
-					String pass = rs.getString("password");
-					Date birthday = rs.getDate("birthday");
-					String bio = rs.getString("bio");
+					String name = rs.getString(NAME_COLUMN);
+					String surname = rs.getString(SURNAME_COLUMN);
+					String email = rs.getString(EMAIL_COLUMN);
+					String pass = rs.getString(PASS_COLUMN);
+					Date birthday = rs.getDate(BIRTH_COLUMN);
+					String bio = rs.getString(BIO_COLUMN);
 					
 					User u = new User();
 					u.setBio(bio);

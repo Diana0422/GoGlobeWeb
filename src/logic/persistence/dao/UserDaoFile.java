@@ -19,7 +19,7 @@ import logic.model.utils.UserSerialObject;
 public class UserDaoFile {
 	
 	private PersistenceController pc = PersistenceController.getInstance();
-
+	private static final String ERROR_FILENOTFOUND = "The file specified was not found in the workingspace.";
 	
 	public List<User> getAllUsers() throws SerializationException {
 		// Reads a list of trips from the back-end file
@@ -33,7 +33,7 @@ public class UserDaoFile {
 				return o.getList();
 			}
 		} catch (FileNotFoundException e) {
-			throw new SerializationException(e.getCause(), "The file specified was not found in the workingspace.");
+			throw new SerializationException(e.getCause(), ERROR_FILENOTFOUND);
 		} catch (IOException e) {
 			e.printStackTrace();
 		} catch (ClassNotFoundException e) {
@@ -51,13 +51,6 @@ public class UserDaoFile {
 				
 		for (User user : users) {
 			if (user.getEmail().equals(email)) {
-				System.out.println("Got USER:");
-				System.out.println("name: "+user.getName());
-				System.out.println("surname: "+user.getSurname());
-				System.out.println("points:"+user.getPoints());
-				System.out.println("birthday:"+user.getBirthday());
-				System.out.println("reviews: "+user.getReviews());
-				System.out.println("stats: "+user.getStats().getOrganizerRating()+" "+user.getStats().getTravelerRating());
 				return user;
 			}
 		}
@@ -78,13 +71,6 @@ public class UserDaoFile {
 				tmp.setBirthday(newUser.getBirthday());
 				tmp.setReviews(newUser.getReviews());
 				tmp.setStats(newUser.getStats());
-				System.out.println("Updated USER:");
-				System.out.println("name: "+tmp.getName());
-				System.out.println("surname: "+tmp.getSurname());
-				System.out.println("points:"+tmp.getPoints());
-				System.out.println("birthday:"+tmp.getBirthday());
-				System.out.println("reviews: "+tmp.getReviews());
-				System.out.println("stats: "+tmp.getStats().getOrganizerRating()+" "+tmp.getStats().getTravelerRating());
 				Logger.getGlobal().info("Add update profile picture.");
 				break;
 			}
@@ -95,7 +81,7 @@ public class UserDaoFile {
 			out.writeObject(o);
 			return true;
 		} catch (FileNotFoundException e) {
-			throw new SerializationException(e.getCause(), "The file specified was not found in the workingspace.");
+			throw new SerializationException(e.getCause(), ERROR_FILENOTFOUND);
 		} catch (IOException e) {
 			throw new SerializationException(e.getCause(), "Error opening the output stream to the specified file.");
 		}
@@ -113,7 +99,7 @@ public class UserDaoFile {
 			out.writeObject(o);
 			return true;
 		} catch (FileNotFoundException e) {
-			throw new SerializationException(e.getCause(), "The file specified was not found in the workingspace.");
+			throw new SerializationException(e.getCause(), ERROR_FILENOTFOUND);
 		} catch (IOException e) {
 			throw new SerializationException(e.getCause(), "Error opening the output stream to the specified file.");
 		}

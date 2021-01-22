@@ -64,7 +64,6 @@ public class User implements Serializable {
 
 	public boolean addReview(Review rev) {
 		reviews.add(rev);
-		System.out.println("Added review to user:"+this);
 		calculateAverageRating(rev.getType());
 		return false;
 		
@@ -87,15 +86,11 @@ public class User implements Serializable {
 		}
 		
 		if (role == RoleType.ORGANIZER) {
-			System.out.println("Setting average organizer rating:"+avg);
 			stats.setOrganizerRating(avg);
 			UserStatsDao.getInstance().updateStats(this.getEmail(), this.getPoints(), this.getStats().getOrganizerRating(), this.getStats().getTravelerRating());
-			System.out.println(stats.getOrganizerRating());
 		} else {
-			System.out.println("Setting average traveler rating:"+avg);
 			stats.setTravelerRating(avg);
 			UserStatsDao.getInstance().updateStats(this.getEmail(), this.getPoints(), this.getStats().getOrganizerRating(), this.getStats().getTravelerRating());
-			System.out.println(stats.getTravelerRating());
 		}
 	}
  	

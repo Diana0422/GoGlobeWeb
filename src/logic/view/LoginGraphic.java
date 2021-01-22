@@ -38,11 +38,10 @@ public class LoginGraphic {
     	if (loginBean.validate()) {
     		if ((loginBean = LoginController.getInstance().login(loginBean.getUsername(), loginBean.getPassword())) != null) {
         		SessionBean session = new SessionBean();
-        		System.out.println("email: "+loginBean.getUsername());
-        		session.setEmail(loginBean.getUsername());
-        		session.setName(loginBean.getNome());
-        		session.setSurname(loginBean.getCognome());
-        		session.setPoints(loginBean.getPoints());
+        		session.setSessionEmail(loginBean.getUsername());
+        		session.setSessionName(loginBean.getNome());
+        		session.setSessionSurname(loginBean.getCognome());
+        		session.setSessionPoints(loginBean.getPoints());
         		DesktopSessionContext.getInstance().setSession(session);
             	DesktopSessionContext.getGuiLoader().loadGUI(null, session, GUIType.HOME);
     		} else {

@@ -5,7 +5,6 @@ import java.util.List;
 import java.util.logging.Logger;
 
 import javafx.application.Platform;
-import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -231,20 +230,20 @@ public class PlanTripGraphic implements GraphicController{
 			
 			//Call thread to load suggestions
 			//TODO chiamare controller per usare API
-//			Thread loadSuggestions = new Thread(() -> {
-//				//Use ApiAdapter to request list of suggestions and add them to the GUI
-//				HereAPIAdapter hereAPI = HereAdapterFactory.getInstance().createHereAdapter();
-//				Location dayLocation = hereAPI.getLocationInfo(planTripBean.getDayLocation());
-//				List<Place> suggestions = hereAPI.getNearbyPlaces(dayLocation.getCoordinates(), planTripBean.getCategory1());
-//				Platform.runLater(new LoadVBox(vbSuggestions, suggestions));			
-//				
-//			});			
-//			loadSuggestions.start();
+			Thread loadSuggestions = new Thread(() -> {
+				//Use ApiAdapter to request list of suggestions and add them to the GUI
+				HereAPIAdapter hereAPI = HereAdapterFactory.getInstance().createHereAdapter();
+				Location dayLocation = hereAPI.getLocationInfo(planTripBean.getDayLocation());
+				List<Place> suggestions = hereAPI.getNearbyPlaces(dayLocation.getCoordinates(), planTripBean.getCategory1());
+				Platform.runLater(new LoadVBox(vbSuggestions, suggestions));			
+				
+			});			
+			loadSuggestions.start();
 			
-//			List<Place> places = PlanTripController.getInstance().getNearbyPlaces(planTripBean.getDayLocation(), planTripBean.getCategory1());
-//			for (int i = 0; i < places.size(); i++) {
-//				this.loadSuggestion(places.get(i));
-//			}
+			List<Place> places = PlanTripController.getInstance().getNearbyPlaces(planTripBean.getDayLocation(), planTripBean.getCategory1());
+			for (int i = 0; i < places.size(); i++) {
+				this.loadSuggestion(places.get(i));
+			}
 		}
 		//setup side bar buttons	
 		for (int i = 0; i < planTripBean.getTripDays().size(); i++) {
@@ -258,7 +257,6 @@ public class PlanTripGraphic implements GraphicController{
 			btnDay.setUserData(i);
 			btnDay.setOnAction( event -> {
 				planTripBean.setPlanningDay((int)btnDay.getUserData());
-				System.out.println("clicked day button: " + (int)btnDay.getUserData());
 				refresh();					
 			});					
 			vbDays.getChildren().add(btnDay);

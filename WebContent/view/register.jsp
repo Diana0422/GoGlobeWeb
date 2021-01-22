@@ -64,11 +64,15 @@
 
             <!-- registration form -->
             <div class="registration-form">
-                <form  action="register.jsp" name="myform" method="POST">
+                <form action="register.jsp" name="myform" method="POST">
                 <%
     				if (request.getParameter("signin") != null) {
         					if (registerBean.validate()) {
-        						sessionBean = RegistrationController.getInstance().register(registerBean.getEmail(), registerBean.getPassword(), registerBean.getName(), registerBean.getSurname(), registerBean.getBirthday());
+        						registerBean.setSession(RegistrationController.getInstance().register(registerBean.getRegBeanEmail(), registerBean.getPassword(), registerBean.getRegBeanName(), registerBean.getRegBeanSurname(), registerBean.getBirthday()));
+        						sessionBean.setSessionEmail(registerBean.getSession().getSessionEmail());
+        						sessionBean.setSessionName(registerBean.getSession().getSessionName());
+        						sessionBean.setSessionSurname(registerBean.getSession().getSessionSurname());
+        						sessionBean.setSessionPoints(registerBean.getSession().getSessionPoints());
 							%>
         						<jsp:forward page="home.jsp"/>
 							<%
@@ -88,7 +92,7 @@
                     <div class="form-row">
                         <div class="form-group col-md-6">
                             <label for="inputEmail4">Email</label>
-                            <input type="email" name="email" class="form-control" id="inputEmail4" aria-describedby="emailHelp" placeholder="Email">
+                            <input type="email" name="regBeanEmail" class="form-control" id="inputEmail4" aria-describedby="emailHelp" placeholder="Email">
                         </div>
                         <div class="form-group col-md-6">
                             <label for="inputPassword4">Password</label>
@@ -99,11 +103,11 @@
                     <div class="form-row">
                         <div class="form-group col-md-6">
                             <label for="inputName2">Name</label>
-                            <input type="text" name="name" class="form-control" id="inputName2" placeholder="Name">
+                            <input type="text" name="regBeanName" class="form-control" id="inputName2" placeholder="Name">
                         </div>
                         <div class="form-group col-md-6">
                             <label for="inputSurname2">Surname</label>
-                            <input type="text" name="surname" class="form-control" id="inputSurname2" placeholder="Surname">
+                            <input type="text" name="regBeanSurname" class="form-control" id="inputSurname2" placeholder="Surname">
                         </div>
                     </div>
                     <!-- date of birth and password confirmation -->

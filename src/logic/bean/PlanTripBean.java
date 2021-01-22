@@ -94,8 +94,6 @@ public class PlanTripBean {
 			}
 			
 			return validateCategories(this.category1, this.category2);
-
-//			return (validateDates(this.departureDate, this.returnDate) && validateCategories(this.category1, this.category2));
 		}else{
 			return false;
 		}		
@@ -107,11 +105,11 @@ public class PlanTripBean {
 		try {
 			Date depDate = new SimpleDateFormat(DATE_FORMAT).parse(departureDate);
 			Date retDate = new SimpleDateFormat(DATE_FORMAT).parse(returnDate);
-//			Date currentDate = new Date();			
-//			if (depDate.before(currentDate)) {
-//				this.setErrorMsg("Departure date must be later than current date");
-//				return false;
-//			}
+			Date currentDate = new Date();			
+			if (depDate.before(currentDate)) {
+				this.setErrorMsg("Departure date must be later than current date");
+				return false;
+			}
 			
 			if (retDate.before(depDate)) {
 				throw new FormInputException("Return date must be later than departure date");
@@ -151,7 +149,6 @@ public class PlanTripBean {
 		}
 		
 		try {
-//			if (!(validateDateString(departureDate) || validateDateString(returnDate))) {
 			validateDateString(departureDate);
 			validateDateString(returnDate);
 			

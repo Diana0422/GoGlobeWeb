@@ -5,10 +5,6 @@
 <jsp:useBean id="registerBean" scope="request" class="logic.bean.RegistrationBean"/>
 <jsp:useBean id="sessionBean" scope="session" class="logic.bean.SessionBean"/>
 
-<% System.out.println(sessionBean.getName());
-   System.out.println(sessionBean.getSurname());	
-%>
-
 <!DOCTYPE html>
 <html>
 <head>

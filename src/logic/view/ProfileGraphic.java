@@ -7,9 +7,6 @@ import java.util.Date;
 import java.util.List;
 
 import org.controlsfx.control.Rating;
-
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;
 import javafx.geometry.Insets;
 import javafx.scene.control.Button;
@@ -101,6 +98,7 @@ public class ProfileGraphic implements GraphicController {
     
     private Number vote;
 
+    private static final String WIDGET_ERROR = "Widget loading error.";
 
     @FXML
     void back(MouseEvent event) {
@@ -120,15 +118,13 @@ public class ProfileGraphic implements GraphicController {
     	bean.setVote(d);
     	bean.setDate(date);
     	bean.setComment(txtComment.getText());
-    	bean.setReviewerName(DesktopSessionContext.getInstance().getSession().getName());
-    	bean.setReviewerSurname(DesktopSessionContext.getInstance().getSession().getSurname());
+    	bean.setReviewerName(DesktopSessionContext.getInstance().getSession().getSessionName());
+    	bean.setReviewerSurname(DesktopSessionContext.getInstance().getSession().getSessionSurname());
     	
     	if (rdTraveler.isSelected()) {
-    		System.out.println(ReviewUserController.getInstance());
-			ReviewUserController.getInstance().postReview("TRAVELER", d, txtComment.getText(), txtTitle.getText(), DesktopSessionContext.getInstance().getSession().getEmail(), target.getEmail(), target);
+			ReviewUserController.getInstance().postReview("TRAVELER", d, txtComment.getText(), txtTitle.getText(), DesktopSessionContext.getInstance().getSession().getSessionEmail(), target.getEmail(), target);
     	} else {
-    		System.out.println(ReviewUserController.getInstance());
-			ReviewUserController.getInstance().postReview("ORGANIZER", d, txtComment.getText(), txtTitle.getText(), DesktopSessionContext.getInstance().getSession().getEmail(), target.getEmail(), target);
+			ReviewUserController.getInstance().postReview("ORGANIZER", d, txtComment.getText(), txtTitle.getText(), DesktopSessionContext.getInstance().getSession().getSessionEmail(), target.getEmail(), target);
     	}
     	
     	ReviewItemGraphic graphic = new ReviewItemGraphic();
@@ -137,7 +133,7 @@ public class ProfileGraphic implements GraphicController {
 			vbReviews.getChildren().add(anchor);
 		} catch (LoadGraphicException e) {
 			AlertGraphic alert = new AlertGraphic();
-			alert.display(GUIType.PROFILE, GUIType.HOME, null, DesktopSessionContext.getInstance().getSession(), "Widget loading error.", "Something unexpected occurred displaying review.");
+			alert.display(GUIType.PROFILE, GUIType.HOME, null, DesktopSessionContext.getInstance().getSession(), WIDGET_ERROR, "Something unexpected occurred displaying review.");
 		}
     }
 
@@ -174,7 +170,7 @@ public class ProfileGraphic implements GraphicController {
 				GridPane.setMargin(anchor, new Insets(20));
 			} catch (LoadGraphicException e) {
 				AlertGraphic graphic = new AlertGraphic();
-				graphic.display(GUIType.PROFILE, GUIType.HOME, null, DesktopSessionContext.getInstance().getSession(), "Widget loading error.", "Something unexpected occurred loading the trip cards.");
+				graphic.display(GUIType.PROFILE, GUIType.HOME, null, DesktopSessionContext.getInstance().getSession(), WIDGET_ERROR, "Something unexpected occurred loading the trip cards.");
 			}
 					
 			// Set grid height
@@ -191,12 +187,10 @@ public class ProfileGraphic implements GraphicController {
 	
 	public void displayOrganizerRating(double rating) {
 		ratingOrg.setRating(rating);
-		System.out.println("Organizer rating displayed.");
 	}
 	
 	public void displayTravelerRating(double rating) {
 		ratingTra.setRating(rating);
-		System.out.println("Traveler rating displayed.");
 	}
 	
 	private void displayReviews(List<ReviewBean> list) {
@@ -207,7 +201,7 @@ public class ProfileGraphic implements GraphicController {
 				vbReviews.getChildren().add(anchor);
 			} catch (LoadGraphicException e) {
 				AlertGraphic alert = new AlertGraphic();
-				alert.display(GUIType.PROFILE, GUIType.HOME, null, DesktopSessionContext.getInstance().getSession(), "Widget loading error.", "Something unexpected occurred displaying review.");
+				alert.display(GUIType.PROFILE, GUIType.HOME, null, DesktopSessionContext.getInstance().getSession(), WIDGET_ERROR, "Something unexpected occurred displaying review.");
 			}
 		}
 	}
@@ -215,7 +209,6 @@ public class ProfileGraphic implements GraphicController {
 	/* Initialization method */
 	@Override
 	public void initializeData(Object recBundle, Object forBundle) {
-		System.out.println(recBundle);
 		this.target = (UserBean) recBundle;
 		target.setGraphic(this); // Set the reference to this controller in the user bean to receive updates
 		this.bundle = forBundle;
@@ -239,24 +232,14 @@ public class ProfileGraphic implements GraphicController {
 		txtAge.setText(Integer.toString(target.getAge()));
 		
 		// Display ratings
-		System.out.println(target.getStatsBean().getOrgRating());
-		System.out.println(target.getStatsBean().getTravRating());
 		displayOrganizerRating(target.getStatsBean().getOrgRating());
 		displayTravelerRating(target.getStatsBean().getTravRating());
 		
 		// Fetch bean reviews and display them
-		System.out.println(target.getReviews());
 		displayReviews(target.getReviews());
 		
 		// Initialize listener on rating control.
-		rating.ratingProperty().addListener(new ChangeListener<Number>() {
-
-			@Override
-			public void changed(ObservableValue<? extends Number> arg0, Number arg1, Number arg2) {
-				setVote(arg2);
-			}
-			
-		});
+		rating.ratingProperty().addListener((arg0, arg1, arg2) -> setVote(arg2));
 	}
 
 	public Number getVote() {

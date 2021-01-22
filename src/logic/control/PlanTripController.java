@@ -68,12 +68,7 @@ public class PlanTripController {
 	}
 	
 	public long calculateTripLength(Date depDate, Date retDate) {
-		
-		System.out.println("la data di partenza e' " + depDate);
-		System.out.println("la data di ritorno e' " + retDate);
-
 		long diff = retDate.getTime() - depDate.getTime();
-		
 		return TimeUnit.DAYS.convert(diff, TimeUnit.MILLISECONDS);
 	}
 	
@@ -96,12 +91,7 @@ public class PlanTripController {
 	
 	public boolean saveTrip(TripBean tripBean, SessionBean organizerBean) {
 		Trip trip = TripFactory.getInstance().createModel();
-		System.out.println("trip id: "+trip.getId());
-		
-		System.out.println("organizer bean:"+organizerBean);
-		System.out.println("organizer bean email:"+organizerBean.getEmail());
-		trip.setOrganizer(UserDaoDB.getInstance().get(organizerBean.getEmail()));
-		System.out.println("Organizeer:"+trip.getOrganizer());
+		trip.setOrganizer(UserDaoDB.getInstance().get(organizerBean.getSessionEmail()));
 		
 		trip.setTitle(tripBean.getTitle());
 		
@@ -128,18 +118,12 @@ public class PlanTripController {
 
 			
 		/* save trip on persistence */
-		if (TripDao.getInstance().saveTrip(trip)) {
-			System.out.println("trip saved.");
-		} else {
-			System.out.println("trip not saved");
-			return false;
-		}
+		if (!TripDao.getInstance().saveTrip(trip)) return false;
 	
 		/*Converting and setting Days list (and activities)*/
 		List<Day> days;
 		if ((days = ConversionController.getInstance().convertDayBeanList(tripBean.getDays(), trip.getTitle())) != null) {
 			trip.setDays(days); 
-			System.out.println(trip.getPrice());
 			
 			if (tripBean.isShared()) {
 				trip.setShared(true);

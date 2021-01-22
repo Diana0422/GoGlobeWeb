@@ -35,10 +35,8 @@ public class ManageRequestController {
 	}
 	
 	public synchronized boolean acceptRequest(RequestBean requestBean) {
-		System.out.println("request bean:"+requestBean);
 		// get request from persistence
 		Request req = RequestDao.getInstance().getRequest(requestBean.getSenderEmail(), requestBean.getTripTitle());
-		System.out.println("Got request:"+req);
 		//Add sender and target to request
 		req.setSender(UserDaoDB.getInstance().get(requestBean.getSenderEmail()));
 		req.setTarget(TripDao.getInstance().getTripByTitle(requestBean.getTripTitle()));
@@ -61,13 +59,13 @@ public class ManageRequestController {
 	}
 	
 	public List<RequestBean> getUserIncomingRequests(SessionBean session) {
-		List<Request> incRequests = RequestDao.getInstance().getRequestsByReceiver(session.getEmail());
+		List<Request> incRequests = RequestDao.getInstance().getRequestsByReceiver(session.getSessionEmail());
 		return ConversionController.getInstance().convertRequestList(incRequests);
 	}
 	
 	
 	public List<RequestBean> getUserSentRequests(SessionBean session) {
-		List<Request> sentRequests = RequestDao.getInstance().getRequestsBySender(session.getEmail());
+		List<Request> sentRequests = RequestDao.getInstance().getRequestsBySender(session.getSessionEmail());
 		return ConversionController.getInstance().convertRequestList(sentRequests);
 	}
 }
