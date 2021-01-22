@@ -1,7 +1,5 @@
 package logic.control;
 
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 import java.util.logging.Level;
@@ -35,31 +33,31 @@ public class ParticipationController {
 		String userIP = null;
 		String userPos = null;
 		List<Day> days = trip.getDays();
+		System.out.println(days);
+		Date departure = trip.getDepartureDate();
+		Date returnDate = trip.getReturnDate();
 		
-		// TODO sistemare formattazione date in maniera univoca
-		DateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
-		String todayStr = formatter.format(today);
+		// Get user position
+		try {
+			userIP = GeolocationPicker.getInstance().forwardIPRequestToAPI();
+		} catch (IPNotFoundException e) {
+			userIP = "N/D";
+			Logger.getGlobal().log(Level.WARNING, e.getMessage());
+		}
+		try {
+			userPos = GeolocationPicker.getInstance().forwardLocationRequestToAPI(userIP);
+		} catch (LocationNotFoundException e) {
+			userPos = "N/D";
+			Logger.getGlobal().log(Level.WARNING, e.getMessage());
+		}
+		Logger.getGlobal().info(userPos);
+		
 		
 		for (Day day: days) {
-			// TODO prelevare data del giorno
-			String dayStr = "";
-			
-			if (dayStr.equals(todayStr)) {
-				//TODO FARE IN MODO CHE LA POSIZIONE VENGA PRELEVATA 1 VOLTA SOLA AL MOMENTO DEL LOGIN E SIA FISSA PER L'INTERA SESSIONE
-				try {
-					userIP = GeolocationPicker.getInstance().forwardIPRequestToAPI();
-				} catch (IPNotFoundException e) {
-					userIP = "N/D";
-					Logger.getGlobal().log(Level.WARNING, e.getMessage());
-				}
-				try {
-					userPos = GeolocationPicker.getInstance().forwardLocationRequestToAPI(userIP);
-				} catch (LocationNotFoundException e) {
-					userPos = "N/D";
-					Logger.getGlobal().log(Level.WARNING, e.getMessage());
-				}
-				Logger.getGlobal().info(userPos);
-				
+			System.out.println(today);
+			System.out.println(departure);
+			System.out.println(returnDate);
+			if (today.after(departure) && today.before(returnDate)) {
 				if (userPos.equals(day.getLocation().getCity())) {
 					Logger.getGlobal().log(Level.INFO, "VALID PARTICIPATION. You are participating to this trip.");
 					return true;

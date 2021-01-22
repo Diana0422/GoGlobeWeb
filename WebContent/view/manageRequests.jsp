@@ -51,6 +51,9 @@
                     <a class="nav-link" href="manageRequests.jsp" style="margin: 12px;">Requests</a>
                 </li>
                 <li class="nav-item">
+                    <a class="nav-link" href="gainPoints.jsp" style="margin: 12px;">Gain Points</a>
+                </li>
+                <li class="nav-item">
                     <a class="nav-link" href="#" style="margin: 12px;">Log Out</a>
                 </li>
             </ul>

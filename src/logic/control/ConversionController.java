@@ -228,6 +228,9 @@ public class ConversionController {
 	}
 
 	public Trip convertToTrip(TripBean tripBean) {
-		return TripDao.getInstance().getTripByTitle(tripBean.getTitle());
+		Trip trip = TripDao.getInstance().getTripByTitle(tripBean.getTitle());
+		trip.setDays(DayDao.getInstance().getTripDays(trip.getTitle()));
+		trip.setOrganizer(UserDaoDB.getInstance().getTripOrganizer(trip.getTitle()));
+		return trip;
 	}
 }

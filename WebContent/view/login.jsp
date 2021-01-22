@@ -12,8 +12,8 @@
 <%@page import="logic.control.LoginController"%>
 
 <%
-	System.out.println(sessionBean.getName());
-	System.out.println(sessionBean.getSurname());
+	System.out.println(sessionBean.getSessionName());
+	System.out.println(sessionBean.getSessionSurname());
 %>
 
 <!DOCTYPE html>
@@ -31,36 +31,18 @@
 	
 </head>
 <body id="login-body">
-		<!-- navigation bar -->
-    <nav class="navbar navbar-expand-sm navbar-light bg-light sticky-top">
-        <div class="app">
-            <img id="logo-img" src="../res/images/icons8-around-the-globe-50.png" alt="">
-            <a href="#" id="logo" class="navbar-brand">GoGlobe</a>
-        </div>
-        <!--toggler for shorter screens -->
-        <button class="navbar-toggler" data-toggle="collapse" data-target="#navbarMenu">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarMenu">
-            <ul class="navbar-nav">  <!--aggiungere alla classe mr-auto se voglio gli elementi cliccabili a sx-->
-                <li class="nav-item">
-                    <a class="nav-link active" href="home.jsp" style="margin: 12px;">Home</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="joinTrip.jsp" style="margin: 12px;">Trips</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="profile.jsp" style="margin: 12px;">Profile</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="manageRequests.jsp" style="margin: 12px;">Requests</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#" style="margin: 12px;">Log Out</a>
-                </li>
-            </ul>
-        </div>
-    </nav>
+		
+<%
+		if (sessionBean.getSessionEmail() != null) {
+			%>
+			  <%@ include file="html/loggedNavbar.html" %>
+			<%
+		} else {
+			%>
+			  <%@ include file="html/unloggedNavbar.html" %>
+			<%
+		}
+%>
     
         <div class="login-wrapper">
             <div class="login-box">
@@ -70,9 +52,9 @@
 	if (request.getParameter("signin") != null){
 		if (loginBean.validate()){
 			if ((loginBean = LoginController.getInstance().login(loginBean.getUsername(), loginBean.getPassword())) != null) {
-				sessionBean.setName(loginBean.getNome());
-				sessionBean.setSurname(loginBean.getCognome());
-				sessionBean.setEmail(loginBean.getUsername());
+				sessionBean.setSessionName(loginBean.getNome());
+				sessionBean.setSessionSurname(loginBean.getCognome());
+				sessionBean.setSessionEmail(loginBean.getUsername());
 			}
 %>
 	<jsp:forward page="home.jsp"/>

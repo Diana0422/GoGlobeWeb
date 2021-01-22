@@ -23,12 +23,6 @@ public class SessionBean {
 		setSessionSurname(loggedUser.getSurname());
 	}
 
-
-	public String getUserLocation() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
 	public String getSessionName() {
 		return sessionName;
 	}

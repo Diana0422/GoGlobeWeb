@@ -11,7 +11,6 @@ import javafx.scene.layout.Region;
 import logic.bean.TripBean;
 import logic.control.GainPointsController;
 import logic.model.exceptions.LoadGraphicException;
-import logic.model.exceptions.SerializationException;
 
 public class GainPointsGraphic implements GraphicController {
 	
@@ -61,13 +60,7 @@ public class GainPointsGraphic implements GraphicController {
 	}
 	
 	public void loadTrip() {
-		
-		try {
-			setTrip(GainPointsController.getInstance().getTripOfTheDay(DesktopSessionContext.getInstance().getSession().getSessionEmail()));
-		} catch (SerializationException e1) {
-			AlertGraphic graphic = new AlertGraphic();
-			graphic.display(GUIType.JOIN, GUIType.HOME, null, DesktopSessionContext.getInstance().getSession(), "Serialization Error", "Something unexpected occurred loading trip.");
-		}
+		setTrip(GainPointsController.getInstance().getTripOfTheDay(DesktopSessionContext.getInstance().getSession().getSessionEmail()));
 		if (getTrip() != null) {
 			int column = 0;
 			int row = 1;

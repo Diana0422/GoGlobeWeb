@@ -3,6 +3,7 @@
     
 <!-- declaration of a join trip bean -->
 <jsp:useBean id="joinTripBean" scope="session" class="logic.bean.JoinTripBean"/>
+<jsp:useBean id="sessionBean" scope="session" class="logic.bean.SessionBean"/>
 
 <%@page import="java.util.List"%>      <%--Importing all the dependent classes--%>
 <%@page import="java.util.Iterator"%> 
@@ -27,63 +28,29 @@
 </head>
 <body id="bootstrap-override">
 
-    <!-- navigation bar -->
-    <nav class="navbar navbar-expand-sm navbar-light bg-light sticky-top">
-        <div class="app">
-            <img id="logo-img" src="../res/images/icons8-around-the-globe-50.png">
-            <a href="#" id="logo" class="navbar-brand">GoGlobe</a>
-        </div>
-        <!--toggler for shorter screens -->
-        <button class="navbar-toggler" data-toggle="collapse" data-target="#navbarMenu">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarMenu">
-            <ul class="navbar-nav">  <!--aggiungere alla classe mr-auto se voglio gli elementi cliccabili a sx-->
-                <li class="nav-item">
-                    <a class="nav-link active" href="home.jsp" style="margin: 12px;">Home</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="joinTrip.jsp" style="margin: 12px;">Trips</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="profile.jsp" style="margin: 12px;">Profile</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="manageRequests.jsp" style="margin: 12px;">Requests</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#" style="margin: 12px;">Log Out</a>
-                </li>
-            </ul>
-        </div>
-    </nav>
+<%
+	if (sessionBean.getSessionEmail() != null) {
+		%>
+		  <%@ include file="html/loggedNavbar.html" %>
+		<%
+	} else {
+		%>
+		  <%@ include file="html/unloggedNavbar.html" %>
+		<%
+	}
+%>
 
     <div class="content-join-trip">
 
-        <div class="page-header">
-            <!-- page state-->    
-            <div class="page-state">
-                <h2>Join a trip</h2>
-            </div>
-
-            <!-- search bar-->
-            <div class="search-bar">
-                <form class="form-inline" action="joinTrip.jsp" method="POST" name="search-form">
-                	<input id="bar" type="text" class="form-control" name="searchVal" placeholder="Search trip...">
-                	<button id="search-btn" type="submit" name="search" class="btn btn-primary">Search</button>
-                	
-                	<h2 id="or">or</h2>
-                	<button id="plan-btn" type="submit" name="plantrip" class="btn btn-primary">Plan Trip</button>
-                	<%
-          				if (request.getParameter("plantrip") != null) {
-          			%>
-          					<jsp:forward page="SelectTripPreferences.jsp"/>
-          			<%
-          				}
-          			%>
-          		</form>
-            </div>
-        </div>
+			<%@ include file="html/joinTripHeader.html" %>
+        
+            <%
+          		if (request.getParameter("plantrip") != null) {
+          	%>
+          			<jsp:forward page="SelectTripPreferences.jsp"/>
+          	<%
+          		}
+          	%>
 
 
         <!--cards for the results-->
@@ -127,32 +94,17 @@
         							elemsInRow++;
         							System.out.println("elemsInRow: "+elemsInRow);
         							System.out.println("jsp: trip= "+trip);
+        							request.setAttribute("title", trip.getTitle());
+        							request.setAttribute("price", trip.getPrice());
+        							request.setAttribute("btninfoid", idx);
         	%>
-            						<!--card element-->
-            							<div class="col" style="margin-bottom: 30px; max-width: 33%">
-                    						<div class="card"> <!-- add attribute text-center to center content in card-->
-                        						<img src="../res/images/Avenue-of-the-Baobobs-Madagascar 2.png" class="card-img-top">
-                        						<div class="card-body">
-                            						<h3 class="card-title"><%=trip.getTitle() %></h3>
-                            						<div class="price-tag">
-                                						<h5>Starting price: </h5>
-                                						<h5><%=trip.getPrice() %></h5   >
-                            						</div>
-                            						<img src="res/images/icons8-mountain-50.png" alt="">
-                            						<img src="res/images/icons8-holiday-50.png" alt="">
-                            						<img src="res/images/icons8-greek-pillar-capital-50.png" alt="">
-                            						<img src="res/images/icons8-cocktail-50.png" alt="">
-                            						<button type="submit" name="viewinfo" class="btn btn-primary" value=<%= idx%>>More Info...</button>
-                        						</div>
-                    						</div>
-                    					</div>
-               
-                    				
-            <%
+        							<%@ include file="html/tripCard.html" %>  			
+   			<%
         						}
         					}
         				}
         			}
+        			
         		} else {
         	%>
         			<div class="filler" style="padding: 250px"><h2>No trips found.</h2></div>

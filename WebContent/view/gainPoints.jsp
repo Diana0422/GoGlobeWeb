@@ -1,5 +1,11 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+    
+<jsp:useBean id="sessionBean" scope="session" class="logic.bean.SessionBean"/>
+
+<%@page import="logic.control.GainPointsController"%>
+<%@page import="logic.bean.TripBean"%>
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -16,82 +22,37 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.min.js"></script>
 </head>
 <body id="bootstrap-override">
+  	<%@ include file="html/loggedNavbar.html" %>
+  	
+<div class="content">
+	<%@ include file="html/gainPoints.html" %>
 	
-	<!-- navigation bar -->
-    <nav class="navbar navbar-expand-sm navbar-light bg-light sticky-top">
-        <div class="app">
-            <img id="logo-img" src="../res/images/icons8-around-the-globe-50.png">
-            <a href="#" id="logo" class="navbar-brand">GoGlobe</a>
-        </div>
-        <!--toggler for shorter screens -->
-        <button class="navbar-toggler" data-toggle="collapse" data-target="#navbarMenu">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarMenu">
-            <ul class="navbar-nav">  <!--aggiungere alla classe mr-auto se voglio gli elementi cliccabili a sx-->
-                <li class="nav-item">
-                    <a class="nav-link active" href="home.jsp" style="margin: 12px;">Home</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="joinTrip.jsp" style="margin: 12px;">Trips</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="profile.jsp" style="margin: 12px;">Profile</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="manageRequests.jsp" style="margin: 12px;">Requests</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#" style="margin: 12px;">Log Out</a>
-                </li>
-            </ul>
-        </div>
-    </nav>
-
-    <div class="content">
-        <!-- Welcome tag -->
-        <div class="header">
-            <h1>Gain Trip Points</h1>
-            <h3>Verify your participation to a trip, and gain points to redeem exclusive prizes.</h3>
-        </div>
-
-        <div class="current-trip">
-            <div class="left-side">
-                <h4>Today you should be at...</h4>
-                <form method="POST">
-                    <div class="long-card displayer">
-                        <h1>Trip Title</h1>
-                        <div class="departure-date">
-                            <h3>Departure:</h3>
-                            <h5>dd/mm/yyyy</h5>
-                        </div>
-                        <div class="return-date">
-                            <h3>Return:</h3>
-                            <h5>dd/mm/yyyy</h5>
-                        </div>
-                        <div class="location">
-                            <h3>Today's locations:</h3>
-                            <ul>
-                                <li>location 1</li>
-                                <li>location 2</li>
-                            </ul>
-                        </div>
-                        <button type="submit" name="gainpoints" class="btn btn-primary">Gain Points</button>
-                    </div>
-                </form>
-            </div>
-
-            <div class="gain-result center">
-                <h3>Gain points result message.</h3>
-            </div>
-
-            <form method="POST" class="center">
-                <div class="points-status">
-                    <h4>You have ?? points.</h4>
-                    <button type="submit" name="redeemprize" class="btn btn-primary">Redeem Prizes</button>
-                </div>
-            </form>
-        </div>
-    </div>
+	<%
+		TripBean todayTrip = GainPointsController.getInstance().getTripOfTheDay(sessionBean.getSessionEmail());
+	
+		if (request.getParameter("gainpoints") != null) {
+			if (GainPointsController.getInstance().verifyParticipation(sessionBean, todayTrip)) {
+				request.setAttribute("mess", "Trip successfully validated. You gained 100 points.");
+			} else {
+				request.setAttribute("mess", "Cannot validate trip. You don't gain any points.");
+			}
+		}
+	
+	%>
+		<%@ include file="html/alertMessage.html" %>
+	<%
+	
+		if(todayTrip != null) {
+			request.setAttribute("title", todayTrip.getTitle());
+			request.setAttribute("departure", todayTrip.getDepartureDate());
+			request.setAttribute("return_date", todayTrip.getReturnDate());
+			request.setAttribute("points", sessionBean.getSessionPoints());
+		%>
+			<%@ include file="html/currentTripCard.html" %>
+		<%
+		
+		}
+	%>
+</div>
 </body>
 </html>

@@ -37,7 +37,7 @@
 	<!-- navigation bar -->
     <nav class="navbar navbar-expand-sm navbar-light bg-light sticky-top">
         <div class="app">
-            <img id="logo-img" src="../res/images/icons8-around-the-globe-50.png" alt="">
+            <img id="logo-img" src="../res/images/icons8-around-the-globe-50.png">
             <a href="#" id="logo" class="navbar-brand">GoGlobe</a>
         </div>
         <!--toggler for shorter screens -->
@@ -57,6 +57,9 @@
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="manageRequests.jsp" style="margin: 12px;">Requests</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="gainPoints.jsp" style="margin: 12px;">Gain Points</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="#" style="margin: 12px;">Log Out</a>
