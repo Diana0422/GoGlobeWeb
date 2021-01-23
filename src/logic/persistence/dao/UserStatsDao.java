@@ -7,6 +7,7 @@ import java.sql.SQLException;
 
 import logic.model.UserStats;
 import logic.persistence.ConnectionManager;
+import logic.persistence.exceptions.DBConnectionException;
 
 public class UserStatsDao {
 	
@@ -24,7 +25,7 @@ public class UserStatsDao {
 		return instance;
 	}
 
-	public boolean updateStats(String userId, int newPoints, Double newOrgRating, Double newTravRating) {
+	public boolean updateStats(String userId, int newPoints, Double newOrgRating, Double newTravRating) throws DBConnectionException {
 		try (Connection conn = ConnectionManager.getInstance().getConnection();
 			CallableStatement stmt = conn.prepareCall(UPDATE_STATS)) {
 				
@@ -40,7 +41,7 @@ public class UserStatsDao {
 		}
 	}
 	
-	public UserStats getUserStats(String userEmail) {
+	public UserStats getUserStats(String userEmail) throws DBConnectionException {
 		ResultSet rs = null;
 		UserStats us = null;
 		

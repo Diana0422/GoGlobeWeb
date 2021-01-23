@@ -14,6 +14,7 @@ import javafx.scene.input.MouseEvent;
 import logic.bean.RequestBean;
 import logic.control.ManageRequestController;
 import logic.model.exceptions.LoadGraphicException;
+import logic.persistence.exceptions.DBConnectionException;
 
 public class RequestItemGraphic implements Initializable {
 
@@ -66,23 +67,38 @@ public class RequestItemGraphic implements Initializable {
     
     @FXML
     public void accept(MouseEvent event) {
-    	ManageRequestController.getInstance().acceptRequest(getRequest());
-    	lblStatus.setVisible(true);
-    	lblStatus.setText("Accepted");
-    	lblStatus.setStyle("-fx-text-fill: green;");
+    	try {
+			ManageRequestController.getInstance().acceptRequest(getRequest());
+	    	lblStatus.setVisible(true);
+	    	lblStatus.setText("Accepted");
+	    	lblStatus.setStyle("-fx-text-fill: green;");
+		} catch (DBConnectionException e) {
+			AlertGraphic alert = new AlertGraphic();
+			alert.display(null, GUIType.HOME, null, DesktopSessionContext.getInstance().getSession(), "Database connection error", "Please retry later.");
+		}
     }
     
     @FXML
     public void viewProfile(MouseEvent event) {
-    	ManageRequestController.getInstance().declineRequest(getRequest());
+    	try {
+			ManageRequestController.getInstance().declineRequest(getRequest());
+		} catch (DBConnectionException e) {
+			AlertGraphic alert = new AlertGraphic();
+			alert.display(null, GUIType.HOME, null, DesktopSessionContext.getInstance().getSession(), "Database connection error", "Please retry later.");
+		}
     }
     
     @FXML
     public void decline(MouseEvent event) {
-    	ManageRequestController.getInstance().declineRequest(getRequest());
-    	lblStatus.setVisible(true);
-    	lblStatus.setText("Declined");
-    	lblStatus.setStyle("-fx-text-fill: red;");
+    	try {
+			ManageRequestController.getInstance().declineRequest(getRequest());
+	    	lblStatus.setVisible(true);
+	    	lblStatus.setText("Declined");
+	    	lblStatus.setStyle("-fx-text-fill: red;");
+		} catch (DBConnectionException e) {
+			AlertGraphic alert = new AlertGraphic();
+			alert.display(null, GUIType.HOME, null, DesktopSessionContext.getInstance().getSession(), "Database connection error", "Please retry later.");
+		}
     }
     
     public Node initializeNode(RequestBean bean, RequestType type) throws LoadGraphicException {

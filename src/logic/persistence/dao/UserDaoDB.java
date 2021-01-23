@@ -9,6 +9,7 @@ import java.util.List;
 
 import logic.model.User;
 import logic.persistence.ConnectionManager;
+import logic.persistence.exceptions.DBConnectionException;
 
 public class UserDaoDB {
 	
@@ -38,7 +39,7 @@ public class UserDaoDB {
 	}
 	
 
-	public User get(String...params) {
+	public User get(String...params) throws DBConnectionException {
 		ResultSet rs = null;
 		User u = null;
 		
@@ -81,7 +82,7 @@ public class UserDaoDB {
 	}
 
 
-	public boolean save(User t) {
+	public boolean save(User t) throws DBConnectionException {
 		try (Connection conn = ConnectionManager.getInstance().getConnection();
 			  CallableStatement stmt = conn.prepareCall(STORE_USER)) {
 			stmt.setString(1, t.getEmail());
@@ -99,7 +100,7 @@ public class UserDaoDB {
 	}
 
 
-	public boolean update(User t, String...params) {
+	public boolean update(User t, String...params) throws DBConnectionException {
 		try (Connection conn = ConnectionManager.getInstance().getConnection();
 			CallableStatement stmt = conn.prepareCall(UPDATE_USER)) {
 			
@@ -118,7 +119,7 @@ public class UserDaoDB {
 	}
 
 
-	public boolean delete(User t) {
+	public boolean delete(User t) throws DBConnectionException {
 		try (Connection conn = ConnectionManager.getInstance().getConnection();
 			CallableStatement stmt = conn.prepareCall(DELETE_USER)) {
 			stmt.setString(1, t.getEmail());
@@ -131,7 +132,7 @@ public class UserDaoDB {
 		
 	}
 	
-	public User getTripOrganizer(String tripTitle) {
+	public User getTripOrganizer(String tripTitle) throws DBConnectionException {
 		ResultSet rs = null;
 		User u = null;
 		
@@ -169,7 +170,7 @@ public class UserDaoDB {
 		}
 	}
 	
-	public List<User> getTripParticipants(String tripTitle) {
+	public List<User> getTripParticipants(String tripTitle) throws DBConnectionException {
 		List<User> participants = new ArrayList<>();
 		ResultSet rs = null;
 		

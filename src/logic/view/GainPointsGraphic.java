@@ -11,6 +11,7 @@ import javafx.scene.layout.Region;
 import logic.bean.TripBean;
 import logic.control.GainPointsController;
 import logic.model.exceptions.LoadGraphicException;
+import logic.persistence.exceptions.DBConnectionException;
 
 public class GainPointsGraphic implements GraphicController {
 	
@@ -37,13 +38,18 @@ public class GainPointsGraphic implements GraphicController {
 
 	@FXML
 	void onGainPoints(MouseEvent event) {
-		if (GainPointsController.getInstance().verifyParticipation(DesktopSessionContext.getInstance().getSession(), getTrip())) {
-			AlertGraphic graphic = new AlertGraphic();
-			graphic.display(GUIType.GAIN, GUIType.HOME, null, DesktopSessionContext.getInstance().getSession(),  "Trip validated successfully.", "You gained 100 points");
-		
-		} else {
-			AlertGraphic graphic = new AlertGraphic();
-			graphic.display(GUIType.GAIN, GUIType.HOME, null, DesktopSessionContext.getInstance().getSession(), "Can't validate trip.", "You don't gain any points");
+		try {
+			if (GainPointsController.getInstance().verifyParticipation(DesktopSessionContext.getInstance().getSession(), getTrip())) {
+				AlertGraphic graphic = new AlertGraphic();
+				graphic.display(GUIType.GAIN, GUIType.HOME, null, DesktopSessionContext.getInstance().getSession(),  "Trip validated successfully.", "You gained 100 points");
+			
+			} else {
+				AlertGraphic graphic = new AlertGraphic();
+				graphic.display(GUIType.GAIN, GUIType.HOME, null, DesktopSessionContext.getInstance().getSession(), "Can't validate trip.", "You don't gain any points");
+			}
+		} catch (DBConnectionException e) {
+			AlertGraphic alert = new AlertGraphic();
+			alert.display(GUIType.GAIN, GUIType.HOME, null, DesktopSessionContext.getInstance().getSession(), "Database connection error", "Please retry later.");
 		}
 	}
 	
@@ -60,7 +66,12 @@ public class GainPointsGraphic implements GraphicController {
 	}
 	
 	public void loadTrip() {
-		setTrip(GainPointsController.getInstance().getTripOfTheDay(DesktopSessionContext.getInstance().getSession().getSessionEmail()));
+		try {
+			setTrip(GainPointsController.getInstance().getTripOfTheDay(DesktopSessionContext.getInstance().getSession().getSessionEmail()));
+		} catch (DBConnectionException e1) {
+			AlertGraphic alert = new AlertGraphic();
+			alert.display(GUIType.GAIN, GUIType.HOME, null, DesktopSessionContext.getInstance().getSession(), "Database connection error", "Please retry later.");
+		}
 		if (getTrip() != null) {
 			int column = 0;
 			int row = 1;

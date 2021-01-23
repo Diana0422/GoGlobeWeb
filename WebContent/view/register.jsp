@@ -2,6 +2,7 @@
     pageEncoding="ISO-8859-1"%>
 
 <%@page import="logic.control.RegistrationController"%>
+<%@page import="logic.persistence.exceptions.DBConnectionException"%>
 
 <!-- declaration and initialization of a register bean -->
 <jsp:useBean id="registerBean" scope="request" class="logic.bean.RegistrationBean" />
@@ -48,6 +49,7 @@
                 <form action="register.jsp" name="myform" method="POST">
                 <%
     				if (request.getParameter("signin") != null) {
+    					try {
         					if (registerBean.validate()) {
         						registerBean.setSession(RegistrationController.getInstance().register(registerBean.getRegBeanEmail(), registerBean.getPassword(), registerBean.getRegBeanName(), registerBean.getRegBeanSurname(), registerBean.getBirthday()));
         						sessionBean.setSessionEmail(registerBean.getSession().getSessionEmail());
@@ -55,14 +57,21 @@
         						sessionBean.setSessionSurname(registerBean.getSession().getSessionSurname());
         						sessionBean.setSessionPoints(registerBean.getSession().getSessionPoints());
 							%>
-        						<jsp:forward page="home.jsp"/>
+        					 <jsp:forward page="home.jsp"/>
 							<%
         					} else {
         						System.out.println("No data.\n");
 							%>
 								<p style="color: red">This user is already registered.</p>
 							<%
-        					}
+        					}	
+    					} catch (DBConnectionException e) {
+    						request.setAttribute("errType", e.getMessage());
+    						request.setAttribute("errLog", e.getCause().toString());
+    						%>
+    						 <jsp:forward page="error.jsp"/>	
+    						<%
+    					}
     				}
 				%>
                     <div class="form-row">

@@ -21,6 +21,7 @@ import logic.bean.UserBean;
 import logic.control.FlightController;
 import logic.control.JoinTripController;
 import logic.model.exceptions.LoadGraphicException;
+import logic.persistence.exceptions.DBConnectionException;
 
 public class TripInfoGraphic implements GraphicController {
 	
@@ -156,15 +157,21 @@ public class TripInfoGraphic implements GraphicController {
 		String notDefined = "N/D";
 		int price; 
 		
-		if ((price = FlightController.getInstance().retrieveFlightPrice(tripBean)) == 0) {
-			lblTicketPrice.setText(notDefined);
-		} else {
-			lblTicketPrice.setText(price+"€");
+		try {
+			if ((price = FlightController.getInstance().retrieveFlightPrice(tripBean)) == 0) {
+				lblTicketPrice.setText(notDefined);
+			} else {
+				lblTicketPrice.setText(price+"€");
+			}
+			
+			lblOrigin.setText(FlightController.getInstance().retrieveFlightOrigin(tripBean));
+			lblDestination.setText(FlightController.getInstance().retrieveFlightDestination(tripBean));
+			lblCarrier.setText(FlightController.getInstance().retrieveFlightCarrier(tripBean));
+		} catch (DBConnectionException e) {
+			AlertGraphic alert = new AlertGraphic();
+			alert.display(GUIType.INFO, GUIType.HOME, null, DesktopSessionContext.getInstance().getSession(), "Database connection error", "Please retry later.");
 		}
-		
-		lblOrigin.setText(FlightController.getInstance().retrieveFlightOrigin(tripBean));
-		lblDestination.setText(FlightController.getInstance().retrieveFlightDestination(tripBean));
-		lblCarrier.setText(FlightController.getInstance().retrieveFlightCarrier(tripBean));
+	
 	}
 	
 	
@@ -183,12 +190,17 @@ public class TripInfoGraphic implements GraphicController {
 	@FXML
 	void joinTrip(MouseEvent event) {
 		if (DesktopSessionContext.getInstance().getSession() != null) {
-			if (JoinTripController.getInstance().joinTrip(getTripBean(), DesktopSessionContext.getInstance().getSession())) {
+			try {
+				if (JoinTripController.getInstance().joinTrip(getTripBean(), DesktopSessionContext.getInstance().getSession())) {
+					AlertGraphic alert = new AlertGraphic();
+					alert.display(GUIType.INFO, GUIType.REQUESTS, null, getTripBean(), "Request sent to organizer.", "Choose an option.");
+				} else {
+					AlertGraphic alert = new AlertGraphic();
+					alert.display(GUIType.INFO, GUIType.REQUESTS, null, getTripBean(), "You are not eligible to join.", "Choose an option.");
+				}
+			} catch (DBConnectionException e) {
 				AlertGraphic alert = new AlertGraphic();
-				alert.display(GUIType.INFO, GUIType.REQUESTS, null, getTripBean(), "Request sent to organizer.", "Choose an option.");
-			} else {
-				AlertGraphic alert = new AlertGraphic();
-				alert.display(GUIType.INFO, GUIType.REQUESTS, null, getTripBean(), "You are not eligible to join.", "Choose an option.");
+				alert.display(GUIType.INFO, GUIType.HOME, null, DesktopSessionContext.getInstance().getSession(), "Database connection error", "Please retry later.");
 			}
 		} else {
 			AlertGraphic alert = new AlertGraphic();

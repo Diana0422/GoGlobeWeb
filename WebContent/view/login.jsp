@@ -10,6 +10,7 @@
 <jsp:setProperty name="loginBean" property="*"/>
 
 <%@page import="logic.control.LoginController"%>
+<%@page import="logic.persistence.exceptions.DBConnectionException"%>
 
 <%
 	System.out.println(sessionBean.getSessionName());
@@ -51,18 +52,28 @@
 <%
 	if (request.getParameter("signin") != null){
 		if (loginBean.validate()){
-			if ((loginBean = LoginController.getInstance().login(loginBean.getUsername(), loginBean.getPassword())) != null) {
-				sessionBean.setSessionName(loginBean.getNome());
-				sessionBean.setSessionSurname(loginBean.getCognome());
-				sessionBean.setSessionEmail(loginBean.getUsername());
-			}
-%>
-	<jsp:forward page="home.jsp"/>
-<%	
-		}else{
-%>
-<p style="color: red"> Dati Errati</p>
-<% 
+			
+			try {
+				if ((loginBean = LoginController.getInstance().login(loginBean.getUsername(), loginBean.getPassword())) != null) {
+					sessionBean.setSessionName(loginBean.getNome());
+					sessionBean.setSessionSurname(loginBean.getCognome());
+					sessionBean.setSessionEmail(loginBean.getUsername());
+					
+				%>
+					<jsp:forward page="home.jsp"/>
+				<%
+				} else {
+					%>
+					<p style="color: red"> Dati Errati</p>
+					<% 
+				}
+			} catch (DBConnectionException e) {
+				request.setAttribute("errType", e.getMessage());
+				request.setAttribute("errLog", e.getCause().toString());
+				%>
+				<jsp:forward page="error.jsp"/>
+				<%
+			}		
 		}
 	}
 %>

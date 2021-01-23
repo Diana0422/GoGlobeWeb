@@ -13,6 +13,7 @@ import logic.model.RoleType;
 import logic.model.User;
 import logic.model.factories.UserFactory;
 import logic.persistence.ConnectionManager;
+import logic.persistence.exceptions.DBConnectionException;
 
 public class ReviewDao {
 	
@@ -31,7 +32,7 @@ public class ReviewDao {
 	}
 	
 	
-	public List<Review> getUserReviews(String userEmail) {
+	public List<Review> getUserReviews(String userEmail) throws DBConnectionException {
 		ResultSet rs = null;
 		List<Review> list = new ArrayList<>();
 		Review r = null;
@@ -80,7 +81,7 @@ public class ReviewDao {
 	}
 	
 	
-	public boolean save(Review t, String target) {
+	public boolean save(Review t, String target) throws DBConnectionException {
 		try (Connection conn = ConnectionManager.getInstance().getConnection();
 			CallableStatement stmt = conn.prepareCall(STORE_REVIEW)) {
 			

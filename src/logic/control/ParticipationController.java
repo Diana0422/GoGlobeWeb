@@ -33,7 +33,6 @@ public class ParticipationController {
 		String userIP = null;
 		String userPos = null;
 		List<Day> days = trip.getDays();
-		System.out.println(days);
 		Date departure = trip.getDepartureDate();
 		Date returnDate = trip.getReturnDate();
 		
@@ -54,9 +53,6 @@ public class ParticipationController {
 		
 		
 		for (Day day: days) {
-			System.out.println(today);
-			System.out.println(departure);
-			System.out.println(returnDate);
 			if (today.after(departure) && today.before(returnDate)) {
 				if (userPos.equals(day.getLocation().getCity())) {
 					Logger.getGlobal().log(Level.INFO, "VALID PARTICIPATION. You are participating to this trip.");

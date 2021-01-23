@@ -7,6 +7,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
 import logic.bean.SessionBean;
 import logic.control.RegistrationController;
+import logic.persistence.exceptions.DBConnectionException;
 
 public class RegistrationGraphic {
 	@FXML
@@ -54,11 +55,16 @@ public class RegistrationGraphic {
 			lblMessage.setText("Input values not valid.");
 		} else {
 			/* Call the controller to register the user */
-			if ((setSession(RegistrationController.getInstance().register(email, password, name, surname, birthday)))!= null) {
-				DesktopSessionContext.getInstance().setSession(getSession());
-				DesktopSessionContext.getGuiLoader().loadGUI(null, DesktopSessionContext.getInstance().getSession(), GUIType.HOME);
-			} else {
-				lblMessage.setText("User already registered with this email.");
+			try {
+				if ((setSession(RegistrationController.getInstance().register(email, password, name, surname, birthday)))!= null) {
+					DesktopSessionContext.getInstance().setSession(getSession());
+					DesktopSessionContext.getGuiLoader().loadGUI(null, DesktopSessionContext.getInstance().getSession(), GUIType.HOME);
+				} else {
+					lblMessage.setText("User already registered with this email.");
+				}
+			} catch (DBConnectionException e) {
+				AlertGraphic alert = new AlertGraphic();
+				alert.display(GUIType.REGISTER, GUIType.HOME, null, DesktopSessionContext.getInstance().getSession(), "Database connection error", "Please retry later.");
 			}
 		}
     }

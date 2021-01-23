@@ -4,6 +4,8 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 
+import logic.persistence.exceptions.DBConnectionException;
+
 public class ConnectionManager {
 	
 	private static ConnectionManager instance = null;
@@ -23,16 +25,19 @@ public class ConnectionManager {
     	return instance;
     }
     
-    public Connection getConnection() throws SQLException {
+    public Connection getConnection() throws DBConnectionException {
 
 		try {
 			Class.forName(driverClassName);
 		} catch (ClassNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			throw new DBConnectionException("Cannot establish connection to database.", e.getCause());
 		}
 		
-		return DriverManager.getConnection(dbUrl, user, pass);
+		try {
+			return DriverManager.getConnection(dbUrl, user, pass);
+		} catch (SQLException e) {
+			throw new DBConnectionException("Cannot establish connection to database.", e.getCause());
+		}
 	}
     
     

@@ -108,6 +108,7 @@
                         	if (request.getParameter("accept") != null) {
                     			System.out.println("Accepting request.");
                     			ManageRequestController.getInstance().acceptRequest(req);
+                    			response.setIntHeader("Refresh",0);
                     		}
                         	%>
                         </form>
@@ -118,6 +119,7 @@
                         		if (request.getParameter("decline") != null) {
                         			System.out.println("Declining request.");
                         			ManageRequestController.getInstance().declineRequest(req);
+                        			response.setIntHeader("Refresh",0);
                         		}
                         	%>
                         </form>

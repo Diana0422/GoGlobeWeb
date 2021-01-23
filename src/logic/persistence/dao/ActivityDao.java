@@ -9,6 +9,7 @@ import java.util.List;
 
 import logic.model.Activity;
 import logic.persistence.ConnectionManager;
+import logic.persistence.exceptions.DBConnectionException;
 
 public class ActivityDao {
 
@@ -26,7 +27,7 @@ public class ActivityDao {
 		return instance;
 	}
 	
-	public boolean saveActivity(Activity activity, int dayId, String tripTitle) {
+	public boolean saveActivity(Activity activity, int dayId, String tripTitle) throws DBConnectionException {
 		try (Connection conn = ConnectionManager.getInstance().getConnection();
 			CallableStatement stmt = conn.prepareCall(STORE_ACTIVITY)) {
 			stmt.setInt(1, dayId);
@@ -44,7 +45,7 @@ public class ActivityDao {
 		}
 	}
 	
-	public List<Activity> getActivitiesByTrip(String tripTitle, int dayId) {
+	public List<Activity> getActivitiesByTrip(String tripTitle, int dayId) throws DBConnectionException {
 		List<Activity> activities = new ArrayList<>();
 		ResultSet rs = null;
 		

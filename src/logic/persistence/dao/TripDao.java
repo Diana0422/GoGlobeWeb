@@ -11,6 +11,7 @@ import java.util.List;
 import logic.model.Trip;
 import logic.model.TripCategory;
 import logic.persistence.ConnectionManager;
+import logic.persistence.exceptions.DBConnectionException;
 
 public class TripDao {
 	
@@ -38,7 +39,7 @@ public class TripDao {
 		return instance;
 	}
 	
-	public boolean saveTrip(Trip t) {
+	public boolean saveTrip(Trip t) throws DBConnectionException {
 		try (Connection conn = ConnectionManager.getInstance().getConnection();
 			CallableStatement stmt = conn.prepareCall(STORE_TRIP)) {
 			stmt.setString(1, t.getTitle());
@@ -55,7 +56,7 @@ public class TripDao {
 		}
 	}
 	
-	public Trip getTripByTitle(String tripTitle) {
+	public Trip getTripByTitle(String tripTitle) throws DBConnectionException {
 		Trip trip = new Trip();
 		ResultSet rs = null;
 		
@@ -86,7 +87,7 @@ public class TripDao {
 		}
 	}
 	
-	public List<Trip> getTrips() {
+	public List<Trip> getTrips() throws DBConnectionException {
 		List<Trip> trips = new ArrayList<>();
 		ResultSet rs = null;
 		
@@ -129,7 +130,7 @@ public class TripDao {
 	}
 	
 	
-	public List<Trip> getSharedTrips() {
+	public List<Trip> getSharedTrips() throws DBConnectionException {
 		List<Trip> trips = new ArrayList<>();
 		ResultSet rs = null;
 		
@@ -180,7 +181,7 @@ public class TripDao {
 	}
 	
 	
-	public boolean saveParticipant(String userEmail, String tripTitle) {
+	public boolean saveParticipant(String userEmail, String tripTitle) throws DBConnectionException {
 		try (Connection conn = ConnectionManager.getInstance().getConnection();
 				CallableStatement stmt = conn.prepareCall(STORE_PARTICIPANT)) {
 			stmt.setString(1, tripTitle);

@@ -9,6 +9,7 @@
 <%@page import="java.util.Iterator"%> 
 <%@page import="logic.bean.TripBean"%>
 <%@page import="logic.control.JoinTripController"%>
+<%@page import="logic.persistence.exceptions.DBConnectionException"%>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -60,12 +61,31 @@
         	<%
         		if (request.getParameter("search") != null) {
         		// Search for trips that match this title TODO
+        			if (request.getParameter("btnFilter1") != null) {
+        				//applica filtro 1	
+        			} 
+        		
+        			if (request.getParameter("btnFilter2") != null) {
+        				//applica filtro 2
+        			}
+        			
+        			if (request.getParameter("btnFilter3") != null) {
+        				//applica filtro 3
+        			}
         	%>
         	    	<!-- map class attributes to values of the form -->
 					<jsp:setProperty name="joinTripBean" property="searchVal"/>
 			<%
-					System.out.println(joinTripBean.getSearchVal());
-					joinTripBean.setObjects(JoinTripController.getInstance().searchTrips(joinTripBean.getSearchVal()));
+					try {
+						joinTripBean.setObjects(JoinTripController.getInstance().searchTrips(joinTripBean.getSearchVal()));
+					} catch (DBConnectionException e) {
+						request.setAttribute("errType", e.getMessage());
+						request.setAttribute("errLog", e.getCause().toString());
+						%>
+						<jsp:forward page="error.jsp"/>
+						<%
+					}
+					
         			if(!joinTripBean.getObjects().isEmpty()) {
         				List<TripBean> trips = joinTripBean.getObjects();
         				System.out.println("jsp: trips = "+trips);

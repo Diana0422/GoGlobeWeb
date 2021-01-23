@@ -2,6 +2,7 @@ package logic.control;
 
 import logic.bean.LoginBean;
 import logic.persistence.dao.UserDaoDB;
+import logic.persistence.exceptions.DBConnectionException;
 import logic.model.User;
 
 public class LoginController {
@@ -19,7 +20,7 @@ public class LoginController {
 		return instance;
 	}
 	
-	public LoginBean login(String username, String password) { 
+	public LoginBean login(String username, String password) throws DBConnectionException { 
 		
 		
 		LoginBean loginBean = new LoginBean();

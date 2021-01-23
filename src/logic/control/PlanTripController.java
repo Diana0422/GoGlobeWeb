@@ -13,6 +13,7 @@ import logic.bean.SessionBean;
 import logic.bean.TripBean;
 import logic.persistence.dao.TripDao;
 import logic.persistence.dao.UserDaoDB;
+import logic.persistence.exceptions.DBConnectionException;
 import logic.model.Day;
 import logic.model.Location;
 import logic.model.Place;
@@ -89,7 +90,7 @@ public class PlanTripController {
 	
 	
 	
-	public boolean saveTrip(TripBean tripBean, SessionBean organizerBean) {
+	public boolean saveTrip(TripBean tripBean, SessionBean organizerBean) throws DBConnectionException {
 		Trip trip = TripFactory.getInstance().createModel();
 		trip.setOrganizer(UserDaoDB.getInstance().get(organizerBean.getSessionEmail()));
 		

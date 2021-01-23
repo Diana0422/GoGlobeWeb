@@ -27,6 +27,7 @@ import logic.bean.UserBean;
 import logic.control.ProfileController;
 import logic.control.ReviewUserController;
 import logic.model.exceptions.LoadGraphicException;
+import logic.persistence.exceptions.DBConnectionException;
 
 public class ProfileGraphic implements GraphicController {
 
@@ -121,10 +122,15 @@ public class ProfileGraphic implements GraphicController {
     	bean.setReviewerName(DesktopSessionContext.getInstance().getSession().getSessionName());
     	bean.setReviewerSurname(DesktopSessionContext.getInstance().getSession().getSessionSurname());
     	
-    	if (rdTraveler.isSelected()) {
-			ReviewUserController.getInstance().postReview("TRAVELER", d, txtComment.getText(), txtTitle.getText(), DesktopSessionContext.getInstance().getSession().getSessionEmail(), target.getEmail(), target);
-    	} else {
-			ReviewUserController.getInstance().postReview("ORGANIZER", d, txtComment.getText(), txtTitle.getText(), DesktopSessionContext.getInstance().getSession().getSessionEmail(), target.getEmail(), target);
+    	try {
+        	if (rdTraveler.isSelected()) {
+    			ReviewUserController.getInstance().postReview("TRAVELER", d, txtComment.getText(), txtTitle.getText(), DesktopSessionContext.getInstance().getSession().getSessionEmail(), target.getEmail(), target);
+        	} else {
+    			ReviewUserController.getInstance().postReview("ORGANIZER", d, txtComment.getText(), txtTitle.getText(), DesktopSessionContext.getInstance().getSession().getSessionEmail(), target.getEmail(), target);
+        	}
+    	} catch (DBConnectionException e) {
+			AlertGraphic alert = new AlertGraphic();
+			alert.display(GUIType.PROFILE, GUIType.HOME, null, DesktopSessionContext.getInstance().getSession(), "Database connection error", "Please retry later.");
     	}
     	
     	ReviewItemGraphic graphic = new ReviewItemGraphic();
@@ -217,16 +223,21 @@ public class ProfileGraphic implements GraphicController {
 		List<TripBean> previousTripBeans = null;
 		
 		// Display trips planned by user
-		myTripBeans = ProfileController.getInstance().getMyTrips();
-		loadGrid(myTripsGrid, myTripBeans);
-	
-		// Display target user's upcoming trips
-		upcomingTripBeans = ProfileController.getInstance().getUpcomingTrips();
-		loadGrid(upcomingGrid, upcomingTripBeans);
+		try {
+			myTripBeans = ProfileController.getInstance().getMyTrips();
+			loadGrid(myTripsGrid, myTripBeans);
 		
-		// Display target user's passed trips
-		previousTripBeans = ProfileController.getInstance().getRecentTrips();
-		loadGrid(previousGrid, previousTripBeans);
+			// Display target user's upcoming trips
+			upcomingTripBeans = ProfileController.getInstance().getUpcomingTrips();
+			loadGrid(upcomingGrid, upcomingTripBeans);
+			
+			// Display target user's passed trips
+			previousTripBeans = ProfileController.getInstance().getRecentTrips();
+			loadGrid(previousGrid, previousTripBeans);
+		} catch (DBConnectionException e) {
+			AlertGraphic alert = new AlertGraphic();
+			alert.display(GUIType.PROFILE, GUIType.HOME, null, DesktopSessionContext.getInstance().getSession(), "Database connection error", "Please retry later.");
+		}
 		
 		txtNameSurname.setText(target.getName()+" "+target.getSurname());
 		txtAge.setText(Integer.toString(target.getAge()));

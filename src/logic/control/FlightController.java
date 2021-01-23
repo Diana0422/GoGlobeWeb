@@ -14,6 +14,7 @@ import logic.model.exceptions.LocationNotFoundException;
 import logic.model.utils.GeolocationPicker;
 import logic.persistence.dao.DayDao;
 import logic.persistence.dao.TripDao;
+import logic.persistence.exceptions.DBConnectionException;
 
 public class FlightController {
 
@@ -46,7 +47,7 @@ public class FlightController {
 		return instance;
 	}
 	
-	public int retrieveFlightPrice(TripBean bean) {
+	public int retrieveFlightPrice(TripBean bean) throws DBConnectionException {
 		// Adding variable flight ticket price
 		Trip trip = null;
 		int ticketPrice;
@@ -65,7 +66,7 @@ public class FlightController {
 		return ticketPrice;
 	}
 	
-	public String retrieveFlightOrigin(TripBean bean) {
+	public String retrieveFlightOrigin(TripBean bean) throws DBConnectionException {
 		// Retrieve flight origin airport name
 		Trip trip = TripDao.getInstance().getTripByTitle(bean.getTitle()); 
 		trip.setDays(DayDao.getInstance().getTripDays(trip.getTitle()));
@@ -79,7 +80,7 @@ public class FlightController {
 		}
 	}
 	
-	public String retrieveFlightDestination(TripBean bean) {
+	public String retrieveFlightDestination(TripBean bean) throws DBConnectionException {
 		// Retrieve flight destination airport name
 		Trip trip = TripDao.getInstance().getTripByTitle(bean.getTitle());
 		trip.setDays(DayDao.getInstance().getTripDays(trip.getTitle()));
@@ -93,7 +94,7 @@ public class FlightController {
 		}
 	}
 	
-	public String retrieveFlightCarrier(TripBean bean) {
+	public String retrieveFlightCarrier(TripBean bean) throws DBConnectionException {
 		// Retrieve flight carrier name
 		Trip trip = TripDao.getInstance().getTripByTitle(bean.getTitle());
 		trip.setDays(DayDao.getInstance().getTripDays(trip.getTitle()));

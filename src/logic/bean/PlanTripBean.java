@@ -10,6 +10,7 @@ import java.util.logging.Logger;
 import logic.control.PlanTripController;
 import logic.model.exceptions.DateFormatException;
 import logic.model.exceptions.FormInputException;
+import logic.persistence.exceptions.DBConnectionException;
 
 public class PlanTripBean {
 	
@@ -225,7 +226,8 @@ public class PlanTripBean {
 		return this.getTripDays().get(planningDay).getActivities().get(activityNum).getEstimatedCost();
 	}
 	
-	public boolean saveTrip(SessionBean session) {
+	public boolean saveTrip(SessionBean session) throws DBConnectionException {
+		//TODO LEVARE DA QUI PLIZ
 		return PlanTripController.getInstance().saveTrip(this.tripBean, session);
 	}
 

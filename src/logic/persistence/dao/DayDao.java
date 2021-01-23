@@ -10,6 +10,7 @@ import java.util.List;
 import logic.model.Day;
 import logic.model.Location;
 import logic.persistence.ConnectionManager;
+import logic.persistence.exceptions.DBConnectionException;
 
 public class DayDao {
 	
@@ -28,7 +29,7 @@ public class DayDao {
 	}
 	
 	
-	public boolean saveDay(Day day, String tripTitle) {
+	public boolean saveDay(Day day, String tripTitle) throws DBConnectionException {
 		try (Connection conn = ConnectionManager.getInstance().getConnection();
 			CallableStatement stmt = conn.prepareCall(STORE_DAY)) {
 			stmt.setInt(1, day.getId());
@@ -42,7 +43,7 @@ public class DayDao {
 		}
 	}
 	
-	public List<Day> getTripDays(String tripTitle) {
+	public List<Day> getTripDays(String tripTitle) throws DBConnectionException {
 		List<Day> days = new ArrayList<>();
 		ResultSet rs = null;
 		

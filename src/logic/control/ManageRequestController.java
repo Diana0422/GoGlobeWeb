@@ -9,6 +9,7 @@ import logic.bean.UserBean;
 import logic.persistence.dao.RequestDao;
 import logic.persistence.dao.TripDao;
 import logic.persistence.dao.UserDaoDB;
+import logic.persistence.exceptions.DBConnectionException;
 import logic.model.Request;
 import logic.model.User;
 
@@ -29,12 +30,12 @@ public class ManageRequestController {
 	} 
 	
 	
-	public UserBean getSenderBean(RequestBean requestBean) {
+	public UserBean getSenderBean(RequestBean requestBean) throws DBConnectionException {
 		User sender = UserDaoDB.getInstance().get(requestBean.getSenderEmail());
 		return ConversionController.getInstance().convertToUserBean(sender);
 	}
 	
-	public synchronized boolean acceptRequest(RequestBean requestBean) {
+	public synchronized boolean acceptRequest(RequestBean requestBean) throws DBConnectionException {
 		// get request from persistence
 		Request req = RequestDao.getInstance().getRequest(requestBean.getSenderEmail(), requestBean.getTripTitle());
 		//Add sender and target to request
@@ -50,7 +51,7 @@ public class ManageRequestController {
 		return TripDao.getInstance().saveParticipant(req.getSender().getEmail(), req.getTarget().getTitle()) && RequestDao.getInstance().delete(req);
 	}
 	
-	public synchronized boolean declineRequest(RequestBean requestBean) {
+	public synchronized boolean declineRequest(RequestBean requestBean) throws DBConnectionException {
 		// get request from persistence
 		Request r = RequestDao.getInstance().getRequest(requestBean.getSenderEmail(), requestBean.getTripTitle());
 
@@ -58,13 +59,13 @@ public class ManageRequestController {
 		return RequestDao.getInstance().delete(r);
 	}
 	
-	public List<RequestBean> getUserIncomingRequests(SessionBean session) {
+	public List<RequestBean> getUserIncomingRequests(SessionBean session) throws DBConnectionException {
 		List<Request> incRequests = RequestDao.getInstance().getRequestsByReceiver(session.getSessionEmail());
 		return ConversionController.getInstance().convertRequestList(incRequests);
 	}
 	
 	
-	public List<RequestBean> getUserSentRequests(SessionBean session) {
+	public List<RequestBean> getUserSentRequests(SessionBean session) throws DBConnectionException {
 		List<Request> sentRequests = RequestDao.getInstance().getRequestsBySender(session.getSessionEmail());
 		return ConversionController.getInstance().convertRequestList(sentRequests);
 	}

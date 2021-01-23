@@ -7,6 +7,7 @@ import java.util.Date;
 
 import logic.bean.SessionBean;
 import logic.persistence.dao.UserDaoDB;
+import logic.persistence.exceptions.DBConnectionException;
 import logic.model.User;
 
 public class RegistrationController {
@@ -23,7 +24,7 @@ public class RegistrationController {
 		return instance;
 	}
 	
-	public synchronized SessionBean register(String email, String password, String name, String surname, String birthday) {
+	public synchronized SessionBean register(String email, String password, String name, String surname, String birthday) throws DBConnectionException {
 		User user;
 		DateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
 		Date birth;

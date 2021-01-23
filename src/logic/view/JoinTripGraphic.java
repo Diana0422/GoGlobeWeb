@@ -18,6 +18,7 @@ import logic.bean.SessionBean;
 import logic.bean.TripBean;
 import logic.control.JoinTripController;
 import logic.model.exceptions.LoadGraphicException;
+import logic.persistence.exceptions.DBConnectionException;
 
 public class JoinTripGraphic implements Initializable {
 	@FXML
@@ -61,12 +62,22 @@ public class JoinTripGraphic implements Initializable {
 	
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
-		this.tripBeans = JoinTripController.getInstance().searchTrips(txtSearch.getText());
+		try {
+			this.tripBeans = JoinTripController.getInstance().searchTrips(txtSearch.getText());
+		} catch (DBConnectionException e) {
+			AlertGraphic alert = new AlertGraphic();
+			alert.display(GUIType.JOIN, GUIType.HOME, null, DesktopSessionContext.getInstance().getSession(), "Database connection error", "Please retry later.");
+		}
 	}
 	
 	@FXML
 	public void search(MouseEvent event) {
-		this.tripBeans = JoinTripController.getInstance().searchTrips(txtSearch.getText());
+		try {
+			this.tripBeans = JoinTripController.getInstance().searchTrips(txtSearch.getText());
+		} catch (DBConnectionException e) {
+			AlertGraphic alert = new AlertGraphic();
+			alert.display(GUIType.JOIN, GUIType.HOME, null, DesktopSessionContext.getInstance().getSession(), "Database connection error", "Please retry later.");
+		}
 		loadGrid(txtSearch.getText(), false);
 	}
 	

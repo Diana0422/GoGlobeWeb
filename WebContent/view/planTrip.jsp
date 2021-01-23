@@ -14,6 +14,7 @@
 <%@page import="logic.model.Day"%>
 <%@page import="logic.model.Place"%>
 <%@page import="logic.control.PlanTripController"%>
+<%@page import="logic.persistence.exceptions.DBConnectionException"%>
 
 
 
@@ -112,24 +113,29 @@ if (request.getParameter("daybtn") != null){
 	            <h1 id="trip-title"><%= planTripBean.getTripName() %></h1>
 	           
 	           <!--  IF SAVE TRIP IS CLICKED -->  
-<%
+				<%
 				if (request.getParameter("save-trip-btn") != null){
-					
-					if (planTripBean.validateTrip()){
-						
-			    		PlanTripController.getInstance().saveTrip(planTripBean.getTripBean(), sessionBean); 
-;
-%>
-						<jsp:forward page="home.jsp"/>
-<% 
-					}else{
-%>
-						<!-- VALIDATE TRIP ERROR -->
-						<p style="color: red">ERRORE</p>	
-<%				
+					try {
+						if (planTripBean.validateTrip()){
+				    		PlanTripController.getInstance().saveTrip(planTripBean.getTripBean(), sessionBean); 
+							%>
+							<jsp:forward page="home.jsp"/>
+							<% 
+						}else{
+							%>
+							<!-- VALIDATE TRIP ERROR -->
+							<p style="color: red">ERRORE</p>	
+							<%				
+						}
+					} catch (DBConnectionException e) {
+						request.setAttribute("errType", e.getMessage());
+						request.setAttribute("errLog", e.getCause().toString());
+						%>
+						 <jsp:forward page="error.jsp"/>
+						<%
 					}				
 				}
-%>
+				%>
 			<!--  IF SHARE TRIP IS CLICKED -->
 <%
 				if (request.getParameter("share-trip-btn") != null){
@@ -163,9 +169,6 @@ if (request.getParameter("daybtn") != null){
                	<!--  Location Form -->
 			   <form method="POST" action="planTrip.jsp">
 			   	 <div class="location-form form">
-<%
-					
-%>
 				   	  <div class="form-group row">
 					    <label for="inputPassword" class="col-sm-2 col-form-label"><h6>Location</h6></label>
 					    <div class="col-sm-10">

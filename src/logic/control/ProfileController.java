@@ -5,6 +5,7 @@ import java.util.List;
 import logic.bean.TripBean;
 import logic.model.Trip;
 import logic.persistence.dao.TripDao;
+import logic.persistence.exceptions.DBConnectionException;
 
 public class ProfileController {
 	
@@ -18,17 +19,17 @@ public class ProfileController {
     	return instance;
     }
    
-   public List<TripBean> getRecentTrips() {
+   public List<TripBean> getRecentTrips() throws DBConnectionException {
 	   List<Trip> trips = TripDao.getInstance().getTrips();
 	   return ConversionController.getInstance().convertTripList(trips);
    }
    
-	public List<TripBean> getUpcomingTrips() {
+	public List<TripBean> getUpcomingTrips() throws DBConnectionException {
 	   List<Trip> trips = TripDao.getInstance().getTrips();
 	   return ConversionController.getInstance().convertTripList(trips);
    }
 	
-	public List<TripBean> getMyTrips() {
+	public List<TripBean> getMyTrips() throws DBConnectionException {
 	   List<Trip> trips = TripDao.getInstance().getTrips();
 	   return ConversionController.getInstance().convertTripList(trips);
 

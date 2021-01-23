@@ -16,6 +16,7 @@ import javafx.stage.Stage;
 import logic.bean.PlanTripBean;
 import logic.control.PlanTripController;
 import logic.model.exceptions.FormInputException;
+import logic.persistence.exceptions.DBConnectionException;
 
 //TODO FARE IN MODO CHE LE VIEW PRENDANO IL VALORE DI ESTIMATEDCOST E INCLUDERE IL VALIDATE-COST NEL VALIDATE ACTIVITY
 
@@ -76,6 +77,9 @@ public class ShareTripGraphic implements GraphicController {
 			}
 		} catch (FormInputException e) {
 			lblErrorMsg.setText(e.getMessage());
+		} catch (DBConnectionException e) {
+			AlertGraphic alert = new AlertGraphic();
+			alert.display(GUIType.SHARE, GUIType.HOME, null, DesktopSessionContext.getInstance().getSession(), "Database connection error", "Please retry later.");
 		}
     }
     

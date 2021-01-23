@@ -15,6 +15,7 @@ import logic.model.factories.RequestFactory;
 import logic.model.factories.TripFactory;
 import logic.model.factories.UserFactory;
 import logic.persistence.ConnectionManager;
+import logic.persistence.exceptions.DBConnectionException;
 
 public class RequestDao {
 	
@@ -44,7 +45,7 @@ public class RequestDao {
 	}
 
 
-	public Request getRequest(String senderEmail, String tripTitle) {
+	public Request getRequest(String senderEmail, String tripTitle) throws DBConnectionException {
 		ResultSet rs = null;
 		Request r = null;
 		try (Connection conn = ConnectionManager.getInstance().getConnection();
@@ -71,7 +72,7 @@ public class RequestDao {
 		}
 	}
 	
-	public List<Request> getRequestsByReceiver(String recEmail) {
+	public List<Request> getRequestsByReceiver(String recEmail) throws DBConnectionException {
 		List<Request> list = new ArrayList<>();
 		ResultSet rs = null;
 		
@@ -115,7 +116,7 @@ public class RequestDao {
 	}
 	
 	
-	public List<Request> getRequestsBySender(String sendEmail) {
+	public List<Request> getRequestsBySender(String sendEmail) throws DBConnectionException {
 		List<Request> list = new ArrayList<>();
 		ResultSet rs = null;
 		
@@ -160,7 +161,7 @@ public class RequestDao {
 	}
 
 
-	public boolean save(Request t) {
+	public boolean save(Request t) throws DBConnectionException {
 		try (Connection conn = ConnectionManager.getInstance().getConnection();
 			CallableStatement stmt = conn.prepareCall(STORE_REQUEST)) {	
 			stmt.setString(1, t.getSender().getEmail());
@@ -173,7 +174,7 @@ public class RequestDao {
 		}
 	}
 
-	public boolean delete(Request t) {
+	public boolean delete(Request t) throws DBConnectionException {
 		try (Connection conn = ConnectionManager.getInstance().getConnection();
 				CallableStatement stmt = conn.prepareCall(DELETE_REQUEST)) {
 			stmt.setString(1, t.getTarget().getTitle());

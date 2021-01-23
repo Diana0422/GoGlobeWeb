@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.Map;
 
 import logic.persistence.dao.UserStatsDao;
+import logic.persistence.exceptions.DBConnectionException;
 
 
 
@@ -62,14 +63,14 @@ public class User implements Serializable {
 		setPoints(getPoints()+i);
 	}
 
-	public boolean addReview(Review rev) {
+	public boolean addReview(Review rev) throws DBConnectionException {
 		reviews.add(rev);
 		calculateAverageRating(rev.getType());
 		return false;
 		
 	}
 	
-	private void calculateAverageRating(RoleType role) {
+	private void calculateAverageRating(RoleType role) throws DBConnectionException {
 		float sum = 0;
 		float avg = 0;
 		int count = 0;

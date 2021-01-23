@@ -8,6 +8,7 @@ import logic.bean.TripBean;
 import logic.persistence.dao.RequestDao;
 import logic.persistence.dao.TripDao;
 import logic.persistence.dao.UserDaoDB;
+import logic.persistence.exceptions.DBConnectionException;
 import logic.model.Request;
 import logic.model.Trip;
  
@@ -25,7 +26,7 @@ public class JoinTripController {
 		return instance;
 	}
 
-	public List<TripBean> searchTrips(String value) {
+	public List<TripBean> searchTrips(String value) throws DBConnectionException {
 		String logStr = "Search trips by value started.\n";
 		Logger.getGlobal().info(logStr);
 		List<Trip> trips = TripDao.getInstance().getTrips();
@@ -49,7 +50,7 @@ public class JoinTripController {
 		return list;
 	}
 	
-	public boolean joinTrip(TripBean tripBean, SessionBean session) {
+	public boolean joinTrip(TripBean tripBean, SessionBean session) throws DBConnectionException {
 		
 		// Pick the trip corresponding to the tripBean from persistence
 		Trip trip = TripDao.getInstance().getTripByTitle(tripBean.getTitle());

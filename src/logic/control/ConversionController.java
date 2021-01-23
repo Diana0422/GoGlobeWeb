@@ -26,6 +26,7 @@ import logic.persistence.dao.ReviewDao;
 import logic.persistence.dao.TripDao;
 import logic.persistence.dao.UserDaoDB;
 import logic.persistence.dao.UserStatsDao;
+import logic.persistence.exceptions.DBConnectionException;
 
 public class ConversionController {
 
@@ -46,7 +47,7 @@ public class ConversionController {
 	
 	/* Controller METHODS */
 	
-	public List<Day> convertDayBeanList(List<DayBean> dayBeans, String tripTitle){
+	public List<Day> convertDayBeanList(List<DayBean> dayBeans, String tripTitle) throws DBConnectionException{
 		List<Day> days = new ArrayList<>();
 		for (int i = 0; i < dayBeans.size(); i++) {
 			Day day = new Day();
@@ -64,7 +65,7 @@ public class ConversionController {
 	}
 	
 	
-	private List<Activity> convertActivityBeanList(List<ActivityBean> activityBeans, int dayId, String tripTitle){
+	private List<Activity> convertActivityBeanList(List<ActivityBean> activityBeans, int dayId, String tripTitle) throws DBConnectionException{
 		List<Activity> activities = new ArrayList<>();
 		for (int i = 0; i < activityBeans.size(); i++) {
 			String title = activityBeans.get(i).getTitle();
@@ -82,7 +83,7 @@ public class ConversionController {
 	}
 	
 	
-	public List<DayBean> convertDayList(List<Day> days, String tripTitle){
+	public List<DayBean> convertDayList(List<Day> days, String tripTitle) throws DBConnectionException{
 		List<DayBean> dayBeans = new ArrayList<>();
 		for (int i = 0; i < days.size(); i++) {
 			int dayNum = i+1;
@@ -114,7 +115,7 @@ public class ConversionController {
 		
 	}
 	
-	public List<TripBean> convertTripList(List<Trip> trips){
+	public List<TripBean> convertTripList(List<Trip> trips) throws DBConnectionException{
 		List<TripBean> tripBeans = new ArrayList<>();
 		for (int i=0; i<trips.size(); i++) {
 			Trip t = trips.get(i);
@@ -148,7 +149,7 @@ public class ConversionController {
 	}
 	
 
-	public List<UserBean> convertUserList(List<User> users) {
+	public List<UserBean> convertUserList(List<User> users) throws DBConnectionException {
 		List<UserBean> beans = new ArrayList<>();
 		
 		for (User user: users) {
@@ -192,7 +193,7 @@ public class ConversionController {
 		return TripCategory.NONE;
 	}	
 	
-	public UserBean convertToUserBean(User user) {
+	public UserBean convertToUserBean(User user) throws DBConnectionException {
 		UserBean bean = new UserBean();
 		UserStatsBean statsBean = new UserStatsBean();
 		bean.setEmail(user.getEmail());
@@ -227,7 +228,7 @@ public class ConversionController {
 		return list;
 	}
 
-	public Trip convertToTrip(TripBean tripBean) {
+	public Trip convertToTrip(TripBean tripBean) throws DBConnectionException {
 		Trip trip = TripDao.getInstance().getTripByTitle(tripBean.getTitle());
 		trip.setDays(DayDao.getInstance().getTripDays(trip.getTitle()));
 		trip.setOrganizer(UserDaoDB.getInstance().getTripOrganizer(trip.getTitle()));
