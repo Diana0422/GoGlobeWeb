@@ -45,8 +45,9 @@ public class JoinTripGraphic implements Initializable {
     }
 	
 	/* Beans */
-	
+ 
 	private List<TripBean> tripBeans;
+	private List<TripBean> filteredTripBeans;
 	
 	private SessionBean session;
 	

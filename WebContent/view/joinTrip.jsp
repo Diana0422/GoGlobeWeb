@@ -7,9 +7,19 @@
 
 <%@page import="java.util.List"%>      <%--Importing all the dependent classes--%>
 <%@page import="java.util.Iterator"%> 
+<%@page import="java.util.concurrent.TimeUnit"%> 
+
 <%@page import="logic.bean.TripBean"%>
 <%@page import="logic.control.JoinTripController"%>
+<%@page import="logic.bean.TripBean"%>
+<%@page import="logic.view.filterstrategies.StrategyContext"%>
+<%@page import="logic.view.filterstrategies.AlphabeticalFilterStrategy"%>
+<%@page import="logic.view.filterstrategies.AdventureCategoryStrategy"%>
+<%@page import="logic.view.filterstrategies.FunCategoryStrategy"%>
+<%@page import="logic.view.filterstrategies.CultureCategoryStrategy"%>
+<%@page import="logic.view.filterstrategies.RelaxCategoryStrategy"%>
 <%@page import="logic.persistence.exceptions.DBConnectionException"%>
+
 
 <!DOCTYPE html>
 <html lang="en">
@@ -52,30 +62,69 @@
           	<%
           		}
           	%>
-
-
+	</div>
+	<div class="trips">
         <!--cards for the results-->
         <form method="POST">
         <div class="results">
         	
         	<%
-        		if (request.getParameter("search") != null) {
-        		// Search for trips that match this title TODO
-        			if (request.getParameter("btnFilter1") != null) {
-        				//applica filtro 1	
-        			} 
-        		
-        			if (request.getParameter("btnFilter2") != null) {
-        				//applica filtro 2
-        			}
+        		StrategyContext context = new StrategyContext();
+        		List<TripBean> trips = null;
+        		//If ADVENTURE filter button is clicked
+        		if (request.getParameter("btn-adv-filter")!= null){
+        			context.setFilter(new AdventureCategoryStrategy());
+        			joinTripBean.setFilteredTrips(context.filter(joinTripBean.getObjects()));
+        			trips = context.filter(joinTripBean.getObjects());
+        			System.out.println("# of filtered trips is: " + joinTripBean.getFilteredTrips().size());
+      			
+        		}
+        		//If CULTURE filter button is clicked
+				if (request.getParameter("btn-clt-filter")!= null ){
+        			context.setFilter(new CultureCategoryStrategy());
+        			joinTripBean.setFilteredTrips(context.filter(joinTripBean.getObjects()));
+        			System.out.println("# of filtered trips is: " + joinTripBean.getFilteredTrips().size());
+        			trips = context.filter(joinTripBean.getObjects());
+
+        		}
+				//If RELAX filter button is clicked
+				if (request.getParameter("btn-rlx-filter")!= null){
+        			context.setFilter(new RelaxCategoryStrategy());
+        			joinTripBean.setFilteredTrips(context.filter(joinTripBean.getObjects()));
+        			System.out.println("# of filtered trips is: " + joinTripBean.getFilteredTrips().size());
+        			trips = context.filter(joinTripBean.getObjects());
+
+        		}
+				//If FUN filter button is clicked
+				if (request.getParameter("btn-fun-filter")!= null){
+        			context.setFilter(new FunCategoryStrategy());
+        			joinTripBean.setFilteredTrips(context.filter(joinTripBean.getObjects()));
+        			System.out.println("# of filtered trips is: " + joinTripBean.getFilteredTrips().size());
+        			trips = context.filter(joinTripBean.getObjects());
+
+        		} 
+				//If ALPHABETICAL filter button is clicked
+				if (request.getParameter("btn-alphab-filter")!= null){
+        			context.setFilter(new AlphabeticalFilterStrategy());
+        			joinTripBean.setFilteredTrips(context.filter(joinTripBean.getObjects()));
+        			System.out.println("# of filtered trips is: " + joinTripBean.getFilteredTrips().size());
+        			trips = context.filter(joinTripBean.getObjects());
+
+        		}
+				
+        		if (request.getParameter("search") != null ||
+        			request.getParameter("btn-alphab-filter")!= null ||
+        			request.getParameter("btn-fun-filter")!= null ||
+        			request.getParameter("btn-rlx-filter")!= null ||
+        			request.getParameter("btn-clt-filter")!= null ||
+        			request.getParameter("btn-adv-filter")!= null   ) {
         			
-        			if (request.getParameter("btnFilter3") != null) {
-        				//applica filtro 3
-        			}
         	%>
         	    	<!-- map class attributes to values of the form -->
 					<jsp:setProperty name="joinTripBean" property="searchVal"/>
 			<%
+					
+					//System.out.println(joinTripBean.getSearchVal());
 					try {
 						joinTripBean.setObjects(JoinTripController.getInstance().searchTrips(joinTripBean.getSearchVal()));
 					} catch (DBConnectionException e) {
@@ -85,11 +134,30 @@
 						<jsp:forward page="error.jsp"/>
 						<%
 					}
-					
         			if(!joinTripBean.getObjects().isEmpty()) {
-        				List<TripBean> trips = joinTripBean.getObjects();
-        				System.out.println("jsp: trips = "+trips);
-        				if (trips != null) {
+        				if (trips == null){
+        					trips = joinTripBean.getObjects();
+        				}
+        				/*if (joinTripBean.getFilteredTrips() != null){
+        					if(!joinTripBean.getFilteredTrips().isEmpty()){
+	        					System.out.println("PRENDO QUELLI FILTRATI EH");
+	        					trips = joinTripBean.getFilteredTrips();
+	        			
+        					}   
+        				}*/
+    					System.out.println("MO CHE DEVO CARICARE, TRIP TROVATI: " + trips.size());
+    					System.out.println("MO CHE DEVO CARICARE, TRIP filtrati NELLA BEAN: " + joinTripBean.getFilteredTrips());
+    					System.out.println("MO CHE DEVO CARICARE, TRIP NELLA BEAN: " + joinTripBean.getObjects().size());
+
+
+        				for (TripBean trip: trips){
+        					System.out.println(trip.getTitle());
+        				}
+        				System.out.println("jsp: trips = "+ trips);
+    					System.out.println("MO COMINCIO AD ITERARE");
+        				
+        				if (trips != null){
+        					System.out.println("i trip non so nulli!");
         					Iterator<TripBean> iter = trips.iterator();
         		
         					int elemsInRow=0;
@@ -127,14 +195,15 @@
         			
         		} else {
         	%>
-        			<div class="filler" style="padding: 250px"><h2>No trips found.</h2></div>
+        			<div class="filler"><h2>No trips found.</h2></div>
         			
         	<%
-        		}
-        							
+        		}      	
+				
         	%>
         	</div>
-        </div>
+        </div>      
+      
         
         <%
              if(request.getParameter("viewinfo") != null) {
@@ -148,6 +217,19 @@
              }
         %>
         </form>
+        <div class = "filter-btns">
+        	<label style="text-size: 24px"> Filters: </label>
+        	<form action="joinTrip.jsp" name="filter-form" method="POST">
+        		<button type="submit"  name="btn-alphab-filter" class="btn btn-primary btn-lg btn-block">A - Z</button>
+        		<label>Categories:</label>
+        		<button type="submit" name="btn-adv-filter" class="btn btn-primary btn-lg btn-block">Adventure</button>
+        		<button type="submit" name="btn-rlx-filter" class="btn btn-primary btn-lg btn-block">Relax</button>
+        		<button type="submit" name="btn-clt-filter"  class="btn btn-primary btn-lg btn-block">Culture</button>
+        		<button type="submit" name="btn-fun-filter" class="btn btn-primary btn-lg btn-block">Fun</button>
+        	</form>
+        </div>
+        <div class="clearfix"></div>
       </div>
+    
 </body>
 </html>

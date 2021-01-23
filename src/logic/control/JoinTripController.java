@@ -33,7 +33,7 @@ public class JoinTripController {
 		List<Trip> filteredTrips = new ArrayList<>();
 		
 		for (Trip trip: trips) {
-			if (trip.getTitle().contains(value)) filteredTrips.add(trip);
+			if (trip.getTitle().toLowerCase().contains(value.toLowerCase())) filteredTrips.add(trip);
 			
 		}
 		
