@@ -7,13 +7,13 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-
 import logic.model.Review;
 import logic.model.RoleType;
 import logic.model.User;
 import logic.model.factories.UserFactory;
 import logic.persistence.ConnectionManager;
 import logic.persistence.exceptions.DBConnectionException;
+import logic.persistence.exceptions.DatabaseException;
 
 public class ReviewDao {
 	
@@ -32,7 +32,7 @@ public class ReviewDao {
 	}
 	
 	
-	public List<Review> getUserReviews(String userEmail) throws DBConnectionException {
+	public List<Review> getUserReviews(String userEmail) throws DBConnectionException, DatabaseException {
 		ResultSet rs = null;
 		List<Review> list = new ArrayList<>();
 		Review r = null;
@@ -47,6 +47,7 @@ public class ReviewDao {
 			}
 	
 			if (rs != null) {
+				if (!rs.next()) return list; 
 				rs.first();
 				do{
 					// reading columns
@@ -74,14 +75,13 @@ public class ReviewDao {
 			}
 			return list;
 		} catch (SQLException e) {
-			//TODO
-			return list;
+			throw new DatabaseException("Cannot get reviews from database for user:"+userEmail, e.getCause());
 		}
 			
 	}
 	
 	
-	public boolean save(Review t, String target) throws DBConnectionException {
+	public boolean save(Review t, String target) throws DBConnectionException, SQLException {
 		try (Connection conn = ConnectionManager.getInstance().getConnection();
 			CallableStatement stmt = conn.prepareCall(STORE_REVIEW)) {
 			
@@ -95,8 +95,7 @@ public class ReviewDao {
 				
 			return stmt.execute();
 		} catch (SQLException e) {
-			//TODO
-			return false;
+			throw new SQLException("Cannot save request on database from user:"+t.getReviewer().getEmail()+" for trip:"+target, e.getCause());
 		}
 	}
 

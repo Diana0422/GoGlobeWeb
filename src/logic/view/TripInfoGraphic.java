@@ -21,7 +21,7 @@ import logic.bean.UserBean;
 import logic.control.FlightController;
 import logic.control.JoinTripController;
 import logic.model.exceptions.LoadGraphicException;
-import logic.persistence.exceptions.DBConnectionException;
+import logic.persistence.exceptions.DatabaseException;
 
 public class TripInfoGraphic implements GraphicController {
 	
@@ -167,9 +167,9 @@ public class TripInfoGraphic implements GraphicController {
 			lblOrigin.setText(FlightController.getInstance().retrieveFlightOrigin(tripBean));
 			lblDestination.setText(FlightController.getInstance().retrieveFlightDestination(tripBean));
 			lblCarrier.setText(FlightController.getInstance().retrieveFlightCarrier(tripBean));
-		} catch (DBConnectionException e) {
+		} catch (DatabaseException e) {
 			AlertGraphic alert = new AlertGraphic();
-			alert.display(GUIType.INFO, GUIType.HOME, null, DesktopSessionContext.getInstance().getSession(), "Database connection error", "Please retry later.");
+			alert.display(GUIType.INFO, GUIType.HOME, null, DesktopSessionContext.getInstance().getSession(), e.getMessage(), e.getCause().toString());
 		}
 	
 	}
@@ -198,9 +198,9 @@ public class TripInfoGraphic implements GraphicController {
 					AlertGraphic alert = new AlertGraphic();
 					alert.display(GUIType.INFO, GUIType.REQUESTS, null, getTripBean(), "You are not eligible to join.", "Choose an option.");
 				}
-			} catch (DBConnectionException e) {
+			} catch (DatabaseException e) {
 				AlertGraphic alert = new AlertGraphic();
-				alert.display(GUIType.INFO, GUIType.HOME, null, DesktopSessionContext.getInstance().getSession(), "Database connection error", "Please retry later.");
+				alert.display(GUIType.INFO, GUIType.HOME, null, DesktopSessionContext.getInstance().getSession(), e.getMessage(), e.getCause().toString());
 			}
 		} else {
 			AlertGraphic alert = new AlertGraphic();

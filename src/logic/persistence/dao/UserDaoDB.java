@@ -39,7 +39,7 @@ public class UserDaoDB {
 	}
 	
 
-	public User get(String...params) throws DBConnectionException {
+	public User get(String...params) throws DBConnectionException, SQLException {
 		ResultSet rs = null;
 		User u = null;
 		
@@ -74,15 +74,13 @@ public class UserDaoDB {
 			}
 			return u;
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-			return u;
+			throw new SQLException("Cannot get user from database.", new Throwable(e.getMessage()));
 		}
 		
 	}
 
 
-	public boolean save(User t) throws DBConnectionException {
+	public boolean save(User t) throws DBConnectionException, SQLException {
 		try (Connection conn = ConnectionManager.getInstance().getConnection();
 			  CallableStatement stmt = conn.prepareCall(STORE_USER)) {
 			stmt.setString(1, t.getEmail());
@@ -93,14 +91,13 @@ public class UserDaoDB {
 			stmt.execute();
 			return true;
 		} catch (SQLException e) {
-			//TODO
-			return false;
+			throw new SQLException("Cannot save user on database.", new Throwable(e.getMessage()));
 		}
 		
 	}
 
 
-	public boolean update(User t, String...params) throws DBConnectionException {
+	public boolean update(User t, String...params) throws DBConnectionException, SQLException {
 		try (Connection conn = ConnectionManager.getInstance().getConnection();
 			CallableStatement stmt = conn.prepareCall(UPDATE_USER)) {
 			
@@ -112,27 +109,25 @@ public class UserDaoDB {
 			stmt.execute();
 			return true;
 		} catch (SQLException e) {
-			//TODO
-			return false;
+			throw new SQLException("Cannot update user info on database.", e.getCause());
 		}
 		
 	}
 
 
-	public boolean delete(User t) throws DBConnectionException {
+	public boolean delete(User t) throws DBConnectionException, SQLException {
 		try (Connection conn = ConnectionManager.getInstance().getConnection();
 			CallableStatement stmt = conn.prepareCall(DELETE_USER)) {
 			stmt.setString(1, t.getEmail());
 			stmt.execute();
 			return true;
 		} catch (SQLException e) {
-				//TODO
-			return false;
+			throw new SQLException("Cannot delete user from database.", e.getCause());
 		}
 		
 	}
 	
-	public User getTripOrganizer(String tripTitle) throws DBConnectionException {
+	public User getTripOrganizer(String tripTitle) throws DBConnectionException, SQLException {
 		ResultSet rs = null;
 		User u = null;
 		
@@ -164,13 +159,11 @@ public class UserDaoDB {
 			
 			return u;
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-			return u;
+			throw new SQLException("Cannot get trip organizer from database.", e.getCause());
 		}
 	}
 	
-	public List<User> getTripParticipants(String tripTitle) throws DBConnectionException {
+	public List<User> getTripParticipants(String tripTitle) throws DBConnectionException, SQLException {
 		List<User> participants = new ArrayList<>();
 		ResultSet rs = null;
 		
@@ -184,6 +177,7 @@ public class UserDaoDB {
 			}
 			
 			if (rs != null) {
+				if (!rs.next()) return participants;
 				rs.first();
 				do {
 					String name = rs.getString(NAME_COLUMN);
@@ -205,9 +199,7 @@ public class UserDaoDB {
 			}
 			return participants;
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-			return participants;
+			throw new SQLException("Cannot get participants to the trip:"+tripTitle+" from database.", e.getCause());
 		}
 		
 	}

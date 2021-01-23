@@ -1,13 +1,12 @@
 package logic.control;
 
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
+import java.sql.SQLException;
 import java.util.Date;
 
 import logic.bean.SessionBean;
 import logic.persistence.dao.UserDaoDB;
 import logic.persistence.exceptions.DBConnectionException;
+import logic.persistence.exceptions.DatabaseException;
 import logic.model.User;
 
 public class RegistrationController {
@@ -24,13 +23,11 @@ public class RegistrationController {
 		return instance;
 	}
 	
-	public synchronized SessionBean register(String email, String password, String name, String surname, String birthday) throws DBConnectionException {
+	public synchronized SessionBean register(String email, String password, String name, String surname, String birthday) throws DatabaseException {
 		User user;
-		DateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
-		Date birth;
+		Date birth = ConversionController.getInstance().parseDate(birthday);
+		user = new User(name, surname, birth, email, password);
 		try {
-			birth = formatter.parse(birthday);
-			user = new User(name, surname, birth, email, password);
 			if (UserDaoDB.getInstance().save(user)) {
 				SessionBean session = new SessionBean(); 
 				session.setSessionEmail(email);
@@ -39,10 +36,8 @@ public class RegistrationController {
 				session.setSessionPoints(0);
 				return session;
 			}
-		} catch (ParseException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-			return null;
+		} catch (DBConnectionException | SQLException e) {
+			throw new DatabaseException(e.getMessage(), e.getCause());
 		}
 		return null;
 	}

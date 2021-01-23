@@ -1,6 +1,7 @@
 package logic.model;
 
 import java.io.Serializable;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -9,6 +10,7 @@ import java.util.Map;
 
 import logic.persistence.dao.UserStatsDao;
 import logic.persistence.exceptions.DBConnectionException;
+import logic.persistence.exceptions.DatabaseException;
 
 
 
@@ -63,14 +65,14 @@ public class User implements Serializable {
 		setPoints(getPoints()+i);
 	}
 
-	public boolean addReview(Review rev) throws DBConnectionException {
+	public boolean addReview(Review rev) throws DatabaseException {
 		reviews.add(rev);
 		calculateAverageRating(rev.getType());
 		return false;
 		
 	}
 	
-	private void calculateAverageRating(RoleType role) throws DBConnectionException {
+	private void calculateAverageRating(RoleType role) throws DatabaseException {
 		float sum = 0;
 		float avg = 0;
 		int count = 0;
@@ -86,12 +88,16 @@ public class User implements Serializable {
 			avg = sum/count;
 		}
 		
-		if (role == RoleType.ORGANIZER) {
-			stats.setOrganizerRating(avg);
-			UserStatsDao.getInstance().updateStats(this.getEmail(), this.getPoints(), this.getStats().getOrganizerRating(), this.getStats().getTravelerRating());
-		} else {
-			stats.setTravelerRating(avg);
-			UserStatsDao.getInstance().updateStats(this.getEmail(), this.getPoints(), this.getStats().getOrganizerRating(), this.getStats().getTravelerRating());
+		try {
+			if (role == RoleType.ORGANIZER) {
+				stats.setOrganizerRating(avg);
+				UserStatsDao.getInstance().updateStats(this.getEmail(), this.getPoints(), this.getStats().getOrganizerRating(), this.getStats().getTravelerRating());
+			} else {
+				stats.setTravelerRating(avg);
+				UserStatsDao.getInstance().updateStats(this.getEmail(), this.getPoints(), this.getStats().getOrganizerRating(), this.getStats().getTravelerRating());
+			}	
+		} catch(DBConnectionException | SQLException e) {
+			throw new DatabaseException(e.getMessage(), e.getCause());
 		}
 	}
  	

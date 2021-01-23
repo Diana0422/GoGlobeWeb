@@ -12,6 +12,7 @@
 <%@page import="logic.bean.UserBean"%>
 <%@page import="logic.control.JoinTripController"%>
 <%@page import="logic.control.FlightController"%>
+<%@page import="logic.persistence.exceptions.DatabaseException"%>
 
 
 <!DOCTYPE html>
@@ -73,203 +74,111 @@
     				<a class="nav-link" href="#users" data-toggle="tab">Participants</a>
     			</li>
     		</ul>
-    	
-    		<div class="tab-content">
-    			<div class="tab-pane active" role="tabpanel" id="general">
-    				<div class="main-content">
-    					
-    					<div class="trip-title">
-	                			<h1 style="font-family: BarlowBold;"><%= joinTripBean.getTrip().getTitle() %></h1>
-	                			
-	                			<form action="tripInfo.jsp" method="POST">
-		            				<button type="submit" name="jointrip" class="btn btn-primary">Join Trip</button>
-		            			<%
-		            				if (request.getParameter("jointrip") != null ){
-		            					JoinTripController.getInstance().joinTrip(joinTripBean.getTrip(), sessionBean);
-		            				}
-		            			%>
-	            				</form>
-	            				
-	            		</div>
-    					
-	    				<div class="general-info">
-	            			
-	            			<div class="infos-left">
-		            			<!-- Trip Organizer -->
-		            			<form action="tripInfo.jsp" method="POST">
-		            				<div class="organizer user-tag">
-		            					<h3>Organizer:</h3>
-		            					<h4 style="margin-right: 10px;margin-bottom: 0px;margin-top: 5px;"><%= joinTripBean.getTrip().getOrganizer().getName() %></h4>
-		            					<h4 style="margin-right: 10px;margin-bottom: 0px;margin-top: 5px;"><%= joinTripBean.getTrip().getOrganizer().getSurname() %></h4>
-		            					<button type="submit" class="btn btn-primary" name="viewprofile">profile</button>
-		            				</div>
-		            				
-		            				<%
-		            					if (request.getParameter("viewprofile") != null) {
-		            						System.out.println(joinTripBean.getTrip().getOrganizer().getName());
-		            						profileBean.setUser(joinTripBean.getTrip().getOrganizer());
-		            						%>
-		            						<jsp:forward page="profile.jsp"/>
-		            						<% 
-		            					}
-		            				%>
-		            			</form>
-		
-		            			<h3>Categories:</h3>
-		            			<ul class="category-list">
-		                			<li class="category1">
-		                    			<img src="../res/images/icons8-cocktail-50.png">
-		                    			<h4><%= joinTripBean.getTrip().getCategory1() %></h4>
-		                			</li>
-		                			<li class="category2">
-		                    			<img src="../res/images/icons8-greek-pillar-capital-50.png">
-		                    			<h4><%= joinTripBean.getTrip().getCategory2() %></h4>
-		                			</li>
-		            			</ul>
-		            			
-		            			<h3>Description:</h3>
-		            			<div class="trip-description">
-		                			<p><%= joinTripBean.getTrip().getDescription() %></p>
-		            			</div>
-		            			
-		            			<div class="price-tag" style="margin-top:20%; margin-bottom: 20%;">
-		                			<h3>Starting price:</h3>
-		                			<h4 style="margin-top: 5px; margin-left:10px;"><%= joinTripBean.getTrip().getPrice() %></h4>
-		            			</div>
-	            			</div>
-	        			</div>
-	        			
-	        			<h3>Dates:</h3>
-	            		<div class="dates bordered">
-		            		<ul>
-		            			<li class="departure bordered-bottom">
-		            				<img src="../res/images/takeoff-icon.png">
-		                    		<h4 class="center italicbold">Departure:</h4>
-		                    		<h4 class="center"><%= joinTripBean.getTrip().getDepartureDate() %></h4>
-		            			</li>
-		            			<li class="return">
-		            				<img src="../res/images/landing-icon.png">               			
-		                    		<h4 class="center italicbold">Return:</h4>
-		                    		<h4 class="center"><%= joinTripBean.getTrip().getReturnDate() %></h4>
-		            			</li>
-		            		</ul>
-		            	</div>
-	        			
-	        			<h3>Available Flight:</h3>
-	        			<div class="flight bordered">
-	        				<ul>
-	        					<li class="origin bordered-bottom">
-	        						<img src="../res/images/origin-icon.png">
-	        						<h4 class="center italicbold">Departure from:</h4>
-	        						<h4 class="center"><%= FlightController.getInstance().retrieveFlightOrigin(joinTripBean.getTrip()) %></h4>
-	        						<br>
-	        					</li>
-	        					<li class="destination bordered-bottom">
-	        						<img src="../res/images/origin-icon.png">
-	        						<h4 class="center italicbold">Arrival to:</h4>
-	        						<h4 class="center"><%= FlightController.getInstance().retrieveFlightDestination(joinTripBean.getTrip()) %></h4>
-	        						<br>
-	        					</li>
-	        					<li class="carrier bordered-bottom">
-	        						<img src="../res/images/carrier-icon.png">
-	        						<h4 class="center italicbold">Carrier:</h4>
-	        						<h4 class="center"><%= FlightController.getInstance().retrieveFlightCarrier(joinTripBean.getTrip()) %></h4>
-	        						<br>
-	        					</li>
-	        					<li class="ticket-price">
-	        						<img src="../res/images/pricetag-icon.png">
-	        						<h4 class="center italicbold">Ticket price:</h4>
-	        						<%
-	        							int price = FlightController.getInstance().retrieveFlightPrice(joinTripBean.getTrip());
-	        							if (price != 0) {
-	        								%>
-	        								<h4 class="center"><%= price %>€</h4>
-	        								<%
-	        							} else {
-	        								%>
-	        								<h4 class="center">N/D</h4>
-	        								<%
-	        							}
-	        						%>
-	        						<br>
-	        					</li>
-	        				</ul>
-	        			</div>
-	        			
-    				</div>
-    			</div>
-    			
-    			<%
+ 
+ 			<%
+ 			request.setAttribute("tripTitle", joinTripBean.getTrip().getTitle());
+ 			request.setAttribute("orgName", joinTripBean.getTrip().getOrganizer().getName());
+ 			request.setAttribute("orgSurname", joinTripBean.getTrip().getOrganizer().getSurname());
+ 			request.setAttribute("tripCat1", joinTripBean.getTrip().getCategory1());
+ 			request.setAttribute("tripCat2", joinTripBean.getTrip().getCategory2());
+ 			request.setAttribute("tripDesc", joinTripBean.getTrip().getDescription());
+ 			request.setAttribute("tripPrice", joinTripBean.getTrip().getPrice());
+ 			request.setAttribute("depDate", joinTripBean.getTrip().getDepartureDate());
+ 			request.setAttribute("retDate", joinTripBean.getTrip().getReturnDate());
+ 			
+ 			try {
+ 				request.setAttribute("flightOri", FlightController.getInstance().retrieveFlightOrigin(joinTripBean.getTrip()));
+ 				request.setAttribute("flightArr", FlightController.getInstance().retrieveFlightDestination(joinTripBean.getTrip()));
+ 				request.setAttribute("carrier", FlightController.getInstance().retrieveFlightCarrier(joinTripBean.getTrip()));
+ 				int ticket = FlightController.getInstance().retrieveFlightPrice(joinTripBean.getTrip());
+ 				if (ticket == 0) {
+ 					request.setAttribute("ticket", "N/D");
+ 				} else {
+ 					request.setAttribute("ticket", FlightController.getInstance().retrieveFlightPrice(joinTripBean.getTrip()));
+ 				}
+ 				
+ 				if (request.getParameter("jointrip") != null ){
+ 					JoinTripController.getInstance().joinTrip(joinTripBean.getTrip(), sessionBean);
+ 				}
+ 			} catch (DatabaseException e) {
+ 				request.setAttribute("errType", e.getMessage());
+ 				if (e.getCause()!=null) request.setAttribute("errLog", e.getCause());
+ 				%>
+ 				<jsp:forward page="error.jsp"/>
+ 				<%
+ 			}
+ 			
+			if (request.getParameter("viewprofile") != null) {
+				System.out.println(joinTripBean.getTrip().getOrganizer().getName());
+				profileBean.setUser(joinTripBean.getTrip().getOrganizer());
+				%>
+				<jsp:forward page="profile.jsp"/>
+				<% 
+			}
+ 			
+ 			%>
     		
-    			for (int i=0; i<joinTripBean.getTrip().getTripLength(); i++) {
-    				DayBean dayBean = days.get(i);
-    				System.out.println(dayBean);
-    			%>
-    				<div class="tab-pane" role="tabpanel" id=<%= "day"+i+1 %>>
-    					<h3 id="panel-title">Location:</h3>
-    					<h4><%= dayBean.getLocationCity() %></h4>
-    					<h3 id="panel-title">Activities of the day:</h3>
-    					<div class="list scrollable">
-    					
-    					<%
-        					for (int j=0; j<dayBean.getActivities().size(); j++) {
-        						ActivityBean activityBean = dayBean.getActivities().get(j);
-        						%>
-        							<div class="activity">		
-		            					<div class="activity-info">
-			            					<h3 id="activity-title"><%= activityBean.getTitle() %></h3>
-			            					<h3><%= activityBean.getTime() %></h3>
-			            					<div class="description">
-			            						<h5><%= activityBean.getDescription() %></h5>
-			            					</div>
-		            					</div>
-		            					<div class="activity-price">
-		            						<h4>200 €</h4>
-		            					</div>		            			
-	         						</div> 
-        						<% 
-        					}
-        				%> 
-    					
-    					</div>
-        			</div>
-        		<% 
-	    			}
-    		
-    			%>
+    		<%@ include file="html/tripInfo.html" %>
+ 
     			
-    			<!-- separator to inferior part -->
-        			<div class="tab-pane" role="tabpanel" id="users">
-	        			<div class="participants list scrollable">
-	        				<h3 id="panel-title">Current participants:</h3>
-	        				<%
-	        					List<UserBean> travelers = joinTripBean.getTrip().getParticipants();
-	        					for (UserBean bean: travelers) {
-	        						%>
-	        							<form action="tripInfo.jsp" method="POST">
-	            							<div class="organizer user-tag">
-	            								<h4 style="margin-right: 10px;"><%= bean.getName() %></h4>
-	            								<h4 style="margin-right: 10px;"><%= bean.getSurname() %></h4>
-	            								<button type="submit" class="btn btn-primary" name="viewparticipant">profile</button>
-	            							</div>
-	            				
-	            							<%
-	            								if (request.getParameter("viewparticipant") != null) {
-	            									System.out.println(bean.getName()+bean.getSurname());
-	            									profileBean.setUser(bean);
-	            							%>
-	            									<jsp:forward page="profile.jsp"/>
-	            							<% 
-	            								}
-	            							%>
-	            						</form>
-	        						<%
-	        					}
-	        				%>
-	        			</div>
+    		<%
+    		
+    		for (int i=0; i<joinTripBean.getTrip().getTripLength(); i++) {
+    			DayBean dayBean = days.get(i);
+    			System.out.println(dayBean);
+    		%>
+    			<div class="tab-pane" role="tabpanel" id=<%= "day"+i+1 %>>
+    				<h3 id="panel-title">Location:</h3>
+    				<h4><%= dayBean.getLocationCity() %></h4>
+    				<h3 id="panel-title">Activities of the day:</h3>
+    				<div class="list scrollable">
+    				<%
+        				for (int j=0; j<dayBean.getActivities().size(); j++) {
+        					ActivityBean activityBean = dayBean.getActivities().get(j);
+        					request.setAttribute("acitityTitle", activityBean.getTitle());
+        					request.setAttribute("activityTime", activityBean.getTime());
+        					request.setAttribute("activityDesc", activityBean.getDescription());
+        					request.setAttribute("activityPrice", activityBean.getEstimatedCost());
+        					
+        					%>
+        					<%@ include file="html/activityItem.html" %>
+        					<%
+        				}
+        			%>
+    					
     				</div>
-    		</div>    		
+        		</div>
+        	<%
+	    		}
+    		
+    		%>
+    			
+    		<!-- separator to inferior part -->
+        	<div class="tab-pane" role="tabpanel" id="users">
+	        	<div class="participants list scrollable">
+	        		<h3 id="panel-title">Current participants:</h3>
+	        		<%
+	        			List<UserBean> travelers = joinTripBean.getTrip().getParticipants();
+	        			for (UserBean bean: travelers) {
+	        				request.setAttribute("userName", bean.getName());
+	        				request.setAttribute("userSurname", bean.getSurname());
+	        				
+							if (request.getParameter("viewparticipant") != null) {
+								System.out.println(bean.getName()+bean.getSurname());
+								profileBean.setUser(bean);
+								%>
+								<jsp:forward page="profile.jsp"/>
+								<% 
+							}
+							
+							%>
+							<%@ include file="html/userItem.html" %>
+							<%
+	        			}
+					%>
+	        	</div>
+    		</div>
+    	</div>    		
     </div>
-</div>
 </body>
 </html>

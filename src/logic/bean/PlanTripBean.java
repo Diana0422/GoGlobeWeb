@@ -6,11 +6,8 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 import java.util.logging.Logger;
-
-import logic.control.PlanTripController;
 import logic.model.exceptions.DateFormatException;
 import logic.model.exceptions.FormInputException;
-import logic.persistence.exceptions.DBConnectionException;
 
 public class PlanTripBean {
 	
@@ -196,39 +193,34 @@ public class PlanTripBean {
 		return this.tripBean.getDays().get(planningDay).getLocationCity();
 	}
 	
-	//GUI CONTROLLER
+	// TODO GUI CONTROLLER
 	public List<DayBean> getTripDays() {
 		return this.tripBean.getDays();
 	}
 
-	//GUI CONTROLLER
+	// TODO GUI CONTROLLER
 	public int getActivitiesNum() {
 		 return this.tripBean.getDays().get(planningDay).getActivities().size();
 	}
 	
-	//GUI CONTROLLER
+	// TODO GUI CONTROLLER
 	public String displayActivityTime(int activityNum) {
 		return this.getTripDays().get(planningDay).getActivities().get(activityNum).getTime();
 	}
 	
-	//GUI CONTROLLER
+	// TODO GUI CONTROLLER
 	public String displayActivityTitle(int activityNum) {
 		return this.getTripDays().get(planningDay).getActivities().get(activityNum).getTitle();
 	}
 	
-	//GUI CONTROLLER
+	// TODO GUI CONTROLLER
 	public String displayActivityDescription(int activityNum) {
 		return this.getTripDays().get(planningDay).getActivities().get(activityNum).getDescription();
 	}
 	
-	//GUI CONTROLLER 
+	// TODO GUI CONTROLLER 
 	public String displayActivityCost(int activityNum) {
 		return this.getTripDays().get(planningDay).getActivities().get(activityNum).getEstimatedCost();
-	}
-	
-	public boolean saveTrip(SessionBean session) throws DBConnectionException {
-		//TODO LEVARE DA QUI PLIZ
-		return PlanTripController.getInstance().saveTrip(this.tripBean, session);
 	}
 
 	public TripBean getTripBean() {

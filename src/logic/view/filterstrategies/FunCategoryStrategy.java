@@ -4,8 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import logic.bean.TripBean;
-import logic.model.Trip;
-import logic.model.TripCategory;
 
 public class FunCategoryStrategy implements TripFilter {
 

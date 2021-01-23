@@ -29,7 +29,7 @@ public class DayDao {
 	}
 	
 	
-	public boolean saveDay(Day day, String tripTitle) throws DBConnectionException {
+	public boolean saveDay(Day day, String tripTitle) throws DBConnectionException, SQLException {
 		try (Connection conn = ConnectionManager.getInstance().getConnection();
 			CallableStatement stmt = conn.prepareCall(STORE_DAY)) {
 			stmt.setInt(1, day.getId());
@@ -38,12 +38,11 @@ public class DayDao {
 			stmt.execute();
 			return true;
 		} catch (SQLException e) {
-			//TODO
-			return false;
+			throw new SQLException("Day with id:"+day.getId()+"cannot be saved on database.", e.getCause());
 		}
 	}
 	
-	public List<Day> getTripDays(String tripTitle) throws DBConnectionException {
+	public List<Day> getTripDays(String tripTitle) throws DBConnectionException, SQLException {
 		List<Day> days = new ArrayList<>();
 		ResultSet rs = null;
 		
@@ -73,8 +72,7 @@ public class DayDao {
 			
 			return days;
 		} catch (SQLException e) {
-			//TODO
-			return days;
+			throw new SQLException("Cannot fetch days for the trip with title:"+tripTitle+"from the database.", new Throwable(e.getMessage()));
 		}
 	}
 	

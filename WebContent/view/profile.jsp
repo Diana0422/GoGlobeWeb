@@ -7,6 +7,7 @@
 
 <%@page import="logic.bean.ReviewBean"%>
 <%@page import="logic.control.ReviewUserController"%>
+<%@page import="logic.persistence.exceptions.DatabaseException"%>
 
 <jsp:setProperty name="profileBean" property="comment"/>
 <jsp:setProperty name="profileBean" property="title"/>
@@ -208,17 +209,28 @@
                                 		profileBean.setVote(Double.parseDouble(request.getParameter("star")));
                                 		// Date
                                 		
-                                		ReviewBean review = new ReviewBean();
-                                		review.setTitle(profileBean.getTitle());
-                                		review.setComment(profileBean.getComment());
-                                		review.setDate(profileBean.getDate());
-                                		review.setReviewerName(sessionBean.getSessionName());
-                                		review.setReviewerSurname(sessionBean.getSessionSurname());
-                                		review.setVote(profileBean.getVote());
-                                		profileBean.getUser().getReviews().add(review);                  
-                                		ReviewUserController.getInstance().postReview(request.getParameter("type-radio"), profileBean.getVote(), profileBean.getComment(), profileBean.getTitle(), sessionBean.getSessionEmail(), userBean.getEmail(), profileBean.getUser());
-                                		System.out.println("web view: org rating:"+profileBean.getUser().getStatsBean().getOrgRating()+" trav rating:"+profileBean.getUser().getStatsBean().getTravRating());
-                                		response.setIntHeader("Refresh",0);
+                                		try {
+                                    		ReviewBean review = new ReviewBean();
+                                    		review.setTitle(profileBean.getTitle());
+                                    		review.setComment(profileBean.getComment());
+                                    		review.setDate(profileBean.getDate());
+                                    		review.setReviewerName(sessionBean.getSessionName());
+                                    		review.setReviewerSurname(sessionBean.getSessionSurname());
+                                    		review.setVote(profileBean.getVote());
+                                    		profileBean.getUser().getReviews().add(review);                  
+                                    		ReviewUserController.getInstance().postReview(request.getParameter("type-radio"), profileBean.getVote(), profileBean.getComment(), profileBean.getTitle(), sessionBean.getSessionEmail(), userBean.getEmail(), profileBean.getUser());
+                                    		System.out.println("web view: org rating:"+profileBean.getUser().getStatsBean().getOrgRating()+" trav rating:"+profileBean.getUser().getStatsBean().getTravRating());
+                                    		response.setIntHeader("Refresh",0);
+                                		} catch (DatabaseException e) {
+                                			request.setAttribute("errType", e.getMessage());
+                                			if (e.getCause()!=null) {
+                                				request.setAttribute("errLog", e.getCause().toString());
+                                			}
+                                			
+                                			%>
+                                			<jsp:forward page="error.jsp"/>
+                                			<%
+                                		}
                                 	}
                                 
                                 %>

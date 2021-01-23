@@ -5,6 +5,7 @@
 
 <%@page import="logic.control.GainPointsController"%>
 <%@page import="logic.bean.TripBean"%>
+<%@page import="logic.persistence.exceptions.DatabaseException"%>
 
 <!DOCTYPE html>
 <html>
@@ -28,29 +29,37 @@
 	<%@ include file="html/gainPoints.html" %>
 	
 	<%
-		TripBean todayTrip = GainPointsController.getInstance().getTripOfTheDay(sessionBean.getSessionEmail());
-	
-		if (request.getParameter("gainpoints") != null) {
-			if (GainPointsController.getInstance().verifyParticipation(sessionBean, todayTrip)) {
-				request.setAttribute("mess", "Trip successfully validated. You gained 100 points.");
-			} else {
-				request.setAttribute("mess", "Cannot validate trip. You don't gain any points.");
+		try {
+			TripBean todayTrip = GainPointsController.getInstance().getTripOfTheDay(sessionBean.getSessionEmail());
+			
+			if (request.getParameter("gainpoints") != null) {
+				if (GainPointsController.getInstance().verifyParticipation(sessionBean, todayTrip)) {
+					request.setAttribute("mess", "Trip successfully validated. You gained 100 points.");
+				} else {
+					request.setAttribute("mess", "Cannot validate trip. You don't gain any points.");
+				}
 			}
-		}
-	
-	%>
-		<%@ include file="html/alertMessage.html" %>
-	<%
-	
-		if(todayTrip != null) {
-			request.setAttribute("title", todayTrip.getTitle());
-			request.setAttribute("departure", todayTrip.getDepartureDate());
-			request.setAttribute("return_date", todayTrip.getReturnDate());
-			request.setAttribute("points", sessionBean.getSessionPoints());
-		%>
-			<%@ include file="html/currentTripCard.html" %>
-		<%
+			%>
+				<%@ include file="html/alertMessage.html" %>
+			<%
 		
+			if(todayTrip != null) {
+				request.setAttribute("title", todayTrip.getTitle());
+				request.setAttribute("departure", todayTrip.getDepartureDate());
+				request.setAttribute("return_date", todayTrip.getReturnDate());
+				request.setAttribute("points", sessionBean.getSessionPoints());
+			%>
+				<%@ include file="html/currentTripCard.html" %>
+			<%
+			
+			}
+		} catch(DatabaseException e) {
+			request.setAttribute("errType", e.getMessage());
+			request.setAttribute("errLog", e.getCause().toString());
+		
+			%>
+				<jsp:forward page="error.jsp"/>
+			<%
 		}
 	%>
 </div>

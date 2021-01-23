@@ -2,7 +2,7 @@
     pageEncoding="ISO-8859-1"%>
 
 <%@page import="logic.control.RegistrationController"%>
-<%@page import="logic.persistence.exceptions.DBConnectionException"%>
+<%@page import="logic.persistence.exceptions.DatabaseException"%>
 
 <!-- declaration and initialization of a register bean -->
 <jsp:useBean id="registerBean" scope="request" class="logic.bean.RegistrationBean" />
@@ -65,9 +65,9 @@
 								<p style="color: red">This user is already registered.</p>
 							<%
         					}	
-    					} catch (DBConnectionException e) {
+    					} catch (DatabaseException e) {
     						request.setAttribute("errType", e.getMessage());
-    						request.setAttribute("errLog", e.getCause().toString());
+    						if (e.getCause()!=null) request.setAttribute("errLog", e.getCause().toString());
     						%>
     						 <jsp:forward page="error.jsp"/>	
     						<%

@@ -10,7 +10,7 @@
 <jsp:setProperty name="loginBean" property="*"/>
 
 <%@page import="logic.control.LoginController"%>
-<%@page import="logic.persistence.exceptions.DBConnectionException"%>
+<%@page import="logic.persistence.exceptions.DatabaseException"%>
 
 <%
 	System.out.println(sessionBean.getSessionName());
@@ -67,7 +67,7 @@
 					<p style="color: red"> Dati Errati</p>
 					<% 
 				}
-			} catch (DBConnectionException e) {
+			} catch (DatabaseException e) {
 				request.setAttribute("errType", e.getMessage());
 				request.setAttribute("errLog", e.getCause().toString());
 				%>

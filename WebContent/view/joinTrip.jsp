@@ -18,7 +18,7 @@
 <%@page import="logic.view.filterstrategies.FunCategoryStrategy"%>
 <%@page import="logic.view.filterstrategies.CultureCategoryStrategy"%>
 <%@page import="logic.view.filterstrategies.RelaxCategoryStrategy"%>
-<%@page import="logic.persistence.exceptions.DBConnectionException"%>
+<%@page import="logic.persistence.exceptions.DatabaseException"%>
 
 
 <!DOCTYPE html>
@@ -127,9 +127,9 @@
 					//System.out.println(joinTripBean.getSearchVal());
 					try {
 						joinTripBean.setObjects(JoinTripController.getInstance().searchTrips(joinTripBean.getSearchVal()));
-					} catch (DBConnectionException e) {
+					} catch (DatabaseException e) {
 						request.setAttribute("errType", e.getMessage());
-						request.setAttribute("errLog", e.getCause().toString());
+						if (e.getCause()!=null)request.setAttribute("errLog", e.getCause().toString());
 						%>
 						<jsp:forward page="error.jsp"/>
 						<%

@@ -7,6 +7,7 @@ public class JoinTripBean {
 	private String searchVal;
 	
 	private List<TripBean> objects;
+	private List<TripBean> filteredTrips;
 	private TripBean trip;
 
 	public JoinTripBean() {
@@ -36,5 +37,15 @@ public class JoinTripBean {
 
 	public void setTrip(TripBean trip) {
 		this.trip = trip;
+	}
+
+
+	public List<TripBean> getFilteredTrips() {
+		return filteredTrips;
+	}
+
+
+	public void setFilteredTrips(List<TripBean> filteredTrips) {
+		this.filteredTrips = filteredTrips;
 	}
 }

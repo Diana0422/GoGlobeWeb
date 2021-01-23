@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import logic.bean.TripBean;
-import logic.model.Trip;
 
 public class StrategyContext{
 	

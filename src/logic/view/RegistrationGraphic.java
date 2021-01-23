@@ -7,7 +7,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
 import logic.bean.SessionBean;
 import logic.control.RegistrationController;
-import logic.persistence.exceptions.DBConnectionException;
+import logic.persistence.exceptions.DatabaseException;
 
 public class RegistrationGraphic {
 	@FXML
@@ -62,9 +62,9 @@ public class RegistrationGraphic {
 				} else {
 					lblMessage.setText("User already registered with this email.");
 				}
-			} catch (DBConnectionException e) {
+			} catch (DatabaseException e) {
 				AlertGraphic alert = new AlertGraphic();
-				alert.display(GUIType.REGISTER, GUIType.HOME, null, DesktopSessionContext.getInstance().getSession(), "Database connection error", "Please retry later.");
+				alert.display(GUIType.REGISTER, GUIType.HOME, null, DesktopSessionContext.getInstance().getSession(), e.getMessage(), e.getCause().toString());
 			}
 		}
     }

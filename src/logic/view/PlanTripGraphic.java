@@ -25,7 +25,7 @@ import logic.model.Place;
 import logic.model.adapters.HereAPIAdapter;
 import logic.model.exceptions.FormInputException;
 import logic.model.factories.HereAdapterFactory;
-import logic.persistence.exceptions.DBConnectionException;
+import logic.persistence.exceptions.DatabaseException;
 import logic.view.threads.LoadVBox;
 
 public class PlanTripGraphic implements GraphicController{
@@ -138,9 +138,9 @@ public class PlanTripGraphic implements GraphicController{
     		try {
 				PlanTripController.getInstance().saveTrip(planTripBean.getTripBean(), DesktopSessionContext.getInstance().getSession());
 	    		DesktopSessionContext.getGuiLoader().loadGUI(null, DesktopSessionContext.getInstance().getSession(), GUIType.HOME);	
-			} catch (DBConnectionException e) {
+			} catch (DatabaseException e) {
 				AlertGraphic alert = new AlertGraphic();
-				alert.display(GUIType.PLAN, GUIType.HOME, null, DesktopSessionContext.getInstance().getSession(), "Database connection error", "Please retry later.");
+				alert.display(GUIType.PLAN, GUIType.HOME, null, DesktopSessionContext.getInstance().getSession(), e.getMessage(), e.getCause().toString());
 			} 
     	}
     }

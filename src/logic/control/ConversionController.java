@@ -1,9 +1,14 @@
 package logic.control;
 
+import java.sql.SQLException;
 import java.text.DateFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import logic.bean.ActivityBean;
 import logic.bean.DayBean;
@@ -27,6 +32,7 @@ import logic.persistence.dao.TripDao;
 import logic.persistence.dao.UserDaoDB;
 import logic.persistence.dao.UserStatsDao;
 import logic.persistence.exceptions.DBConnectionException;
+import logic.persistence.exceptions.DatabaseException;
 
 public class ConversionController {
 
@@ -47,7 +53,7 @@ public class ConversionController {
 	
 	/* Controller METHODS */
 	
-	public List<Day> convertDayBeanList(List<DayBean> dayBeans, String tripTitle) throws DBConnectionException{
+	public List<Day> convertDayBeanList(List<DayBean> dayBeans, String tripTitle) throws DBConnectionException, SQLException{
 		List<Day> days = new ArrayList<>();
 		for (int i = 0; i < dayBeans.size(); i++) {
 			Day day = new Day();
@@ -115,41 +121,45 @@ public class ConversionController {
 		
 	}
 	
-	public List<TripBean> convertTripList(List<Trip> trips) throws DBConnectionException{
+	public List<TripBean> convertTripList(List<Trip> trips) throws DatabaseException {
 		List<TripBean> tripBeans = new ArrayList<>();
 		for (int i=0; i<trips.size(); i++) {
 			Trip t = trips.get(i);
 			TripBean bean = new TripBean();
-			bean.setOrganizer(convertToUserBean(UserDaoDB.getInstance().getTripOrganizer(t.getTitle())));
-			bean.setDays(convertDayList(DayDao.getInstance().getTripDays(t.getTitle()), t.getTitle()));
-			bean.setParticipants(convertUserList(UserDaoDB.getInstance().getTripParticipants(t.getTitle())));
-			bean.setDescription(t.getDescription());
-			bean.setId(t.getId());
-			bean.setTitle(t.getTitle());
-			bean.setPrice(t.getPrice());
-			bean.setTicketPrice(t.getTicketPrice());
-			bean.setCategory1(t.getCategory1().toString());
-			bean.setCategory2(t.getCategory2().toString());
-			bean.setImgSrc(t.getImgSrc());
-			bean.setShared(t.isShared());
-			bean.setMinAge(Integer.toString(t.getMinAge()));
-			bean.setMaxAge(Integer.toString(t.getMaxAge()));
-			bean.setMaxParticipants(Integer.toString(t.getMaxParticipants()));
-			
-			// Converting Dates to String
-			DateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
-			String depDateStr = formatter.format(t.getDepartureDate());
-			String retDateStr = formatter.format(t.getReturnDate());
-			bean.setDepartureDate(depDateStr);
-			bean.setReturnDate(retDateStr);
-			tripBeans.add(bean);
+			try {
+				bean.setOrganizer(convertToUserBean(UserDaoDB.getInstance().getTripOrganizer(t.getTitle())));
+				bean.setDays(convertDayList(DayDao.getInstance().getTripDays(t.getTitle()), t.getTitle()));
+				bean.setParticipants(convertUserList(UserDaoDB.getInstance().getTripParticipants(t.getTitle())));
+				bean.setDescription(t.getDescription());
+				bean.setId(t.getId());
+				bean.setTitle(t.getTitle());
+				bean.setPrice(t.getPrice());
+				bean.setTicketPrice(t.getTicketPrice());
+				bean.setCategory1(t.getCategory1().toString());
+				bean.setCategory2(t.getCategory2().toString());
+				bean.setImgSrc(t.getImgSrc());
+				bean.setShared(t.isShared());
+				bean.setMinAge(Integer.toString(t.getMinAge()));
+				bean.setMaxAge(Integer.toString(t.getMaxAge()));
+				bean.setMaxParticipants(Integer.toString(t.getMaxParticipants()));
+				
+				// Converting Dates to String
+				DateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
+				String depDateStr = formatter.format(t.getDepartureDate());
+				String retDateStr = formatter.format(t.getReturnDate());
+				bean.setDepartureDate(depDateStr);
+				bean.setReturnDate(retDateStr);
+				tripBeans.add(bean);
+			} catch (DBConnectionException | SQLException e) {
+				throw new DatabaseException(e.getMessage(), e.getCause());
+			}
 		}
 		return tripBeans;
 		
 	}
 	
 
-	public List<UserBean> convertUserList(List<User> users) throws DBConnectionException {
+	public List<UserBean> convertUserList(List<User> users) throws DatabaseException {
 		List<UserBean> beans = new ArrayList<>();
 		
 		for (User user: users) {
@@ -191,22 +201,38 @@ public class ConversionController {
 		if (category.equals("Adventure")) return TripCategory.ADVENTURE;
 			
 		return TripCategory.NONE;
-	}	
+	}
 	
-	public UserBean convertToUserBean(User user) throws DBConnectionException {
-		UserBean bean = new UserBean();
-		UserStatsBean statsBean = new UserStatsBean();
-		bean.setEmail(user.getEmail());
-		bean.setName(user.getName());
-		bean.setSurname(user.getSurname());
-		bean.setBio(user.getBio());
-		bean.setPoints(user.getPoints());
-		bean.setAge(user.calculateUserAge());
-		bean.setReviews(convertReviewList(ReviewDao.getInstance().getUserReviews(user.getEmail())));
-		bean.setStatsBean(statsBean);
-		bean.getStatsBean().setOrgRating(UserStatsDao.getInstance().getUserStats(user.getEmail()).getOrganizerRating());
-		bean.getStatsBean().setTravRating(UserStatsDao.getInstance().getUserStats(user.getEmail()).getTravelerRating());
-		return bean;
+	public Date parseDate(String string) {
+		try {
+			DateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
+			return formatter.parse(string);
+		} catch (ParseException e) {
+			String strLog = "Cannot parse date:"+string;
+			Logger.getGlobal().log(Level.WARNING, strLog);
+			return new Date();
+		}
+	}
+	
+	public UserBean convertToUserBean(User user) throws DatabaseException {
+		try {
+			UserBean bean = new UserBean();
+			UserStatsBean statsBean = new UserStatsBean();
+			bean.setEmail(user.getEmail());
+			bean.setName(user.getName());
+			bean.setSurname(user.getSurname());
+			bean.setBio(user.getBio());
+			bean.setPoints(user.getPoints());
+			bean.setAge(user.calculateUserAge());
+			bean.setReviews(convertReviewList(ReviewDao.getInstance().getUserReviews(user.getEmail())));
+			
+			bean.setStatsBean(statsBean);
+			bean.getStatsBean().setOrgRating(UserStatsDao.getInstance().getUserStats(user.getEmail()).getOrganizerRating());
+			bean.getStatsBean().setTravRating(UserStatsDao.getInstance().getUserStats(user.getEmail()).getTravelerRating());
+			return bean;
+		} catch (DBConnectionException | SQLException e) {
+			throw new DatabaseException(e.getMessage(), e.getCause());
+		}
 	}
 
 	public List<ReviewBean> convertReviewList(List<Review> reviews) {
@@ -228,10 +254,15 @@ public class ConversionController {
 		return list;
 	}
 
-	public Trip convertToTrip(TripBean tripBean) throws DBConnectionException {
-		Trip trip = TripDao.getInstance().getTripByTitle(tripBean.getTitle());
-		trip.setDays(DayDao.getInstance().getTripDays(trip.getTitle()));
-		trip.setOrganizer(UserDaoDB.getInstance().getTripOrganizer(trip.getTitle()));
-		return trip;
+	public Trip convertToTrip(TripBean tripBean) throws DatabaseException {
+		Trip trip;
+		try {
+			trip = TripDao.getInstance().getTripByTitle(tripBean.getTitle());
+			trip.setDays(DayDao.getInstance().getTripDays(trip.getTitle()));
+			trip.setOrganizer(UserDaoDB.getInstance().getTripOrganizer(trip.getTitle()));
+			return trip;
+		} catch (DBConnectionException | SQLException e) {
+			throw new DatabaseException(e.getMessage(), e.getCause());
+		}
 	}
 }

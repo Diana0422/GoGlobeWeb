@@ -10,7 +10,7 @@ import javafx.scene.control.TextField;
 import logic.bean.LoginBean;
 import logic.bean.SessionBean;
 import logic.control.LoginController;
-import logic.persistence.exceptions.DBConnectionException;
+import logic.persistence.exceptions.DatabaseException;
 
 public class LoginGraphic {
 	
@@ -50,9 +50,9 @@ public class LoginGraphic {
 					lblError.setText("This user isn't registered.");
 					lblError.setVisible(true);
 				}
-			} catch (DBConnectionException e) {
+			} catch (DatabaseException e) {
 				AlertGraphic alert = new AlertGraphic();
-				alert.display(GUIType.LOGIN, GUIType.HOME, null, DesktopSessionContext.getInstance().getSession(), "Database connection error", "Please retry later.");
+				alert.display(GUIType.LOGIN, GUIType.HOME, null, DesktopSessionContext.getInstance().getSession(), e.getMessage(), e.getCause().toString());
 			}
     	}else {
 			lblError.setText("Some fields are still empty.");

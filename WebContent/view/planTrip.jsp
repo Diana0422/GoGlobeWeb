@@ -14,7 +14,7 @@
 <%@page import="logic.model.Day"%>
 <%@page import="logic.model.Place"%>
 <%@page import="logic.control.PlanTripController"%>
-<%@page import="logic.persistence.exceptions.DBConnectionException"%>
+<%@page import="logic.persistence.exceptions.DatabaseException"%>
 
 
 
@@ -35,39 +35,7 @@
 </head>
 <body id="bootstrap-override">
     
-	<!-- navigation bar -->
-    <nav class="navbar navbar-expand-sm navbar-light bg-light sticky-top">
-        <div class="app">
-            <img id="logo-img" src="../res/images/icons8-around-the-globe-50.png">
-            <a href="#" id="logo" class="navbar-brand">GoGlobe</a>
-        </div>
-        <!--toggler for shorter screens -->
-        <button class="navbar-toggler" data-toggle="collapse" data-target="#navbarMenu">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarMenu">
-            <ul class="navbar-nav">  <!--aggiungere alla classe mr-auto se voglio gli elementi cliccabili a sx-->
-                <li class="nav-item">
-                    <a class="nav-link active" href="home.jsp" style="margin: 12px;">Home</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="joinTrip.jsp" style="margin: 12px;">Trips</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="profile.jsp" style="margin: 12px;">Profile</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="manageRequests.jsp" style="margin: 12px;">Requests</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="gainPoints.jsp" style="margin: 12px;">Gain Points</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#" style="margin: 12px;">Log Out</a>
-                </li>
-            </ul>
-        </div>
-    </nav>
+	<%@ include file="html/loggedNavbar.html" %>
     
     
     <div class="sb-wrapper">
@@ -127,9 +95,9 @@ if (request.getParameter("daybtn") != null){
 							<p style="color: red">ERRORE</p>	
 							<%				
 						}
-					} catch (DBConnectionException e) {
+					} catch (DatabaseException e) {
 						request.setAttribute("errType", e.getMessage());
-						request.setAttribute("errLog", e.getCause().toString());
+						if (e.getCause()!=null) request.setAttribute("errLog", e.getCause().toString());
 						%>
 						 <jsp:forward page="error.jsp"/>
 						<%

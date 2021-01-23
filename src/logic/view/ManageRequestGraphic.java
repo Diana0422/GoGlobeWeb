@@ -7,7 +7,7 @@ import javafx.scene.layout.VBox;
 import logic.bean.RequestBean;
 import logic.control.ManageRequestController;
 import logic.model.exceptions.LoadGraphicException;
-import logic.persistence.exceptions.DBConnectionException;
+import logic.persistence.exceptions.DatabaseException;
 
 public class ManageRequestGraphic implements GraphicController {
 	@FXML
@@ -36,9 +36,9 @@ public class ManageRequestGraphic implements GraphicController {
 					displayRequests(RequestType.SENT, sent.get(i));
 				}
 			}
-		} catch (DBConnectionException e) {
+		} catch (DatabaseException e) {
 			AlertGraphic alert = new AlertGraphic();
-			alert.display(GUIType.REQUESTS, GUIType.HOME, null, DesktopSessionContext.getInstance().getSession(), "Database connection error", "Please retry later.");
+			alert.display(GUIType.REQUESTS, GUIType.HOME, null, DesktopSessionContext.getInstance().getSession(), e.getMessage(), e.getCause().toString());
 		}	
 	}
 	

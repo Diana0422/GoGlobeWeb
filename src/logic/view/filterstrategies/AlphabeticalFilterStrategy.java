@@ -3,7 +3,6 @@ package logic.view.filterstrategies;
 import java.util.List;
 
 import logic.bean.TripBean;
-import logic.model.Trip;
 
 public class AlphabeticalFilterStrategy implements TripFilter{
 
@@ -11,13 +10,11 @@ public class AlphabeticalFilterStrategy implements TripFilter{
 	public List<TripBean> filter(List<TripBean> trips){
 		List<TripBean> filteredTrips = trips;
 		if (trips.size() > 1) {
-			for (TripBean trip : filteredTrips) {
-				for (int i = 0;  i < filteredTrips.size()-i; i++) {
-					if (compareByName(filteredTrips.get(i), filteredTrips.get(i+1)) > 0) {
-						TripBean temp = filteredTrips.get(i);
-						filteredTrips.set(i, filteredTrips.get(i+1));
-						filteredTrips.set(i+1, temp);
-					}
+			for (int i = 0;  i < filteredTrips.size()-i; i++) {
+				if (compareByName(filteredTrips.get(i), filteredTrips.get(i+1)) > 0) {
+					TripBean temp = filteredTrips.get(i);
+					filteredTrips.set(i, filteredTrips.get(i+1));
+					filteredTrips.set(i+1, temp);
 				}
 			}
 		}

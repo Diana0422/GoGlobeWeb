@@ -1,10 +1,9 @@
 package logic.control;
 
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
+import java.sql.SQLException;
 import java.util.Date;
 import java.util.List;
+
 import logic.bean.SessionBean;
 import logic.bean.TripBean;
 import logic.bean.UserBean;
@@ -12,6 +11,7 @@ import logic.persistence.dao.TripDao;
 import logic.persistence.dao.UserDaoDB;
 import logic.persistence.dao.UserStatsDao;
 import logic.persistence.exceptions.DBConnectionException;
+import logic.persistence.exceptions.DatabaseException;
 import logic.model.Trip;
 import logic.model.User;
 
@@ -32,30 +32,26 @@ public class GainPointsController {
 	}
 	
 	
-	public TripBean getTripOfTheDay(String userEmail) throws DBConnectionException {
+	public TripBean getTripOfTheDay(String userEmail) throws DatabaseException {
 		Date today = new Date();
 		
-		UserBean logged = ConversionController.getInstance().convertToUserBean(UserDaoDB.getInstance().get(userEmail));
-		
-		List<TripBean> list = ConversionController.getInstance().convertTripList(TripDao.getInstance().getTrips());
-		for (TripBean bean: list) {
-			DateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
-			Date dep = null;
-			Date ret = null;
-			try {
-				dep = formatter.parse(bean.getDepartureDate());
-				ret = formatter.parse(bean.getReturnDate());
-
-			} catch (ParseException e) {
-				e.printStackTrace();
-				return null;
-			}
+		UserBean logged;
+		try {
+			logged = ConversionController.getInstance().convertToUserBean(UserDaoDB.getInstance().get(userEmail));
+			List<TripBean> list = ConversionController.getInstance().convertTripList(TripDao.getInstance().getTrips());
 			
-			if (today.after(dep) && today.before(ret)) {
-				if (bean.getOrganizer().getEmail().equals(logged.getEmail())) return bean;
+			for (TripBean bean: list) {
+				Date dep = ConversionController.getInstance().parseDate(bean.getDepartureDate());
+				Date ret = ConversionController.getInstance().parseDate(bean.getReturnDate());
 				
-				if (isParticipant(logged.getEmail(), bean.getParticipants())) return bean;
+				if (today.after(dep) && today.before(ret)) {
+					if (bean.getOrganizer().getEmail().equals(logged.getEmail())) return bean;
+					
+					if (isParticipant(logged.getEmail(), bean.getParticipants())) return bean;
+				}
 			}
+		} catch (DatabaseException | DBConnectionException | SQLException e1) {
+			throw new DatabaseException(e1.getMessage(), e1.getCause());
 		}
 		return null;
 	}
@@ -67,17 +63,22 @@ public class GainPointsController {
 		return false;
 	}
 
-	public boolean verifyParticipation(SessionBean session, TripBean tripBean) throws DBConnectionException {
+	public boolean verifyParticipation(SessionBean session, TripBean tripBean) throws DatabaseException {
 		Trip trip = ConversionController.getInstance().convertToTrip(tripBean);
-		if (ParticipationController.getInstance().checkParticipation(trip)) {
-			
-			User user;
-			user = UserDaoDB.getInstance().get(session.getSessionEmail());
-			user.addPoints(100);
-			session.setSessionPoints(user.getPoints());
-			UserStatsDao.getInstance().updateStats(session.getSessionEmail(), user.getPoints(), user.getStats().getOrganizerRating(), user.getStats().getTravelerRating());
-			return true;
+		try {
+			if (ParticipationController.getInstance().checkParticipation(trip)) {
+				User user;
+				user = UserDaoDB.getInstance().get(session.getSessionEmail());
+				user.addPoints(100);
+				session.setSessionPoints(user.getPoints());
+				UserStatsDao.getInstance().updateStats(session.getSessionEmail(), user.getPoints(), user.getStats().getOrganizerRating(), user.getStats().getTravelerRating());
+				return true;
+			} else {
+				return false;
+			}
+		} catch (DBConnectionException | SQLException e) {
+			throw new DatabaseException(e.getMessage(), e.getCause());
 		}
-		return false;
 	}
+	
 }

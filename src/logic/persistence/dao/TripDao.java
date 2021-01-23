@@ -39,7 +39,7 @@ public class TripDao {
 		return instance;
 	}
 	
-	public boolean saveTrip(Trip t) throws DBConnectionException {
+	public boolean saveTrip(Trip t) throws DBConnectionException, SQLException {
 		try (Connection conn = ConnectionManager.getInstance().getConnection();
 			CallableStatement stmt = conn.prepareCall(STORE_TRIP)) {
 			stmt.setString(1, t.getTitle());
@@ -51,12 +51,11 @@ public class TripDao {
 			stmt.execute();
 			return true;
 		} catch (SQLException e) {
-			//TODO
-			return false;
+			throw new SQLException("Cannot save trip on database.", e.getCause());
 		}
 	}
 	
-	public Trip getTripByTitle(String tripTitle) throws DBConnectionException {
+	public Trip getTripByTitle(String tripTitle) throws DBConnectionException, SQLException {
 		Trip trip = new Trip();
 		ResultSet rs = null;
 		
@@ -81,13 +80,11 @@ public class TripDao {
 			
 			return trip;
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-			return trip;
+			throw new SQLException("Cannot get trip with title:"+tripTitle+" from database.", e.getCause());
 		}
 	}
 	
-	public List<Trip> getTrips() throws DBConnectionException {
+	public List<Trip> getTrips() throws DBConnectionException, SQLException {
 		List<Trip> trips = new ArrayList<>();
 		ResultSet rs = null;
 		
@@ -98,6 +95,7 @@ public class TripDao {
 				rs = stmt.getResultSet();
 			}
 			if (rs != null) {
+				if (!rs.next()) return trips;
 				rs.first();
 				do {
 					// reading columns
@@ -124,13 +122,12 @@ public class TripDao {
 			
 			return trips;
 		} catch (SQLException e) {
-			//TODO
-			return trips;
+			throw new SQLException("Cannot get not shared trips from database.", e.getCause());
 		}
 	}
 	
 	
-	public List<Trip> getSharedTrips() throws DBConnectionException {
+	public List<Trip> getSharedTrips() throws DBConnectionException, SQLException {
 		List<Trip> trips = new ArrayList<>();
 		ResultSet rs = null;
 		
@@ -175,13 +172,12 @@ public class TripDao {
 			
 			return trips;
 		} catch (SQLException e) {
-			//TODO
-			return trips;
+			throw new SQLException("Cannot get shared trips from database.", e.getCause());
 		}
 	}
 	
 	
-	public boolean saveParticipant(String userEmail, String tripTitle) throws DBConnectionException {
+	public boolean saveParticipant(String userEmail, String tripTitle) throws DBConnectionException, SQLException {
 		try (Connection conn = ConnectionManager.getInstance().getConnection();
 				CallableStatement stmt = conn.prepareCall(STORE_PARTICIPANT)) {
 			stmt.setString(1, tripTitle);
@@ -189,9 +185,7 @@ public class TripDao {
 			stmt.execute();
 			return true;
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-			return false;
+			throw new SQLException("Cannot save participant for the trip:"+tripTitle+" on database.", e.getCause());
 		}
 	}
 	

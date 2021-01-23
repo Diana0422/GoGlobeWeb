@@ -25,7 +25,7 @@ public class UserStatsDao {
 		return instance;
 	}
 
-	public boolean updateStats(String userId, int newPoints, Double newOrgRating, Double newTravRating) throws DBConnectionException {
+	public boolean updateStats(String userId, int newPoints, Double newOrgRating, Double newTravRating) throws DBConnectionException, SQLException {
 		try (Connection conn = ConnectionManager.getInstance().getConnection();
 			CallableStatement stmt = conn.prepareCall(UPDATE_STATS)) {
 				
@@ -36,12 +36,11 @@ public class UserStatsDao {
 			stmt.setDouble(4, newTravRating);
 			return stmt.execute();
 		} catch (SQLException e) {
-			//TODO
-			return false;
+			throw new SQLException("Cannot update user stats on database.", e.getCause());
 		}
 	}
 	
-	public UserStats getUserStats(String userEmail) throws DBConnectionException {
+	public UserStats getUserStats(String userEmail) throws DBConnectionException, SQLException {
 		ResultSet rs = null;
 		UserStats us = null;
 		
@@ -62,9 +61,7 @@ public class UserStatsDao {
 			
 			return us;
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-			return null;
+			throw new SQLException("Cannot get user stats from database.", e.getCause());
 		}
 	}
 

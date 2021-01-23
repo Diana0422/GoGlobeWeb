@@ -11,7 +11,7 @@ import javafx.scene.layout.Region;
 import logic.bean.TripBean;
 import logic.control.GainPointsController;
 import logic.model.exceptions.LoadGraphicException;
-import logic.persistence.exceptions.DBConnectionException;
+import logic.persistence.exceptions.DatabaseException;
 
 public class GainPointsGraphic implements GraphicController {
 	
@@ -47,9 +47,9 @@ public class GainPointsGraphic implements GraphicController {
 				AlertGraphic graphic = new AlertGraphic();
 				graphic.display(GUIType.GAIN, GUIType.HOME, null, DesktopSessionContext.getInstance().getSession(), "Can't validate trip.", "You don't gain any points");
 			}
-		} catch (DBConnectionException e) {
+		} catch (DatabaseException e) {
 			AlertGraphic alert = new AlertGraphic();
-			alert.display(GUIType.GAIN, GUIType.HOME, null, DesktopSessionContext.getInstance().getSession(), "Database connection error", "Please retry later.");
+			alert.display(GUIType.GAIN, GUIType.HOME, null, DesktopSessionContext.getInstance().getSession(), e.toString(), e.getMessage());
 		}
 	}
 	
@@ -68,9 +68,9 @@ public class GainPointsGraphic implements GraphicController {
 	public void loadTrip() {
 		try {
 			setTrip(GainPointsController.getInstance().getTripOfTheDay(DesktopSessionContext.getInstance().getSession().getSessionEmail()));
-		} catch (DBConnectionException e1) {
+		} catch (DatabaseException e) {
 			AlertGraphic alert = new AlertGraphic();
-			alert.display(GUIType.GAIN, GUIType.HOME, null, DesktopSessionContext.getInstance().getSession(), "Database connection error", "Please retry later.");
+			alert.display(GUIType.GAIN, GUIType.HOME, null, DesktopSessionContext.getInstance().getSession(), e.getMessage(), e.getCause().toString());
 		}
 		if (getTrip() != null) {
 			int column = 0;

@@ -5,6 +5,7 @@
 <%@page import="logic.bean.RequestBean"%>
 <%@page import="logic.control.ManageRequestController"%>
 <%@page import="logic.control.ProfileController"%>
+<%@page import="logic.persistence.exceptions.DatabaseException"%>
 
 <jsp:useBean id="sessionBean" scope="session" class="logic.bean.SessionBean"/>
 <jsp:useBean id="profileBean" scope="request" class="logic.bean.ProfileBean"/>
@@ -25,40 +26,9 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.min.js"></script>
 </head>
 <body id="bootstrap-override">
-	
-	<!-- navigation bar -->
-    <nav class="navbar navbar-expand-sm navbar-light bg-light sticky-top">
-        <div class="app">
-            <img id="logo-img" src="../res/images/icons8-around-the-globe-50.png">
-            <a href="#" id="logo" class="navbar-brand">GoGlobe</a>
-        </div>
-        <!--toggler for shorter screens -->
-        <button class="navbar-toggler" data-toggle="collapse" data-target="#navbarMenu">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarMenu">
-            <ul class="navbar-nav">  <!--aggiungere alla classe mr-auto se voglio gli elementi cliccabili a sx-->
-                <li class="nav-item">
-                    <a class="nav-link active" href="home.jsp" style="margin: 12px;">Home</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="joinTrip.jsp" style="margin: 12px;">Trips</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="profile.jsp" style="margin: 12px;">Profile</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="manageRequests.jsp" style="margin: 12px;">Requests</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="gainPoints.jsp" style="margin: 12px;">Gain Points</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#" style="margin: 12px;">Log Out</a>
-                </li>
-            </ul>
-        </div>
-    </nav>
+
+	<%@ include file="html/loggedNavbar.html" %>
+
 
     <!-- tab panels -->
     <div class="container">
@@ -80,57 +50,48 @@
 				<%
 					List<RequestBean> requests = ManageRequestController.getInstance().getUserIncomingRequests(sessionBean);
 					for (RequestBean req: requests) {
+						request.setAttribute("tripTitle", req.getTripTitle());
+						request.setAttribute("senderName", req.getSenderName());
+						request.setAttribute("senderSurname", req.getSenderSurname());
+						request.setAttribute("senderAge", req.getSenderAge());
+						
 						%>
-					<div class="request displayer">
-                        <div class="request-info">
-                            <h3><%= req.getTripTitle() %></h3>
-                            <div class="name">
-                                <h5><%= req.getSenderName() %></h5>
-                                <h5><%= req.getSenderSurname() %></h5>
-                            </div>
-                            <h6>Age: <%= req.getSenderAge() %></h6>
-                        </div>
-                        <form action="manageRequests.jsp" method="POST">
-                        	<button type="submit" class="btn btn-primary" name="viewprofile">View Profile</button>
-                        	<%
-                        	if (request.getParameter("viewprofile") != null) {
-                    			profileBean.setUser(ManageRequestController.getInstance().getSenderBean(req));
-                    			%>
-                    				<jsp:forward page="profile.jsp"/>
-                    			<%
-                    		}
-                        	%>
-                        </form>
-                        <form action="manageRequests.jsp" method="POST">
-                        	<button type="submit" class="btn btn-success" name="accept">Accept</button>
-                        	
-                        	<%
-                        	if (request.getParameter("accept") != null) {
-                    			System.out.println("Accepting request.");
-                    			ManageRequestController.getInstance().acceptRequest(req);
+						<%@ include file="html/request.html" %>
+						<%
+						
+						if (request.getParameter("viewprofile") != null) {
+                			profileBean.setUser(ManageRequestController.getInstance().getSenderBean(req));
+                			%>
+                				<jsp:forward page="profile.jsp"/>
+                			<%
+                		}
+						
+						try {
+							if (request.getParameter("accept") != null) {
+	                			System.out.println("Accepting request.");
+	                			ManageRequestController.getInstance().acceptRequest(req);
+	                			response.setIntHeader("Refresh",0);
+	                		}
+						} catch (DatabaseException e) {
+							request.setAttribute("errType", e.getMessage());
+							if (e.getCause()!=null) request.setAttribute("errLog", e.getCause().toString());
+							%>
+							<jsp:forward page="error.jsp"/>
+							<%
+						}
+						
+						try {
+                       		if (request.getParameter("decline") != null) {
+                    			System.out.println("Declining request.");
+                    			ManageRequestController.getInstance().declineRequest(req);
                     			response.setIntHeader("Refresh",0);
                     		}
-                        	%>
-                        </form>
-                        <form action="manageRequests.jsp" method="POST">
-                        	<button type="submit" class="btn btn-danger" name="decline">Decline</button>
-                        	
-                        	<%
-                        		if (request.getParameter("decline") != null) {
-                        			System.out.println("Declining request.");
-                        			ManageRequestController.getInstance().declineRequest(req);
-                        			response.setIntHeader("Refresh",0);
-                        		}
-                        	%>
-                        </form>
-           
-                    </div>	
-						<%
+						} catch (DatabaseException e) {
+							request.setAttribute("errType", e.getMessage());
+							if (e.getCause()!=null) request.setAttribute("errLog", e.getCause().toString());
+						}
 					}
-				
 				%>
-
-
                 </div>
                 
                
@@ -139,35 +100,27 @@
 					List<RequestBean> sentRequests = ManageRequestController.getInstance().getUserSentRequests(sessionBean);
                 	if (sentRequests != null) {
                 		for (RequestBean req: sentRequests) {
-    				%>
-    						<div class="request displayer">
-                            	<div class="request-info">
-                                	<h3><%= req.getTripTitle() %></h3>
-                                	<div class="name">
-                                    	<h5><%= req.getReceiverName() %></h5>
-                                    	<h5><%= req.getReceiverSurname() %></h5>
-                                	</div>
-                                	<h6>Age</h6>
-                            	</div>
-                            	<form action="manageRequests.jsp" method="POST">
-                            		<button type="submit" class="btn btn-primary" name="viewprofile">View Profile</button>
-                            	
-                    <%
-                            			if (request.getParameter("viewprofile") != null) 
-                    %>
-                            	</form>
-                        	</div>	
-    				<%
-    					}
-    					
-                	} else {
-                	%>
-                		<div class="filler" style="padding: 250px"><h2>No requests.</h2></div>
-                	<%
+    						request.setAttribute("tripTitle", req.getTripTitle());
+    						request.setAttribute("senderName", req.getSenderName());
+    						request.setAttribute("senderSurname", req.getSenderSurname());
+    						request.setAttribute("senderAge", req.getSenderAge());
+    						
+    						%>
+    						<%@ include file="html/request.html" %>
+    						<%
+                			
+    						if (request.getParameter("viewprofile") != null) {
+                    			profileBean.setUser(ManageRequestController.getInstance().getSenderBean(req));
+                    			%>
+                    				<jsp:forward page="profile.jsp"/>
+                    			<%
+                    		}
+                		}
                 	}
-                %>
-                </div>
-            </div>
+                	
+    			%>
+             </div>
+          </div>
         </div>
     </div>
 </body>

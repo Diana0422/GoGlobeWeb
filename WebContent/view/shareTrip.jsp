@@ -2,6 +2,7 @@
     pageEncoding="UTF-8"%>
     
    <%@page import="logic.control.PlanTripController"%>
+   <%@page import="logic.persistence.exceptions.DatabaseException"%>
     
    <jsp:useBean id="planTripBean" scope="session" class="logic.bean.PlanTripBean"/>  
    <jsp:useBean id="sessionBean" scope="session" class="logic.bean.SessionBean"/>
@@ -32,21 +33,29 @@
         <h2>To share your trip insert the following info.</h2>
 <%
 	if (request.getParameter("share-btn") != null){
-		if (planTripBean.validateSharingPref()){
-			PlanTripController.getInstance().setSharingPreferences(planTripBean);
-    		PlanTripController.getInstance().saveTrip(planTripBean.getTripBean(), sessionBean); 
-			System.out.println("VIAGGIO SALVATO COME CONDIVISO");
-%>		
-			
-			<jsp:forward page="home.jsp"/>
-<% 
-		}else{
-%>
-			<p style="color: red"><jsp:getProperty name="planTripBean" property="errorMsg"/></p>
-<%
+		try {
+			if (planTripBean.validateSharingPref()){
+				PlanTripController.getInstance().setSharingPreferences(planTripBean);
+	    		PlanTripController.getInstance().saveTrip(planTripBean.getTripBean(), sessionBean); 
+				System.out.println("VIAGGIO SALVATO COME CONDIVISO");
+	%>		
+				
+				<jsp:forward page="home.jsp"/>
+	<% 
+			}else{
+	%>
+				<p style="color: red"><jsp:getProperty name="planTripBean" property="errorMsg"/></p>
+	<%
+			}
+		} catch (DatabaseException e) {
+			request.setAttribute("errType", e.getMessage());
+			if (e.getCause()!=null) request.setAttribute("errLog", e.getCause().toString());
+			%>
+			 <jsp:forward page="error.jsp"/>
+			<%
 		}
 	}
-%>
+	%>
             <form method="POST" action="shareTrip.jsp">
             
             		

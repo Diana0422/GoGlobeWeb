@@ -14,7 +14,7 @@ import javafx.scene.input.MouseEvent;
 import logic.bean.RequestBean;
 import logic.control.ManageRequestController;
 import logic.model.exceptions.LoadGraphicException;
-import logic.persistence.exceptions.DBConnectionException;
+import logic.persistence.exceptions.DatabaseException;
 
 public class RequestItemGraphic implements Initializable {
 
@@ -72,9 +72,9 @@ public class RequestItemGraphic implements Initializable {
 	    	lblStatus.setVisible(true);
 	    	lblStatus.setText("Accepted");
 	    	lblStatus.setStyle("-fx-text-fill: green;");
-		} catch (DBConnectionException e) {
+		} catch (DatabaseException e) {
 			AlertGraphic alert = new AlertGraphic();
-			alert.display(null, GUIType.HOME, null, DesktopSessionContext.getInstance().getSession(), "Database connection error", "Please retry later.");
+			alert.display(null, GUIType.HOME, null, DesktopSessionContext.getInstance().getSession(), e.getMessage(), e.getCause().toString());
 		}
     }
     
@@ -82,9 +82,9 @@ public class RequestItemGraphic implements Initializable {
     public void viewProfile(MouseEvent event) {
     	try {
 			ManageRequestController.getInstance().declineRequest(getRequest());
-		} catch (DBConnectionException e) {
+		} catch (DatabaseException e) {
 			AlertGraphic alert = new AlertGraphic();
-			alert.display(null, GUIType.HOME, null, DesktopSessionContext.getInstance().getSession(), "Database connection error", "Please retry later.");
+			alert.display(null, GUIType.HOME, null, DesktopSessionContext.getInstance().getSession(), e.getMessage(), e.getCause().toString());
 		}
     }
     
@@ -95,9 +95,9 @@ public class RequestItemGraphic implements Initializable {
 	    	lblStatus.setVisible(true);
 	    	lblStatus.setText("Declined");
 	    	lblStatus.setStyle("-fx-text-fill: red;");
-		} catch (DBConnectionException e) {
+		} catch (DatabaseException e) {
 			AlertGraphic alert = new AlertGraphic();
-			alert.display(null, GUIType.HOME, null, DesktopSessionContext.getInstance().getSession(), "Database connection error", "Please retry later.");
+			alert.display(null, GUIType.HOME, null, DesktopSessionContext.getInstance().getSession(), e.getMessage(), e.getCause().toString());
 		}
     }
     

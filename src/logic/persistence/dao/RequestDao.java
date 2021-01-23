@@ -45,7 +45,7 @@ public class RequestDao {
 	}
 
 
-	public Request getRequest(String senderEmail, String tripTitle) throws DBConnectionException {
+	public Request getRequest(String senderEmail, String tripTitle) throws DBConnectionException, SQLException {
 		ResultSet rs = null;
 		Request r = null;
 		try (Connection conn = ConnectionManager.getInstance().getConnection();
@@ -67,12 +67,11 @@ public class RequestDao {
 			}
 			return r;
 		} catch (SQLException e) {
-			//TODO
-			return r;
+			throw new SQLException("Cannot get request from user:"+senderEmail+" for trip:"+tripTitle+" from database", e.getCause());
 		}
 	}
 	
-	public List<Request> getRequestsByReceiver(String recEmail) throws DBConnectionException {
+	public List<Request> getRequestsByReceiver(String recEmail) throws DBConnectionException, SQLException {
 		List<Request> list = new ArrayList<>();
 		ResultSet rs = null;
 		
@@ -106,17 +105,14 @@ public class RequestDao {
 					list.add(r);
 				} while (rs.next());
 			}
-			
 			return list;
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-			return list;
+			throw new SQLException("Cannot retrieve incoming requests for user:"+recEmail, e.getCause());
 		}
 	}
 	
 	
-	public List<Request> getRequestsBySender(String sendEmail) throws DBConnectionException {
+	public List<Request> getRequestsBySender(String sendEmail) throws DBConnectionException, SQLException {
 		List<Request> list = new ArrayList<>();
 		ResultSet rs = null;
 		
@@ -154,14 +150,12 @@ public class RequestDao {
 			}
 			return list;
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-			return list;
+			throw new SQLException("Cannot retrieve sent requests for user:"+sendEmail, e.getCause());
 		}
 	}
 
 
-	public boolean save(Request t) throws DBConnectionException {
+	public boolean save(Request t) throws DBConnectionException, SQLException {
 		try (Connection conn = ConnectionManager.getInstance().getConnection();
 			CallableStatement stmt = conn.prepareCall(STORE_REQUEST)) {	
 			stmt.setString(1, t.getSender().getEmail());
@@ -169,12 +163,11 @@ public class RequestDao {
 			stmt.execute();
 			return true;
 		} catch (SQLException e) {
-			//TODO
-			return false;
+			throw new SQLException("Cannot save request on database.", e.getCause());
 		}
 	}
 
-	public boolean delete(Request t) throws DBConnectionException {
+	public boolean delete(Request t) throws DBConnectionException, SQLException {
 		try (Connection conn = ConnectionManager.getInstance().getConnection();
 				CallableStatement stmt = conn.prepareCall(DELETE_REQUEST)) {
 			stmt.setString(1, t.getTarget().getTitle());
@@ -182,9 +175,7 @@ public class RequestDao {
 			stmt.execute();
 			return true;
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-			return false;
+			throw new SQLException("Cannot delete request on database.", e.getCause());
 		}
 	}
 
