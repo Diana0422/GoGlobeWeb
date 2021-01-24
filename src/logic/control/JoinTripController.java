@@ -37,7 +37,6 @@ public class JoinTripController {
 		List<Trip> filteredTrips = new ArrayList<>();
 		try {
 			trips = TripDao.getInstance().getSharedTrips();
-			System.out.println(trips);
 			for (Trip trip: trips) {
 				if (trip.getTitle().toLowerCase().contains(value.toLowerCase())) filteredTrips.add(trip);
 				
@@ -64,10 +63,6 @@ public class JoinTripController {
 			trip.setOrganizer(UserDaoDB.getInstance().getTripOrganizer(tripBean.getTitle()));
 			
 			// only if the user is not the organizer && is in trips age range
-			System.out.println(userAge);
-			System.out.println(trip.getMinAge());
-			System.out.println(trip.getMaxAge());
-			System.out.println(userAge>=trip.getMinAge() && userAge<= trip.getMaxAge());
 			if (!trip.getOrganizer().getEmail().equals(session.getSessionEmail()) && (userAge>=trip.getMinAge() && userAge<= trip.getMaxAge())) { 
 				// Instantiate a new request
 				Request request = new Request();
