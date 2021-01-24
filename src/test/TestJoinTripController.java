@@ -88,7 +88,7 @@ class TestJoinTripController {
 	
 	@Test
 	void testJoinTripNotSuccessfulAgeNotInRange() {
-		// TODO If the user age is not in trip's range
+		// If the user age is not in trip's range
 		String tripTitle = TRIP_TITLE;
 		String userEmail = NOT_ORGANIZER_ID;
 		TripBean trip = new TripBean();
