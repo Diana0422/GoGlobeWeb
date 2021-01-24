@@ -21,7 +21,14 @@ public class Day implements Serializable{
 	}
 
 	public void setActivities(List<Activity> activities) {
-		this.activities = activities;
+		for (Activity a: activities) {
+			this.addToActivities(a);
+		}
+	}
+	
+	private void addToActivities(Activity activity) {
+		Activity a = new Activity(activity.getTitle(), activity.getTime(), activity.getDescription(), activity.getEstimatedCost());
+		this.activities.add(a);
 	}
 
 

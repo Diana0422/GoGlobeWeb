@@ -274,6 +274,9 @@ public class ConversionController {
 		try {
 			trip = TripDao.getInstance().getTripByTitle(tripBean.getTitle());
 			trip.setDays(DayDao.getInstance().getTripDays(trip.getTitle()));
+			for (Day d: trip.getDays()) {
+				d.setActivities(ActivityDao.getInstance().getActivitiesByTrip(trip.getTitle(), d.getId()));
+			}
 			trip.setOrganizer(UserDaoDB.getInstance().getTripOrganizer(trip.getTitle()));
 			return trip;
 		} catch (DBConnectionException | SQLException e) {

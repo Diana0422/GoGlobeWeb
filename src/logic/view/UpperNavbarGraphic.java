@@ -17,6 +17,8 @@ import javafx.scene.control.MenuItem;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
+import logic.control.ProfileController;
+import logic.persistence.exceptions.DatabaseException;
 
 public class UpperNavbarGraphic implements Initializable {
 	
@@ -83,7 +85,12 @@ public class UpperNavbarGraphic implements Initializable {
 
     @FXML
     void displayProfile(MouseEvent event) {
-    	DesktopSessionContext.getGuiLoader().loadGUI(null, null, GUIType.PROFILE);
+    	try {
+			DesktopSessionContext.getGuiLoader().loadGUI(null, ProfileController.getInstance().getProfileUser(DesktopSessionContext.getInstance().getSession().getSessionEmail()), GUIType.PROFILE);
+		} catch (DatabaseException e) {
+			AlertGraphic alert = new AlertGraphic();
+			alert.display(GUIType.MAIN, GUIType.HOME, null, DesktopSessionContext.getInstance().getSession(), e.getMessage(), e.getCause().toString());
+		}
     }
 
     @FXML

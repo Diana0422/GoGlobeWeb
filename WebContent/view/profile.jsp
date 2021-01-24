@@ -7,6 +7,7 @@
 
 <%@page import="logic.bean.ReviewBean"%>
 <%@page import="logic.control.ReviewUserController"%>
+<%@page import="logic.control.ProfileController"%>
 <%@page import="logic.persistence.exceptions.DatabaseException"%>
 
 <jsp:setProperty name="profileBean" property="comment"/>
@@ -14,6 +15,9 @@
 
 <%
 	userBean = profileBean.getUser();
+	if (userBean == null) {
+		userBean = ProfileController.getInstance().getProfileUser(sessionBean.getSessionEmail());
+	}
 %>
 
 <!DOCTYPE html>
@@ -50,12 +54,12 @@
 
                 <div class="info">
                     <div class="name profile-element">
-                        <h2><%= profileBean.getUser().getName() %></h2>
-                        <h2><%= profileBean.getUser().getSurname() %></h2>
+                        <h2><%= userBean.getName() %></h2>
+                        <h2><%= userBean.getSurname() %></h2>
                     </div>
 
                     <div class="age profile-element">
-                        <h4>Age: <span class="text-val"><%= profileBean.getUser().getAge() %></span></h4>
+                        <h4>Age: <span class="text-val"><%= userBean.getAge() %></span></h4>
                     </div>
 
                     <div class="travel-attitude profile-element">
@@ -88,7 +92,7 @@
                     	<h4>Organizer Rating:</h4>
                     	<%
                     		int count = 5;
-                    		for (double d=0; d<profileBean.getUser().getStatsBean().getOrgRating(); d++) {
+                    		for (double d=0; d<userBean.getStatsBean().getOrgRating(); d++) {
                     			count--;
                     			%>
                     			<span class="fa fa-star checked"></span>
@@ -107,7 +111,7 @@
                     	<h4>Traveler Rating:</h4>
                     	<%
                     		int count2 = 5;
-                    		for (double d=0; d<profileBean.getUser().getStatsBean().getTravRating(); d++) {
+                    		for (double d=0; d<userBean.getStatsBean().getTravRating(); d++) {
                     			count2--;
                     			%>
                     			<span class="fa fa-star checked"></span>
@@ -156,7 +160,7 @@
                         <!--<div class="filler center"><h4>No bio.</h4></div>-->
 
                         <!-- biography -->
-                        <p class="bio-text"><%= profileBean.getUser().getBio() %></p>
+                        <p class="bio-text"><%= userBean.getBio() %></p>
                     </div>
 
                     <div class="tab-pane" role="tabpanel" id="reviews">
@@ -217,8 +221,8 @@
                                     		review.setReviewerName(sessionBean.getSessionName());
                                     		review.setReviewerSurname(sessionBean.getSessionSurname());
                                     		review.setVote(profileBean.getVote());
-                                    		profileBean.getUser().getReviews().add(review);                  
-                                    		ReviewUserController.getInstance().postReview(request.getParameter("type-radio"), profileBean.getVote(), profileBean.getComment(), profileBean.getTitle(), sessionBean.getSessionEmail(), userBean.getEmail(), profileBean.getUser());
+                                    		userBean.getReviews().add(review);                  
+                                    		ReviewUserController.getInstance().postReview(request.getParameter("type-radio"), profileBean.getVote(), profileBean.getComment(), profileBean.getTitle(), sessionBean.getSessionEmail(), userBean.getEmail(), userBean);
                                     		System.out.println("web view: org rating:"+profileBean.getUser().getStatsBean().getOrgRating()+" trav rating:"+profileBean.getUser().getStatsBean().getTravRating());
                                     		response.setIntHeader("Refresh",0);
                                 		} catch (DatabaseException e) {
@@ -241,7 +245,7 @@
                         <div class="reviews scrollable">
 
                             <%
-                            	for (ReviewBean bean: profileBean.getUser().getReviews()) {
+                            	for (ReviewBean bean: userBean.getReviews()) {
                             		%>
                             		<!--SINGLE REVIEW CARD (repeatable)-->
                             		<div class="review card">

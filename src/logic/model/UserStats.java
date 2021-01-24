@@ -1,6 +1,5 @@
 package logic.model;
 
-import java.io.Serializable;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -8,12 +7,15 @@ import logic.model.interfaces.Observer;
 import logic.model.interfaces.Subject;
 import logic.model.utils.ReviewChangeManager;
 
-public class UserStats implements Subject, Serializable{
+public class UserStats implements Subject{
 
-	private static final long serialVersionUID = 1L;
 	private double organizerRating;
 	private double travelerRating;
 
+	public UserStats() {
+		this.organizerRating = 0;
+		this.travelerRating = 0;
+	}
 	
 	@Override
 	public void attach(Observer o) {

@@ -59,8 +59,26 @@ public class Trip implements Serializable {
 		}
 	}
 	
-	public void addActivity(int day, Activity activity) {
-		this.getDays().get(day).getActivities().add(activity);
+//	public void addActivity(int day, Activity activity) {
+//		this.getDays().get(day).addToActivities(activity);
+//	}
+	
+	public void addParticipant(User participant) {
+		if (!getParticipants().contains(participant)) getParticipants().add(participant);
+	}
+	
+	public void setDays(List<Day> days) {
+		for (Day d: days) {
+			this.addToDays(d);
+		}
+	}
+	
+	private void addToDays(Day day) {
+		Day d = new Day();
+		d.setId(day.getId());
+		d.setBudget(day.getBudget());
+		d.setLocation(day.getLocation());
+		this.days.add(d);
 	}
 	
 	public String getTitle() {
@@ -97,10 +115,6 @@ public class Trip implements Serializable {
 	
 	public List<Day> getDays() {
 		return days;
-	}
-
-	public void setDays(List<Day> days) {
-		this.days = days;
 	}
 	
 	public int getPrice() {
@@ -189,10 +203,6 @@ public class Trip implements Serializable {
 
 	public void setMaxParticipants(int maxParticipants) {
 		this.maxParticipants = maxParticipants;
-	}
-	
-	public void addParticipant(User participant) {
-		if (!getParticipants().contains(participant)) getParticipants().add(participant);
 	}
 
 	public int getTicketPrice() {
