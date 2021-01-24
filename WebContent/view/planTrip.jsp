@@ -15,6 +15,8 @@
 <%@page import="logic.model.Place"%>
 <%@page import="logic.control.PlanTripController"%>
 <%@page import="logic.persistence.exceptions.DatabaseException"%>
+<%@page import="logic.model.exceptions.TripNotCompletedException"%>
+
 
 
 
@@ -84,17 +86,17 @@ if (request.getParameter("daybtn") != null){
 				<%
 				if (request.getParameter("save-trip-btn") != null){
 					try {
-						if (planTripBean.validateTrip()){
+						planTripBean.validateTrip();
 				    		PlanTripController.getInstance().saveTrip(planTripBean.getTripBean(), sessionBean); 
 							%>
 							<jsp:forward page="home.jsp"/>
 							<% 
-						}else{
-							%>
-							<!-- VALIDATE TRIP ERROR -->
-							<p style="color: red">ERRORE</p>	
-							<%				
-						}
+						
+					}catch (TripNotCompletedException e){
+						%>
+						<!-- VALIDATE TRIP ERROR -->
+						<p style="color: red"><%= e.getMessage() %></p>	
+						<%	
 					} catch (DatabaseException e) {
 						request.setAttribute("errType", e.getMessage());
 						if (e.getCause()!=null) request.setAttribute("errLog", e.getCause().toString());
@@ -107,15 +109,17 @@ if (request.getParameter("daybtn") != null){
 			<!--  IF SHARE TRIP IS CLICKED -->
 <%
 				if (request.getParameter("share-trip-btn") != null){
+					try{
+						
+					planTripBean.validateTrip();
 					
-					if (planTripBean.validateTrip()){
 %>
 						<jsp:forward page="shareTrip.jsp"/>
 <% 
-					}else{
+					}catch(TripNotCompletedException e){
 %>
 						<!-- VALIDATE TRIP ERROR -->
-						<p style="color: red">ERRORE</p>	
+						<p style="color: red"><%=e.getMessage() %></p>	
 <%				
 					}				
 				}

@@ -4,7 +4,6 @@ import java.io.IOException;
 import java.util.List;
 import java.util.logging.Logger;
 
-import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -20,14 +19,10 @@ import javafx.scene.text.Text;
 import logic.bean.ActivityBean;
 import logic.bean.PlanTripBean;
 import logic.control.PlanTripController;
-import logic.model.Location;
 import logic.model.Place;
-import logic.model.adapters.HereAPIAdapter;
 import logic.model.exceptions.FormInputException;
 import logic.model.exceptions.TripNotCompletedException;
-import logic.model.factories.HereAdapterFactory;
 import logic.persistence.exceptions.DatabaseException;
-import logic.view.threads.LoadVBox;
 
 public class PlanTripGraphic implements GraphicController{
 	
