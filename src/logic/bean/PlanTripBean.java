@@ -193,33 +193,27 @@ public class PlanTripBean {
 		return this.tripBean.getDays().get(planningDay).getLocationCity();
 	}
 	
-	// TODO GUI CONTROLLER
 	public List<DayBean> getTripDays() {
 		return this.tripBean.getDays();
 	}
 
-	// TODO GUI CONTROLLER
 	public int getActivitiesNum() {
 		 return this.tripBean.getDays().get(planningDay).getActivities().size();
 	}
 	
-	// TODO GUI CONTROLLER
-	public String displayActivityTime(int activityNum) {
+	public String getActivityTime(int activityNum) {
 		return this.getTripDays().get(planningDay).getActivities().get(activityNum).getTime();
 	}
 	
-	// TODO GUI CONTROLLER
-	public String displayActivityTitle(int activityNum) {
+	public String getActivityTitle(int activityNum) {
 		return this.getTripDays().get(planningDay).getActivities().get(activityNum).getTitle();
 	}
 	
-	// TODO GUI CONTROLLER
-	public String displayActivityDescription(int activityNum) {
+	public String getActivityDescription(int activityNum) {
 		return this.getTripDays().get(planningDay).getActivities().get(activityNum).getDescription();
 	}
 	
-	// TODO GUI CONTROLLER 
-	public String displayActivityCost(int activityNum) {
+	public String getActivityCost(int activityNum) {
 		return this.getTripDays().get(planningDay).getActivities().get(activityNum).getEstimatedCost();
 	}
 

@@ -202,18 +202,15 @@ if (request.getParameter("daybtn") != null){
 						int activitiesNum = planTripBean.getActivitiesNum();
 					 	for ( int j = 0; j < activitiesNum; j++){ 
 					 		System.out.println("Activity Found!\n");
-	            			System.out.println("title: " +planTripBean.displayActivityTitle(j) + "\n");
-	            			System.out.println("time: "+ planTripBean.displayActivityTime(j) + "\n");
-	            			System.out.println("time: "+ planTripBean.displayActivityTime(j) + "\n");
-	            			System.out.println("cost: "+ planTripBean.displayActivityCost(j) + "\n");
+	            		
 %>		
 	            			  
 	            			<div class="activity form">		
-		            			<h2><%=planTripBean.displayActivityTitle(j) %></h2>
-		            			<h3><%=planTripBean.displayActivityTime(j) %></h3>
-		            			<h3><%=planTripBean.displayActivityCost(j) + "€" %></h3>
+		            			<h2><%=planTripBean.getActivityTitle(j) %></h2>
+		            			<h3><%=planTripBean.getActivityTime(j) %></h3>
+		            			<h3><%=planTripBean.getActivityCost(j) + "€" %></h3>
 		            			<div class="description">
-		            				<p><%=planTripBean.displayActivityDescription(j)%></p>
+		            				<p><%=planTripBean.getActivityDescription(j)%></p>
 		            			</div>		            			
 	         				</div>                        
  <%
