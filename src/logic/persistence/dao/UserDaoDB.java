@@ -52,6 +52,7 @@ public class UserDaoDB {
 			}
 			
 			if (rs != null) {
+				rs.first();
 				String email = rs.getString(EMAIL_COLUMN);
 				String name = rs.getString(NAME_COLUMN);
 				String surname = rs.getString(SURNAME_COLUMN);

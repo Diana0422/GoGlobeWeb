@@ -59,10 +59,6 @@ public class Trip implements Serializable {
 		}
 	}
 	
-//	public void addActivity(int day, Activity activity) {
-//		this.getDays().get(day).addToActivities(activity);
-//	}
-	
 	public void addParticipant(User participant) {
 		if (!getParticipants().contains(participant)) getParticipants().add(participant);
 	}

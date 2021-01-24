@@ -8,7 +8,6 @@ import java.util.List;
 
 import org.controlsfx.control.Rating;
 import javafx.fxml.FXML;
-import javafx.geometry.Insets;
 import javafx.scene.control.Button;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.TextArea;
@@ -17,7 +16,6 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
-import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import logic.bean.ReviewBean;
@@ -154,42 +152,7 @@ public class ProfileGraphic implements GraphicController {
 	public void setSession(SessionBean session) {
 		this.session = session;
 	}
-    
-    /* Action methods */
-	private void loadGrid(GridPane tripsGrid, List<TripBean> trips) {
-		
-		int column = 0;
-		int row = 1;
-		
-		for (int i=0; i<trips.size(); i++) {
-				
-			CardGraphic cc = new CardGraphic();
-			AnchorPane anchor;
-			try {
-				if (column == 3) {
-					row++;
-					column = 0;
-				}
-					
-				anchor = (AnchorPane) cc.initializeNode(trips.get(i));
-				tripsGrid.add(anchor, column++, row);
-				GridPane.setMargin(anchor, new Insets(20));
-			} catch (LoadGraphicException e) {
-				AlertGraphic graphic = new AlertGraphic();
-				graphic.display(GUIType.PROFILE, GUIType.HOME, null, DesktopSessionContext.getInstance().getSession(), WIDGET_ERROR, "Something unexpected occurred loading the trip cards.");
-			}
-					
-			// Set grid height
-			tripsGrid.setMaxHeight(Region.USE_PREF_SIZE);
-			tripsGrid.setPrefHeight(Region.USE_COMPUTED_SIZE);
-			tripsGrid.setMinHeight(Region.USE_COMPUTED_SIZE);
-					
-			// Set grid width
-			tripsGrid.setMaxWidth(Region.USE_PREF_SIZE);
-			tripsGrid.setPrefWidth(Region.USE_COMPUTED_SIZE);
-			tripsGrid.setMinWidth(Region.USE_COMPUTED_SIZE);
-		}				
-	}
+ 
 	
 	public void displayOrganizerRating(double rating) {
 		ratingOrg.setRating(rating);
@@ -221,19 +184,20 @@ public class ProfileGraphic implements GraphicController {
 		List<TripBean> myTripBeans = null;
 		List<TripBean> upcomingTripBeans = null;
 		List<TripBean> previousTripBeans = null;
+		CardGraphic cc = new CardGraphic();
 		
 		// Display trips planned by user
 		try {
 			myTripBeans = ProfileController.getInstance().getMyTrips();
-			loadGrid(myTripsGrid, myTripBeans);
+			cc.loadCardGrid(myTripsGrid, myTripBeans);
 		
 			// Display target user's upcoming trips
 			upcomingTripBeans = ProfileController.getInstance().getUpcomingTrips();
-			loadGrid(upcomingGrid, upcomingTripBeans);
+			cc.loadCardGrid(upcomingGrid, upcomingTripBeans);
 			
 			// Display target user's passed trips
 			previousTripBeans = ProfileController.getInstance().getRecentTrips();
-			loadGrid(previousGrid, previousTripBeans);
+			cc.loadCardGrid(previousGrid, previousTripBeans);
 		} catch (DatabaseException e) {
 			AlertGraphic alert = new AlertGraphic();
 			alert.display(GUIType.PROFILE, GUIType.HOME, null, DesktopSessionContext.getInstance().getSession(), e.getMessage(), e.getCause().toString());
