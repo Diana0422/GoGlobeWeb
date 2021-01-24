@@ -3,6 +3,7 @@ body {
     background-image: linear-gradient(to top, rgba(245, 249, 252, 0), rgba(8, 27, 61, 0.73)),url(../res/images/japan-kyoto-toji-pagoda.jpg), no-repeat;
     background-size: cover;
     height: fit-content;
+    padding-bottom: 50px;
 }
 
 /*#bootstrap-override .content-join-trip, .row {
@@ -11,7 +12,37 @@ body {
 
 #bootstrap-override .results {
     padding-left: 30px;
-    padding-right: 30px;
+    padding-right: 10px;
+    float: left;
+    width: 80%;
+    background: white;
+    height:100vh;
+}
+
+.trips {
+	 background: white;
+	 background-color: white;
+	 margin: 10px;
+	 border-radius: 10px;
+}
+
+.filler{
+	
+	padding-left: 30px;
+    padding-right: 10px;
+    float: left;
+    width: 80%;
+    height: 100vh;
+    background: white;
+}
+
+#bootstrap-override .filter-btns{
+	float: left;
+	width: 20%;
+	height: 100vh;
+	padding:20px;
+	background: white;
+	background-color: white;
 }
 
 #bootstrap-override .page-header, .search-bar {
@@ -40,6 +71,11 @@ body {
     margin-bottom: 20px;
 }
 
+.vertical-divider {
+	border-left: 2px;
+	height: 100vh;
+}
+
 #bootstrap-override .card, .card-body, .card-img-top{
     border-top-left-radius: 10px;
     border-top-right-radius: 10px;
@@ -55,4 +91,8 @@ body {
 
 .form-inline .form-group {
   margin-right:4px;
+}
+
+.clearfix {
+	clear: both;
 }

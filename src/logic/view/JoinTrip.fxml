@@ -114,7 +114,7 @@
                                     <Insets left="20.0" />
                                  </padding>
                               </Label>
-                              <Button id="custom-btn" mnemonicParsing="false" prefHeight="36.0" prefWidth="221.0" text="A-Z" />
+                              <Button id="custom-btn" fx:id="btnAlphabeticFilter" mnemonicParsing="false" onMouseClicked="#filterFromAToZ" prefHeight="36.0" prefWidth="221.0" text="A-Z" />
                               <Label prefHeight="39.0" prefWidth="263.0" text="For trip category:">
                                  <font>
                                     <Font name="Arial Bold Italic" size="14.0" />
@@ -123,11 +123,11 @@
                                     <Insets left="20.0" />
                                  </padding>
                               </Label>
-                              <Button id="custom-btn" mnemonicParsing="false" prefHeight="36.0" prefWidth="216.0" text="Adventure" />
-                              <Button id="custom-btn" mnemonicParsing="false" prefHeight="36.0" prefWidth="217.0" text="Fun" />
-                              <Button id="custom-btn" mnemonicParsing="false" prefHeight="36.0" prefWidth="215.0" text="Relax" />
-                              <Button id="custom-btn" mnemonicParsing="false" prefHeight="36.0" prefWidth="220.0" text="Culture" />
-                              <Button id="custom-btn" mnemonicParsing="false" prefHeight="36.0" prefWidth="221.0" text="Price" />
+                              <Button id="custom-btn" fx:id="btnAdventureFilter" mnemonicParsing="false" onMouseClicked="#filterByAdventure" prefHeight="36.0" prefWidth="216.0" text="Adventure" />
+                              <Button id="custom-btn" fx:id="btnFunFilter" mnemonicParsing="false" onMouseClicked="#filterByFun" prefHeight="36.0" prefWidth="217.0" text="Fun" />
+                              <Button id="custom-btn" fx:id="btnRelaxFilter" mnemonicParsing="false" onMouseClicked="#filterByRelax" prefHeight="36.0" prefWidth="215.0" text="Relax" />
+                              <Button id="custom-btn" fx:id="btnCultureFilter" mnemonicParsing="false" onMouseClicked="#filterByCulture" prefHeight="36.0" prefWidth="220.0" text="Culture" />
+                              <Button id="custom-btn" mnemonicParsing="false" onMouseClicked="#priceBtnClick" prefHeight="36.0" prefWidth="221.0" text="Price" />
                            </children>
                         </VBox>
                      </children>
