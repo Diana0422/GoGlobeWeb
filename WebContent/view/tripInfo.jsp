@@ -115,13 +115,6 @@
 				<jsp:forward page="profile.jsp"/>
 				<% 
 			}
- 			
- 			%>
-    		
-    		<%@ include file="html/tripInfo.html" %>
- 
-    			
-    		<%
     		
     		for (int i=0; i<joinTripBean.getTrip().getTripLength(); i++) {
     			DayBean dayBean = days.get(i);
@@ -150,6 +143,13 @@
         		</div>
         	<%
 	    		}
+    		
+ 			%>
+    		
+    		<%@ include file="html/tripInfo.html" %>
+ 
+    			
+    		<%
     		
     		%>
     			

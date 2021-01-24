@@ -16,10 +16,13 @@ import logic.persistence.exceptions.DatabaseException;
 class TestJoinTripController {
 	
 	/* Diana Pasquali Test Class */
+	private static final String TRIP_TITLE = "TestViaggio";
+	private static final String ORGANIZER_ID = "organizer@gmail.com";
+	private static final String NOT_ORGANIZER_ID = "notorganizer@gmail.com";
 
 	@Test
 	void testSearchTripsNoException() {
-		String value = "TestViaggio";
+		String value = TRIP_TITLE;
 		try {
 			List<TripBean> trips = JoinTripController.getInstance().searchTrips(value);
 			TripBean onlyTrip = trips.get(0);
@@ -47,8 +50,8 @@ class TestJoinTripController {
 	@Test
 	void testJoinTripSuccessful() {
 		// If the user isn't the organizer and its age is in the accepted age range
-		String tripTitle = "TestViaggio";
-		String userEmail = "notorganizer@gmail.com";
+		String tripTitle = TRIP_TITLE;
+		String userEmail = NOT_ORGANIZER_ID;
 		TripBean trip = new TripBean();
 		trip.setTitle(tripTitle);
 		SessionBean session = new SessionBean();
@@ -67,8 +70,8 @@ class TestJoinTripController {
 	@Test
 	void testJoinTripNotSuccessfulUserOrganizer() {
 		// If the user is the organizer
-		String tripTitle = "TestViaggio";
-		String userEmail = "organizer@gmail.com";
+		String tripTitle = TRIP_TITLE;
+		String userEmail = ORGANIZER_ID;
 		TripBean trip = new TripBean();
 		trip.setTitle(tripTitle);
 		SessionBean session = new SessionBean();
@@ -86,8 +89,8 @@ class TestJoinTripController {
 	@Test
 	void testJoinTripNotSuccessfulAgeNotInRange() {
 		// TODO If the user age is not in trip's range
-		String tripTitle = "TestViaggio";
-		String userEmail = "notorganizer@gmail.com";
+		String tripTitle = TRIP_TITLE;
+		String userEmail = NOT_ORGANIZER_ID;
 		TripBean trip = new TripBean();
 		trip.setTitle(tripTitle);
 		SessionBean session = new SessionBean();
@@ -106,7 +109,7 @@ class TestJoinTripController {
 	void testJoinTripWithTripException() {
 		// The trip doesn't exist
 		String tripTitle = "ThisTripNotExists";
-		String userEmail = "notorganizer@gmail.com";
+		String userEmail = NOT_ORGANIZER_ID;
 		TripBean trip = new TripBean();
 		trip.setTitle(tripTitle);
 		SessionBean session = new SessionBean();
@@ -123,7 +126,7 @@ class TestJoinTripController {
 	
 	@Test
 	void testJoinTripWithUserException() {
-		String tripTitle = "TestViaggio";
+		String tripTitle = TRIP_TITLE;
 		String userEmail = "notexistent@gmail.com";
 		TripBean trip = new TripBean();
 		trip.setTitle(tripTitle);

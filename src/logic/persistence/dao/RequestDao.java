@@ -58,6 +58,7 @@ public class RequestDao {
 			}
 			
 			if (rs != null) {
+				if (!rs.next()) return r;
 				rs.first();
 				int id = rs.getInt(ID_COLUMN);
 				boolean state = rs.getBoolean(STATE_COLUMN);
@@ -67,7 +68,7 @@ public class RequestDao {
 			}
 			return r;
 		} catch (SQLException e) {
-			throw new SQLException("Cannot get request from user:"+senderEmail+" for trip:"+tripTitle+" from database", e.getCause());
+			throw new SQLException("Cannot get request from user:"+senderEmail+" for trip:"+tripTitle+" from database", new Throwable(e.getMessage()));
 		}
 	}
 	
@@ -107,7 +108,7 @@ public class RequestDao {
 			}
 			return list;
 		} catch (SQLException e) {
-			throw new SQLException("Cannot retrieve incoming requests for user:"+recEmail, e.getCause());
+			throw new SQLException("Cannot retrieve incoming requests for user:"+recEmail, new Throwable(e.getMessage()));
 		}
 	}
 	
@@ -150,7 +151,7 @@ public class RequestDao {
 			}
 			return list;
 		} catch (SQLException e) {
-			throw new SQLException("Cannot retrieve sent requests for user:"+sendEmail, e.getCause());
+			throw new SQLException("Cannot retrieve sent requests for user:"+sendEmail, new Throwable(e.getMessage()));
 		}
 	}
 
@@ -163,7 +164,7 @@ public class RequestDao {
 			stmt.execute();
 			return true;
 		} catch (SQLException e) {
-			throw new SQLException("Cannot save request on database.", e.getCause());
+			throw new SQLException("Cannot save request on database.", new Throwable(e.getMessage()));
 		}
 	}
 
@@ -175,7 +176,7 @@ public class RequestDao {
 			stmt.execute();
 			return true;
 		} catch (SQLException e) {
-			throw new SQLException("Cannot delete request on database.", e.getCause());
+			throw new SQLException("Cannot delete request on database.", new Throwable(e.getMessage()));
 		}
 	}
 

@@ -53,7 +53,7 @@ public class ConversionController {
 	
 	/* Controller METHODS */
 	
-	public List<Day> convertDayBeanList(List<DayBean> dayBeans, String tripTitle) throws DBConnectionException, SQLException{
+	public List<Day> convertDayBeanList(List<DayBean> dayBeans, String tripTitle) throws DatabaseException {
 		List<Day> days = new ArrayList<>();
 		for (int i = 0; i < dayBeans.size(); i++) {
 			Day day = new Day();
@@ -63,7 +63,11 @@ public class ConversionController {
 			day.calclulateBudget();
 			
 			// save day to persistence
-			DayDao.getInstance().saveDay(day, tripTitle);
+			try {
+				DayDao.getInstance().saveDay(day, tripTitle);
+			} catch (DBConnectionException | SQLException e) {
+				throw new DatabaseException(e.getMessage(), e.getCause());
+			}
 			day.setActivities(convertActivityBeanList(dayBeans.get(i).getActivities(), day.getId(), tripTitle));
 			days.add(day);
 		}
@@ -71,7 +75,7 @@ public class ConversionController {
 	}
 	
 	
-	private List<Activity> convertActivityBeanList(List<ActivityBean> activityBeans, int dayId, String tripTitle) throws DBConnectionException{
+	private List<Activity> convertActivityBeanList(List<ActivityBean> activityBeans, int dayId, String tripTitle) throws DatabaseException {
 		List<Activity> activities = new ArrayList<>();
 		for (int i = 0; i < activityBeans.size(); i++) {
 			String title = activityBeans.get(i).getTitle();
@@ -82,22 +86,30 @@ public class ConversionController {
 			activities.add(activity);
 			
 			//save the activity in persistence
-			ActivityDao.getInstance().saveActivity(activity, dayId, tripTitle);
+			try {
+				ActivityDao.getInstance().saveActivity(activity, dayId, tripTitle);
+			} catch (DBConnectionException | SQLException e) {
+				throw new DatabaseException(e.getMessage(), e.getCause());
+			}
 		}
 		
 		return activities;
 	}
 	
 	
-	public List<DayBean> convertDayList(List<Day> days, String tripTitle) throws DBConnectionException{
+	public List<DayBean> convertDayList(List<Day> days, String tripTitle) throws DatabaseException {
 		List<DayBean> dayBeans = new ArrayList<>();
 		for (int i = 0; i < days.size(); i++) {
 			int dayNum = i+1;
 			DayBean dayBean = new DayBean();
 			dayBean.setLocationCity(days.get(i).getLocation().getCity());
 			dayBean.setLocationCountry(days.get(i).getLocation().getCountry());
-			dayBean.setActivities(convertActivityList(ActivityDao.getInstance().getActivitiesByTrip(tripTitle, dayNum)));
-			dayBeans.add(dayBean);
+			try {
+				dayBean.setActivities(convertActivityList(ActivityDao.getInstance().getActivitiesByTrip(tripTitle, dayNum)));
+				dayBeans.add(dayBean);
+			} catch (DBConnectionException | SQLException e) {
+				throw new DatabaseException(e.getMessage(), e.getCause());
+			}
 		}
 		return dayBeans;
 	}
@@ -144,9 +156,8 @@ public class ConversionController {
 				bean.setMaxParticipants(Integer.toString(t.getMaxParticipants()));
 				
 				// Converting Dates to String
-				DateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
-				String depDateStr = formatter.format(t.getDepartureDate());
-				String retDateStr = formatter.format(t.getReturnDate());
+				String depDateStr = formatDate(t.getDepartureDate());
+				String retDateStr = formatDate(t.getReturnDate());
 				bean.setDepartureDate(depDateStr);
 				bean.setReturnDate(retDateStr);
 				tripBeans.add(bean);
@@ -214,6 +225,11 @@ public class ConversionController {
 		}
 	}
 	
+	public String formatDate(Date date) {
+		DateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
+		return formatter.format(date);
+	}
+	
 	public UserBean convertToUserBean(User user) throws DatabaseException {
 		try {
 			UserBean bean = new UserBean();
@@ -244,8 +260,7 @@ public class ConversionController {
 			bean.setReviewerSurname(rev.getReviewer().getSurname());
 			bean.setTitle(rev.getTitle());
 			bean.setComment(rev.getComment());
-			DateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
-	    	String date = formatter.format(rev.getDate());
+	    	String date = formatDate(rev.getDate());
 	    	bean.setDate(date);
 	    	bean.setVote(rev.getVote());
 	    	list.add(bean);

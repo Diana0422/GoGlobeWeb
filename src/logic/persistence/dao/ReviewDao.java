@@ -75,7 +75,7 @@ public class ReviewDao {
 			}
 			return list;
 		} catch (SQLException e) {
-			throw new DatabaseException("Cannot get reviews from database for user:"+userEmail, e.getCause());
+			throw new DatabaseException("Cannot get reviews from database for user:"+userEmail, new Throwable(e.getMessage()));
 		}
 			
 	}
@@ -95,7 +95,7 @@ public class ReviewDao {
 				
 			return stmt.execute();
 		} catch (SQLException e) {
-			throw new SQLException("Cannot save request on database from user:"+t.getReviewer().getEmail()+" for trip:"+target, e.getCause());
+			throw new SQLException("Cannot save request on database from user:"+t.getReviewer().getEmail()+" for trip:"+target, new Throwable(e.getMessage()));
 		}
 	}
 

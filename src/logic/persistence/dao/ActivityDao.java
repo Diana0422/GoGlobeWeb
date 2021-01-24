@@ -27,7 +27,7 @@ public class ActivityDao {
 		return instance;
 	}
 	
-	public boolean saveActivity(Activity activity, int dayId, String tripTitle) throws DBConnectionException {
+	public boolean saveActivity(Activity activity, int dayId, String tripTitle) throws DBConnectionException, SQLException {
 		try (Connection conn = ConnectionManager.getInstance().getConnection();
 			CallableStatement stmt = conn.prepareCall(STORE_ACTIVITY)) {
 			stmt.setInt(1, dayId);
@@ -39,13 +39,11 @@ public class ActivityDao {
 			stmt.execute();
 			return true;
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-			return false;
+			throw new SQLException("Cannot save activity "+activity.getTitle()+" in day "+dayId+" for trip "+tripTitle, new Throwable(e.getMessage()));
 		}
 	}
 	
-	public List<Activity> getActivitiesByTrip(String tripTitle, int dayId) throws DBConnectionException {
+	public List<Activity> getActivitiesByTrip(String tripTitle, int dayId) throws DBConnectionException, SQLException {
 		List<Activity> activities = new ArrayList<>();
 		ResultSet rs = null;
 		
@@ -76,9 +74,7 @@ public class ActivityDao {
 			
 			return activities;
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-			return activities;
+			throw new SQLException("Cannot get activities for day "+dayId+" int trip "+tripTitle+" from database.", new Throwable(e.getMessage()));
 		}
 		
 		

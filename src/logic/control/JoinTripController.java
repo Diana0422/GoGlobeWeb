@@ -13,6 +13,7 @@ import logic.persistence.exceptions.DBConnectionException;
 import logic.persistence.exceptions.DatabaseException;
 import logic.model.Request;
 import logic.model.Trip;
+import logic.model.User;
  
 public class JoinTripController {
 	
@@ -35,7 +36,8 @@ public class JoinTripController {
 		List<Trip> trips;
 		List<Trip> filteredTrips = new ArrayList<>();
 		try {
-			trips = TripDao.getInstance().getTrips();
+			trips = TripDao.getInstance().getSharedTrips();
+			System.out.println(trips);
 			for (Trip trip: trips) {
 				if (trip.getTitle().toLowerCase().contains(value.toLowerCase())) filteredTrips.add(trip);
 				
@@ -52,13 +54,21 @@ public class JoinTripController {
 		
 		// Pick the trip corresponding to the tripBean from persistence
 		Trip trip;
+		User appliant;
 		try {
 			trip = TripDao.getInstance().getTripByTitle(tripBean.getTitle());
+			appliant = UserDaoDB.getInstance().get(session.getSessionEmail());
+			int userAge = appliant.calculateUserAge();
 			
-			// Set the organizer
+			// Fetch the trip organizer from database
 			trip.setOrganizer(UserDaoDB.getInstance().getTripOrganizer(tripBean.getTitle()));
 			
-			if (!trip.getOrganizer().getEmail().equals(session.getSessionEmail())) { // only if the user is not the organizer
+			// only if the user is not the organizer && is in trips age range
+			System.out.println(userAge);
+			System.out.println(trip.getMinAge());
+			System.out.println(trip.getMaxAge());
+			System.out.println(userAge>=trip.getMinAge() && userAge<= trip.getMaxAge());
+			if (!trip.getOrganizer().getEmail().equals(session.getSessionEmail()) && (userAge>=trip.getMinAge() && userAge<= trip.getMaxAge())) { 
 				// Instantiate a new request
 				Request request = new Request();
 				request.setSender(UserDaoDB.getInstance().get(session.getSessionEmail()));

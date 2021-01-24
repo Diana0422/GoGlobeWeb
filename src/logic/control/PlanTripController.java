@@ -97,21 +97,22 @@ public class PlanTripController {
 			trip.setReturnDate(retDate);
 			Logger.getGlobal().info("departure date: "+trip.getDepartureDate());
 			Logger.getGlobal().info("return date: "+trip.getReturnDate());
+			
+			// Setting shared trip preferences
+			if (tripBean.isShared()) {
+				trip.setShared(true);
+				trip.setDescription(tripBean.getDescription());
+				trip.setMinAge(Integer.parseInt(tripBean.getMinAge()));
+				trip.setMaxAge(Integer.parseInt(tripBean.getMaxAge()));
+			}	
 				
 			/* save trip on persistence */
-			if (!TripDao.getInstance().saveTrip(trip)) return false;
+			if (!TripDao.getInstance().saveTrip(trip, tripBean.isShared())) return false;
 		
 			/*Converting and setting Days list (and activities)*/
 			List<Day> days;
 			if ((days = ConversionController.getInstance().convertDayBeanList(tripBean.getDays(), trip.getTitle())) != null) {
 				trip.setDays(days); 
-				
-				if (tripBean.isShared()) {
-					trip.setShared(true);
-					trip.setDescription(tripBean.getDescription());
-					trip.setMinAge(Integer.parseInt(tripBean.getMinAge()));
-					trip.setMaxAge(Integer.parseInt(tripBean.getMaxAge()));
-				}	
 				return true;
 			}
 			return false;

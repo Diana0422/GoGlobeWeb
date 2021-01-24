@@ -38,7 +38,7 @@ public class DayDao {
 			stmt.execute();
 			return true;
 		} catch (SQLException e) {
-			throw new SQLException("Day with id:"+day.getId()+"cannot be saved on database.", e.getCause());
+			throw new SQLException("Day with id:"+day.getId()+"cannot be saved on database.", new Throwable(e.getMessage()));
 		}
 	}
 	

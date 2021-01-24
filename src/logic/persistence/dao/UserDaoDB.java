@@ -109,7 +109,7 @@ public class UserDaoDB {
 			stmt.execute();
 			return true;
 		} catch (SQLException e) {
-			throw new SQLException("Cannot update user info on database.", e.getCause());
+			throw new SQLException("Cannot update user info on database.", new Throwable(e.getMessage()));
 		}
 		
 	}
@@ -122,7 +122,7 @@ public class UserDaoDB {
 			stmt.execute();
 			return true;
 		} catch (SQLException e) {
-			throw new SQLException("Cannot delete user from database.", e.getCause());
+			throw new SQLException("Cannot delete user from database.", new Throwable(e.getMessage()));
 		}
 		
 	}
@@ -159,7 +159,7 @@ public class UserDaoDB {
 			
 			return u;
 		} catch (SQLException e) {
-			throw new SQLException("Cannot get trip organizer from database.", e.getCause());
+			throw new SQLException("Cannot get trip organizer from database.", new Throwable(e.getMessage()));
 		}
 	}
 	
@@ -199,7 +199,7 @@ public class UserDaoDB {
 			}
 			return participants;
 		} catch (SQLException e) {
-			throw new SQLException("Cannot get participants to the trip:"+tripTitle+" from database.", e.getCause());
+			throw new SQLException("Cannot get participants to the trip:"+tripTitle+" from database.", new Throwable(e.getMessage()));
 		}
 		
 	}

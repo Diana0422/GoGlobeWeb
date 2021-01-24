@@ -56,7 +56,7 @@
 						request.setAttribute("senderAge", req.getSenderAge());
 						
 						%>
-						<%@ include file="html/request.html" %>
+						<%@ include file="html/incRequest.html" %>
 						<%
 						
 						if (request.getParameter("viewprofile") != null) {
@@ -101,12 +101,10 @@
                 	if (sentRequests != null) {
                 		for (RequestBean req: sentRequests) {
     						request.setAttribute("tripTitle", req.getTripTitle());
-    						request.setAttribute("senderName", req.getSenderName());
-    						request.setAttribute("senderSurname", req.getSenderSurname());
-    						request.setAttribute("senderAge", req.getSenderAge());
-    						
+    						request.setAttribute("senderName", req.getReceiverName());
+    						request.setAttribute("senderSurname", req.getReceiverSurname());
     						%>
-    						<%@ include file="html/request.html" %>
+    						<%@ include file="html/sentRequest.html" %>
     						<%
                 			
     						if (request.getParameter("viewprofile") != null) {

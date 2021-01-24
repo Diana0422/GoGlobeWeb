@@ -15,7 +15,7 @@ import logic.persistence.exceptions.DBConnectionException;
 
 public class TripDao {
 	
-	public static final String STORE_TRIP = "call register_trip(?, ?, ?, ?, ?, ?)";
+	public static final String STORE_TRIP = "call register_trip(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 	public static final String GET_TRIP = "call fetch_trip(?)";
 	public static final String GET_TRIPS = "call fetch_trips()";
 	public static final String GET_SHARED_TRIPS = "call fetch_shared_trips()";
@@ -39,19 +39,24 @@ public class TripDao {
 		return instance;
 	}
 	
-	public boolean saveTrip(Trip t) throws DBConnectionException, SQLException {
+	public boolean saveTrip(Trip t, boolean shared) throws DBConnectionException, SQLException {
 		try (Connection conn = ConnectionManager.getInstance().getConnection();
 			CallableStatement stmt = conn.prepareCall(STORE_TRIP)) {
-			stmt.setString(1, t.getTitle());
-			stmt.setString(2, t.getCategory1().toString());
-			stmt.setString(3, t.getCategory2().toString());
-			stmt.setDate(4, new java.sql.Date(t.getDepartureDate().getTime()));
-			stmt.setDate(5, new java.sql.Date(t.getReturnDate().getTime()));
-			stmt.setString(6, t.getOrganizer().getEmail());
+			stmt.setBoolean(1, shared);
+			stmt.setString(2, t.getTitle());
+			stmt.setString(3, t.getCategory1().toString());
+			stmt.setString(4, t.getCategory2().toString());
+			stmt.setDate(5, new java.sql.Date(t.getDepartureDate().getTime()));
+			stmt.setDate(6, new java.sql.Date(t.getReturnDate().getTime()));
+			stmt.setString(7, t.getOrganizer().getEmail());
+			stmt.setString(8, t.getDescription());
+			stmt.setInt(9, t.getMinAge());
+			stmt.setInt(10, t.getMaxAge());
+			stmt.setInt(11, t.getMaxParticipants());
 			stmt.execute();
 			return true;
 		} catch (SQLException e) {
-			throw new SQLException("Cannot save trip on database.", e.getCause());
+			throw new SQLException("Cannot save trip on database.", e);
 		}
 	}
 	
@@ -70,17 +75,25 @@ public class TripDao {
 				Date ret = rs.getDate(RETURN_COLUMN);
 				TripCategory cat1 = TripCategory.valueOf(rs.getString(CATEGORY1_COLUMN));
 				TripCategory cat2 = TripCategory.valueOf(rs.getString(CATEGORY2_COLUMN));
+				String tripDesc = rs.getString("description");
+				int min_age = rs.getInt("min_age");
+				int max_age = rs.getInt("max_age");
+				int max_part = rs.getInt("max_participants");
 				trip.setTitle(tripTitle);
 				trip.setPrice(price);
 				trip.setCategory1(cat1);
 				trip.setCategory2(cat2);
 				trip.setDepartureDate(dep);
 				trip.setReturnDate(ret);
+				trip.setDescription(tripDesc);
+				trip.setMaxAge(max_age);
+				trip.setMaxParticipants(max_part);
+				trip.setMinAge(min_age);
 			}
 			
 			return trip;
 		} catch (SQLException e) {
-			throw new SQLException("Cannot get trip with title:"+tripTitle+" from database.", e.getCause());
+			throw new SQLException("Cannot get trip with title:"+tripTitle+" from database.", e);
 		}
 	}
 	
@@ -122,7 +135,7 @@ public class TripDao {
 			
 			return trips;
 		} catch (SQLException e) {
-			throw new SQLException("Cannot get not shared trips from database.", e.getCause());
+			throw new SQLException("Cannot get not shared trips from database.", e);
 		}
 	}
 	
@@ -132,13 +145,14 @@ public class TripDao {
 		ResultSet rs = null;
 		
 		try (Connection conn = ConnectionManager.getInstance().getConnection();
-			CallableStatement stmt = conn.prepareCall(GET_SHARED_TRIPS)) {
+			CallableStatement stmt = conn.prepareCall(GET_SHARED_TRIPS, ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY)) {
 			
 			if (stmt.execute()) {
 				rs = stmt.getResultSet();
 			}
 			
 			if (rs != null) {
+				if (!rs.next()) return trips;
 				rs.first();
 				do {
 					// reading columns
@@ -147,6 +161,7 @@ public class TripDao {
 					Date returnDate = rs.getDate(RETURN_COLUMN);
 					TripCategory cat1 = TripCategory.valueOf(rs.getString(CATEGORY1_COLUMN));
 					TripCategory cat2 = TripCategory.valueOf(rs.getString(CATEGORY2_COLUMN));
+					int price = rs.getInt(PRICE_COLUMN);
 					String desc = rs.getString("description");
 					int minAge = rs.getInt("min_age");
 					int maxAge = rs.getInt("max_age");
@@ -160,6 +175,7 @@ public class TripDao {
 					t.setCategory2(cat2);
 					t.setDepartureDate(departure);
 					t.setReturnDate(returnDate);
+					t.setPrice(price);
 					t.setMaxParticipants(maxParticipants);
 					t.setMaxAge(maxAge);
 					t.setMinAge(minAge);
@@ -172,7 +188,7 @@ public class TripDao {
 			
 			return trips;
 		} catch (SQLException e) {
-			throw new SQLException("Cannot get shared trips from database.", e.getCause());
+			throw new SQLException("Cannot get shared trips from database.", e);
 		}
 	}
 	
@@ -185,7 +201,7 @@ public class TripDao {
 			stmt.execute();
 			return true;
 		} catch (SQLException e) {
-			throw new SQLException("Cannot save participant for the trip:"+tripTitle+" on database.", e.getCause());
+			throw new SQLException("Cannot save participant for the trip:"+tripTitle+" on database.", e);
 		}
 	}
 	

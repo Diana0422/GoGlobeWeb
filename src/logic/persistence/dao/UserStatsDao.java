@@ -36,7 +36,7 @@ public class UserStatsDao {
 			stmt.setDouble(4, newTravRating);
 			return stmt.execute();
 		} catch (SQLException e) {
-			throw new SQLException("Cannot update user stats on database.", e.getCause());
+			throw new SQLException("Cannot update user stats on database.", new Throwable(e.getMessage()));
 		}
 	}
 	
@@ -61,7 +61,7 @@ public class UserStatsDao {
 			
 			return us;
 		} catch (SQLException e) {
-			throw new SQLException("Cannot get user stats from database.", e.getCause());
+			throw new SQLException("Cannot get user stats from database.", new Throwable(e.getMessage()));
 		}
 	}
 
