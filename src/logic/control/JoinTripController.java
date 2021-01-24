@@ -25,6 +25,7 @@ public class JoinTripController {
 			instance = new JoinTripController();
 		}
 		
+		
 		return instance;
 	}
 
