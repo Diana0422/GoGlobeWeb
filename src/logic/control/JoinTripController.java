@@ -36,22 +36,12 @@ public class JoinTripController {
 		List<Trip> filteredTrips = new ArrayList<>();
 		try {
 			trips = TripDao.getInstance().getTrips();
-			System.out.println(trips);
 			for (Trip trip: trips) {
-				if (trip.getTitle().contains(value.toLowerCase())) filteredTrips.add(trip);
+				if (trip.getTitle().toLowerCase().contains(value.toLowerCase())) filteredTrips.add(trip);
 				
 			}
-			
 			/* Convert List<Trip> into List<TripBean> */
-			List<TripBean> list = ConversionController.getInstance().convertTripList(filteredTrips);			
-			logStr = "Trip Beans: "+list;
-			Logger.getGlobal().info(logStr);
-			for (TripBean bean: list) {
-				logStr = "Participants: "+bean.getParticipants();
-				Logger.getGlobal().info(logStr);
-			}
-			System.out.println(list);
-			return list;
+			return ConversionController.getInstance().convertTripList(filteredTrips);			
 		} catch (DBConnectionException | SQLException e) {
 			throw new DatabaseException(e.getMessage(), e.getCause());
 		}
