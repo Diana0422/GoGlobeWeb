@@ -10,18 +10,14 @@ import java.util.ResourceBundle;
 
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.geometry.Insets;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
-import javafx.scene.layout.Region;
 import logic.bean.SessionBean;
 import logic.bean.TripBean;
 import logic.control.JoinTripController;
-import logic.model.exceptions.LoadGraphicException;
 import logic.persistence.exceptions.DatabaseException;
 import logic.view.filterstrategies.AdventureCategoryStrategy;
 import logic.view.filterstrategies.AlphabeticalFilterStrategy;
@@ -94,42 +90,48 @@ public class JoinTripGraphic implements Initializable {
 			AlertGraphic alert = new AlertGraphic();
 			alert.display(GUIType.JOIN, GUIType.HOME, null, DesktopSessionContext.getInstance().getSession(), e.getMessage(), e.getCause().toString());
 		}
-		loadGrid(this.tripBeans);
+		CardGraphic cc = new CardGraphic();
+		cc.loadCardGrid(cardsLayout, this.tripBeans);
 	}
 	
 	@FXML 
 	public void filterByAdventure(MouseEvent event) {
 		this.filterContext.setFilter(new AdventureCategoryStrategy());
 		filteredTripBeans = filterContext.filter(tripBeans);
-		loadGrid(this.filteredTripBeans);
+		CardGraphic cc = new CardGraphic();
+		cc.loadCardGrid(cardsLayout, this.filteredTripBeans);
 	}
 	
 	@FXML 
 	public void filterByFun(MouseEvent event) {
 		this.filterContext.setFilter(new FunCategoryStrategy());
 		filteredTripBeans = filterContext.filter(tripBeans);
-		loadGrid(this.filteredTripBeans);
+		CardGraphic cc = new CardGraphic();
+		cc.loadCardGrid(cardsLayout, this.filteredTripBeans);
 	}
 	
 	@FXML 
 	public void filterByCulture(MouseEvent event) {
 		this.filterContext.setFilter(new CultureCategoryStrategy());
 		filteredTripBeans = filterContext.filter(tripBeans);
-		loadGrid(this.filteredTripBeans);
+		CardGraphic cc = new CardGraphic();
+		cc.loadCardGrid(cardsLayout, this.filteredTripBeans);
 	}
 	
 	@FXML 
 	public void filterByRelax(MouseEvent event) {
 		this.filterContext.setFilter(new RelaxCategoryStrategy());
 		filteredTripBeans = filterContext.filter(tripBeans);
-		loadGrid(this.filteredTripBeans);
+		CardGraphic cc = new CardGraphic();
+		cc.loadCardGrid(cardsLayout, this.filteredTripBeans);
 	}
 	
 	@FXML 
 	public void filterFromAToZ(MouseEvent event) {
 		this.filterContext.setFilter(new AlphabeticalFilterStrategy());
 		filteredTripBeans = filterContext.filter(tripBeans);
-		loadGrid(this.filteredTripBeans);
+		CardGraphic cc = new CardGraphic();
+		cc.loadCardGrid(cardsLayout, this.filteredTripBeans);
 	}
 	
 	@FXML
@@ -142,42 +144,6 @@ public class JoinTripGraphic implements Initializable {
 		} catch (IOException e) {
 			AlertGraphic graphic = new AlertGraphic();
 			graphic.display(GUIType.JOIN, GUIType.HOME, null, DesktopSessionContext.getInstance().getSession(), e.getMessage(), e.getCause().toString());
-		}
-	}
-	
-	public void loadGrid(List<TripBean> trips) {
-		
-		if (!cardsLayout.getChildren().isEmpty()) {
-			cardsLayout.getChildren().clear();
-		}
-		int column = 0;
-		int row = 1;
-		
-		for (int i=0; i<trips.size(); i++) {
-			CardGraphic cc = new CardGraphic();
-			AnchorPane anchor;
-			try {
-				if (column == 3) {
-					row++;
-					column = 0;
-				}
-				anchor = (AnchorPane) cc.initializeNode(trips.get(i));	
-				cardsLayout.add(anchor, column++, row);
-				GridPane.setMargin(anchor, new Insets(20));
-			} catch (LoadGraphicException e) {
-				AlertGraphic graphic = new AlertGraphic();
-				graphic.display(GUIType.JOIN, GUIType.HOME, null, DesktopSessionContext.getInstance().getSession(), "Widget loading error.", "Something unexpected occurred loading the trip cards.");
-			}
-						
-			// Set grid height
-			cardsLayout.setMaxHeight(Region.USE_PREF_SIZE);
-			cardsLayout.setPrefHeight(Region.USE_COMPUTED_SIZE);
-			cardsLayout.setMinHeight(Region.USE_COMPUTED_SIZE);
-						
-			// Set grid width
-			cardsLayout.setMaxWidth(Region.USE_PREF_SIZE);
-			cardsLayout.setPrefWidth(Region.USE_COMPUTED_SIZE);
-			cardsLayout.setMinWidth(Region.USE_COMPUTED_SIZE);				
 		}
 	}
 }

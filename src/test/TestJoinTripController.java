@@ -89,18 +89,18 @@ class TestJoinTripController {
 	@Test
 	void testJoinTripNotSuccessfulAgeNotInRange() {
 		// If the user age is not in trip's range
-		String tripTitle = TRIP_TITLE;
-		String userEmail = NOT_ORGANIZER_ID;
+		String title = TRIP_TITLE;
+		String email = NOT_ORGANIZER_ID;
 		TripBean trip = new TripBean();
-		trip.setTitle(tripTitle);
-		SessionBean session = new SessionBean();
-		session.setSessionEmail(userEmail);
+		trip.setTitle(title);
+		SessionBean userSession = new SessionBean();
+		userSession.setSessionEmail(email);
 		
 		try {
-			boolean result = JoinTripController.getInstance().joinTrip(trip, session);
+			boolean result = JoinTripController.getInstance().joinTrip(trip, userSession);
 			assertEquals(false, result);
 		} catch (DatabaseException e) {
-			String logStr = "No exception has occurred during testJoinTripNotSuccessfulUserOganizer";
+			String logStr = "No exception has occurred during testJoinTripNotSuccessfulAgeNotInRange";
 			Logger.getGlobal().log(Level.INFO, logStr);
 		}
 	}
