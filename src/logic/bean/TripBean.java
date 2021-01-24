@@ -3,6 +3,8 @@ package logic.bean;
 import java.util.ArrayList;
 import java.util.List;
 
+import logic.model.exceptions.TripNotCompletedException;
+
 public class TripBean {
 	
 	private int id;
@@ -38,13 +40,12 @@ public class TripBean {
 		}
 	}
 	
-	public boolean validateTrip() {
-		boolean ret = true;
+	public void validateTrip() throws TripNotCompletedException{
 		for (int i = 0; i < days.size(); i++) {
-			if (days.get(i).getActivities().isEmpty()) ret = false;
-		}
-		//TODO: Aggiungere controllo sulla location		
-		return ret;
+			if (days.get(i).getActivities().isEmpty())
+				throw new TripNotCompletedException("Plan all days before going to the next step.");
+		}	
+		
 	}
 	
 	public int getId() {

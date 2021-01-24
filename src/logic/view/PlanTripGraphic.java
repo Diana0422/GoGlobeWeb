@@ -24,6 +24,7 @@ import logic.model.Location;
 import logic.model.Place;
 import logic.model.adapters.HereAPIAdapter;
 import logic.model.exceptions.FormInputException;
+import logic.model.exceptions.TripNotCompletedException;
 import logic.model.factories.HereAdapterFactory;
 import logic.persistence.exceptions.DatabaseException;
 import logic.view.threads.LoadVBox;
@@ -125,38 +126,39 @@ public class PlanTripGraphic implements GraphicController{
     	try {
 			if (planTripBean.validateLocation())
 				planTripBean.saveLocation();
+			refresh();
 		} catch (FormInputException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			lblErrorMsg.setText(e.getMessage());
 		}
-    	refresh();
+    	
     }
     
     @FXML
     void onSaveTripClick(ActionEvent event) {
-    	if (planTripBean.validateTrip()) {
-    		try {
-				PlanTripController.getInstance().saveTrip(planTripBean.getTripBean(), DesktopSessionContext.getInstance().getSession());
-	    		DesktopSessionContext.getGuiLoader().loadGUI(null, DesktopSessionContext.getInstance().getSession(), GUIType.HOME);	
-			} catch (DatabaseException e) {
-				AlertGraphic alert = new AlertGraphic();
-				alert.display(GUIType.PLAN, GUIType.HOME, null, DesktopSessionContext.getInstance().getSession(), e.getMessage(), e.getCause().toString());
-			} 
-    	}
+    	 try {
+			planTripBean.validateTrip();
+			PlanTripController.getInstance().saveTrip(planTripBean.getTripBean(), DesktopSessionContext.getInstance().getSession());
+    		DesktopSessionContext.getGuiLoader().loadGUI(null, DesktopSessionContext.getInstance().getSession(), GUIType.HOME);	
+		} catch (TripNotCompletedException e) {
+			lblErrorMsg.setText(e.getMessage());
+		} catch (DatabaseException e) {
+			AlertGraphic alert = new AlertGraphic();
+			alert.display(GUIType.PLAN, GUIType.HOME, null, DesktopSessionContext.getInstance().getSession(), e.getMessage(), e.getCause().toString());
+		}     	
     }
     
     @FXML
     void onShareTripClick(ActionEvent event) {
-    	if (planTripBean.validateTrip()) {
-    		DesktopSessionContext.getGuiLoader().loadGUI(null, this.planTripBean, GUIType.SHARE);
-    	}    
+    	try {
+			planTripBean.validateTrip();
+			DesktopSessionContext.getGuiLoader().loadGUI(null, this.planTripBean, GUIType.SHARE);
+		} catch (TripNotCompletedException e) {
+			lblErrorMsg.setText(e.getMessage());
+		}   	    
     }
 	
 	
-	//refresh the scene
-	private void refresh() {
-		DesktopSessionContext.getGuiLoader().loadGUI(null, this.planTripBean, GUIType.PLAN);
-	}
+	
 	
 	//load an activity in GUI
 	private void loadActivity(ActivityBean activityBean) {
@@ -235,16 +237,15 @@ public class PlanTripGraphic implements GraphicController{
 			
 			
 			//Call thread to load suggestions
-			//TODO chiamare controller per usare API
-			Thread loadSuggestions = new Thread(() -> {
-				//Use ApiAdapter to request list of suggestions and add them to the GUI
-				HereAPIAdapter hereAPI = HereAdapterFactory.getInstance().createHereAdapter();
-				Location dayLocation = hereAPI.getLocationInfo(planTripBean.getDayLocation());
-				List<Place> suggestions = hereAPI.getNearbyPlaces(dayLocation.getCoordinates(), planTripBean.getCategory1());
-				Platform.runLater(new LoadVBox(vbSuggestions, suggestions));			
-				
-			});			
-			loadSuggestions.start();
+//			Thread loadSuggestions = new Thread(() -> {
+//				//Use ApiAdapter to request list of suggestions and add them to the GUI
+//				HereAPIAdapter hereAPI = HereAdapterFactory.getInstance().createHereAdapter();
+//				Location dayLocation = hereAPI.getLocationInfo(planTripBean.getDayLocation());
+//				List<Place> suggestions = hereAPI.getNearbyPlaces(dayLocation.getCoordinates(), planTripBean.getCategory1());
+//				Platform.runLater(new LoadVBox(vbSuggestions, suggestions));			
+//				
+//			});			
+//			loadSuggestions.start();
 			
 			List<Place> places = PlanTripController.getInstance().getNearbyPlaces(planTripBean.getDayLocation(), planTripBean.getCategory1());
 			for (int i = 0; i < places.size(); i++) {
@@ -268,6 +269,11 @@ public class PlanTripGraphic implements GraphicController{
 			vbDays.getChildren().add(btnDay);
 		}
 	}
+	
+	//refresh the scene
+		private void refresh() {
+			DesktopSessionContext.getGuiLoader().loadGUI(null, this.planTripBean, GUIType.PLAN);
+		}
 	
 	
 }

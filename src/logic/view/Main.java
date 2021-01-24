@@ -9,7 +9,7 @@ import javafx.scene.Scene;
 
 public class Main extends Application {
 	@Override
-	public void start(Stage primaryStage) {
+	public void start(Stage primaryStage){
 		try {
 			/* Set FXML controller factory */
 			FXMLLoader loader = new FXMLLoader();

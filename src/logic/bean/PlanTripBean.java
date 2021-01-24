@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.logging.Logger;
 import logic.model.exceptions.DateFormatException;
 import logic.model.exceptions.FormInputException;
+import logic.model.exceptions.TripNotCompletedException;
 
 public class PlanTripBean {
 	
@@ -75,9 +76,8 @@ public class PlanTripBean {
 	}
 
 	//Validates the whole trip 
-	public boolean validateTrip(){	
-		//TODO PENSARE AD EXCEPTION PER IL TRIP NON COMPLETATO
-		return this.tripBean.validateTrip();
+	public void validateTrip() throws TripNotCompletedException{	
+		this.tripBean.validateTrip();
 	}
 	
 	//Validate all the inputs in the form
