@@ -25,7 +25,6 @@ public class ShareTripGraphic implements GraphicController {
 	private Desktop desktop = Desktop.getDesktop();
 	PlanTripBean planTripBean;
 	
-
     @FXML
     private TextField tfMaxParticipants;
 
@@ -60,20 +59,26 @@ public class ShareTripGraphic implements GraphicController {
 
     @FXML
     void onNextClick(ActionEvent event) {
-    	planTripBean.setMinAge(tfMinimumAge.getText());
-    	planTripBean.setMaxAge(tfMaximumAge.getText());
-    	planTripBean.setTripDescription(taTripDescription.getText());
-    	planTripBean.setMaxParticipants(tfMaxParticipants.getText());
+    	planTripBean.getTripBean().setShared(true);
+    	planTripBean.getTripBean().setMinAge(tfMinimumAge.getText());
+    	planTripBean.getTripBean().setMaxAge(tfMaximumAge.getText());
+    	planTripBean.getTripBean().setDescription(taTripDescription.getText());
+    	planTripBean.getTripBean().setMaxParticipants(tfMaxParticipants.getText());
     	
     	
     	try {
 			if (planTripBean.validateSharingPref()){ 
-				PlanTripController.getInstance().setSharingPreferences(planTripBean);
+				
 				PlanTripController.getInstance().saveTrip(planTripBean.getTripBean(), DesktopSessionContext.getInstance().getSession()); 
 				
 				DesktopSessionContext.getGuiLoader().loadGUI(null, DesktopSessionContext.getInstance().getSession(), GUIType.HOME);
 			}
 		} catch (FormInputException e) {
+	    	planTripBean.getTripBean().setShared(false);
+			planTripBean.getTripBean().setMinAge("");
+	    	planTripBean.getTripBean().setMaxAge("");
+	    	planTripBean.getTripBean().setDescription("");
+	    	planTripBean.getTripBean().setMaxParticipants("");
 			lblErrorMsg.setText(e.getMessage());
 		} catch (DatabaseException e) {
 			AlertGraphic alert = new AlertGraphic();

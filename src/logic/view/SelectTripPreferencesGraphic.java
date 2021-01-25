@@ -1,5 +1,7 @@
 package logic.view;
 
+import java.util.Date;
+
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -8,6 +10,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import logic.bean.PlanTripBean;
 import logic.bean.TripBean;
+import logic.control.ConversionController;
 import logic.control.PlanTripController;
 import logic.model.TripCategory;
 import logic.model.exceptions.FormInputException;
@@ -46,15 +49,18 @@ public class SelectTripPreferencesGraphic implements GraphicController {
     @FXML
     void onNextClick(ActionEvent event) {
     	PlanTripBean planTripBean = new PlanTripBean();
-    	planTripBean.setTripName(tfTripTitle.getText());
-    	planTripBean.setDepartureDate(tfDepartureDate.getText());
-    	planTripBean.setReturnDate(tfReturnDate.getText());
-    	planTripBean.setCategory1(cbCategory1.getValue());
-    	planTripBean.setCategory2(cbCategory2.getValue());
-    	//Create new instance of trip bean and assign it to planTripBean
-    	TripBean newTripBean = new TripBean();
-    	planTripBean.setTripBean(newTripBean);
-    	PlanTripController.getInstance().setupTripBean(planTripBean);
+    	TripBean tripBean = new TripBean();
+    	tripBean.setTitle(tfTripTitle.getText());
+    	tripBean.setDepartureDate(tfDepartureDate.getText());
+    	tripBean.setReturnDate(tfReturnDate.getText());
+    	tripBean.setCategory1(cbCategory1.getValue());
+    	tripBean.setCategory2(cbCategory2.getValue());
+    	Date depDate = ConversionController.getInstance().parseDate(tripBean.getDepartureDate());
+		Date retDate = ConversionController.getInstance().parseDate(tripBean.getReturnDate());
+    	long tripLength = PlanTripController.getInstance().calculateTripLength(depDate, retDate) + 1;
+    	tripBean.setTripLength(tripLength);
+    	tripBean.createDays();
+    	planTripBean.setTripBean(tripBean);
     	
     	//Validate form and load next GUI
     	try {

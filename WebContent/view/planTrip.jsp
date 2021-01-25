@@ -1,13 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
     
-<jsp:useBean id="planTripBean" scope="session" class="logic.bean.PlanTripBean"/>
-<jsp:useBean id="activityBean" scope="request" class="logic.bean.ActivityBean"/> 
-<jsp:useBean id="sessionBean" scope="session" class="logic.bean.SessionBean"/>
-
-<jsp:setProperty name="activityBean" property="*" />
-<jsp:setProperty name="planTripBean" property="location" />
-
 <%@page import="java.util.List"%>      
 <%@page import="java.util.Iterator"%> 
 <%@page import="logic.model.Trip"%>
@@ -16,9 +9,15 @@
 <%@page import="logic.control.PlanTripController"%>
 <%@page import="logic.persistence.exceptions.DatabaseException"%>
 <%@page import="logic.model.exceptions.TripNotCompletedException"%>
+    
+<jsp:useBean id="planTripBean" scope="session" class="logic.bean.PlanTripBean"/>
+<jsp:useBean id="tripBean" scope="session" class="logic.bean.TripBean"/>
+<jsp:useBean id="activityBean" scope="request" class="logic.bean.ActivityBean"/> 
+<jsp:useBean id="sessionBean" scope="session" class="logic.bean.SessionBean"/>
+<jsp:useBean id="dayBean" scope="request" class="logic.bean.DayBean"/>
 
-
-
+<jsp:setProperty name="activityBean" property="*" />
+<jsp:setProperty name="planTripBean" property="location" />
 
 <!DOCTYPE html>
 <html lang="en">
@@ -64,10 +63,9 @@
 			}
 %>
 <%
-if (request.getParameter("daybtn") != null){
-	System.out.println("button pressed: " + request.getParameter("daybtn")); 
-	planTripBean.setPlanningDay(Integer.parseInt(request.getParameter("daybtn")));
-}
+			if (request.getParameter("daybtn") != null){
+				planTripBean.setPlanningDay(Integer.parseInt(request.getParameter("daybtn")));
+			}
 %>  
 				
            		</div> 
@@ -80,14 +78,14 @@ if (request.getParameter("daybtn") != null){
             
             <div class="day" id="day">
             	<div class="form">
-	            <h1 id="trip-title"><%= planTripBean.getTripName() %></h1>
+	            <h1 id="trip-title"><%= tripBean.getTitle() %></h1>
 	           
 	           <!--  IF SAVE TRIP IS CLICKED -->  
 				<%
 				if (request.getParameter("save-trip-btn") != null){
 					try {
 						planTripBean.validateTrip();
-				    		PlanTripController.getInstance().saveTrip(planTripBean.getTripBean(), sessionBean); 
+				    		PlanTripController.getInstance().saveTrip(tripBean, sessionBean); 
 							%>
 							<jsp:forward page="home.jsp"/>
 							<% 
@@ -225,7 +223,7 @@ if (request.getParameter("daybtn") != null){
 <%
 		if (!(planTripBean.checkDay())){
 					
-			List<Place> suggestions = PlanTripController.getInstance().getNearbyPlaces(planTripBean.getDayLocation(), planTripBean.getCategory1());
+			List<Place> suggestions = PlanTripController.getInstance().getNearbyPlaces(planTripBean.getDayLocation(), tripBean.getCategory1());
 			for (int i = 0; i < suggestions.size(); i++){
 %>
 				

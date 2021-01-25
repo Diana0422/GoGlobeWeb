@@ -4,16 +4,16 @@
    <%@page import="logic.control.PlanTripController"%>
    <%@page import="logic.persistence.exceptions.DatabaseException"%>
     
-   <jsp:useBean id="planTripBean" scope="session" class="logic.bean.PlanTripBean"/>  
+   <jsp:useBean id="planTripBean" scope="session" class="logic.bean.PlanTripBean"/> 
+   <jsp:useBean id="tripBean" scope="session" class="logic.bean.TripBean"/> 
    <jsp:useBean id="sessionBean" scope="session" class="logic.bean.SessionBean"/>
-   <jsp:setProperty name="planTripBean" property="*"/>
+   <jsp:setProperty name="tripBean" property="*"/>
    
 <!DOCTYPE html>
 <html lang="en">
 <head>
 	<meta charset="UTF-8">
-    <title>GoGlobe - Select trip preferences</title>
-    
+    <title>GoGlobe - Select trip preferences</title>    
     <link rel="icon" href="../res/images/favicon.ico">
     <link rel="stylesheet" type="text/css" href="../bootstrap-css/bootstrap.css">
     <link rel="stylesheet" href="../css/planTrip.css">
@@ -35,7 +35,7 @@
 	if (request.getParameter("share-btn") != null){
 		try {
 			if (planTripBean.validateSharingPref()){
-				PlanTripController.getInstance().setSharingPreferences(planTripBean);
+				tripBean.setShared(true);
 	    		PlanTripController.getInstance().saveTrip(planTripBean.getTripBean(), sessionBean); 
 				System.out.println("VIAGGIO SALVATO COME CONDIVISO");
 	%>		
@@ -78,7 +78,7 @@
             	
                   <div class="form-group">
 				    <label for="exampleFormControlTextarea1">Description</label>
-				    <textarea name="tripDescription" class="form-control" id="tripDescription-ta" rows="3" placeholder="Describe your trip to other users!"></textarea>
+				    <textarea name="description" class="form-control" id="tripDescription-ta" rows="3" placeholder="Describe your trip to other users!"></textarea>
 				  </div>
                 
                   <div class="custom-file">

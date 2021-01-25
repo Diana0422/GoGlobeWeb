@@ -3,7 +3,6 @@ package logic.view;
 import java.io.IOException;
 import java.util.List;
 import java.util.logging.Logger;
-
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -18,6 +17,7 @@ import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import logic.bean.ActivityBean;
 import logic.bean.PlanTripBean;
+import logic.bean.TripBean;
 import logic.control.PlanTripController;
 import logic.model.Place;
 import logic.model.exceptions.FormInputException;
@@ -152,9 +152,6 @@ public class PlanTripGraphic implements GraphicController{
 		}   	    
     }
 	
-	
-	
-	
 	//load an activity in GUI
 	private void loadActivity(ActivityBean activityBean) {
 		FXMLLoader loader = new FXMLLoader();
@@ -192,11 +189,11 @@ public class PlanTripGraphic implements GraphicController{
 	public void initializeData(Object recBundle, Object forBundle) {
 		this.planTripBean = (PlanTripBean) recBundle;
 		
-		String logStr = "TRIP TITLE: " + this.planTripBean.getTripName();
+		String logStr = "TRIP TITLE: " + planTripBean.getTripBean().getTitle();
 		Logger.getGlobal().info(logStr);
 		
 		//set GUI elements visibility
-		txtTripTitle.setText(planTripBean.getTripName());
+		txtTripTitle.setText(planTripBean.getTripBean().getTitle());
 		txtDayNumber.setText(Integer.toString(planTripBean.getPlanningDay() + 1));
 		if (planTripBean.checkDay()) {
 			logStr = "THIS DAY HAS NO LOCATION";
@@ -242,7 +239,7 @@ public class PlanTripGraphic implements GraphicController{
 //			});			
 //			loadSuggestions.start();
 			
-			List<Place> places = PlanTripController.getInstance().getNearbyPlaces(planTripBean.getDayLocation(), planTripBean.getCategory1());
+			List<Place> places = PlanTripController.getInstance().getNearbyPlaces(planTripBean.getDayLocation(), planTripBean.getTripBean().getCategory1());
 			for (int i = 0; i < places.size(); i++) {
 				this.loadSuggestion(places.get(i));
 			}

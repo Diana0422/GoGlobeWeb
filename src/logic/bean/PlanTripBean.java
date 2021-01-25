@@ -14,18 +14,8 @@ public class PlanTripBean {
 	
 	private static final String DATE_FORMAT = "dd/MM/yyyy"; 
 	private TripBean tripBean;
-	private String tripName;
-	private String departureDate;
-	private String returnDate;
-	private String category1;
-	private String category2;
 	private String errorMsg;
-	private String location;
-	private String tripDescription;
-	private String maxAge;
-	private String minAge;
-	private String maxParticipants;
-	private boolean shared;
+	private String location;	
 	private int planningDay = 0;
 
 	public PlanTripBean(){
@@ -34,25 +24,25 @@ public class PlanTripBean {
 	
 	//Validates all the fields in the share trip view
 	public boolean validateSharingPref() throws FormInputException {
-		if (this.tripDescription == null || this.tripDescription.equals("")) {
+		if (tripBean.getDescription() == null || tripBean.getDescription().equals("")) {
 			throw new FormInputException("Error on trip description.");
 		}
 		
-		if (this.minAge == null || this.minAge.equals("")) {
+		if (tripBean.getMinAge() == null || tripBean.getMinAge().equals("")) {
 			throw new FormInputException("Error on minimum age.");
 		}
 		
-		if (this.maxAge == null || this.maxAge.equals("")) {
+		if (tripBean.getMaxAge() == null || tripBean.getMaxAge().equals("")) {
 			throw new FormInputException("Error on maximum age.");			
 		}
 		
-		if (this.maxParticipants == null || this.maxParticipants.equals("")) {
+		if (tripBean.getMaxParticipants() == null || tripBean.getMaxParticipants().equals("")) {
 			throw new FormInputException("Insert maximum participants.");
 		}
 		
 		try {
-			int min = Integer.parseInt(this.minAge);
-			int max = Integer.parseInt(this.maxAge);
+			int min = Integer.parseInt(tripBean.getMinAge());
+			int max = Integer.parseInt(tripBean.getMaxAge());
 			if (min > max) {
 				throw new FormInputException("Age input not valid.");
 			}
@@ -61,12 +51,11 @@ public class PlanTripBean {
 
 		}
 			
-		String logStr = "SHARE FORM INFO: "+"trip description: " + this.tripDescription+" min age: " + this.minAge+" max age: " + this.maxAge;
+		String logStr = "SHARE FORM INFO: "+"trip description: " + tripBean.getDescription()+" min age: " + tripBean.getMinAge()+" max age: " + tripBean.getMaxAge();
 		Logger.getGlobal().info(logStr);
 		return true;
 	}
-	
-	
+		
 	//Validates location string in the Plan trip view
 	public boolean validateLocation() throws FormInputException{
 		if ((this.location == null || this.location.equals(""))) {
@@ -77,21 +66,21 @@ public class PlanTripBean {
 
 	//Validates the whole trip 
 	public void validateTrip() throws TripNotCompletedException{	
-		this.tripBean.validateTrip();
+		tripBean.validateTrip();
 	}
 	
 	//Validate all the inputs in the form
 	public boolean validateForm()throws FormInputException{
 		
-		Boolean res = validateData(this.tripName, this.departureDate, this.returnDate, this.category1, this.category2);
+		Boolean res = validateData(tripBean.getTitle(), tripBean.getDepartureDate(), tripBean.getReturnDate(), tripBean.getCategory1(), tripBean.getCategory2());
 		if (Boolean.TRUE.equals(res)){
 			try {
-				validateDates(this.departureDate, this.returnDate);
+				validateDates(tripBean.getDepartureDate(), tripBean.getReturnDate());
 			}catch(DateFormatException e) {
 				throw new FormInputException(e.getMessage());
 			}
 			
-			return validateCategories(this.category1, this.category2);
+			return validateCategories(tripBean.getCategory1(), tripBean.getCategory2());
 		}else{
 			return false;
 		}		
@@ -114,21 +103,16 @@ public class PlanTripBean {
 			}			
 		} catch (ParseException e) {			
 			throw new DateFormatException(DATE_FORMAT);
-		}	
-		
+		}			
 		return true;
-
 	}
 	
 	//Check if categories are not equal
 	private boolean validateCategories(String category1, String category2) throws FormInputException{
-		
-		
+			
 		if (category1.equals(category2)) {
 			throw new FormInputException("Categories can not be of the same type.");	
-		}
-		
-		
+		}		
 		return true;
 	}
 	
@@ -216,14 +200,6 @@ public class PlanTripBean {
 	public String getActivityCost(int activityNum) {
 		return this.getTripDays().get(planningDay).getActivities().get(activityNum).getEstimatedCost();
 	}
-
-	public TripBean getTripBean() {
-		return tripBean;
-	}
-
-	public void setTripBean(TripBean tripBean) {
-		this.tripBean = tripBean;
-	}
 	
 	public String getLocation() {
 		return location;
@@ -231,30 +207,6 @@ public class PlanTripBean {
 
 	public void setLocation(String location) {
 		this.location = location;
-	}
-	
-	public String getTripDescription() {
-		return tripDescription;
-	}
-
-	public void setTripDescription(String tripDescription) {
-		this.tripDescription = tripDescription;
-	}
-
-	public String getMaxAge() {
-		return maxAge;
-	}
-
-	public void setMaxAge(String maxAge) {
-		this.maxAge = maxAge;
-	}
-
-	public String getMinAge() {
-		return minAge;
-	}
-
-	public void setMinAge(String minAge) {
-		this.minAge = minAge;
 	}	
 	
 	public int getPlanningDay() {
@@ -264,46 +216,7 @@ public class PlanTripBean {
 	public void setPlanningDay(int planningDay) {
 		this.planningDay = planningDay;
 	}
-	
-	public String getTripName() {
-		return tripName;
-	}
 
-	public void setTripName(String tripName) {
-		this.tripName = tripName;
-	}
-
-	public String getDepartureDate() {
-		return departureDate;
-	}
-
-	public void setDepartureDate(String departureDate) {
-		this.departureDate = departureDate;
-	}
-
-	public String getReturnDate() {
-		return returnDate;
-	}
-
-	public void setReturnDate(String returnDate) {
-		this.returnDate = returnDate;
-	}
-	
-	public String getCategory1() {
-		return category1;
-	}
-
-	public void setCategory1(String category1) {
-		this.category1 = category1;
-	}
-
-	public String getCategory2() {
-		return category2;
-	}
-
-	public void setCategory2(String category2) {
-		this.category2 = category2;
-	}
 
 	public String getErrorMsg() {
 		return errorMsg;
@@ -312,22 +225,12 @@ public class PlanTripBean {
 	public void setErrorMsg(String errorMsg) {
 		this.errorMsg = errorMsg;
 	}
-	
-	public boolean isShared() {
-		return shared;
+
+	public TripBean getTripBean() {
+		return tripBean;
 	}
 
-	public void setShared(boolean shared) {
-		this.shared = shared;
-	}
-
-	public String getMaxParticipants() {
-		return maxParticipants;
-	}
-
-	public void setMaxParticipants(String maxParticipants) {
-		this.maxParticipants = maxParticipants;
-	}
-	
-	
+	public void setTripBean(TripBean tripBean) {
+		this.tripBean = tripBean;
+	}	
 }

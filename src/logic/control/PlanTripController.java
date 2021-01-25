@@ -38,24 +38,6 @@ public class PlanTripController {
 		return instance;
 	}
 	
-	//Create tripBean and set trip's preferences
-	public TripBean setupTripBean(PlanTripBean planTripBean) {
-		TripBean tripBean = planTripBean.getTripBean();	
-		//converts Strings to Dates 
-		Date depDate = ConversionController.getInstance().parseDate(planTripBean.getDepartureDate());
-		Date retDate = ConversionController.getInstance().parseDate(planTripBean.getReturnDate());
-		long tripLength = calculateTripLength(depDate, retDate) + 1;
-		tripBean.createDays((int)tripLength);
-		tripBean.setTitle(planTripBean.getTripName());
-		tripBean.setDepartureDate(planTripBean.getDepartureDate());
-		tripBean.setReturnDate(planTripBean.getReturnDate());
-		tripBean.setCategory1(planTripBean.getCategory1());
-		tripBean.setCategory2(planTripBean.getCategory2());
-		tripBean.setTripLength(tripLength);
-		tripBean.createDays((int)tripLength);
-		return tripBean;
-	}
-	
 	public long calculateTripLength(Date depDate, Date retDate) {
 		long diff = retDate.getTime() - depDate.getTime();
 		return TimeUnit.DAYS.convert(diff, TimeUnit.MILLISECONDS);
@@ -66,17 +48,6 @@ public class PlanTripController {
 		DayBean currentDayBean = planTripBean.getTripDays().get(planTripBean.getPlanningDay());
 		currentDayBean.addActivity(newActivityBean);		
 	}
-	
-	public void setSharingPreferences(PlanTripBean planTripBean) {
-		TripBean tripBean = planTripBean.getTripBean();
-		tripBean.setShared(true);
-		tripBean.setDescription(planTripBean.getTripDescription());
-		tripBean.setMinAge(planTripBean.getMinAge());
-		tripBean.setMaxAge(planTripBean.getMaxAge());	
-		tripBean.setMaxParticipants(planTripBean.getMaxParticipants());
-	}
-	
-	
 	
 	public boolean saveTrip(TripBean tripBean, SessionBean organizerBean) throws DatabaseException{
 		Trip trip = TripFactory.getInstance().createModel();
@@ -104,6 +75,7 @@ public class PlanTripController {
 				trip.setDescription(tripBean.getDescription());
 				trip.setMinAge(Integer.parseInt(tripBean.getMinAge()));
 				trip.setMaxAge(Integer.parseInt(tripBean.getMaxAge()));
+				trip.setMaxParticipants(Integer.parseInt(tripBean.getMaxParticipants()));
 			}	
 				
 			/* save trip on persistence */

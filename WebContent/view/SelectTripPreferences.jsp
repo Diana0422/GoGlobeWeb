@@ -1,12 +1,14 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
     <%@page import="logic.control.PlanTripController"%>
-        <%@page import="logic.bean.TripBean"%>
-        <%@page import="logic.model.exceptions.FormInputException"%>
+    <%@page import="logic.control.ConversionController"%>
+    <%@page import="java.util.Date"%>    
+    <%@page import="logic.bean.TripBean"%>
+    <%@page import="logic.model.exceptions.FormInputException"%>
     
-   <jsp:useBean id="planTripBean" scope="session" class="logic.bean.PlanTripBean"/>  
-   <jsp:setProperty name="planTripBean" property="*"/>
-   
+   <jsp:useBean id="planTripBean" scope="session" class="logic.bean.PlanTripBean"/>    
+   <jsp:useBean id="tripBean" scope="session" class="logic.bean.TripBean"/>
+   <jsp:setProperty name="tripBean" property="*"/>
    
 <% 
    if (request.getParameter("back-btn")!= null){
@@ -42,20 +44,21 @@
         <h2>Insert information about your trip!</h2>
 <%
 	if (request.getParameter("next-btn") != null){
-		String projectPath = System.getProperty("user.dir");
-		System.out.println(projectPath);
-		try{
+		try{	
+			planTripBean.setTripBean(tripBean);
 			if (planTripBean.validateForm()){
-				TripBean newTripBean = new TripBean();
-				planTripBean.setTripBean(newTripBean);
-				PlanTripController.getInstance().setupTripBean(planTripBean);
+				Date depDate = ConversionController.getInstance().parseDate(tripBean.getDepartureDate());
+				Date retDate = ConversionController.getInstance().parseDate(tripBean.getReturnDate());
+				long tripLength = PlanTripController.getInstance().calculateTripLength(depDate, retDate) + 1;
+				tripBean.setTripLength(tripLength);
+				tripBean.createDays();				
 				planTripBean.setPlanningDay(0);
 %>			
-				<jsp:forward page="planTrip.jsp"/>
-			
+				<jsp:forward page="planTrip.jsp"/>			
 <% 
 			}
 		}catch(FormInputException e){
+			//TODO
 			e.printStackTrace();
 		
 %>
@@ -69,7 +72,7 @@
                     <!-- Trip name-->
                     <div class="form-group col-md-6">
                         <label for="inputDepDate" ><h4>Trip Title</h4></label>
-                        <input type="text" class="form-control" name="tripName" id="tripName" maxlength="25">
+                        <input type="text" class="form-control" name="title" id="tripName" maxlength="25">
                         <!-- placeholder="Enter trip name..." --> 
                     </div>
                 </div>

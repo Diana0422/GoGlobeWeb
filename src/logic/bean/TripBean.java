@@ -7,6 +7,7 @@ import logic.model.exceptions.TripNotCompletedException;
 
 public class TripBean {
 	
+	private int planningDay = 0;
 	private int id;
 	private boolean shared;
 	private String title;
@@ -32,9 +33,9 @@ public class TripBean {
 	}
 	
 	//Creates dayBean instances
-	public void createDays(int tripLength) {
+	public void createDays(){
 		days = new ArrayList<>();
-		for (int i = 0; i < tripLength; i++) {
+		for (int i = 0; i < this.tripLength; i++){
 			DayBean day = new DayBean();
 			this.days.add(day);
 		}
@@ -190,6 +191,14 @@ public class TripBean {
 
 	public void setTicketPrice(int ticketPrice) {
 		this.ticketPrice = ticketPrice;
+	}
+
+	public int getPlanningDay() {
+		return planningDay;
+	}
+
+	public void setPlanningDay(int planningDay) {
+		this.planningDay = planningDay;
 	}
 	
 	
