@@ -18,8 +18,6 @@ import logic.control.PlanTripController;
 import logic.model.exceptions.FormInputException;
 import logic.persistence.exceptions.DatabaseException;
 
-//TODO FARE IN MODO CHE LE VIEW PRENDANO IL VALORE DI ESTIMATEDCOST E INCLUDERE IL VALIDATE-COST NEL VALIDATE ACTIVITY
-
 public class ShareTripGraphic implements GraphicController {
 	
 	private static final String IC_ADDIMAGE = "icAddImage.png";
