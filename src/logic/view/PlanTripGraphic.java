@@ -17,7 +17,6 @@ import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import logic.bean.ActivityBean;
 import logic.bean.PlanTripBean;
-import logic.bean.TripBean;
 import logic.control.PlanTripController;
 import logic.model.Place;
 import logic.model.exceptions.FormInputException;
@@ -222,7 +221,7 @@ public class PlanTripGraphic implements GraphicController{
 			txtLocation.setText("Location: " + planTripBean.getDayLocation());
 			
 			//adds day's activities to the GUI
-			List<ActivityBean> activities = planTripBean.getTripDays().get(planTripBean.getPlanningDay()).getActivities();
+			List<ActivityBean> activities = planTripBean.getTripBean().getDays().get(planTripBean.getPlanningDay()).getActivities();
 			for (int i = 0; i < activities.size(); i++) {
 				loadActivity(activities.get(i));						
 			}
@@ -245,7 +244,7 @@ public class PlanTripGraphic implements GraphicController{
 			}
 		}
 		//setup side bar buttons	
-		for (int i = 0; i < planTripBean.getTripDays().size(); i++) {
+		for (int i = 0; i < planTripBean.getTripBean().getDays().size(); i++) {
 			Button btnDay = new Button("Day " + (i+1));
 			btnDay.setPrefHeight(50);
 			btnDay.setPrefWidth(210);

@@ -4,7 +4,6 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.List;
 import java.util.logging.Logger;
 import logic.model.exceptions.DateFormatException;
 import logic.model.exceptions.FormInputException;
@@ -65,6 +64,7 @@ public class PlanTripBean {
 	}
 
 	//Validates the whole trip 
+	//TODO - mettere in tripBean
 	public void validateTrip() throws TripNotCompletedException{	
 		tripBean.validateTrip();
 	}
@@ -175,30 +175,6 @@ public class PlanTripBean {
 	//Gets the location for the current planning day
 	public String getDayLocation() {
 		return this.tripBean.getDays().get(planningDay).getLocationCity();
-	}
-	
-	public List<DayBean> getTripDays() {
-		return this.tripBean.getDays();
-	}
-
-	public int getActivitiesNum() {
-		 return this.tripBean.getDays().get(planningDay).getActivities().size();
-	}
-	
-	public String getActivityTime(int activityNum) {
-		return this.getTripDays().get(planningDay).getActivities().get(activityNum).getTime();
-	}
-	
-	public String getActivityTitle(int activityNum) {
-		return this.getTripDays().get(planningDay).getActivities().get(activityNum).getTitle();
-	}
-	
-	public String getActivityDescription(int activityNum) {
-		return this.getTripDays().get(planningDay).getActivities().get(activityNum).getDescription();
-	}
-	
-	public String getActivityCost(int activityNum) {
-		return this.getTripDays().get(planningDay).getActivities().get(activityNum).getEstimatedCost();
 	}
 	
 	public String getLocation() {

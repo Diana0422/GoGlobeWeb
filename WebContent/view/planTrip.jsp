@@ -52,9 +52,9 @@
             	<button type="submit" name="share-trip-btn" class="btn btn-primary btn-lg btn-block">Share Trip</button>
             	
 <% 
-			if (planTripBean.getTripDays() != null){
+			if (planTripBean.getTripBean().getDays() != null){
 				int i = 0;
-				while(i < planTripBean.getTripDays().size()){
+				while(i < planTripBean.getTripBean().getDays().size()){
 %>				
 	                <button type="submit" class="btn btn-colors btn-lg btn-block" name="daybtn" value=<%= i%> >Day <%= i + 1 %></button>	               	    
 <%
@@ -197,18 +197,18 @@
                     <div>
                    	 <!-- ACTIVITIES -->
  <%
-						int activitiesNum = planTripBean.getActivitiesNum();
+						int activitiesNum = planTripBean.getTripBean().getDays().get(planTripBean.getPlanningDay()).getActivities().size();
 					 	for ( int j = 0; j < activitiesNum; j++){ 
 					 		System.out.println("Activity Found!\n");
 	            		
 %>		
 	            			  
 	            			<div class="activity form">		
-		            			<h2><%=planTripBean.getActivityTitle(j) %></h2>
-		            			<h3><%=planTripBean.getActivityTime(j) %></h3>
-		            			<h3><%=planTripBean.getActivityCost(j) + "€" %></h3>
+		            			<h2><%=planTripBean.getTripBean().getDays().get(planTripBean.getPlanningDay()).getActivities().get(j).getTitle() %></h2>
+		            			<h3><%=planTripBean.getTripBean().getDays().get(planTripBean.getPlanningDay()).getActivities().get(j).getTime() %></h3>
+		            			<h3><%=planTripBean.getTripBean().getDays().get(planTripBean.getPlanningDay()).getActivities().get(j).getEstimatedCost() + "€" %></h3>
 		            			<div class="description">
-		            				<p><%=planTripBean.getActivityDescription(j)%></p>
+		            				<p><%=planTripBean.getTripBean().getDays().get(planTripBean.getPlanningDay()).getActivities().get(j).getDescription() %></p>
 		            			</div>		            			
 	         				</div>                        
  <%
