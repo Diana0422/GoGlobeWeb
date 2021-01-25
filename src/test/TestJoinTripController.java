@@ -7,18 +7,18 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import org.junit.jupiter.api.Test;
-
 import logic.bean.SessionBean;
 import logic.bean.TripBean;
 import logic.control.JoinTripController;
 import logic.persistence.exceptions.DatabaseException;
 
-class TestJoinTripController {
+public class TestJoinTripController {
 	
 	/* Diana Pasquali Test Class */
 	private static final String TRIP_TITLE = "TestViaggio";
 	private static final String ORGANIZER_ID = "organizer@gmail.com";
 	private static final String NOT_ORGANIZER_ID = "notorganizer@gmail.com";
+	private static final String PARTICIPANT = "participant@gmail.com";
 
 	@Test
 	void testSearchTripsNoException() {
@@ -51,7 +51,7 @@ class TestJoinTripController {
 	void testJoinTripSuccessful() {
 		// If the user isn't the organizer and its age is in the accepted age range
 		String tripTitle = TRIP_TITLE;
-		String userEmail = NOT_ORGANIZER_ID;
+		String userEmail = PARTICIPANT;
 		TripBean trip = new TripBean();
 		trip.setTitle(tripTitle);
 		SessionBean session = new SessionBean();
