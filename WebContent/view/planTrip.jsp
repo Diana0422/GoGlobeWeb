@@ -165,6 +165,10 @@
 				//planTripBean.addActivity(activityBean);	
 				PlanTripController.getInstance().addActivity(planTripBean, activityBean);
 			}else{
+				activityBean.setDescription("");
+				activityBean.setTitle("");
+				activityBean.setEstimatedCost("");
+				activityBean.setTime("");
 %>
 				<p style="color: red">ERRORE</p>
 <% 

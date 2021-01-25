@@ -45,6 +45,7 @@ public class PlanTripController {
 	
 	
 	public void addActivity(PlanTripBean planTripBean, ActivityBean newActivityBean) {
+		
 		DayBean currentDayBean = planTripBean.getTripBean().getDays().get(planTripBean.getPlanningDay());
 		currentDayBean.addActivity(newActivityBean);		
 	}

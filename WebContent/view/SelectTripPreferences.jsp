@@ -58,8 +58,11 @@
 <% 
 			}
 		}catch(FormInputException e){
-			//TODO
-			e.printStackTrace();
+			tripBean.setTitle("");
+			tripBean.setDepartureDate("");
+			tripBean.setReturnDate("");
+			tripBean.setCategory1("");
+			tripBean.setCategory2("");
 		
 %>
 			<p style="color: red"><%=e.getMessage() %></p>

@@ -64,15 +64,14 @@ public class ShareTripGraphic implements GraphicController {
     	planTripBean.getTripBean().setMaxAge(tfMaximumAge.getText());
     	planTripBean.getTripBean().setDescription(taTripDescription.getText());
     	planTripBean.getTripBean().setMaxParticipants(tfMaxParticipants.getText());
-    	
-    	
+    		
     	try {
-			if (planTripBean.validateSharingPref()){ 
+				planTripBean.validateSharingPref();
 				
 				PlanTripController.getInstance().saveTrip(planTripBean.getTripBean(), DesktopSessionContext.getInstance().getSession()); 
 				
 				DesktopSessionContext.getGuiLoader().loadGUI(null, DesktopSessionContext.getInstance().getSession(), GUIType.HOME);
-			}
+			
 		} catch (FormInputException e) {
 	    	planTripBean.getTripBean().setShared(false);
 			planTripBean.getTripBean().setMinAge("");

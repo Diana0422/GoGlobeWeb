@@ -22,7 +22,7 @@ public class PlanTripBean {
 	}   
 	
 	//Validates all the fields in the share trip view
-	public boolean validateSharingPref() throws FormInputException {
+	public void validateSharingPref() throws FormInputException {
 		if (tripBean.getDescription() == null || tripBean.getDescription().equals("")) {
 			throw new FormInputException("Error on trip description.");
 		}
@@ -52,7 +52,7 @@ public class PlanTripBean {
 			
 		String logStr = "SHARE FORM INFO: "+"trip description: " + tripBean.getDescription()+" min age: " + tripBean.getMinAge()+" max age: " + tripBean.getMaxAge();
 		Logger.getGlobal().info(logStr);
-		return true;
+		
 	}
 		
 	//Validates location string in the Plan trip view

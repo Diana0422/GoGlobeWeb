@@ -104,14 +104,17 @@ public class PlanTripGraphic implements GraphicController{
 				lblErrorMsg.setText("");
 			}
 		} catch (FormInputException e) {
+			//reset activity form's text fields
+	    	
 			lblErrorMsg.setText(e.getMessage());
 		}	
- 
-    	//reset activity form's text fields
+    	
     	tfActivityTitle.setText("");
     	tfActivityTime.setText("");
     	taActivityDescription.setText("");
     	tfActivityCost.setText("");
+ 
+    
     }
 
     @FXML

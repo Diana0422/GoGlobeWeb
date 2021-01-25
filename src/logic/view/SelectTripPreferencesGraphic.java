@@ -68,6 +68,11 @@ public class SelectTripPreferencesGraphic implements GraphicController {
 	    		DesktopSessionContext.getGuiLoader().loadGUI(null, planTripBean, GUIType.PLAN);
 	    	} 
     	}catch (FormInputException e){
+    		tripBean.setTitle("");
+			tripBean.setDepartureDate("");
+			tripBean.setReturnDate("");
+			tripBean.setCategory1("");
+			tripBean.setCategory2("");
     		lblErrorMsg.setText(e.getMessage());
     	}
     }

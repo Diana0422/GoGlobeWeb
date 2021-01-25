@@ -43,7 +43,13 @@
 				<jsp:forward page="home.jsp"/>
 	<% 
 			}else{
+				planTripBean.getTripBean().setMaxParticipants("");
+				planTripBean.getTripBean().setMaxAge("");
+				planTripBean.getTripBean().setMinAge("");
+				planTripBean.getTripBean().setDescription("");
+
 	%>
+	
 				<p style="color: red"><jsp:getProperty name="planTripBean" property="errorMsg"/></p>
 	<%
 			}
