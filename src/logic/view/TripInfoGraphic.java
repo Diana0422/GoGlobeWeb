@@ -82,6 +82,8 @@ public class TripInfoGraphic implements GraphicController {
     @FXML
     private Button btnBack;
     
+    JoinTripController controller;
+    
     public static final String WIDGET_ERROR = "Widget loading error.";
 
     @FXML
@@ -191,7 +193,7 @@ public class TripInfoGraphic implements GraphicController {
 	void joinTrip(MouseEvent event) {
 		if (DesktopSessionContext.getInstance().getSession() != null) {
 			try {
-				if (JoinTripController.getInstance().joinTrip(getTripBean(), DesktopSessionContext.getInstance().getSession())) {
+				if (controller.sendRequest(getTripBean().getTitle(), DesktopSessionContext.getInstance().getSession().getSessionEmail())) {
 					AlertGraphic alert = new AlertGraphic();
 					alert.display(GUIType.INFO, GUIType.REQUESTS, null, getTripBean(), "Request sent to organizer.", "Choose an option.");
 				} else {
@@ -244,6 +246,7 @@ public class TripInfoGraphic implements GraphicController {
 	@Override
 	public void initializeData(Object recBundle, Object forBundle) {
 		TripBean bean = (TripBean) recBundle;
+		this.controller = new JoinTripController();
 		setTripBean(bean);
 		initializeParticipants(getTripBean());
 		displayOrganizer(getTripBean());

@@ -59,6 +59,8 @@ public class JoinTripGraphic implements Initializable {
 	
 	StrategyContext filterContext;
 	
+	JoinTripController controller;
+	
 	private SessionBean session;
 	
 	public SessionBean getSession() { 
@@ -74,8 +76,12 @@ public class JoinTripGraphic implements Initializable {
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
 		filterContext = new StrategyContext();
+		controller = new JoinTripController();
 		try {
-			this.tripBeans = JoinTripController.getInstance().searchTrips(txtSearch.getText());
+			this.tripBeans = controller.getSuggestedTrips(DesktopSessionContext.getInstance().getSession().getSessionEmail());
+			System.out.println(this.tripBeans);
+			CardGraphic cc = new CardGraphic();
+			cc.loadCardGrid(cardsLayout, this.tripBeans);
 		} catch (DatabaseException e) {
 			AlertGraphic alert = new AlertGraphic();
 			alert.display(GUIType.JOIN, GUIType.HOME, null, DesktopSessionContext.getInstance().getSession(), e.getMessage(), e.getCause().toString());
@@ -85,7 +91,7 @@ public class JoinTripGraphic implements Initializable {
 	@FXML
 	public void search(MouseEvent event) {
 		try {
-			this.tripBeans = JoinTripController.getInstance().searchTrips(txtSearch.getText());
+			this.tripBeans = controller.searchTrips(txtSearch.getText());
 		} catch (DatabaseException e) {
 			AlertGraphic alert = new AlertGraphic();
 			alert.display(GUIType.JOIN, GUIType.HOME, null, DesktopSessionContext.getInstance().getSession(), e.getMessage(), e.getCause().toString());

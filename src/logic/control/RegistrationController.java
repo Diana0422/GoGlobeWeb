@@ -8,6 +8,7 @@ import logic.persistence.dao.UserDaoDB;
 import logic.persistence.exceptions.DBConnectionException;
 import logic.persistence.exceptions.DatabaseException;
 import logic.model.User;
+import logic.model.utils.Cookie;
 
 public class RegistrationController {
 	
@@ -29,6 +30,7 @@ public class RegistrationController {
 		user = new User(name, surname, birth, email, password);
 		try {
 			if (UserDaoDB.getInstance().save(user)) {
+				Cookie.getInstance().addToLoggedUsers(user);
 				SessionBean session = new SessionBean(); 
 				session.setSessionEmail(email);
 				session.setSessionName(name);

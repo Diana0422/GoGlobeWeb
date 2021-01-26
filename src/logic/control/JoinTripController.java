@@ -2,9 +2,8 @@ package logic.control;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.logging.Logger;
-
-import logic.bean.SessionBean;
 import logic.bean.TripBean;
 import logic.persistence.dao.RequestDao;
 import logic.persistence.dao.TripDao;
@@ -13,28 +12,22 @@ import logic.persistence.exceptions.DBConnectionException;
 import logic.persistence.exceptions.DatabaseException;
 import logic.model.Request;
 import logic.model.Trip;
+import logic.model.TripCategory;
 import logic.model.User;
+import logic.model.utils.Cookie;
+import logic.model.utils.converters.BeanConverter;
+import logic.model.utils.converters.TripBeanConverter;
  
 public class JoinTripController {
 	
-	private static JoinTripController instance = null;
 	
-	private JoinTripController() {}
-	
-	public static JoinTripController getInstance() {
-		if (instance == null) {
-			instance = new JoinTripController();
-		}
-		
-		
-		return instance;
-	}
 
 	public List<TripBean> searchTrips(String value) throws DatabaseException {
 		String logStr = "Search trips by value started.\n";
 		Logger.getGlobal().info(logStr);
 		List<Trip> trips;
 		List<Trip> filteredTrips = new ArrayList<>();
+		if (value == null) return new ArrayList<>();
 		try {
 			trips = TripDao.getInstance().getSharedTrips();
 			for (Trip trip: trips) {
@@ -49,32 +42,85 @@ public class JoinTripController {
 
 	}
 	
-	public boolean joinTrip(TripBean tripBean, SessionBean session) throws DatabaseException {
+	public List<TripBean> getSuggestedTrips(String userEmail) throws DatabaseException {
+		// Fetch user from cookie
+		TripCategory favourite = null;
+		Integer topValue = 0;
+		User logged = Cookie.getInstance().getLoggedUser(userEmail);
+		
+		// Get user favorite category
+		Map<TripCategory, Integer> attitude = logged.getAttitude();
+		for (Map.Entry<TripCategory, Integer> entry: attitude.entrySet()) {
+			if (topValue <= entry.getValue()) {
+				topValue = entry.getValue();
+				favourite = entry.getKey();
+			}
+		}
+		
+		System.out.println(favourite);
+		BeanConverter<Trip,TripBean> converter = new TripBeanConverter();
+		try {
+			return converter.convertToListBean(TripDao.getInstance().getTripsForCategory(favourite));
+		} catch (SQLException | DBConnectionException e) {
+			throw new DatabaseException(e.getMessage(), e.getCause());
+		}
+	}
+	
+	private boolean checkIfUserIsCompliant(String userEmail, String tripTitle) throws DatabaseException {
+		Trip trip;
+		boolean check = true;
+		try {
+			trip = TripDao.getInstance().getTripByTitle(tripTitle);
+			User appliant = Cookie.getInstance().getLoggedUser(userEmail);
+			int userAge = appliant.calculateUserAge();
+			
+			// Fetch trip organizer from database
+			trip.setOrganizer(UserDaoDB.getInstance().getTripOrganizer(tripTitle));
+			if (trip.getOrganizer().getEmail().equals(appliant.getEmail())) check = false;
+			if (userAge<trip.getMinAge() || userAge>trip.getMaxAge()) check = false;
+			return check;
+		} catch (DBConnectionException | SQLException e) {
+			throw new DatabaseException(e.getMessage(), e.getCause());
+		}
+	}
+	
+	
+	public boolean sendRequest(String tripTitle, String appliantEmail) throws DatabaseException {
+		if (checkIfUserIsCompliant(appliantEmail, tripTitle)) {
+			// Instantiate a new request
+			Request request = new Request();
+			try {
+				request.setTarget(TripDao.getInstance().getTripByTitle(tripTitle));
+				request.setAccepted(false);
+				User senderUser = Cookie.getInstance().getLoggedUser(appliantEmail);
+				User receiverUser;
+				if (Cookie.getInstance().getLoggedUser(request.getTarget().getOrganizer().getEmail()) == null) {
+					receiverUser = request.getTarget().getOrganizer();
+				} else {
+					receiverUser = Cookie.getInstance().getLoggedUser(request.getTarget().getOrganizer().getEmail());
+				}
+				senderUser.addToSentRequests(request);
+				receiverUser.addToIncRequests(request);
+				
+				// Save the request in persistence
+				if (RequestDao.getInstance().getRequest(request.getTarget().getTitle(), appliantEmail)== null) return RequestDao.getInstance().save(request, appliantEmail);
+			} catch (DBConnectionException | SQLException e) {
+				throw new DatabaseException(e.getMessage(), e.getCause());
+			}
+		}
+		return true;
+	}
+	
+	public boolean joinTrip(String tripTitle, String userEmail) throws DatabaseException {
 		
 		// Pick the trip corresponding to the tripBean from persistence
 		Trip trip;
 		User appliant;
 		try {
-			trip = TripDao.getInstance().getTripByTitle(tripBean.getTitle());
-			appliant = UserDaoDB.getInstance().get(session.getSessionEmail());
-			int userAge = appliant.calculateUserAge();
-			
-			// Fetch the trip organizer from database
-			trip.setOrganizer(UserDaoDB.getInstance().getTripOrganizer(tripBean.getTitle()));
-			
-			// only if the user is not the organizer && is in trips age range
-			if (!trip.getOrganizer().getEmail().equals(session.getSessionEmail()) && (userAge>=trip.getMinAge() && userAge<= trip.getMaxAge())) { 
-				// Instantiate a new request
-				Request request = new Request();
-				request.setSender(UserDaoDB.getInstance().get(session.getSessionEmail()));
-				request.setReceiver(trip.getOrganizer());
-				request.setTarget(trip);
-				
-				// Save the request in persistence
-				if (RequestDao.getInstance().getRequest(request.getTarget().getTitle(), request.getSender().getEmail())== null) return RequestDao.getInstance().save(request);
-			} 
-			
-			return false;
+			trip = TripDao.getInstance().getTripByTitle(tripTitle);
+			appliant = Cookie.getInstance().getLoggedUser(userEmail);
+			trip.addParticipant(appliant);
+			return TripDao.getInstance().saveParticipant(userEmail, tripTitle);
 		} catch (DBConnectionException | SQLException e) {
 			throw new DatabaseException(e.getMessage(), e.getCause());
 		}

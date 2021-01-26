@@ -1,17 +1,10 @@
 package logic.model;
 
-import java.io.Serializable;
-
-public class Request implements Serializable {
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
+public class Request {
 	private int id;
-	private User sender;
-	private User receiver;
 	private Trip target;
 	private Boolean accepted;
+	private User sender;
 	
 	public Boolean getAccepted() {
 		return accepted;
@@ -29,27 +22,19 @@ public class Request implements Serializable {
 		this.id = id;
 	}
 
-	public User getSender() {
-		return sender;
-	}
-
-	public void setSender(User sender) {
-		this.sender = sender;
-	}
-
-	public User getReceiver() {
-		return receiver;
-	}
-
-	public void setReceiver(User receiver) {
-		this.receiver = receiver;
-	}
-
 	public Trip getTarget() {
 		return target;
 	}
 
 	public void setTarget(Trip target) {
 		this.target = target;
+	}
+
+	public User getSender() {
+		return sender;
+	}
+
+	public void setSender(User sender) {
+		this.sender = sender;
 	}
 }

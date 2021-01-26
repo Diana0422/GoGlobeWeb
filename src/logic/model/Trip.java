@@ -1,6 +1,5 @@
 package logic.model;
 
-import java.io.Serializable;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -8,20 +7,17 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-public class Trip implements Serializable {
+public class Trip {
 	
-	private static final long serialVersionUID = 1L;
-
-	private int id;
 	private String title;
 	private int price;
 	private int ticketPrice;
 	private TripCategory category1;
 	private TripCategory category2;
-	private String imgSrc;
 	private Date departureDate;
 	private Date returnDate;	
-	private List<Day> days;	
+	private List<Day> days;
+	private User organizer;
 	
 	/* SHARED TRIP ELEMENTS */
 	private boolean shared;
@@ -29,7 +25,6 @@ public class Trip implements Serializable {
 	private int minAge;
 	private int maxAge;
 	private int maxParticipants;
-	private User organizer;
 	private List<User> participants;
 	//Meglio lasciare solo id  e List<Days> e incapsulare gli altri attributi in una 
 	//classe associata trip info
@@ -40,8 +35,7 @@ public class Trip implements Serializable {
 		this.participants = new ArrayList<>();
 	}
 	
-	public Trip(int id, String title, int price, String cat1, String cat2, String departureDate, String returnDate) {
-		this.id = id;
+	public Trip(String title, int price, String cat1, String cat2, String departureDate, String returnDate) {
 		this.title = title;
 		this.price = price;
 		this.category1 = TripCategory.valueOf(cat1);
@@ -61,6 +55,7 @@ public class Trip implements Serializable {
 	
 	public void addParticipant(User participant) {
 		if (!getParticipants().contains(participant)) getParticipants().add(participant);
+		participant.recalculateAttitude(this.category1, this.category2);
 	}
 	
 	public void setDays(List<Day> days) {
@@ -100,14 +95,6 @@ public class Trip implements Serializable {
 	public void setCategory2(TripCategory category2) {
 		this.category2 = category2;
 	}
-
-	public int getId() {
-		return id;
-	}
-
-	public void setId(int id) {
-		this.id = id;
-	}
 	
 	public List<Day> getDays() {
 		return days;
@@ -135,14 +122,6 @@ public class Trip implements Serializable {
 
 	public void setReturnDate(Date returnDate) {
 		this.returnDate = returnDate;
-	}
-
-	public String getImgSrc() {
-		return imgSrc;
-	}
-
-	public void setImgSrc(String imgSrc) {
-		this.imgSrc = imgSrc;
 	}
 
 	public boolean isShared() {

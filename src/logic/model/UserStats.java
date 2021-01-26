@@ -11,10 +11,12 @@ public class UserStats implements Subject{
 
 	private double organizerRating;
 	private double travelerRating;
+	private int points;
 
 	public UserStats() {
 		this.organizerRating = 0;
 		this.travelerRating = 0;
+		this.points = 0;
 	}
 	
 	@Override
@@ -55,5 +57,13 @@ public class UserStats implements Subject{
 	public void setTravelerRating(double travelerRating) {
 		this.travelerRating = travelerRating;
 		this.notifyState();
+	}
+
+	public int getPoints() {
+		return points;
+	}
+
+	public void setPoints(int points) {
+		this.points = points;
 	}
 }

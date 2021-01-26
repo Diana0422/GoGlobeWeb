@@ -31,7 +31,6 @@ public class FileSystemManager {
 			case REQUEST:
 				return new File(projectPath + "/requests.out");
 			case REVIEW:
-			case PRIZE:
 			default:
 				break;
 		}

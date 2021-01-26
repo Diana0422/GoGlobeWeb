@@ -69,7 +69,7 @@
 				}
 			} catch (DatabaseException e) {
 				request.setAttribute("errType", e.getMessage());
-				request.setAttribute("errLog", e.getCause().toString());
+				if (e.getCause()!= null) request.setAttribute("errLog", e.getCause().toString());
 				%>
 				<jsp:forward page="error.jsp"/>
 				<%

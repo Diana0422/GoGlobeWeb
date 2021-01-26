@@ -70,8 +70,8 @@ public class GainPointsController {
 				User user;
 				user = UserDaoDB.getInstance().get(session.getSessionEmail());
 				user.addPoints(100);
-				session.setSessionPoints(user.getPoints());
-				UserStatsDao.getInstance().updateStats(session.getSessionEmail(), user.getPoints(), user.getStats().getOrganizerRating(), user.getStats().getTravelerRating());
+				session.setSessionPoints(user.getStats().getPoints());
+				UserStatsDao.getInstance().updateStats(session.getSessionEmail(), user.getStats().getPoints(), user.getStats().getOrganizerRating(), user.getStats().getTravelerRating());
 				return true;
 			} else {
 				return false;

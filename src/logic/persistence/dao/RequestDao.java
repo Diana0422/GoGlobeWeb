@@ -5,15 +5,10 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import logic.model.Request;
-import logic.model.Trip;
-import logic.model.User;
 import logic.model.factories.RequestFactory;
-import logic.model.factories.TripFactory;
-import logic.model.factories.UserFactory;
 import logic.persistence.ConnectionManager;
 import logic.persistence.exceptions.DBConnectionException;
 
@@ -24,14 +19,8 @@ public class RequestDao {
 	private static final String GET_SENT = "call fetch_sent_requests(?)";
 	private static final String STORE_REQUEST = "call register_request(?, ?)";
 	private static final String DELETE_REQUEST = "call delete_request(?, ?)";
-	private static final String ID_COLUMN = "id";
 	private static final String STATE_COLUMN ="state";
 	private static final String TRIP_COLUMN = "trip_target";
-	private static final String SEND_EMAIL_COLUMN = "user_email";
-	private static final String USER_NAME_COLUMN = "name";
-	private static final String USER_SURNAME_COLUMN = "surname";
-	private static final String USER_BIRTH_COLUMN = "birthday";
-	private static final String ORGANIZATOR_COLUMN = "organizator";
 	
 	private static RequestDao instance = null;
 	
@@ -60,11 +49,11 @@ public class RequestDao {
 			if (rs != null) {
 				if (!rs.next()) return r;
 				rs.first();
-				int id = rs.getInt(ID_COLUMN);
 				boolean state = rs.getBoolean(STATE_COLUMN);
 				r = new Request();
 				r.setAccepted(state);
-				r.setId(id);
+				r.setTarget(TripDao.getInstance().getTripByTitle(tripTitle));
+				r.setSender(UserDaoDB.getInstance().get(senderEmail));
 			}
 			return r;
 		} catch (SQLException e) {
@@ -87,21 +76,10 @@ public class RequestDao {
 				do {
 					boolean state = rs.getBoolean(STATE_COLUMN);
 					String tripTitle = rs.getString(TRIP_COLUMN);
-					String sender = rs.getString(SEND_EMAIL_COLUMN);
-					String senderName = rs.getString(USER_NAME_COLUMN);
-					String senderSurname = rs.getString(USER_SURNAME_COLUMN);
-					Date birth = rs.getDate(USER_BIRTH_COLUMN);
-					
+					String senderEmail = rs.getString("user_email");
 					Request r = RequestFactory.getInstance().createModel();
-					User u = UserFactory.getInstance().createModel();
-					Trip t = TripFactory.getInstance().createModel();
-					t.setTitle(tripTitle);
-					u.setName(senderName);
-					u.setSurname(senderSurname);
-					u.setEmail(sender);
-					u.setBirthday(birth);
-					r.setSender(u);
-					r.setTarget(t);
+					r.setSender(UserDaoDB.getInstance().get(senderEmail));
+					r.setTarget(TripDao.getInstance().getTripByTitle(tripTitle));
 					r.setAccepted(state);
 					list.add(r);
 				} while (rs.next());
@@ -130,21 +108,9 @@ public class RequestDao {
 				do {
 					boolean state = rs.getBoolean(STATE_COLUMN);
 					String tripTitle = rs.getString(TRIP_COLUMN);
-					String receiver = rs.getString(ORGANIZATOR_COLUMN);
-					String receiverName = rs.getString(USER_NAME_COLUMN);
-					String receiverSurname = rs.getString(USER_SURNAME_COLUMN);
-					Date birth = rs.getDate(USER_BIRTH_COLUMN);
-					
 					Request r = RequestFactory.getInstance().createModel();
-					User u = UserFactory.getInstance().createModel();
-					Trip t = TripFactory.getInstance().createModel();
-					t.setTitle(tripTitle);
-					u.setName(receiverName);
-					u.setSurname(receiverSurname);
-					u.setEmail(receiver);
-					u.setBirthday(birth);
-					r.setReceiver(u);
-					r.setTarget(t);
+					r.setSender(UserDaoDB.getInstance().get(sendEmail));
+					r.setTarget(TripDao.getInstance().getTripByTitle(tripTitle));
 					r.setAccepted(state);
 					list.add(r);
 				} while (rs.next());
@@ -156,10 +122,10 @@ public class RequestDao {
 	}
 
 
-	public boolean save(Request t) throws DBConnectionException, SQLException {
+	public boolean save(Request t, String senderEmail) throws DBConnectionException, SQLException {
 		try (Connection conn = ConnectionManager.getInstance().getConnection();
 			CallableStatement stmt = conn.prepareCall(STORE_REQUEST)) {	
-			stmt.setString(1, t.getSender().getEmail());
+			stmt.setString(1, senderEmail);
 			stmt.setString(2, t.getTarget().getTitle());
 			stmt.execute();
 			return true;
@@ -168,11 +134,11 @@ public class RequestDao {
 		}
 	}
 
-	public boolean delete(Request t) throws DBConnectionException, SQLException {
+	public boolean delete(Request t, String senderEmail) throws DBConnectionException, SQLException {
 		try (Connection conn = ConnectionManager.getInstance().getConnection();
 				CallableStatement stmt = conn.prepareCall(DELETE_REQUEST)) {
 			stmt.setString(1, t.getTarget().getTitle());
-			stmt.setString(2, t.getSender().getEmail());
+			stmt.setString(2, senderEmail);
 			stmt.execute();
 			return true;
 		} catch (SQLException e) {

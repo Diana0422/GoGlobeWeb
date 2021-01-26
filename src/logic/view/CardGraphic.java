@@ -114,32 +114,34 @@ public class CardGraphic implements Initializable {
 		int column = 0;
 		int row = 1;
 		
-		for (int i=0; i<trips.size(); i++) {
-			AnchorPane anchor;
-			try {
-				if (column == 3) {
-					row++;
-					column = 0;
+		if (trips != null) {
+			for (int i=0; i<trips.size(); i++) {
+				AnchorPane anchor;
+				try {
+					if (column == 3) {
+						row++;
+						column = 0;
+					}
+						
+					anchor = (AnchorPane) this.initializeNode(trips.get(i));
+					cardGrid.add(anchor, column++, row);
+					GridPane.setMargin(anchor, new Insets(20));
+				} catch (LoadGraphicException e) {
+					AlertGraphic graphic = new AlertGraphic();
+					graphic.display(GUIType.PROFILE, GUIType.HOME, null, DesktopSessionContext.getInstance().getSession(), WIDGET_ERROR, "Something unexpected occurred loading the trip cards.");
 				}
-					
-				anchor = (AnchorPane) this.initializeNode(trips.get(i));
-				cardGrid.add(anchor, column++, row);
-				GridPane.setMargin(anchor, new Insets(20));
-			} catch (LoadGraphicException e) {
-				AlertGraphic graphic = new AlertGraphic();
-				graphic.display(GUIType.PROFILE, GUIType.HOME, null, DesktopSessionContext.getInstance().getSession(), WIDGET_ERROR, "Something unexpected occurred loading the trip cards.");
-			}
-					
-			// Set grid height
-			cardGrid.setMaxHeight(Region.USE_PREF_SIZE);
-			cardGrid.setPrefHeight(Region.USE_COMPUTED_SIZE);
-			cardGrid.setMinHeight(Region.USE_COMPUTED_SIZE);
-					
-			// Set grid width
-			cardGrid.setMaxWidth(Region.USE_PREF_SIZE);
-			cardGrid.setPrefWidth(Region.USE_COMPUTED_SIZE);
-			cardGrid.setMinWidth(Region.USE_COMPUTED_SIZE);
-		}				
+						
+				// Set grid height
+				cardGrid.setMaxHeight(Region.USE_PREF_SIZE);
+				cardGrid.setPrefHeight(Region.USE_COMPUTED_SIZE);
+				cardGrid.setMinHeight(Region.USE_COMPUTED_SIZE);
+						
+				// Set grid width
+				cardGrid.setMaxWidth(Region.USE_PREF_SIZE);
+				cardGrid.setPrefWidth(Region.USE_COMPUTED_SIZE);
+				cardGrid.setMinWidth(Region.USE_COMPUTED_SIZE);
+			}	
+		}
 	}
 
 }

@@ -143,13 +143,11 @@ public class ConversionController {
 				bean.setDays(convertDayList(DayDao.getInstance().getTripDays(t.getTitle()), t.getTitle()));
 				bean.setParticipants(convertUserList(UserDaoDB.getInstance().getTripParticipants(t.getTitle())));
 				bean.setDescription(t.getDescription());
-				bean.setId(t.getId());
 				bean.setTitle(t.getTitle());
 				bean.setPrice(t.getPrice());
 				bean.setTicketPrice(t.getTicketPrice());
 				bean.setCategory1(t.getCategory1().toString());
 				bean.setCategory2(t.getCategory2().toString());
-				bean.setImgSrc(t.getImgSrc());
 				bean.setShared(t.isShared());
 				bean.setMinAge(Integer.toString(t.getMinAge()));
 				bean.setMaxAge(Integer.toString(t.getMaxAge()));
@@ -181,24 +179,15 @@ public class ConversionController {
 		return beans;
 	}
 
-	public List<RequestBean> convertRequestList(List<Request> requests) {
+	public List<RequestBean> convertRequestList(List<Request> requests, String senderEmail) {
 		List<RequestBean> requestBeans = new ArrayList<>();
 		
 		for (Request req: requests) {
 			RequestBean bean = new RequestBean();
 			bean.setTripTitle(req.getTarget().getTitle());
-			if (req.getSender() != null) {
-				bean.setSenderName(req.getSender().getName());
-				bean.setSenderSurname(req.getSender().getSurname());
-				bean.setSenderEmail(req.getSender().getEmail());
-				bean.setSenderAge(req.getSender().calculateUserAge());	
-			}
-			
-			if (req.getReceiver() != null) {
-				bean.setReceiverEmail(req.getReceiver().getEmail());
-				bean.setReceiverName(req.getReceiver().getName());
-				bean.setReceiverSurname(req.getReceiver().getSurname());
-			}
+			bean.setReceiverEmail(req.getTarget().getOrganizer().getEmail());
+			bean.setReceiverName(req.getTarget().getOrganizer().getName());
+			bean.setReceiverSurname(req.getTarget().getOrganizer().getSurname());
 			requestBeans.add(bean);
 		}
 		return requestBeans;
@@ -238,7 +227,7 @@ public class ConversionController {
 			bean.setName(user.getName());
 			bean.setSurname(user.getSurname());
 			bean.setBio(user.getBio());
-			bean.setPoints(user.getPoints());
+			bean.setPoints(user.getStats().getPoints());
 			bean.setAge(user.calculateUserAge());
 			bean.setReviews(convertReviewList(ReviewDao.getInstance().getUserReviews(user.getEmail())));
 			

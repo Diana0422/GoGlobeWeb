@@ -13,7 +13,6 @@ import logic.model.User;
 import logic.model.factories.UserFactory;
 import logic.persistence.ConnectionManager;
 import logic.persistence.exceptions.DBConnectionException;
-import logic.persistence.exceptions.DatabaseException;
 
 public class ReviewDao {
 	
@@ -32,7 +31,7 @@ public class ReviewDao {
 	}
 	
 	
-	public List<Review> getUserReviews(String userEmail) throws DBConnectionException, DatabaseException {
+	public List<Review> getUserReviews(String userEmail) throws DBConnectionException, SQLException {
 		ResultSet rs = null;
 		List<Review> list = new ArrayList<>();
 		Review r = null;
@@ -75,7 +74,7 @@ public class ReviewDao {
 			}
 			return list;
 		} catch (SQLException e) {
-			throw new DatabaseException("Cannot get reviews from database for user:"+userEmail, new Throwable(e.getMessage()));
+			throw new SQLException("Cannot get reviews from database for user:"+userEmail, new Throwable(e.getMessage()));
 		}
 			
 	}

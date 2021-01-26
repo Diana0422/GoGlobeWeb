@@ -19,6 +19,7 @@ public class TripDao {
 	public static final String GET_TRIP = "call fetch_trip(?)";
 	public static final String GET_TRIPS = "call fetch_trips()";
 	public static final String GET_SHARED_TRIPS = "call fetch_shared_trips()";
+	public static final String GET_FOR_CATEGORY = "call fetch_trips_category(?)";
 	public static final String STORE_PARTICIPANT = "call register_trip_participation(?, ?)";
 	public static final String TITLE_COLUMN = "title";
 	public static final String PRICE_COLUMN = "price";
@@ -26,6 +27,11 @@ public class TripDao {
 	public static final String RETURN_COLUMN = "return_date";
 	public static final String CATEGORY1_COLUMN = "category1";
 	public static final String CATEGORY2_COLUMN = "category2";
+	public static final String ORG_COLUMN = "organizator";
+	public static final String MAX_AGE_COLUMN = "max_age";
+	public static final String MIN_AGE_COLUMN = "min_age";
+	public static final String MAX_PART_COLUMN = "max_participants";
+	public static final String DESC_COLUMN = "description";
 	
 	
 	private static TripDao instance = null;
@@ -75,11 +81,11 @@ public class TripDao {
 				Date ret = rs.getDate(RETURN_COLUMN);
 				TripCategory cat1 = TripCategory.valueOf(rs.getString(CATEGORY1_COLUMN));
 				TripCategory cat2 = TripCategory.valueOf(rs.getString(CATEGORY2_COLUMN));
-				String organizer = rs.getString("organizator");
-				String tripDesc = rs.getString("description");
-				int minAge = rs.getInt("min_age");
-				int maxAge = rs.getInt("max_age");
-				int maxPart = rs.getInt("max_participants");
+				String organizer = rs.getString(ORG_COLUMN);
+				String tripDesc = rs.getString(DESC_COLUMN);
+				int minAge = rs.getInt(MIN_AGE_COLUMN);
+				int maxAge = rs.getInt(MAX_AGE_COLUMN);
+				int maxPart = rs.getInt(MAX_PART_COLUMN);
 				trip.setTitle(tripTitle);
 				trip.setPrice(price);
 				trip.setCategory1(cat1);
@@ -164,10 +170,10 @@ public class TripDao {
 					TripCategory cat1 = TripCategory.valueOf(rs.getString(CATEGORY1_COLUMN));
 					TripCategory cat2 = TripCategory.valueOf(rs.getString(CATEGORY2_COLUMN));
 					int price = rs.getInt(PRICE_COLUMN);
-					String desc = rs.getString("description");
-					int minAge = rs.getInt("min_age");
-					int maxAge = rs.getInt("max_age");
-					int maxParticipants = rs.getInt("max_participants");
+					String desc = rs.getString(DESC_COLUMN);
+					int minAge = rs.getInt(MIN_AGE_COLUMN);
+					int maxAge = rs.getInt(MAX_AGE_COLUMN);
+					int maxParticipants = rs.getInt(MAX_PART_COLUMN);
 					
 					// Instantiate new trip
 					Trip t = new Trip();
@@ -204,6 +210,56 @@ public class TripDao {
 			return true;
 		} catch (SQLException e) {
 			throw new SQLException("Cannot save participant for the trip:"+tripTitle+" on database.", e);
+		}
+	}
+
+	public List<Trip> getTripsForCategory(TripCategory favourite) throws SQLException, DBConnectionException {
+		ResultSet rs = null;
+		List<Trip> trips = new ArrayList<>();
+		try (Connection conn = ConnectionManager.getInstance().getConnection();
+				CallableStatement stmt = conn.prepareCall(GET_FOR_CATEGORY, ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY)) {
+			stmt.setString(1, favourite.toString());
+			if (stmt.execute()) {
+				rs = stmt.getResultSet();
+			}
+			
+			
+			if (rs != null) {
+				if (!rs.first()) return trips;
+				do {
+					// reading columns
+					String title = rs.getString(TITLE_COLUMN);
+					Date departure = rs.getDate(DEPARTURE_COLUMN);
+					Date returnDate = rs.getDate(RETURN_COLUMN);
+					TripCategory cat1 = TripCategory.valueOf(rs.getString(CATEGORY1_COLUMN));
+					TripCategory cat2 = TripCategory.valueOf(rs.getString(CATEGORY2_COLUMN));
+					int price = rs.getInt(PRICE_COLUMN);
+					String desc = rs.getString(DESC_COLUMN);
+					int minAge = rs.getInt(MIN_AGE_COLUMN);
+					int maxAge = rs.getInt(MAX_AGE_COLUMN);
+					int maxParticipants = rs.getInt(MAX_PART_COLUMN);
+					
+					// Instantiate new trip
+					Trip t = new Trip();
+					
+					t.setTitle(title);
+					t.setCategory1(cat1);
+					t.setCategory2(cat2);
+					t.setDepartureDate(departure);
+					t.setReturnDate(returnDate);
+					t.setPrice(price);
+					t.setMaxParticipants(maxParticipants);
+					t.setMaxAge(maxAge);
+					t.setMinAge(minAge);
+					t.setDescription(desc);
+					t.setShared(true);
+					
+					trips.add(t);
+				} while (rs.next());
+			}
+			return trips;
+		} catch (SQLException e) {
+			throw new SQLException("Cannot get trips for category: "+favourite+" from database.", e);
 		}
 	}
 	

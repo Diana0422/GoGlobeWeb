@@ -19,13 +19,13 @@ public class UserDaoDB {
 	private static final String DELETE_USER = "call delete_user(?)";
 	private static final String GET_ORGANIZER = "call fetch_trip_organizer(?)";
 	private static final String GET_PARTICIPANTS = "call fetch_trip_participants(?)";
+	private static final String GET_REQUEST_RECEIVER = "call fetch_request_receiver(?, ?)";
 	private static final String EMAIL_COLUMN = "email";
 	private static final String NAME_COLUMN = "name";
 	private static final String SURNAME_COLUMN = "surname";
 	private static final String PASS_COLUMN = "password";
 	private static final String BIRTH_COLUMN = "birthday";
 	private static final String BIO_COLUMN = "bio";
-	private static final String POINTS_COLUMN = "points";
 	
 	private static UserDaoDB instance = null;
 	
@@ -52,14 +52,13 @@ public class UserDaoDB {
 			}
 			
 			if (rs != null) {
-				rs.first();
+				if (!rs.first()) return null;
 				String email = rs.getString(EMAIL_COLUMN);
 				String name = rs.getString(NAME_COLUMN);
 				String surname = rs.getString(SURNAME_COLUMN);
 				String password = rs.getNString(PASS_COLUMN);
 				Date date = rs.getDate(BIRTH_COLUMN);
 				String bio = rs.getString(BIO_COLUMN);
-				int points = rs.getInt(POINTS_COLUMN);
 			
 				u = new User();				
 					
@@ -69,11 +68,12 @@ public class UserDaoDB {
 				u.setPassword(password);
 				u.setBirthday(date);
 				u.setBio(bio);
-				u.setPoints(points);
+				u.setStats(UserStatsDao.getInstance().getUserStats(email));
+				u.copyAttitude(UserStatsDao.getInstance().getUserAttitude(email));
 			}
 			return u;
 		} catch (SQLException e) {
-			throw new SQLException("Cannot get user from database.", new Throwable(e.getMessage()));
+			throw new SQLException("Cannot get user from database.", e);
 		}
 		
 	}
@@ -90,7 +90,7 @@ public class UserDaoDB {
 			stmt.execute();
 			return true;
 		} catch (SQLException e) {
-			throw new SQLException("Cannot save user on database.", new Throwable(e.getMessage()));
+			throw new SQLException("Cannot save user on database.", e);
 		}
 		
 	}
@@ -108,7 +108,7 @@ public class UserDaoDB {
 			stmt.execute();
 			return true;
 		} catch (SQLException e) {
-			throw new SQLException("Cannot update user info on database.", new Throwable(e.getMessage()));
+			throw new SQLException("Cannot update user info on database.", e);
 		}
 		
 	}
@@ -121,7 +121,7 @@ public class UserDaoDB {
 			stmt.execute();
 			return true;
 		} catch (SQLException e) {
-			throw new SQLException("Cannot delete user from database.", new Throwable(e.getMessage()));
+			throw new SQLException("Cannot delete user from database.", e);
 		}
 		
 	}
@@ -154,11 +154,13 @@ public class UserDaoDB {
 				u.setName(name);
 				u.setPassword(pass);
 				u.setSurname(surname);
+				u.setStats(UserStatsDao.getInstance().getUserStats(email));
+				u.copyAttitude(UserStatsDao.getInstance().getUserAttitude(email));
 			}
 			
 			return u;
 		} catch (SQLException e) {
-			throw new SQLException("Cannot get trip organizer from database.", new Throwable(e.getMessage()));
+			throw new SQLException("Cannot get trip organizer from database.", e);
 		}
 	}
 	
@@ -193,14 +195,50 @@ public class UserDaoDB {
 					u.setName(name);
 					u.setSurname(surname);
 					u.setBirthday(birthday);
+					u.setStats(UserStatsDao.getInstance().getUserStats(email));
+					u.copyAttitude(UserStatsDao.getInstance().getUserAttitude(email));
 					participants.add(u);
 				} while (rs.next());
 			}
 			return participants;
 		} catch (SQLException e) {
-			throw new SQLException("Cannot get participants to the trip:"+tripTitle+" from database.", new Throwable(e.getMessage()));
+			throw new SQLException("Cannot get participants to the trip:"+tripTitle+" from database.", e);
 		}
 		
+	}
+	
+	public User getRequestReceiver(String userEmail, String tripTitle) throws DBConnectionException, SQLException {
+		ResultSet rs = null;
+		User u = null;
+		try (Connection conn = ConnectionManager.getInstance().getConnection();
+				CallableStatement stmt = conn.prepareCall(GET_REQUEST_RECEIVER, ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY)) {
+			stmt.setString(1, tripTitle);
+			stmt.setString(2, userEmail);
+			if (stmt.execute()) {
+				rs = stmt.getResultSet();
+			}
+			
+			if (rs != null) {
+				rs.first();
+				String name = rs.getString(NAME_COLUMN);
+				String surname = rs.getString(SURNAME_COLUMN);
+				String email = rs.getString(EMAIL_COLUMN);
+				Date birth = rs.getDate(BIRTH_COLUMN);
+				String bio = rs.getString(BIO_COLUMN);
+				u = new User();
+				u.setEmail(email);
+				u.setName(name);
+				u.setSurname(surname);
+				u.setBirthday(birth);
+				u.setStats(UserStatsDao.getInstance().getUserStats(email));
+				System.out.println("User stats fetched.");
+				u.copyAttitude(UserStatsDao.getInstance().getUserAttitude(email));
+				u.setBio(bio);
+			}
+			return u;
+		} catch (SQLException e) {
+			throw new SQLException("Cannot get receiver of the request by: "+userEmail+" for trip: "+tripTitle+" from database.", e);
+		}
 	}
 
 }

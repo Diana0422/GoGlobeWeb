@@ -10,22 +10,22 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
 
-import logic.control.PersistenceController;
 import logic.model.ModelClassType;
 import logic.model.User;
 import logic.model.exceptions.SerializationException;
 import logic.model.utils.UserSerialObject;
+import logic.persistence.FileSystemManager;
 
 public class UserDaoFile {
 	
-	private PersistenceController pc = PersistenceController.getInstance();
+	private FileSystemManager manager = FileSystemManager.getInstance();
 	private static final String ERROR_FILENOTFOUND = "The file specified was not found in the workingspace.";
 	
 	public List<User> getAllUsers() throws SerializationException {
 		// Reads a list of trips from the back-end file
 		List<User> empty = new ArrayList<>();
 		
-		try (FileInputStream fis = new FileInputStream(pc.getBackendFile(ModelClassType.USER));
+		try (FileInputStream fis = new FileInputStream(manager.getBackendFile(ModelClassType.USER));
 			ObjectInputStream ois = new ObjectInputStream(fis)) {
 			if (fis.available() != 0) {
 				Logger.getGlobal().info("ObjectInputStream is available.");
@@ -67,7 +67,7 @@ public class UserDaoFile {
 			if (tmp.getEmail().equals(oldUserEmail)) {
 				tmp.setName(newUser.getName());
 				tmp.setSurname(newUser.getSurname());
-				tmp.setPoints(newUser.getPoints());
+				tmp.getStats().setPoints(newUser.getStats().getPoints());
 				tmp.setBirthday(newUser.getBirthday());
 				tmp.setReviews(newUser.getReviews());
 				tmp.setStats(newUser.getStats());
@@ -75,7 +75,7 @@ public class UserDaoFile {
 				break;
 			}
 		}
-		try (ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream(pc.getBackendFile(ModelClassType.USER)))) {
+		try (ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream(manager.getBackendFile(ModelClassType.USER)))) {
 			Logger.getGlobal().info("Serializing instance of USER \n");
 			UserSerialObject o = new UserSerialObject(users);
 			out.writeObject(o);
@@ -93,7 +93,7 @@ public class UserDaoFile {
 		List<User> users = getAllUsers();
 		users.add(user);
 				
-		try (ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream(pc.getBackendFile(ModelClassType.USER)))) {
+		try (ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream(manager.getBackendFile(ModelClassType.USER)))) {
 			Logger.getGlobal().info("Serializing instance of USER \n");
 			UserSerialObject o = new UserSerialObject(users);
 			out.writeObject(o);

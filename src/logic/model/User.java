@@ -1,10 +1,10 @@
 package logic.model;
 
-import java.io.Serializable;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.EnumMap;
 import java.util.List;
 import java.util.Map;
 
@@ -14,20 +14,19 @@ import logic.persistence.exceptions.DatabaseException;
 
 
 
-public class User implements Serializable {
+public class User {
 	
-	private static final long serialVersionUID = 1L;
 	private String name;
 	private String surname;
 	private String email;
 	private String password;
 	private Date birthday;
-	private int points;
 	private String bio;
-	private List<Request> request;
+	private List<Request> incRequests;
+	private List<Request> sentRequests;
 	private List<Review> reviews;
 	private UserStats stats;
-	private Map<TripCategory, String> attitude;
+	private Map<TripCategory, Integer> attitude;
 	
 	
 	// User Constructor
@@ -39,17 +38,20 @@ public class User implements Serializable {
 		this.setPassword(password);
 		
 		// Set default values for remaining attributes
-		this.points = 0;
 		this.bio ="";
-		this.request = new ArrayList<>();
+		this.incRequests = new ArrayList<>();
+		this.sentRequests = new ArrayList<>();
 		this.reviews = new ArrayList<>();
 		this.stats = new UserStats();
+		this.attitude = new EnumMap<>(TripCategory.class);
 	}
 	
 	public User() {
-		this.request = new ArrayList<>();
+		this.incRequests = new ArrayList<>();
+		this.sentRequests = new ArrayList<>();
 		this.reviews = new ArrayList<>();
 		this.stats = new UserStats();
+		this.attitude = new EnumMap<>(TripCategory.class);
 	}
 	
 	public int calculateUserAge() {
@@ -62,7 +64,7 @@ public class User implements Serializable {
 	}
 	
 	public void addPoints(int i) {
-		setPoints(getPoints()+i);
+		this.getStats().setPoints(this.getStats().getPoints()+i);
 	}
 
 	public boolean addReview(Review rev) throws DatabaseException {
@@ -91,13 +93,75 @@ public class User implements Serializable {
 		try {
 			if (role == RoleType.ORGANIZER) {
 				stats.setOrganizerRating(avg);
-				UserStatsDao.getInstance().updateStats(this.getEmail(), this.getPoints(), this.getStats().getOrganizerRating(), this.getStats().getTravelerRating());
+				UserStatsDao.getInstance().updateStats(this.getEmail(), this.getStats().getPoints(), this.getStats().getOrganizerRating(), this.getStats().getTravelerRating());
 			} else {
 				stats.setTravelerRating(avg);
-				UserStatsDao.getInstance().updateStats(this.getEmail(), this.getPoints(), this.getStats().getOrganizerRating(), this.getStats().getTravelerRating());
+				UserStatsDao.getInstance().updateStats(this.getEmail(), this.getStats().getPoints(), this.getStats().getOrganizerRating(), this.getStats().getTravelerRating());
 			}	
 		} catch(DBConnectionException | SQLException e) {
 			throw new DatabaseException(e.getMessage(), e.getCause());
+		}
+	}
+	
+	public Map<TripCategory, Integer> recalculateAttitude(TripCategory category1, TripCategory category2) {
+		// Calculate user's traveling attitude (in percentage)
+		Map<TripCategory, Integer> percAttitude = new EnumMap<>(TripCategory.class);
+		int total = 0;
+		int percent = 0;
+		this.setAttitude(category1);
+		this.setAttitude(category2);
+		for (Map.Entry<TripCategory, Integer> entry: attitude.entrySet()) {
+			total += entry.getValue();
+		}
+		if (total != 0) {
+			for (Map.Entry<TripCategory, Integer> entry: attitude.entrySet()) {
+				percent = entry.getValue()*100/total;
+				percAttitude.putIfAbsent(entry.getKey(), percent);
+			}
+		}
+		
+		return percAttitude;
+	}
+	
+	public void addToIncRequests(Request r) {
+		Request incRequest = new Request();
+		incRequest.setAccepted(r.getAccepted());
+		incRequest.setId(r.getId());
+		incRequest.setTarget(r.getTarget());
+		this.incRequests.add(incRequest);
+	}
+	
+	public void addToSentRequests(Request r) {
+		Request sentRequest = new Request();
+		sentRequest.setAccepted(r.getAccepted());
+		sentRequest.setId(r.getId());
+		sentRequest.setTarget(r.getTarget());
+		this.sentRequests.add(sentRequest);
+	}
+	
+	
+	public void setIncRequests(List<Request> incRequests) {
+		for (Request r: incRequests) {
+			this.addToIncRequests(r);
+		}
+	}
+	
+	public void setSentRequests(List<Request> sentRequests) {
+		for (Request r: sentRequests) {
+			this.addToSentRequests(r);
+		}
+	}
+	
+	public void deleteIncomingRequest(Request req) {
+		for (Request r: this.getIncRequests()) {
+			if (r.getTarget().getTitle().equals(req.getTarget().getTitle()) && (r.getSender().equals(req.getSender()))) this.getIncRequests().remove(r);
+		}
+		
+	}
+	
+	public void deleteSentRequest(Request req) {
+		for (Request r: this.getSentRequests()) {
+			if (r.getTarget().getTitle().equals(req.getTarget().getTitle()) && (r.getSender().equals(req.getSender()))) this.getSentRequests().remove(r);
 		}
 	}
  	
@@ -119,14 +183,6 @@ public class User implements Serializable {
 		this.surname = surname;
 	}
 	
-	public int getPoints() {
-		return points;
-	}
-	
-	public void setPoints(int points) {
-		this.points = points;
-	}
-	
 	public String getBio() {
 		return bio;
 	}
@@ -134,17 +190,22 @@ public class User implements Serializable {
 	public void setBio(String bio) {
 		this.bio = bio;
 	}
-	
-	public List<Request> getRequest() {
-		return request;
-	}
-	
-	public void setRequest(List<Request> request) {
-		this.request = request;
-	}
 
-	public Map<TripCategory, String> getAttitude() {
+
+	public Map<TripCategory, Integer> getAttitude() {
 		return attitude;
+	}
+	
+	public void setAttitude(TripCategory category) {
+		Integer value = attitude.get(category)+1;
+		for (Map.Entry<TripCategory, Integer> entry: attitude.entrySet()) {
+			if (entry.getKey().equals(category)) entry.setValue(value);
+		}
+	}
+	
+	public void copyAttitude(Map<TripCategory, Integer> mapping) {
+		System.out.println(this.attitude);
+		this.attitude.putAll(mapping);
 	}
 
 	public String getEmail() {
@@ -186,4 +247,13 @@ public class User implements Serializable {
 	public void setStats(UserStats stats) {
 		this.stats = stats;
 	}
+
+	public List<Request> getIncRequests() {
+		return incRequests;
+	}
+
+	public List<Request> getSentRequests() {
+		return sentRequests;
+	}
+
 }

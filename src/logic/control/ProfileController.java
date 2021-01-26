@@ -67,7 +67,7 @@ public class ProfileController {
 			bean.setBio(user.getBio());
 			bean.setName(user.getName());
 			bean.setSurname(user.getSurname());
-			bean.setPoints(user.getPoints());
+			bean.setPoints(user.getStats().getPoints());
 			UserStats stats = UserStatsDao.getInstance().getUserStats(userEmail);
 			UserStatsBean statsBean = new UserStatsBean();
 			statsBean.setOrgRating(stats.getOrganizerRating());

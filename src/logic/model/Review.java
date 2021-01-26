@@ -1,11 +1,8 @@
 package logic.model;
 
-import java.io.Serializable;
 import java.util.Date;
 
-public class Review implements Serializable{
-
-	private static final long serialVersionUID = 1L;
+public class Review {
 	
 	private double vote;
 	private String title;
@@ -13,6 +10,8 @@ public class Review implements Serializable{
 	private Date date;
 	private RoleType type;
 	private User reviewer;
+	
+	/* Setters and getters */
 	
 	public double getVote() {
 		return vote;
@@ -46,20 +45,20 @@ public class Review implements Serializable{
 		this.type = type;
 	}
 
-	public User getReviewer() {
-		return reviewer;
-	}
-
-	public void setReviewer(User reviewer) {
-		this.reviewer = reviewer;
-	}
-
 	public String getTitle() {
 		return title;
 	}
 
 	public void setTitle(String title) {
 		this.title = title;
+	}
+
+	public User getReviewer() {
+		return reviewer;
+	}
+
+	public void setReviewer(User reviewer) {
+		this.reviewer = reviewer;
 	}
 
 }

@@ -7,6 +7,7 @@ import logic.persistence.dao.UserDaoDB;
 import logic.persistence.exceptions.DBConnectionException;
 import logic.persistence.exceptions.DatabaseException;
 import logic.model.User;
+import logic.model.utils.Cookie;
 
 public class LoginController {
 	
@@ -31,11 +32,17 @@ public class LoginController {
 		try {
 			if ((tempUser = UserDaoDB.getInstance().get(username)) != null) {
 				if (tempUser.getEmail().equals(username) && tempUser.getPassword().equals(password)){
+					// Search for user instance in cookies or add to logged users
+					if (Cookie.getInstance().getLoggedUser(username)==null) {
+						Cookie.getInstance().addToLoggedUsers(tempUser);
+					} else {
+						tempUser = Cookie.getInstance().getLoggedUser(username);
+					}
 					loginBean.setUsername(username);
 					loginBean.setPassword(password);
 					loginBean.setNome(tempUser.getName());
 					loginBean.setCognome(tempUser.getSurname());
-					loginBean.setPoints(tempUser.getPoints());			
+					loginBean.setPoints(tempUser.getStats().getPoints());			
 				}
 			} else {
 				loginBean = null;
