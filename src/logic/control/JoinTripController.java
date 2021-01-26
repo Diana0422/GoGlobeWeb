@@ -57,7 +57,6 @@ public class JoinTripController {
 			}
 		}
 		
-		System.out.println(favourite);
 		BeanConverter<Trip,TripBean> converter = new TripBeanConverter();
 		try {
 			return converter.convertToListBean(TripDao.getInstance().getTripsForCategory(favourite));

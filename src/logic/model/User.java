@@ -204,7 +204,6 @@ public class User {
 	}
 	
 	public void copyAttitude(Map<TripCategory, Integer> mapping) {
-		System.out.println(this.attitude);
 		this.attitude.putAll(mapping);
 	}
 

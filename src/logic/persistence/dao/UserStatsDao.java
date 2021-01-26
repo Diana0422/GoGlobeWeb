@@ -73,7 +73,6 @@ public class UserStatsDao {
 	public Map<TripCategory, Integer> getUserAttitude(String userEmail) throws DBConnectionException, SQLException {
 		ResultSet rs = null;
 		Map<TripCategory, Integer> mapping = new EnumMap<>(TripCategory.class);
-		System.out.println("getting user attitude");
 		try (Connection conn = ConnectionManager.getInstance().getConnection();
 				CallableStatement stmt = conn.prepareCall(GET_ATTITUDE, ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY)) {
 			stmt.setString(1, userEmail);
@@ -81,7 +80,6 @@ public class UserStatsDao {
 				rs = stmt.getResultSet();
 			}
 			if (rs != null) {
-				System.out.println("rs is not null.");
 				rs.first();
 				Integer funVal = rs.getInt("fun_attitude");
 				Integer culVal = rs.getInt("cul_attitude");
