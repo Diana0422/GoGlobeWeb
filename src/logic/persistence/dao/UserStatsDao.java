@@ -18,7 +18,6 @@ public class UserStatsDao {
 	private static final String GET_STATS = "call fetch_user_stats(?)";
 	private static final String GET_ATTITUDE = "call fetch_attitude(?)";
 	private static final String UPDATE_ATTITUDE ="call update_attitude(?, ?, ?, ?, ?)";
-	
 	private static UserStatsDao instance = null;
 	
 	private UserStatsDao() {/*empty*/}

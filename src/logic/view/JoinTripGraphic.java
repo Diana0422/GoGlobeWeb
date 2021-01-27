@@ -79,7 +79,6 @@ public class JoinTripGraphic implements Initializable {
 		controller = new JoinTripController();
 		try {
 			this.tripBeans = controller.getSuggestedTrips(DesktopSessionContext.getInstance().getSession().getSessionEmail());
-			System.out.println(this.tripBeans);
 			CardGraphic cc = new CardGraphic();
 			cc.loadCardGrid(cardsLayout, this.tripBeans);
 		} catch (DatabaseException e) {

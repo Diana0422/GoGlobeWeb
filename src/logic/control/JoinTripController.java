@@ -56,10 +56,13 @@ public class JoinTripController {
 				favourite = entry.getKey();
 			}
 		}
-		
 		BeanConverter<Trip,TripBean> converter = new TripBeanConverter();
 		try {
-			return converter.convertToListBean(TripDao.getInstance().getTripsForCategory(favourite));
+			if (favourite != null) {
+				return converter.convertToListBean(TripDao.getInstance().getTripsForCategory(favourite));	
+			} else {
+				return converter.convertToListBean(TripDao.getInstance().getSharedTrips());
+			}
 		} catch (SQLException | DBConnectionException e) {
 			throw new DatabaseException(e.getMessage(), e.getCause());
 		}
