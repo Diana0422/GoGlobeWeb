@@ -217,7 +217,7 @@ public class TripDao {
 		ResultSet rs = null;
 		List<Trip> trips = new ArrayList<>();
 		try (Connection conn = ConnectionManager.getInstance().getConnection();
-				CallableStatement stmt = conn.prepareCall(GET_FOR_CATEGORY, ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY)) {
+			CallableStatement stmt = conn.prepareCall(GET_FOR_CATEGORY, ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY)) {
 			stmt.setString(1, favourite.toString());
 			if (stmt.execute()) {
 				rs = stmt.getResultSet();

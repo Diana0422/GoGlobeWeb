@@ -19,12 +19,7 @@ import logic.bean.SessionBean;
 import logic.bean.TripBean;
 import logic.control.JoinTripController;
 import logic.persistence.exceptions.DatabaseException;
-import logic.view.filterstrategies.AdventureCategoryStrategy;
-import logic.view.filterstrategies.AlphabeticalFilterStrategy;
-import logic.view.filterstrategies.CultureCategoryStrategy;
-import logic.view.filterstrategies.FunCategoryStrategy;
-import logic.view.filterstrategies.RelaxCategoryStrategy;
-import logic.view.filterstrategies.StrategyContext;
+import logic.view.filterstrategies.TripFilterManager;
 
 public class JoinTripGraphic implements Initializable {
 	
@@ -57,7 +52,7 @@ public class JoinTripGraphic implements Initializable {
 	
 	private List<TripBean> filteredTripBeans;
 	
-	StrategyContext filterContext;
+	TripFilterManager filterManager;
 	
 	JoinTripController controller;
 	
@@ -75,10 +70,11 @@ public class JoinTripGraphic implements Initializable {
 	
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
-		filterContext = new StrategyContext();
+		filterManager = new TripFilterManager();
 		controller = new JoinTripController();
 		try {
 			this.tripBeans = controller.getSuggestedTrips(DesktopSessionContext.getInstance().getSession().getSessionEmail());
+			System.out.println(this.tripBeans);
 			CardGraphic cc = new CardGraphic();
 			cc.loadCardGrid(cardsLayout, this.tripBeans);
 		} catch (DatabaseException e) {
@@ -101,40 +97,40 @@ public class JoinTripGraphic implements Initializable {
 	
 	@FXML 
 	public void filterByAdventure(MouseEvent event) {
-		this.filterContext.setFilter(new AdventureCategoryStrategy());
-		filteredTripBeans = filterContext.filter(tripBeans);
+		filterManager.setAdventureFilter();
+		filteredTripBeans = filterManager.filterTrips(tripBeans);
 		CardGraphic cc = new CardGraphic();
 		cc.loadCardGrid(cardsLayout, this.filteredTripBeans);
 	}
 	
 	@FXML 
 	public void filterByFun(MouseEvent event) {
-		this.filterContext.setFilter(new FunCategoryStrategy());
-		filteredTripBeans = filterContext.filter(tripBeans);
+		filterManager.setFunFilter();;
+		filteredTripBeans = filterManager.filterTrips(tripBeans);
 		CardGraphic cc = new CardGraphic();
 		cc.loadCardGrid(cardsLayout, this.filteredTripBeans);
 	}
 	
 	@FXML 
 	public void filterByCulture(MouseEvent event) {
-		this.filterContext.setFilter(new CultureCategoryStrategy());
-		filteredTripBeans = filterContext.filter(tripBeans);
+		filterManager.setCultureFilter();
+		filteredTripBeans = filterManager.filterTrips(tripBeans);
 		CardGraphic cc = new CardGraphic();
 		cc.loadCardGrid(cardsLayout, this.filteredTripBeans);
 	}
 	
 	@FXML 
 	public void filterByRelax(MouseEvent event) {
-		this.filterContext.setFilter(new RelaxCategoryStrategy());
-		filteredTripBeans = filterContext.filter(tripBeans);
+		filterManager.setRelaxFilter();;
+		filteredTripBeans = filterManager.filterTrips(tripBeans);
 		CardGraphic cc = new CardGraphic();
 		cc.loadCardGrid(cardsLayout, this.filteredTripBeans);
 	}
 	
 	@FXML 
 	public void filterFromAToZ(MouseEvent event) {
-		this.filterContext.setFilter(new AlphabeticalFilterStrategy());
-		filteredTripBeans = filterContext.filter(tripBeans);
+		filterManager.setAlphabeticFilter();
+		filteredTripBeans = filterManager.filterTrips(tripBeans);
 		CardGraphic cc = new CardGraphic();
 		cc.loadCardGrid(cardsLayout, this.filteredTripBeans);
 	}
