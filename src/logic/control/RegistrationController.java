@@ -26,7 +26,7 @@ public class RegistrationController {
 	
 	public synchronized SessionBean register(String email, String password, String name, String surname, String birthday) throws DatabaseException {
 		User user;
-		Date birth = ConversionController.getInstance().parseDate(birthday);
+		Date birth = FormatManager.parseDate(birthday);
 		user = new User(name, surname, birth, email, password);
 		try {
 			if (UserDaoDB.getInstance().save(user)) {

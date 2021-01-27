@@ -20,7 +20,11 @@ import logic.model.utils.converters.TripBeanConverter;
  
 public class JoinTripController {
 	
+	private BeanConverter<Trip,TripBean> converter;
 	
+	public JoinTripController() {
+		this.converter = new TripBeanConverter();
+	}
 
 	public List<TripBean> searchTrips(String value) throws DatabaseException {
 		String logStr = "Search trips by value started.\n";
@@ -35,7 +39,7 @@ public class JoinTripController {
 				
 			}
 			/* Convert List<Trip> into List<TripBean> */
-			return ConversionController.getInstance().convertTripList(filteredTrips);			
+			return converter.convertToListBean(filteredTrips);			
 		} catch (DBConnectionException | SQLException e) {
 			throw new DatabaseException(e.getMessage(), e.getCause());
 		}
@@ -56,11 +60,14 @@ public class JoinTripController {
 				favourite = entry.getKey();
 			}
 		}
-		BeanConverter<Trip,TripBean> converter = new TripBeanConverter();
 		try {
-			if (favourite != null) {
-				return converter.convertToListBean(TripDao.getInstance().getTripsForCategory(favourite));	
+			System.out.println(favourite);
+			System.out.println(TripDao.getInstance().getTripsForCategory(favourite).isEmpty());
+			if (favourite != null && !(TripDao.getInstance().getTripsForCategory(favourite)).isEmpty()) {
+				return converter.convertToListBean(TripDao.getInstance().getTripsForCategory(favourite));
 			} else {
+				System.out.println("Suggested shared trips:"+TripDao.getInstance().getSharedTrips());
+				System.out.println("Trip beans:"+converter.convertToListBean(TripDao.getInstance().getSharedTrips()));
 				return converter.convertToListBean(TripDao.getInstance().getSharedTrips());
 			}
 		} catch (SQLException | DBConnectionException e) {

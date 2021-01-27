@@ -14,7 +14,9 @@ import logic.persistence.exceptions.DBConnectionException;
 import logic.persistence.exceptions.DatabaseException;
 import logic.model.Request;
 import logic.model.User;
+import logic.model.utils.converters.BeanConverter;
 import logic.model.utils.converters.RequestBeanConverter;
+import logic.model.utils.converters.UserBeanConverter;
 
 public class ManageRequestController {
 
@@ -37,9 +39,10 @@ public class ManageRequestController {
 	
 	public UserBean getSenderBean(RequestBean requestBean) throws DatabaseException {
 		User sender;//TODO levare
+		BeanConverter<User,UserBean> userConverter = new UserBeanConverter();
 		try {
 			sender = UserDaoDB.getInstance().get(requestBean.getSenderEmail());
-			return ConversionController.getInstance().convertToUserBean(sender);
+			return userConverter.convertToBean(sender);
 		} catch (DBConnectionException | SQLException e) {
 			throw new DatabaseException(e.getMessage(), e.getCause());
 		}

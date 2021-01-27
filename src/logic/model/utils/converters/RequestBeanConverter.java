@@ -51,9 +51,13 @@ public class RequestBeanConverter implements BeanConverter<Request, RequestBean>
 	}
 
 	@Override
-	public List<Request> convertFromListBean(List<RequestBean> list) {
-		// TODO Auto-generated method stub
-		return null;
+	public List<Request> convertFromListBean(List<RequestBean> list) throws DatabaseException {
+		List<Request> requests = new ArrayList<>();
+		for (RequestBean bean: list) {
+			Request request = convertFromBean(bean);
+			requests.add(request);
+		}
+		return requests;
 	}
 
 }

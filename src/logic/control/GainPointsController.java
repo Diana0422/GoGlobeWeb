@@ -14,6 +14,8 @@ import logic.persistence.exceptions.DBConnectionException;
 import logic.persistence.exceptions.DatabaseException;
 import logic.model.Trip;
 import logic.model.User;
+import logic.model.utils.converters.TripBeanConverter;
+import logic.model.utils.converters.UserBeanConverter;
 
 public class GainPointsController {
 	
@@ -34,15 +36,16 @@ public class GainPointsController {
 	
 	public TripBean getTripOfTheDay(String userEmail) throws DatabaseException {
 		Date today = new Date();
-		
+		UserBeanConverter userConverter = new UserBeanConverter();
+		TripBeanConverter tripConverter = new TripBeanConverter();
 		UserBean logged;
 		try {
-			logged = ConversionController.getInstance().convertToUserBean(UserDaoDB.getInstance().get(userEmail));
-			List<TripBean> list = ConversionController.getInstance().convertTripList(TripDao.getInstance().getTrips());
+			logged = userConverter.convertToBean(UserDaoDB.getInstance().get(userEmail));
+			List<TripBean> list = tripConverter.convertToListBean(TripDao.getInstance().getTrips());
 			
 			for (TripBean bean: list) {
-				Date dep = ConversionController.getInstance().parseDate(bean.getDepartureDate());
-				Date ret = ConversionController.getInstance().parseDate(bean.getReturnDate());
+				Date dep = FormatManager.parseDate(bean.getDepartureDate());
+				Date ret = FormatManager.parseDate(bean.getReturnDate());
 				
 				if (today.after(dep) && today.before(ret)) {
 					if (bean.getOrganizer().getEmail().equals(logged.getEmail())) return bean;
@@ -64,7 +67,8 @@ public class GainPointsController {
 	}
 
 	public boolean verifyParticipation(SessionBean session, TripBean tripBean) throws DatabaseException {
-		Trip trip = ConversionController.getInstance().convertToTrip(tripBean);
+		TripBeanConverter tripConverter = new TripBeanConverter();
+		Trip trip = tripConverter.convertFromBean(tripBean);
 		try {
 			if (ParticipationController.getInstance().checkParticipation(trip)) {
 				User user;

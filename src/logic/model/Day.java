@@ -1,12 +1,10 @@
 package logic.model;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Day implements Serializable{
+public class Day {
 	
-	private static final long serialVersionUID = 1L;
 	private int id;
 	private Location location;
 	private List<Activity> activities;

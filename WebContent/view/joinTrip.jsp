@@ -19,6 +19,7 @@
 <%@page import="logic.view.filterstrategies.CultureCategoryStrategy"%>
 <%@page import="logic.view.filterstrategies.RelaxCategoryStrategy"%>
 <%@page import="logic.persistence.exceptions.DatabaseException"%>
+<%@page import="logic.view.filterstrategies.TripFilterManager"%>
 
 
 <!DOCTYPE html>
@@ -69,47 +70,51 @@
         <div class="results">
         	
         	<%
-        		StrategyContext context = new StrategyContext();
+        		JoinTripController controller = new JoinTripController();
+        		TripFilterManager filterManager = new TripFilterManager();
         		List<TripBean> trips = null;
+        		
+				joinTripBean.setObjects(controller.getSuggestedTrips(sessionBean.getSessionEmail()));
+        		System.out.println(joinTripBean.getObjects());
         		//If ADVENTURE filter button is clicked
         		if (request.getParameter("btn-adv-filter")!= null){
-        			context.setFilter(new AdventureCategoryStrategy());
-        			joinTripBean.setFilteredTrips(context.filter(joinTripBean.getObjects()));
-        			trips = context.filter(joinTripBean.getObjects());
+        			filterManager.setAdventureFilter();
+        			
+        			joinTripBean.setFilteredTrips(filterManager.filterTrips(joinTripBean.getObjects()));
+        			trips = joinTripBean.getFilteredTrips();
         			System.out.println("# of filtered trips is: " + joinTripBean.getFilteredTrips().size());
-      			
         		}
         		//If CULTURE filter button is clicked
 				if (request.getParameter("btn-clt-filter")!= null ){
-        			context.setFilter(new CultureCategoryStrategy());
-        			joinTripBean.setFilteredTrips(context.filter(joinTripBean.getObjects()));
-        			System.out.println("# of filtered trips is: " + joinTripBean.getFilteredTrips().size());
-        			trips = context.filter(joinTripBean.getObjects());
-
+					filterManager.setCultureFilter();
+					
+	    			joinTripBean.setFilteredTrips(filterManager.filterTrips(joinTripBean.getObjects()));
+	    			trips = joinTripBean.getFilteredTrips();
+	    			System.out.println("# of filtered trips is: " + joinTripBean.getFilteredTrips().size());
         		}
 				//If RELAX filter button is clicked
 				if (request.getParameter("btn-rlx-filter")!= null){
-        			context.setFilter(new RelaxCategoryStrategy());
-        			joinTripBean.setFilteredTrips(context.filter(joinTripBean.getObjects()));
-        			System.out.println("# of filtered trips is: " + joinTripBean.getFilteredTrips().size());
-        			trips = context.filter(joinTripBean.getObjects());
-
+					filterManager.setRelaxFilter();
+					
+	    			joinTripBean.setFilteredTrips(filterManager.filterTrips(joinTripBean.getObjects()));
+	    			trips = joinTripBean.getFilteredTrips();
+	    			System.out.println("# of filtered trips is: " + joinTripBean.getFilteredTrips().size());
         		}
 				//If FUN filter button is clicked
 				if (request.getParameter("btn-fun-filter")!= null){
-        			context.setFilter(new FunCategoryStrategy());
-        			joinTripBean.setFilteredTrips(context.filter(joinTripBean.getObjects()));
-        			System.out.println("# of filtered trips is: " + joinTripBean.getFilteredTrips().size());
-        			trips = context.filter(joinTripBean.getObjects());
-
+					filterManager.setFunFilter();
+					
+	    			joinTripBean.setFilteredTrips(filterManager.filterTrips(joinTripBean.getObjects()));
+	    			trips = joinTripBean.getFilteredTrips();
+	    			System.out.println("# of filtered trips is: " + joinTripBean.getFilteredTrips().size());
         		} 
 				//If ALPHABETICAL filter button is clicked
 				if (request.getParameter("btn-alphab-filter")!= null){
-        			context.setFilter(new AlphabeticalFilterStrategy());
-        			joinTripBean.setFilteredTrips(context.filter(joinTripBean.getObjects()));
-        			System.out.println("# of filtered trips is: " + joinTripBean.getFilteredTrips().size());
-        			trips = context.filter(joinTripBean.getObjects());
-
+					filterManager.setAlphabeticFilter();
+					
+	    			joinTripBean.setFilteredTrips(filterManager.filterTrips(joinTripBean.getObjects()));
+	    			trips = joinTripBean.getFilteredTrips();
+	    			System.out.println("# of filtered trips is: " + joinTripBean.getFilteredTrips().size());
         		}
 				
         		if (request.getParameter("search") != null ||
@@ -124,9 +129,8 @@
 					<jsp:setProperty name="joinTripBean" property="searchVal"/>
 			<%
 					
-					//System.out.println(joinTripBean.getSearchVal());
 					try {
-						joinTripBean.setObjects(JoinTripController.getInstance().searchTrips(joinTripBean.getSearchVal()));
+						joinTripBean.setObjects(controller.searchTrips(joinTripBean.getSearchVal()));
 					} catch (DatabaseException e) {
 						request.setAttribute("errType", e.getMessage());
 						if (e.getCause()!=null)request.setAttribute("errLog", e.getCause().toString());
@@ -138,26 +142,12 @@
         				if (trips == null){
         					trips = joinTripBean.getObjects();
         				}
-        				/*if (joinTripBean.getFilteredTrips() != null){
-        					if(!joinTripBean.getFilteredTrips().isEmpty()){
-	        					System.out.println("PRENDO QUELLI FILTRATI EH");
-	        					trips = joinTripBean.getFilteredTrips();
-	        			
-        					}   
-        				}*/
-    					System.out.println("MO CHE DEVO CARICARE, TRIP TROVATI: " + trips.size());
-    					System.out.println("MO CHE DEVO CARICARE, TRIP filtrati NELLA BEAN: " + joinTripBean.getFilteredTrips());
-    					System.out.println("MO CHE DEVO CARICARE, TRIP NELLA BEAN: " + joinTripBean.getObjects().size());
-
-
+        				
         				for (TripBean trip: trips){
         					System.out.println(trip.getTitle());
         				}
-        				System.out.println("jsp: trips = "+ trips);
-    					System.out.println("MO COMINCIO AD ITERARE");
         				
         				if (trips != null){
-        					System.out.println("i trip non so nulli!");
         					Iterator<TripBean> iter = trips.iterator();
         		
         					int elemsInRow=0;

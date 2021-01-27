@@ -16,6 +16,7 @@ import logic.model.Review;
 import logic.model.RoleType;
 import logic.model.User;
 import logic.model.interfaces.Observer;
+import logic.model.utils.converters.ReviewBeanConverter;
 
 public class ReviewUserController {
 
@@ -65,6 +66,7 @@ public class ReviewUserController {
 	
 	
 	public List<ReviewBean> getUserReviews(UserBean user) throws DatabaseException {
+		ReviewBeanConverter reviewConverter = new ReviewBeanConverter();
 		try {
 			List<Review> list = ReviewDao.getInstance().getUserReviews(user.getEmail());
 			User target = UserDaoDB.getInstance().get(user.getEmail());
@@ -76,7 +78,7 @@ public class ReviewUserController {
 			}
 			
 			List<Review> reviews = target.getReviews();
-			return ConversionController.getInstance().convertReviewList(reviews);
+			return reviewConverter.convertToListBean(reviews);
 		} catch (DBConnectionException | SQLException e) {
 			throw new DatabaseException(e.getMessage(), e.getCause());
 		}

@@ -22,6 +22,7 @@ import logic.model.TripCategory;
 import logic.model.factories.HereAdapterFactory;
 import logic.model.factories.TripFactory;
 import logic.model.interfaces.LocationFinder;
+import logic.model.utils.converters.DayBeanConverter;
 
 public class PlanTripController {
 		
@@ -61,8 +62,8 @@ public class PlanTripController {
 			trip.setCategory2(parseTripCategory(tripBean.getCategory2()));
 			
 			//Converting dates
-			Date depDate = ConversionController.getInstance().parseDate(tripBean.getDepartureDate()); 
-			Date retDate = ConversionController.getInstance().parseDate(tripBean.getReturnDate());
+			Date depDate = FormatManager.parseDate(tripBean.getDepartureDate()); 
+			Date retDate = FormatManager.parseDate(tripBean.getReturnDate());
 	
 			//Setting dates
 			trip.setDepartureDate(depDate);
@@ -84,7 +85,8 @@ public class PlanTripController {
 		
 			/*Converting and setting Days list (and activities)*/
 			List<Day> days;
-			if ((days = ConversionController.getInstance().convertDayBeanList(tripBean.getDays(), trip.getTitle())) != null) {
+			DayBeanConverter dayConverter = new DayBeanConverter(trip.getTitle());
+			if ((days = dayConverter.convertFromListBean(tripBean.getDays())) != null) {
 				trip.setDays(days); 
 				return true;
 			}

@@ -9,6 +9,8 @@ import logic.bean.UserStatsBean;
 import logic.model.Trip;
 import logic.model.User;
 import logic.model.UserStats;
+import logic.model.utils.converters.ReviewBeanConverter;
+import logic.model.utils.converters.TripBeanConverter;
 import logic.persistence.dao.ReviewDao;
 import logic.persistence.dao.TripDao;
 import logic.persistence.dao.UserDaoDB;
@@ -30,9 +32,10 @@ public class ProfileController {
    
    public List<TripBean> getRecentTrips() throws DatabaseException {
 	   List<Trip> trips;
+	   TripBeanConverter tripConverter = new TripBeanConverter();
 	   try {
 		   trips = TripDao.getInstance().getTrips();
-		   return ConversionController.getInstance().convertTripList(trips);
+		   return tripConverter.convertToListBean(trips);
 	   } catch (DBConnectionException | SQLException e) {
 		   throw new DatabaseException(e.getMessage(), e.getCause());
 	   }
@@ -40,9 +43,10 @@ public class ProfileController {
    
 	public List<TripBean> getUpcomingTrips() throws DatabaseException {
 	   List<Trip> trips;
+	   TripBeanConverter tripConverter = new TripBeanConverter();
 	   try {
 		   trips = TripDao.getInstance().getTrips();
-		   return ConversionController.getInstance().convertTripList(trips);
+		   return tripConverter.convertToListBean(trips);
 	   } catch (DBConnectionException | SQLException e) {
 		   throw new DatabaseException(e.getMessage(), e.getCause());
 	   }
@@ -50,15 +54,17 @@ public class ProfileController {
 	
 	public List<TripBean> getMyTrips() throws DatabaseException {
 	   List<Trip> trips;
+	   TripBeanConverter tripConverter = new TripBeanConverter();
 	   try {
 		   trips = TripDao.getInstance().getTrips();
-		   return ConversionController.getInstance().convertTripList(trips);
+		   return tripConverter.convertToListBean(trips);
 	   } catch (DBConnectionException | SQLException e) {
 		   throw new DatabaseException(e.getMessage(), e.getCause());
 	   }
 	}
 	
 	public UserBean getProfileUser(String userEmail) throws DatabaseException {
+		ReviewBeanConverter reviewConverter = new ReviewBeanConverter();
 		try {
 			User user = UserDaoDB.getInstance().get(userEmail);
 			UserBean bean = new UserBean();
@@ -73,7 +79,7 @@ public class ProfileController {
 			statsBean.setOrgRating(stats.getOrganizerRating());
 			statsBean.setTravRating(stats.getTravelerRating());
 			bean.setStatsBean(statsBean);
-			bean.setReviews(ConversionController.getInstance().convertReviewList(ReviewDao.getInstance().getUserReviews(userEmail)));
+			bean.setReviews(reviewConverter.convertToListBean(ReviewDao.getInstance().getUserReviews(userEmail)));
 			return bean;
 		} catch (DBConnectionException | SQLException e) {
 			throw new DatabaseException(e.getMessage(), e.getCause());

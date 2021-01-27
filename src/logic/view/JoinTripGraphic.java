@@ -74,7 +74,6 @@ public class JoinTripGraphic implements Initializable {
 		controller = new JoinTripController();
 		try {
 			this.tripBeans = controller.getSuggestedTrips(DesktopSessionContext.getInstance().getSession().getSessionEmail());
-			System.out.println(this.tripBeans);
 			CardGraphic cc = new CardGraphic();
 			cc.loadCardGrid(cardsLayout, this.tripBeans);
 		} catch (DatabaseException e) {
@@ -105,7 +104,7 @@ public class JoinTripGraphic implements Initializable {
 	
 	@FXML 
 	public void filterByFun(MouseEvent event) {
-		filterManager.setFunFilter();;
+		filterManager.setFunFilter();
 		filteredTripBeans = filterManager.filterTrips(tripBeans);
 		CardGraphic cc = new CardGraphic();
 		cc.loadCardGrid(cardsLayout, this.filteredTripBeans);
@@ -121,7 +120,7 @@ public class JoinTripGraphic implements Initializable {
 	
 	@FXML 
 	public void filterByRelax(MouseEvent event) {
-		filterManager.setRelaxFilter();;
+		filterManager.setRelaxFilter();
 		filteredTripBeans = filterManager.filterTrips(tripBeans);
 		CardGraphic cc = new CardGraphic();
 		cc.loadCardGrid(cardsLayout, this.filteredTripBeans);
