@@ -6,7 +6,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="106.0" prefWidth="470.0" style="-fx-border-color: gray;" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="logic.view.SuggestionCardGraphic">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="106.0" prefWidth="466.0" style="-fx-border-color: gray;" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="logic.view.SuggestionCardGraphic">
    <children>
       <ImageView fx:id="ivPlaceIcon" fitHeight="67.0" fitWidth="67.0" layoutX="14.0" layoutY="20.0" pickOnBounds="true" preserveRatio="true" />
       <Label fx:id="lblPlaceName" layoutX="87.0" layoutY="11.0" prefHeight="36.0" prefWidth="292.0" text="Place name">
@@ -24,6 +24,6 @@
             <Font size="18.0" />
          </font>
       </Label>
-      <Button fx:id="btnAddSuggestion" layoutX="387.0" layoutY="22.0" mnemonicParsing="false" prefHeight="64.0" prefWidth="64.0" text="+" />
+      <Button fx:id="btnAddSuggestion" layoutX="388.0" layoutY="28.0" mnemonicParsing="false" onMouseClicked="#lookupPlace" prefHeight="50.0" prefWidth="50.0" />
    </children>
 </AnchorPane>

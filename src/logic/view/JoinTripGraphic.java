@@ -136,14 +136,6 @@ public class JoinTripGraphic implements Initializable {
 	
 	@FXML
 	public void priceBtnClick(MouseEvent event) {
-		try {
-			Desktop.getDesktop().browse(new URL("https://maps.google.com/?q=Colosseo").toURI());
-		} catch (MalformedURLException | URISyntaxException e) {
-			AlertGraphic graphic = new AlertGraphic();
-			graphic.display(GUIType.JOIN, GUIType.HOME, null, DesktopSessionContext.getInstance().getSession(), "The url is not correct.", e.getCause().toString());
-		} catch (IOException e) {
-			AlertGraphic graphic = new AlertGraphic();
-			graphic.display(GUIType.JOIN, GUIType.HOME, null, DesktopSessionContext.getInstance().getSession(), e.getMessage(), e.getCause().toString());
-		}
+		
 	}
 }
