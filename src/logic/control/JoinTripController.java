@@ -14,6 +14,7 @@ import logic.model.Request;
 import logic.model.Trip;
 import logic.model.TripCategory;
 import logic.model.User;
+import logic.model.exceptions.UnloggedException;
 import logic.model.utils.Cookie;
 import logic.model.utils.converters.BeanConverter;
 import logic.model.utils.converters.TripBeanConverter;
@@ -70,10 +71,11 @@ public class JoinTripController {
 		}
 	}
 	
-	private boolean checkIfUserIsCompliant(String userEmail, String tripTitle) throws DatabaseException {
+	private boolean checkIfUserIsCompliant(String userEmail, String tripTitle) throws DatabaseException, UnloggedException {
 		Trip trip;
 		boolean check = true;
 		try {
+			if (userEmail == null) throw new UnloggedException();
 			trip = TripDao.getInstance().getTripByTitle(tripTitle);
 			User appliant = Cookie.getInstance().getLoggedUser(userEmail);
 			int userAge = appliant.calculateUserAge();
@@ -89,7 +91,7 @@ public class JoinTripController {
 	}
 	
 	
-	public boolean sendRequest(String tripTitle, String appliantEmail) throws DatabaseException {
+	public boolean sendRequest(String tripTitle, String appliantEmail) throws DatabaseException, UnloggedException {
 		if (checkIfUserIsCompliant(appliantEmail, tripTitle)) {
 			// Instantiate a new request
 			Request request = new Request();

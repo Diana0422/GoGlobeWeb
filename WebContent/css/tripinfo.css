@@ -9,8 +9,16 @@ body {
     justify-content: space-between;
 }
 
+.all-info {
+	display: flex;
+}
+
 .main-content {
-	margin-top: 5%;
+	margin-top: 2%;
+}
+
+.flight-description {
+	width:100%;
 }
 
 /* left elements in displayer */
@@ -25,6 +33,11 @@ body {
 
 .trip-title {
     margin-bottom: 5%;
+    display:flex;
+}
+
+.trip-title form {
+	margin-left: 5%;
 }
 
 .price-tag {
@@ -103,6 +116,19 @@ li {
 }
 
 /* activities */
+.day-location {
+	display: flex;
+	margin-top: 2%;
+}
+
+#loc {
+	margin-left: 2%;
+}
+
+#panel-title {
+	margin-top: 3%;
+}
+
 #activity-title {
 	color: black;
 }
@@ -118,11 +144,6 @@ li {
 
 .activity-price h4 {
 	width: max-content;
-}
-
-/* Panel titles */
-#panel-title {
-	margin-top: 5%;
 }
 
 /* Participants */

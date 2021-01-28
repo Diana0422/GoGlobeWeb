@@ -13,6 +13,7 @@
 <%@page import="logic.control.JoinTripController"%>
 <%@page import="logic.control.FlightController"%>
 <%@page import="logic.persistence.exceptions.DatabaseException"%>
+<%@page import="logic.model.exceptions.UnloggedException"%>
 
 
 <!DOCTYPE html>
@@ -44,9 +45,27 @@
 		<%
 	}
 %>
-
-    <div class="container-md">
     	<div class="trip-info displayer">
+    	<div class="trip-title">
+    		
+    		<%
+ 			request.setAttribute("tripTitle", joinTripBean.getTrip().getTitle());
+    		%>
+    		<%@ include file="html/tripTitle.html" %>
+    		<%
+    		try {
+    			if (request.getParameter("jointrip") != null ){
+     				JoinTripController controller = new JoinTripController();
+     				controller.sendRequest(joinTripBean.getTrip().getTitle(), sessionBean.getSessionEmail());
+    			}
+			} catch (UnloggedException e) {
+ 				System.out.println(e.getMessage());
+ 				%>
+ 				<h6 style="text-color: red"><%= e.getMessage() %> Please log in to join this trip.</h6>
+ 				<%
+			}
+    		%>
+    	</div>
     	
     		<ul class="nav nav-tabs">
     			<li class="nav-item">
@@ -76,7 +95,6 @@
     		<div class="tab-content">
  
  			<%
- 			request.setAttribute("tripTitle", joinTripBean.getTrip().getTitle());
  			request.setAttribute("orgName", joinTripBean.getTrip().getOrganizer().getName());
  			request.setAttribute("orgSurname", joinTripBean.getTrip().getOrganizer().getSurname());
  			request.setAttribute("tripCat1", joinTripBean.getTrip().getCategory1());
@@ -96,11 +114,6 @@
  				} else {
  					request.setAttribute("ticket", FlightController.getInstance().retrieveFlightPrice(joinTripBean.getTrip()));
  				}
- 				
- 				if (request.getParameter("jointrip") != null ){
- 					JoinTripController controller = new JoinTripController();
- 					controller.joinTrip(joinTripBean.getTrip().getTitle(), sessionBean.getSessionEmail());
- 				}
  			} catch (DatabaseException e) {
  				request.setAttribute("errType", e.getMessage());
  				if (e.getCause()!=null) request.setAttribute("errLog", e.getCause());
@@ -117,19 +130,23 @@
 				<% 
 			}
     		
-    		for (int i=0; i<joinTripBean.getTrip().getTripLength(); i++) {
+    		for (int i=0; i<days.size(); i++) {
     			DayBean dayBean = days.get(i);
     			System.out.println(dayBean);
+    			System.out.println(days.size());
     		%>
-    			<div class="tab-pane" role="tabpanel" id="day<%=i+1%>">
-    				<h3 id="panel-title">Location:</h3>
-    				<h4><%= dayBean.getLocationCity() %></h4>
+    			<div class="tab-pane" role="tabpanel" id="day<%= i+1 %>">
+					<div class="day-location">
+						<h3>Location:</h3>
+    					<h4 id="loc"><%= dayBean.getLocationCity() %></h4>
+					</div>
     				<h3 id="panel-title">Activities of the day:</h3>
     				<div class="list scrollable">
     				<%
         				for (int j=0; j<dayBean.getActivities().size(); j++) {
         					ActivityBean activityBean = dayBean.getActivities().get(j);
-        					request.setAttribute("acitityTitle", activityBean.getTitle());
+        					System.out.println(activityBean.getTitle());
+        					request.setAttribute("activityTitle", activityBean.getTitle());
         					request.setAttribute("activityTime", activityBean.getTime());
         					request.setAttribute("activityDesc", activityBean.getDescription());
         					request.setAttribute("activityPrice", activityBean.getEstimatedCost());
@@ -181,6 +198,5 @@
     		</div>
     	</div>    
     </div>		
-    </div>
 </body>
 </html>
