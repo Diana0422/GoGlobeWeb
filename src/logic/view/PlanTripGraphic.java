@@ -1,11 +1,8 @@
 package logic.view;
-
-import java.io.IOException;
 import java.util.List;
 import java.util.logging.Logger;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
@@ -19,6 +16,7 @@ import logic.bean.ActivityBean;
 import logic.bean.PlanTripBean;
 import logic.control.PlanTripController;
 import logic.model.Place;
+import logic.model.exceptions.APIException;
 import logic.model.exceptions.FormInputException;
 import logic.model.exceptions.TripNotCompletedException;
 import logic.persistence.exceptions.DatabaseException;
@@ -42,6 +40,9 @@ public class PlanTripGraphic implements GraphicController{
     
     @FXML 
     private Label lblErrorMsg;
+    
+    @FXML
+    private Label lblNoSugg;
 
     @FXML
     private VBox vbActivities;
@@ -157,34 +158,15 @@ public class PlanTripGraphic implements GraphicController{
 	
 	//load an activity in GUI
 	private void loadActivity(ActivityBean activityBean) {
-		FXMLLoader loader = new FXMLLoader();
-		loader.setLocation(getClass().getResource("/logic/view/ActivityCard.fxml"));
-			
-		try {
-			AnchorPane anchor = loader.load();
-			ActivityCardGraphic controller = loader.getController();
-			controller.setData(activityBean);
-			vbActivities.getChildren().add(anchor);
-		} catch (IOException e){
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		ActivityCardGraphic graphic = new ActivityCardGraphic();
+		graphic.loadActivityCard(vbActivities, activityBean);
 	}
 	
 	//load suggestion in the GUI
-	private void loadSuggestion(Place place) {
-		FXMLLoader loader = new FXMLLoader();
-		loader.setLocation(getClass().getResource("/logic/view/PlaceSuggestion.fxml"));
-			
-		try {
-			AnchorPane anchor = loader.load();
-			SuggestionCardGraphic controller = loader.getController();
-			controller.setData(place);
-			vbSuggestions.getChildren().add(anchor);
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+	private void loadSuggestion(Place place) { //TODO WTF PLACE BEAN!!!
+		SuggestionCardGraphic graphic = new SuggestionCardGraphic();
+		graphic.loadSuggestionCard(vbSuggestions, place);
+
 	}
 
 	
@@ -242,9 +224,14 @@ public class PlanTripGraphic implements GraphicController{
 //			});			
 //			loadSuggestions.start();
 			
-			List<Place> places = PlanTripController.getInstance().getNearbyPlaces(planTripBean.getDayLocation(), planTripBean.getTripBean().getCategory1());
-			for (int i = 0; i < places.size(); i++) {
-				this.loadSuggestion(places.get(i));
+			List<Place> places;
+			try {
+				places = PlanTripController.getInstance().getNearbyPlaces(planTripBean.getDayLocation(), planTripBean.getTripBean().getCategory1());
+				for (int i = 0; i < places.size(); i++) {
+					this.loadSuggestion(places.get(i));
+				}
+			} catch (APIException e) {
+				lblNoSugg.setText(e.getMessage());
 			}
 		}
 		//setup side bar buttons	

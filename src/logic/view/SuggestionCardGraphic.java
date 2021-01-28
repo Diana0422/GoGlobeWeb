@@ -7,17 +7,23 @@ import java.net.URISyntaxException;
 import java.net.URL;
 
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.VBox;
 import logic.model.Place;
+import logic.model.exceptions.LoadGraphicException;
 
 public class SuggestionCardGraphic {
 	
 
 	private static final String  IC_SUGG_BTN = "googlemaps-icon-50.png";
+	private static final String WIDGET_ERROR = "Widget loading error.";
 	private String placeName;
 
     @FXML
@@ -38,15 +44,14 @@ public class SuggestionCardGraphic {
     @FXML 
     public void lookupPlace(MouseEvent event){
     	String url = "https://maps.google.com/?q=" + placeName.replace(" ", "+");
-    	System.out.println(url);
     	try {
 			Desktop.getDesktop().browse(new URL(url).toURI());
 		} catch (MalformedURLException | URISyntaxException e) {
 			AlertGraphic graphic = new AlertGraphic();
-			graphic.display(GUIType.JOIN, GUIType.HOME, null, DesktopSessionContext.getInstance().getSession(), "The url is not correct.", e.toString());
+			graphic.display(GUIType.PLAN, GUIType.HOME, null, DesktopSessionContext.getInstance().getSession(), "The url is not correct.", e.toString());
 		} catch (IOException e) {
 			AlertGraphic graphic = new AlertGraphic();
-			graphic.display(GUIType.JOIN, GUIType.HOME, null, DesktopSessionContext.getInstance().getSession(), e.getMessage(), e.toString());
+			graphic.display(GUIType.PLAN, GUIType.HOME, null, DesktopSessionContext.getInstance().getSession(), e.getMessage(), e.toString());
 		}
     }
     
@@ -68,6 +73,32 @@ public class SuggestionCardGraphic {
 		btnAddSuggestion.setGraphic(icSuggestionBtn);
 		
     }
+    
+	public Node initializeNode(Place bean) throws LoadGraphicException {
+		
+		try {
+			FXMLLoader loader = new FXMLLoader();
+			loader.setLocation(getClass().getResource("/logic/view/PlaceSuggestion.fxml"));
+			Node node = loader.load();
+			SuggestionCardGraphic controller = loader.getController();
+			controller.setData(bean);
+			return node;
+		} catch (IOException e) {
+			throw new LoadGraphicException(e.getMessage(), e);
+		}
+		
+	}
+
+	public void loadSuggestionCard(VBox vbSuggestions, Place place) {
+		AnchorPane anchor;
+		try {
+			anchor = (AnchorPane) initializeNode(place);
+			vbSuggestions.getChildren().add(anchor);
+		} catch (LoadGraphicException e) {
+			AlertGraphic graphic = new AlertGraphic();
+			graphic.display(GUIType.PLAN, GUIType.HOME, null, DesktopSessionContext.getInstance().getSession(), WIDGET_ERROR, "Something unexpected occurred loading the suggestion cards.");
+		}
+	}
     
     
 

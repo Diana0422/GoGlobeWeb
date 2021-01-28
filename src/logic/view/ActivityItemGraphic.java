@@ -22,6 +22,7 @@ public class ActivityItemGraphic implements Initializable {
 
     @FXML
     private Label lblDescription;
+
     
     public void setData(ActivityBean bean) {
     	lblActivityName.setText(bean.getTitle());

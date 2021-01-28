@@ -14,18 +14,13 @@ public class HereImplementation {
 	
 	private static final String API_KEY = "oDbN2CPeuk1ebsCIJhhcaxEKnKuGCJiUVQB9KYkjAYY";
 	
-	
-	public JSONObject getNearbyPlaces(String coordinates, String category) {
+	public JSONObject getNearbyPlaces(String coordinates, String category) throws IOException, InterruptedException {
 		try
         {
         	HttpRequest request = HttpRequest.newBuilder()
         			.uri(URI.create("https://places.ls.hereapi.com/places/v1/discover/explore"
         					+ "?apiKey="+ API_KEY
-        					+ "&in=" + coordinates + ";r=80000" // r=80000 for category Adventure, Relax; r=15000 other
-//        					+ "&cat=natural-geographical" // --> for category Adventure
-//        					+ "&cat=sights-museums" // --> for category Culture
-//        					+ "&cat=leisure-outdoor" // --> for category Relax
-//        					+ "&cat=going-out" --> for category Fun
+        					+ "&in=" + coordinates + ";r=80000"
         					+ category
         					+ "&size=50"
         					+ "&pretty"))
@@ -37,28 +32,23 @@ public class HereImplementation {
         	HttpResponse<String> response = HttpClient.newHttpClient().send(request, HttpResponse.BodyHandlers.ofString());
         	
         	return new JSONObject(response.body());
-        }
-        catch (IOException | JSONException ex)
-        {
-            ex.printStackTrace();
+        } catch (IOException | JSONException e) {
+        	throw e;
         } catch (InterruptedException e) {
-			// TODO Auto-generated catch block
         	Thread.currentThread().interrupt();
-			e.printStackTrace();
+        	throw e;
 		}	
-		return null;
     }
 
 	
 	//GET LOCATION'S GEOCODE INFORMATION	
-	public JSONObject getLocationInfo(String locationName) {				
+	public JSONObject getLocationInfo(String locationName) throws IOException, InterruptedException {				
            return getGeocodeResponse(locationName);            	
     }
 	
 	//SEND GEOCODE REQUEST FOR locationName
-	public JSONObject getGeocodeResponse(String locationName) {
-		try
-        {
+	public JSONObject getGeocodeResponse(String locationName) throws IOException, InterruptedException {
+		try {
 			//Generating request
 			HttpRequest request = HttpRequest.newBuilder()
 					.uri(URI.create("https://geocode.search.hereapi.com/v1/"
@@ -71,15 +61,12 @@ public class HereImplementation {
         			.send(request, HttpResponse.BodyHandlers.ofString());
         	
             return new JSONObject(response.body());
-	}catch (IOException | JSONException ex)
-        {
-        ex.printStackTrace();
-    } catch (InterruptedException e) {
-		// TODO Auto-generated catch block
-    	Thread.currentThread().interrupt();
-		e.printStackTrace();
-	}		
-		return new JSONObject();
-	}	
-	
+		}catch (IOException | JSONException e){
+	        throw e;
+	    } catch (InterruptedException e) {
+	    	Thread.currentThread().interrupt();
+	    	throw e;
+		}		
+	}
 }
+

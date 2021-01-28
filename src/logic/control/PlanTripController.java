@@ -20,6 +20,7 @@ import logic.model.Location;
 import logic.model.Place;
 import logic.model.Trip;
 import logic.model.TripCategory;
+import logic.model.exceptions.APIException;
 import logic.model.factories.HereAdapterFactory;
 import logic.model.factories.TripFactory;
 import logic.model.interfaces.LocationFinder;
@@ -85,7 +86,6 @@ public class PlanTripController {
 			if (!TripDao.getInstance().saveTrip(trip, tripBean.isShared())) return false;
 			
 			/* update the user traveling attitude */
-			System.out.println(trip.getOrganizer().recalculateAttitude(trip.getCategory1(), trip.getCategory2()));
 			UserStatsDao.getInstance().updateAttitude(trip.getOrganizer().getEmail(), 
 					trip.getOrganizer().getAttitudeValue(TripCategory.FUN),
 					trip.getOrganizer().getAttitudeValue(TripCategory.CULTURE), 
@@ -106,10 +106,10 @@ public class PlanTripController {
 	}
 	
 	//Use HereAPI to get nearby places suggestions
-	public List<Place> getNearbyPlaces(String locationName, String category){
-		LocationFinder hereAPI = HereAdapterFactory.getInstance().createHereAdapter();
-		Location dayLocation = hereAPI.getLocationInfo(locationName);
-		return hereAPI.getNearbyPlaces(dayLocation.getCoordinates(), category);		
+	public List<Place> getNearbyPlaces(String locationName, String category) throws APIException{
+		LocationFinder adapterAPI = HereAdapterFactory.getInstance().createHereAdapter();
+		Location dayLocation = adapterAPI.getLocationInfo(locationName);
+		return adapterAPI.getNearbyPlaces(dayLocation.getCoordinates(), category);		
 	}
 	
 	private TripCategory parseTripCategory(String category) {

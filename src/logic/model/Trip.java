@@ -1,11 +1,9 @@
 package logic.model;
-
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+
+import logic.control.FormatManager;
 
 public class Trip {
 	
@@ -26,8 +24,6 @@ public class Trip {
 	private int maxAge;
 	private int maxParticipants;
 	private List<User> participants;
-	//Meglio lasciare solo id  e List<Days> e incapsulare gli altri attributi in una 
-	//classe associata trip info
 	
 	
 	public Trip() {
@@ -40,17 +36,8 @@ public class Trip {
 		this.price = price;
 		this.category1 = TripCategory.valueOf(cat1);
 		this.category2 = TripCategory.valueOf(cat2);
-		
-		DateFormat df = new SimpleDateFormat("dd/MM/yyyy");
-		try {
-			Date dep = df.parse(departureDate);
-			Date ret = df.parse(returnDate);
-			this.departureDate = dep;
-			this.returnDate = ret;
-		} catch (ParseException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		this.departureDate = FormatManager.parseDate(departureDate);
+		this.returnDate = FormatManager.parseDate(returnDate);
 	}
 	
 	public void addParticipant(User participant) {

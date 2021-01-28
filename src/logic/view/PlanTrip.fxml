@@ -100,6 +100,10 @@
                   <Font size="16.0" />
                </font>
             </Label>
+            <Label fx:id="lblNoSugg" layoutX="581.0" layoutY="100.0" prefHeight="17.0" prefWidth="496.0" textFill="#c60e0e">
+               <font>
+                  <Font size="14.0" />
+               </font></Label>
          </children>
       </AnchorPane>
       <AnchorPane layoutX="5.0" layoutY="164.0" prefHeight="504.0" prefWidth="211.0" AnchorPane.bottomAnchor="-3.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="164.0">
