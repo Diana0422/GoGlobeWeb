@@ -12,8 +12,19 @@ row {
     background-color: white;
 }
 
+.card-title {
+	font-family: BarlowBold;
+}
 .card {
     box-shadow: 2px 2px 20px #141e25;
+}
+
+.categories {
+	display: flex;
+}
+
+.categories h6 {
+	margin-right: 2%;
 }
 
 .card:hover {

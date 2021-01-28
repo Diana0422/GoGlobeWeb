@@ -12,6 +12,7 @@ import logic.bean.SessionBean;
 import logic.bean.TripBean;
 import logic.persistence.dao.TripDao;
 import logic.persistence.dao.UserDaoDB;
+import logic.persistence.dao.UserStatsDao;
 import logic.persistence.exceptions.DBConnectionException;
 import logic.persistence.exceptions.DatabaseException;
 import logic.model.Day;
@@ -82,6 +83,14 @@ public class PlanTripController {
 				
 			/* save trip on persistence */
 			if (!TripDao.getInstance().saveTrip(trip, tripBean.isShared())) return false;
+			
+			/* update the user traveling attitude */
+			System.out.println(trip.getOrganizer().recalculateAttitude(trip.getCategory1(), trip.getCategory2()));
+			UserStatsDao.getInstance().updateAttitude(trip.getOrganizer().getEmail(), 
+					trip.getOrganizer().getAttitudeValue(TripCategory.FUN),
+					trip.getOrganizer().getAttitudeValue(TripCategory.CULTURE), 
+					trip.getOrganizer().getAttitudeValue(TripCategory.RELAX),
+					trip.getOrganizer().getAttitudeValue(TripCategory.ADVENTURE));
 		
 			/*Converting and setting Days list (and activities)*/
 			List<Day> days;

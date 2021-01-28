@@ -8,10 +8,11 @@
 <%@page import="java.util.List"%>      <%--Importing all the dependent classes--%>
 <%@page import="java.util.Iterator"%> 
 <%@page import="java.util.concurrent.TimeUnit"%> 
+<%@ page autoFlush="true" buffer="1094kb"%>
 
-<%@page import="logic.bean.TripBean"%>
 <%@page import="logic.control.JoinTripController"%>
 <%@page import="logic.bean.TripBean"%>
+<%@page import="logic.bean.DayBean"%>
 <%@page import="logic.view.filterstrategies.StrategyContext"%>
 <%@page import="logic.view.filterstrategies.AlphabeticalFilterStrategy"%>
 <%@page import="logic.view.filterstrategies.AdventureCategoryStrategy"%>
@@ -51,30 +52,44 @@
 		<%
 	}
 %>
+     <div class="content-join-trip">
 
-    <div class="content-join-trip">
-
-			<%@ include file="html/joinTripHeader.html" %>
+		<%@ include file="html/joinTripHeader.html" %>
         
-            <%
-          		if (request.getParameter("plantrip") != null) {
-          	%>
-          			<jsp:forward page="SelectTripPreferences.jsp"/>
-          	<%
-          		}
-          	%>
+        <%
+          	if (request.getParameter("plantrip") != null) {
+         %>
+          		<jsp:forward page="SelectTripPreferences.jsp"/>
+         <%
+          	}
+         %>
 	</div>
 	<div class="trips">
         <!--cards for the results-->
-        <form method="POST">
-        <div class="results">
+        <form action="joinTrip.jsp" method="POST">
+        <div class="results scrollable">
         	
         	<%
         		JoinTripController controller = new JoinTripController();
         		TripFilterManager filterManager = new TripFilterManager();
         		List<TripBean> trips = null;
         		
-				joinTripBean.setObjects(controller.getSuggestedTrips(sessionBean.getSessionEmail()));
+				try {
+					if (joinTripBean.getSearchVal() != null) {
+						System.out.println(joinTripBean.getSearchVal());
+						joinTripBean.setObjects(controller.searchTrips(joinTripBean.getSearchVal()));
+					} else {
+						System.out.println(joinTripBean.getSearchVal());
+						joinTripBean.setObjects(controller.getSuggestedTrips(sessionBean.getSessionEmail()));
+					}
+				} catch(DatabaseException e) {
+					request.setAttribute("errType", e.getMessage());
+					if (e.getCause()!=null)request.setAttribute("errLog", e.getCause().toString());
+					%>
+					<jsp:forward page="error.jsp"/>
+					<%
+				}
+				
         		System.out.println(joinTripBean.getObjects());
         		//If ADVENTURE filter button is clicked
         		if (request.getParameter("btn-adv-filter")!= null){
@@ -116,110 +131,84 @@
 	    			trips = joinTripBean.getFilteredTrips();
 	    			System.out.println("# of filtered trips is: " + joinTripBean.getFilteredTrips().size());
         		}
+			
+
+    			if(!joinTripBean.getObjects().isEmpty()) {
+    				if (trips == null){
+    					trips = joinTripBean.getObjects();
+    				}
+    				
+    				for (TripBean trip: trips){
+    					System.out.println(trip.getTitle());
+    				}
+    				
+    				if (trips != null){
+    					Iterator<TripBean> iter = trips.iterator();
+    		
+    					int elemsInRow=0;
+    					Integer idx = 0;
+    					while(iter.hasNext()) {
+    						TripBean trip = iter.next();
+    						idx++;
+    						
+    						if (elemsInRow == 0) {
+    							%>
+    		        			<div class="row" style="height: fit-content">
+    							<%
+    						}
+    						if (elemsInRow%3 == 0 && elemsInRow != 0) {
+    							%>
+    							</div>
+    							<div class="row" style="height: fit-content">
+    							<%
+    						}
+    						if (!trip.getTitle().equals("")) {
+    							elemsInRow++;
+    							System.out.println("elemsInRow: "+elemsInRow);
+    							System.out.println("jsp: trip= "+trip);
+    							request.setAttribute("title", trip.getTitle());
+    							request.setAttribute("price", trip.getPrice());
+    							request.setAttribute("minAge", trip.getMinAge());
+    							request.setAttribute("maxAge", trip.getMaxAge());
+    							request.setAttribute("spots", trip.getMaxParticipants());
+    							request.setAttribute("cat1", trip.getCategory1());
+    							request.setAttribute("cat2", trip.getCategory2());
+    							request.setAttribute("btninfoid", idx);
+    							%>
+    							<%@ include file="html/tripCard.html" %>  			
+								<%
+    						}
+    					}
+    				}
+    			}
 				
-        		if (request.getParameter("search") != null ||
-        			request.getParameter("btn-alphab-filter")!= null ||
-        			request.getParameter("btn-fun-filter")!= null ||
-        			request.getParameter("btn-rlx-filter")!= null ||
-        			request.getParameter("btn-clt-filter")!= null ||
-        			request.getParameter("btn-adv-filter")!= null   ) {
-        			
-        	%>
+        		if (request.getParameter("search") != null ) {
+        			%>
         	    	<!-- map class attributes to values of the form -->
-					<jsp:setProperty name="joinTripBean" property="searchVal"/>
-			<%
-					
-					try {
-						joinTripBean.setObjects(controller.searchTrips(joinTripBean.getSearchVal()));
-					} catch (DatabaseException e) {
-						request.setAttribute("errType", e.getMessage());
-						if (e.getCause()!=null)request.setAttribute("errLog", e.getCause().toString());
-						%>
-						<jsp:forward page="error.jsp"/>
-						<%
-					}
-        			if(!joinTripBean.getObjects().isEmpty()) {
-        				if (trips == null){
-        					trips = joinTripBean.getObjects();
-        				}
-        				
-        				for (TripBean trip: trips){
-        					System.out.println(trip.getTitle());
-        				}
-        				
-        				if (trips != null){
-        					Iterator<TripBean> iter = trips.iterator();
-        		
-        					int elemsInRow=0;
-        					Integer idx = 0;
-        					while(iter.hasNext()) {
-        						System.out.println("iter has next!");
-        						TripBean trip = iter.next();
-        						idx++;
-        						
-        						if (elemsInRow == 0) {
-        	%>
-        		        			<div class="row" style="height: fit-content">
-        	<%
-        						}
-        						if (elemsInRow%3 == 0 && elemsInRow != 0) {
-        	%>
-        							</div>
-        							<div class="row" style="height: fit-content">
-        	<%
-        						}
-        						if (!trip.getTitle().equals("")) {
-        							elemsInRow++;
-        							System.out.println("elemsInRow: "+elemsInRow);
-        							System.out.println("jsp: trip= "+trip);
-        							request.setAttribute("title", trip.getTitle());
-        							request.setAttribute("price", trip.getPrice());
-        							request.setAttribute("btninfoid", idx);
-        	%>
-        							<%@ include file="html/tripCard.html" %>  			
-   			<%
-        						}
-        					}
-        				}
-        			}
-        			
-        		} else {
-        	%>
-        			<div class="filler"><h2>No trips found.</h2></div>
-        			
-        	<%
-        		}      	
-				
+					<jsp:setProperty name="joinTripBean" property="searchVal"/>      
+      	 			<%
+      	 			response.setIntHeader("Refresh", 0);
+      	 			System.out.println(joinTripBean.getSearchVal());
+        		}
         	%>
         	</div>
-        </div>      
-      
-        
-        <%
-             if(request.getParameter("viewinfo") != null) {
-            	int tripNum = Integer.parseInt(request.getParameter("viewinfo"));
-             	System.out.println("Button pressed: "+request.getParameter("viewinfo"));
-             	joinTripBean.setTrip(joinTripBean.getObjects().get(tripNum-1));
-             	System.out.println(joinTripBean.getObjects().get(tripNum-1));
-                %>
-                	<jsp:forward page="tripInfo.jsp"/>
-                <%
-             }
+        	
+        </div>
+    		<%@ include file="html/filters.html" %>
+
+		<%
+		  if(request.getParameter("viewinfo") != null) {
+       	  	int tripNum = Integer.parseInt(request.getParameter("viewinfo"));
+        	System.out.println("Button pressed: "+request.getParameter("viewinfo"));
+        	joinTripBean.setTrip(joinTripBean.getObjects().get(tripNum-1));
+        	System.out.println(joinTripBean.getObjects().get(tripNum-1));
+           %>
+           	<jsp:forward page="tripInfo.jsp"/>
+           <%
+        }
         %>
         </form>
-        <div class = "filter-btns">
-        	<label style="text-size: 24px"> Filters: </label>
-        	<form action="joinTrip.jsp" name="filter-form" method="POST">
-        		<button type="submit"  name="btn-alphab-filter" class="btn btn-primary btn-lg btn-block">A - Z</button>
-        		<label>Categories:</label>
-        		<button type="submit" name="btn-adv-filter" class="btn btn-primary btn-lg btn-block">Adventure</button>
-        		<button type="submit" name="btn-rlx-filter" class="btn btn-primary btn-lg btn-block">Relax</button>
-        		<button type="submit" name="btn-clt-filter"  class="btn btn-primary btn-lg btn-block">Culture</button>
-        		<button type="submit" name="btn-fun-filter" class="btn btn-primary btn-lg btn-block">Fun</button>
-        	</form>
-        </div>
-        <div class="clearfix"></div>
-      </div>
+ </div>
     
 </body>
 </html>

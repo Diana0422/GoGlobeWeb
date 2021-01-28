@@ -63,6 +63,7 @@ public class Trip {
 			this.addToDays(d);
 		}
 	}
+
 	
 	private void addToDays(Day day) {
 		Day d = new Day();

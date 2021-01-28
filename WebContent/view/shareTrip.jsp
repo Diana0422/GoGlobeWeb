@@ -34,25 +34,16 @@
 <%
 	if (request.getParameter("share-btn") != null){
 		try {
-			if (planTripBean.validateSharingPref()){
+				planTripBean.validateSharingPref();
 				tripBean.setShared(true);
 	    		PlanTripController.getInstance().saveTrip(planTripBean.getTripBean(), sessionBean); 
 				System.out.println("VIAGGIO SALVATO COME CONDIVISO");
 	%>		
 				
 				<jsp:forward page="home.jsp"/>
-	<% 
-			}else{
-				planTripBean.getTripBean().setMaxParticipants("");
-				planTripBean.getTripBean().setMaxAge("");
-				planTripBean.getTripBean().setMinAge("");
-				planTripBean.getTripBean().setDescription("");
-
-	%>
 	
 				<p style="color: red"><jsp:getProperty name="planTripBean" property="errorMsg"/></p>
 	<%
-			}
 		} catch (DatabaseException e) {
 			request.setAttribute("errType", e.getMessage());
 			if (e.getCause()!=null) request.setAttribute("errLog", e.getCause().toString());

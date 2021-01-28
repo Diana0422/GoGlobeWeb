@@ -1,9 +1,4 @@
 package logic.view;
-
-import java.awt.Desktop;
-import java.io.IOException;
-import java.net.MalformedURLException;
-import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.List;
 import java.util.ResourceBundle;
@@ -73,7 +68,11 @@ public class JoinTripGraphic implements Initializable {
 		filterManager = new TripFilterManager();
 		controller = new JoinTripController();
 		try {
-			this.tripBeans = controller.getSuggestedTrips(DesktopSessionContext.getInstance().getSession().getSessionEmail());
+			if (DesktopSessionContext.getInstance().getSession() != null) {
+				this.tripBeans = controller.getSuggestedTrips(DesktopSessionContext.getInstance().getSession().getSessionEmail());
+			} else {
+				this.tripBeans = controller.searchTrips(txtSearch.getText());
+			}
 			CardGraphic cc = new CardGraphic();
 			cc.loadCardGrid(cardsLayout, this.tripBeans);
 		} catch (DatabaseException e) {

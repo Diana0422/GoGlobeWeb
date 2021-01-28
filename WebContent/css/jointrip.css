@@ -15,7 +15,6 @@ body {
     padding-right: 10px;
     float: left;
     width: 80%;
-    background: white;
     height:100vh;
 }
 
@@ -41,8 +40,9 @@ body {
 	width: 20%;
 	height: 100vh;
 	padding:20px;
-	background: white;
-	background-color: white;
+	background: rgba(255, 255, 255, 0.4);
+	position: absolute;
+    right: 0px;
 }
 
 #bootstrap-override .page-header, .search-bar {

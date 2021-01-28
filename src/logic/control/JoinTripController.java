@@ -29,11 +29,10 @@ public class JoinTripController {
 	public List<TripBean> searchTrips(String value) throws DatabaseException {
 		String logStr = "Search trips by value started.\n";
 		Logger.getGlobal().info(logStr);
-		List<Trip> trips;
 		List<Trip> filteredTrips = new ArrayList<>();
-		if (value == null) return new ArrayList<>();
 		try {
-			trips = TripDao.getInstance().getSharedTrips();
+			List<Trip> trips = TripDao.getInstance().getSharedTrips();
+			if (value == null) return converter.convertToListBean(trips);
 			for (Trip trip: trips) {
 				if (trip.getTitle().toLowerCase().contains(value.toLowerCase())) filteredTrips.add(trip);
 				
@@ -50,26 +49,22 @@ public class JoinTripController {
 		// Fetch user from cookie
 		TripCategory favourite = null;
 		Integer topValue = 0;
-		User logged = Cookie.getInstance().getLoggedUser(userEmail);
-		
-		// Get user favorite category
-		Map<TripCategory, Integer> attitude = logged.getAttitude();
-		for (Map.Entry<TripCategory, Integer> entry: attitude.entrySet()) {
-			if (topValue <= entry.getValue()) {
-				topValue = entry.getValue();
-				favourite = entry.getKey();
-			}
-		}
 		try {
-			System.out.println(favourite);
-			System.out.println(TripDao.getInstance().getTripsForCategory(favourite).isEmpty());
-			if (favourite != null && !(TripDao.getInstance().getTripsForCategory(favourite)).isEmpty()) {
-				return converter.convertToListBean(TripDao.getInstance().getTripsForCategory(favourite));
-			} else {
-				System.out.println("Suggested shared trips:"+TripDao.getInstance().getSharedTrips());
-				System.out.println("Trip beans:"+converter.convertToListBean(TripDao.getInstance().getSharedTrips()));
-				return converter.convertToListBean(TripDao.getInstance().getSharedTrips());
+			if (userEmail != null) {
+				User logged = Cookie.getInstance().getLoggedUser(userEmail);
+				
+				// Get user favorite category
+				Map<TripCategory, Integer> attitude = logged.getAttitude();
+				for (Map.Entry<TripCategory, Integer> entry: attitude.entrySet()) {
+					if (topValue <= entry.getValue()) {
+						topValue = entry.getValue();
+						favourite = entry.getKey();
+					}
+				}
+				
+				if (favourite != null && !(TripDao.getInstance().getTripsForCategory(favourite)).isEmpty()) return converter.convertToListBean(TripDao.getInstance().getTripsForCategory(favourite));
 			}
+			return converter.convertToListBean(TripDao.getInstance().getSharedTrips());
 		} catch (SQLException | DBConnectionException e) {
 			throw new DatabaseException(e.getMessage(), e.getCause());
 		}

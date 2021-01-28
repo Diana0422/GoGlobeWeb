@@ -57,23 +57,23 @@
     			<%
     				List<DayBean> days = joinTripBean.getTrip().getDays();
 					System.out.println(days);
+    				System.out.println(days.size());
     					
-    				for (int i=0; i<joinTripBean.getTrip().getTripLength(); i++) {
+    				for (int i=0; i<days.size(); i++) {
     					DayBean dayBean = days.get(i);
     					System.out.println(dayBean);
-    			%>
-    			
-    				<li class="nav-item">
-    					<a class="nav-link" href=<%= "#day"+i+1 %> data-toggle="tab">Day <%= i+1 %></a>
-    				</li>
-    			
-    			<%
+    					%>
+    					<li class="nav-item">
+    						<a class="nav-link" href="#day<%= i+1 %>" data-toggle="tab">Day <%= i+1 %></a>
+    					</li>
+						<%
     				}    			
     			%>
     			<li class="nav-item">
     				<a class="nav-link" href="#users" data-toggle="tab">Participants</a>
     			</li>
     		</ul>
+    		<div class="tab-content">
  
  			<%
  			request.setAttribute("tripTitle", joinTripBean.getTrip().getTitle());
@@ -98,7 +98,8 @@
  				}
  				
  				if (request.getParameter("jointrip") != null ){
- 					JoinTripController.getInstance().joinTrip(joinTripBean.getTrip(), sessionBean);
+ 					JoinTripController controller = new JoinTripController();
+ 					controller.joinTrip(joinTripBean.getTrip().getTitle(), sessionBean.getSessionEmail());
  				}
  			} catch (DatabaseException e) {
  				request.setAttribute("errType", e.getMessage());
@@ -120,7 +121,7 @@
     			DayBean dayBean = days.get(i);
     			System.out.println(dayBean);
     		%>
-    			<div class="tab-pane" role="tabpanel" id=<%= "day"+i+1 %>>
+    			<div class="tab-pane" role="tabpanel" id="day<%=i+1%>">
     				<h3 id="panel-title">Location:</h3>
     				<h4><%= dayBean.getLocationCity() %></h4>
     				<h3 id="panel-title">Activities of the day:</h3>
@@ -178,7 +179,8 @@
 					%>
 	        	</div>
     		</div>
-    	</div>    		
+    	</div>    
+    </div>		
     </div>
 </body>
 </html>

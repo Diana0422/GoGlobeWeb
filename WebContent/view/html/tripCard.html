@@ -1,24 +1,33 @@
 <!DOCTYPE html>
 <html>
 <head>
-<meta charset="ISO-8859-1">
+<meta charset="UTF-8">
 <title>Insert title here</title>
 </head>
 <body>
      <!--card element-->
-     <div class="col" style="margin-bottom: 30px; max-width: 33%">
+     <div class="col" style="margin-bottom: 30px; max-width: 30%">
      	<div class="card"> <!-- add attribute text-center to center content in card-->
         	<img src="../res/images/Avenue-of-the-Baobobs-Madagascar 2.png" class="card-img-top">
         	<div class="card-body">
-        		<h3 id="title" class="card-title">${title}</h3>
-                <div class="price-tag">
-                	<h5>Starting price: </h5>
-                    <h5>${price}</h5>
+        		<h4 id="title" class="card-title">${title}</h4>
+                <div class="price-tag" style="position: absolute; right: 0px;">
+                    <h5>${price}&euro;</h5>
                 </div>
-                <img src="res/images/icons8-mountain-50.png" alt="">
-                <img src="res/images/icons8-holiday-50.png" alt="">
-                <img src="res/images/icons8-greek-pillar-capital-50.png" alt="">
-                <img src="res/images/icons8-cocktail-50.png" alt="">
+                <div class="locations">
+                	<h6>${locations}</h6>
+                </div>
+                <div class="age-range">
+                	<h6>age ${minAge} - ${maxAge}</h6>
+                </div>
+                <div class="spots-left">
+                	<h6>${spots} spots left.</h6>
+                </div>
+                <div class="categories">
+                	<h6>${cat1}</h6>
+                	<h6>&bull;</h6>
+                	<h6>${cat2}</h6>
+                </div>
                 <button type="submit" name="viewinfo" class="btn btn-primary" value="${btninfoid}">More Info...</button>
             </div>
         </div>

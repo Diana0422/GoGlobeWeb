@@ -41,7 +41,17 @@
 
 <body id="bootstrap-override">
 	
-	<%@ include file="html/loggedNavbar.html" %>
+	<%
+		if (sessionBean.getSessionEmail() == null) {
+			%>
+				<%@ include file="html/unloggedNavbar.html" %>
+			<%
+		} else {
+			%>
+				<%@ include file="html/loggedNavbar.html" %>
+			<%
+		}
+	%>
 
     <div class="displayer">
         <div class="wrapper">

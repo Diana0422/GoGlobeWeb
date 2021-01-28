@@ -122,6 +122,7 @@ public class User {
 		
 		return percAttitude;
 	}
+
 	
 	public void addToIncRequests(Request r) {
 		Request incRequest = new Request();
@@ -196,7 +197,11 @@ public class User {
 		return attitude;
 	}
 	
-	public void setAttitude(TripCategory category) {
+	public Integer getAttitudeValue(TripCategory category) {
+		return this.attitude.get(category);
+	}
+	
+	private void setAttitude(TripCategory category) {
 		Integer value = attitude.get(category)+1;
 		for (Map.Entry<TripCategory, Integer> entry: attitude.entrySet()) {
 			if (entry.getKey().equals(category)) entry.setValue(value);

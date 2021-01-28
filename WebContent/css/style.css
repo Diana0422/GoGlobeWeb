@@ -37,10 +37,9 @@
 
 body {
     font-family: BarlowMed;
-    background-image: linear-gradient(to top, rgba(245, 249, 252, 0), rgba(8, 27, 61, 0.73)),url(../res/images/MtFuji.jpg);
+    background-image: linear-gradient(rgba(8, 27, 61, 0.73), rgba(245, 249, 252, 0), rgba(8, 27, 61, 0.73)),url(../res/images/hot-spring.jpg);
     background-size: cover;
-    background-repeat: no-repeat;
-    height: fit-content;
+    height: auto;
 }
 
 #bootstrap-override .nav-bar {
