@@ -61,7 +61,7 @@
 			} catch (UnloggedException e) {
  				System.out.println(e.getMessage());
  				%>
- 				<h6 style="text-color: red"><%= e.getMessage() %> Please log in to join this trip.</h6>
+ 				<h6 style="color: red"><%= e.getMessage() %> Please log in to join this trip.</h6>
  				<%
 			}
     		%>

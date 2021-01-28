@@ -57,7 +57,7 @@
                         <Font name="System Bold" size="24.0" />
                      </font>
                   </Label>
-                  <Button id="btn" fx:id="btnPlan" layoutX="808.0" layoutY="50.0" mnemonicParsing="false" text="Plan Trip">
+                  <Button id="btn" fx:id="btnPlan" layoutX="808.0" layoutY="50.0" mnemonicParsing="false" onMouseClicked="#onPlanTrip" text="Plan Trip">
                      <font>
                         <Font size="14.0" />
                      </font>

@@ -137,4 +137,10 @@ public class JoinTripGraphic implements Initializable {
 	public void priceBtnClick(MouseEvent event) {
 		
 	}
+	
+
+    @FXML
+    void onPlanTrip(MouseEvent event) {
+    	DesktopSessionContext.getGuiLoader().loadGUI(null, null, GUIType.PREFTRIP);
+    }
 }

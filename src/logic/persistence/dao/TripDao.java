@@ -121,20 +121,20 @@ public class TripDao {
 				do {
 					// reading columns
 					String title = rs.getString(TITLE_COLUMN);
-					Date departure = rs.getDate(DEPARTURE_COLUMN);
-					Date returnDate = rs.getDate(RETURN_COLUMN);
-					TripCategory cat1 = TripCategory.valueOf(rs.getString(CATEGORY1_COLUMN));
-					TripCategory cat2 = TripCategory.valueOf(rs.getString(CATEGORY2_COLUMN));
+					Date dep = rs.getDate(DEPARTURE_COLUMN);
+					Date ret = rs.getDate(RETURN_COLUMN);
+					TripCategory categ1 = TripCategory.valueOf(rs.getString(CATEGORY1_COLUMN));
+					TripCategory categ2 = TripCategory.valueOf(rs.getString(CATEGORY2_COLUMN));
 					int price = rs.getInt(PRICE_COLUMN);
 					
 					// Instantiate new trip
 					Trip t = new Trip();
 					
 					t.setTitle(title);
-					t.setCategory1(cat1);
-					t.setCategory2(cat2);
-					t.setDepartureDate(departure);
-					t.setReturnDate(returnDate);
+					t.setCategory1(categ1);
+					t.setCategory2(categ2);
+					t.setDepartureDate(dep);
+					t.setReturnDate(ret);
 					t.setShared(false);
 					t.setPrice(price);
 					trips.add(t);
@@ -165,10 +165,10 @@ public class TripDao {
 				do {
 					// reading columns
 					String title = rs.getString(TITLE_COLUMN);
-					Date departure = rs.getDate(DEPARTURE_COLUMN);
-					Date returnDate = rs.getDate(RETURN_COLUMN);
-					TripCategory cat1 = TripCategory.valueOf(rs.getString(CATEGORY1_COLUMN));
-					TripCategory cat2 = TripCategory.valueOf(rs.getString(CATEGORY2_COLUMN));
+					Date depart = rs.getDate(DEPARTURE_COLUMN);
+					Date ret = rs.getDate(RETURN_COLUMN);
+					TripCategory category1 = TripCategory.valueOf(rs.getString(CATEGORY1_COLUMN));
+					TripCategory category2 = TripCategory.valueOf(rs.getString(CATEGORY2_COLUMN));
 					int price = rs.getInt(PRICE_COLUMN);
 					String desc = rs.getString(DESC_COLUMN);
 					int minAge = rs.getInt(MIN_AGE_COLUMN);
@@ -179,10 +179,10 @@ public class TripDao {
 					Trip t = new Trip();
 					
 					t.setTitle(title);
-					t.setCategory1(cat1);
-					t.setCategory2(cat2);
-					t.setDepartureDate(departure);
-					t.setReturnDate(returnDate);
+					t.setCategory1(category1);
+					t.setCategory2(category2);
+					t.setDepartureDate(depart);
+					t.setReturnDate(ret);
 					t.setPrice(price);
 					t.setMaxParticipants(maxParticipants);
 					t.setMaxAge(maxAge);
@@ -229,8 +229,8 @@ public class TripDao {
 				do {
 					// reading columns
 					String title = rs.getString(TITLE_COLUMN);
-					Date departure = rs.getDate(DEPARTURE_COLUMN);
-					Date returnDate = rs.getDate(RETURN_COLUMN);
+					Date d = rs.getDate(DEPARTURE_COLUMN);
+					Date r = rs.getDate(RETURN_COLUMN);
 					TripCategory cat1 = TripCategory.valueOf(rs.getString(CATEGORY1_COLUMN));
 					TripCategory cat2 = TripCategory.valueOf(rs.getString(CATEGORY2_COLUMN));
 					int price = rs.getInt(PRICE_COLUMN);
@@ -245,8 +245,8 @@ public class TripDao {
 					t.setTitle(title);
 					t.setCategory1(cat1);
 					t.setCategory2(cat2);
-					t.setDepartureDate(departure);
-					t.setReturnDate(returnDate);
+					t.setDepartureDate(d);
+					t.setReturnDate(r);
 					t.setPrice(price);
 					t.setMaxParticipants(maxParticipants);
 					t.setMaxAge(maxAge);

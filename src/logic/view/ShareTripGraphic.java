@@ -103,7 +103,8 @@ public class ShareTripGraphic implements GraphicController {
         try {
             desktop.open(file);
         } catch (IOException e) {
-           //TODO exception
+			AlertGraphic alert = new AlertGraphic();
+			alert.display(GUIType.SHARE, GUIType.HOME, null, DesktopSessionContext.getInstance().getSession(), e.getMessage(), e.getCause().toString());
         }
     }
 

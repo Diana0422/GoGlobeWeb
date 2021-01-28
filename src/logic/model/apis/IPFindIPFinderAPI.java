@@ -23,14 +23,14 @@ public class IPFindIPFinderAPI {
 	    		.method("GET", HttpRequest.BodyPublishers.noBody())
 	    		.build();
 			
-		HttpResponse<String> response;
+		HttpResponse<String> resp;
 		try {
-			response = HttpClient.newHttpClient().send(request, HttpResponse.BodyHandlers.ofString());
+			resp = HttpClient.newHttpClient().send(request, HttpResponse.BodyHandlers.ofString());
 					
-			String logStr = response.body();
+			String logStr = resp.body();
 			Logger.getGlobal().info(logStr);
 			        
-			JSONObject json = new JSONObject(response.body());
+			JSONObject json = new JSONObject(resp.body());
 			    
 			logStr = "IP Address: "+json.getString("ip_address");
 			Logger.getGlobal().info(logStr);
