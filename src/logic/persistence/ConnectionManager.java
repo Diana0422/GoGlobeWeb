@@ -1,18 +1,18 @@
 package logic.persistence;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
+import java.util.Properties;
 
 import logic.persistence.exceptions.DBConnectionException;
 
 public class ConnectionManager {
 	
 	private static ConnectionManager instance = null;
-	
-	private String user = "root";
-    private String pass = "rootpass";
-    private String dbUrl = "jdbc:mysql://localhost:3306/goglobedb?serverTimezone=Europe/Rome";
+	private static Properties prop;
     private String driverClassName = "com.mysql.cj.jdbc.Driver";
     
     private ConnectionManager() {/*empty for singleton*/}
@@ -20,6 +20,7 @@ public class ConnectionManager {
     public static ConnectionManager getInstance() {
     	if (instance == null) {
     		instance = new ConnectionManager();
+    		prop = new Properties();
     	}
     	
     	return instance;
@@ -33,11 +34,18 @@ public class ConnectionManager {
 			throw new DBConnectionException("Cannot establish connection to database.", e.getCause());
 		}
 		
-		try {
+			
+		try (InputStream input = ConnectionManager.class.getResourceAsStream("../goglobe_config.properties")) {
+			prop.load(input);
+			
+			String user = prop.getProperty("user");
+			String pass = prop.getProperty("pass");
+			String dbUrl = prop.getProperty("dbUrl");
 			return DriverManager.getConnection(dbUrl, user, pass);
-		} catch (SQLException e) {
-			throw new DBConnectionException("Cannot establish connection to database.", e.getCause());
+		} catch (IOException | SQLException e) {
+			throw new DBConnectionException(e.getMessage());
 		}
+
 	}
     
     
