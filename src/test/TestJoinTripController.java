@@ -23,10 +23,13 @@ import logic.persistence.dao.UserDaoDB;
 import logic.persistence.exceptions.DBConnectionException;
 import logic.persistence.exceptions.DatabaseException;
 
+/**
+ * @author diana pasquali
+ */
+
 @TestMethodOrder(OrderAnnotation.class)
 public class TestJoinTripController {
 	
-	/* Diana Pasquali Test Class */
 	private static final String TRIP_TITLE = "TestViaggio";
 	private static final String ORGANIZER_ID = "organizer@gmail.com";
 	private static final String NOT_ORGANIZER_ID = "notorganizer@gmail.com";

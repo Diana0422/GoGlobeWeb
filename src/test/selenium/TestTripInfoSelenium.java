@@ -17,9 +17,12 @@ import logic.model.Trip;
 import logic.persistence.dao.TripDao;
 import logic.persistence.exceptions.DBConnectionException;
 
+/**
+ * @author diana pasquali
+ */
+
 public class TestTripInfoSelenium {
-	
-	/* Diana Pasquali Test Class */
+
 	private static final String TRIP_TITLE = "TestViaggio";
 	private static final String DRIVER_PROPERTY = "webdriver.chrome.driver";
 	private static final String DRIVER_PATH = "Drivers/chromedriver.exe";
