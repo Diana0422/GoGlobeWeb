@@ -16,7 +16,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
-import logic.model.Place;
+import logic.model.PlaceBean;
 import logic.model.exceptions.LoadGraphicException;
 
 public class SuggestionCardGraphic {
@@ -55,7 +55,7 @@ public class SuggestionCardGraphic {
 		}
     }
     
-    public void setData(Place place) {
+    public void setData(PlaceBean place) {
 
     	placeName = place.getName();
     	lblPlaceName.setText(place.getName());
@@ -74,7 +74,7 @@ public class SuggestionCardGraphic {
 		
     }
     
-	public Node initializeNode(Place bean) throws LoadGraphicException {
+	public Node initializeNode(PlaceBean bean) throws LoadGraphicException {
 		
 		try {
 			FXMLLoader loader = new FXMLLoader();
@@ -89,7 +89,7 @@ public class SuggestionCardGraphic {
 		
 	}
 
-	public void loadSuggestionCard(VBox vbSuggestions, Place place) {
+	public void loadSuggestionCard(VBox vbSuggestions, PlaceBean place) {
 		AnchorPane anchor;
 		try {
 			anchor = (AnchorPane) initializeNode(place);

@@ -15,7 +15,7 @@ import javafx.scene.text.Text;
 import logic.bean.ActivityBean;
 import logic.bean.PlanTripBean;
 import logic.control.PlanTripController;
-import logic.model.Place;
+import logic.model.PlaceBean;
 import logic.model.exceptions.APIException;
 import logic.model.exceptions.FormInputException;
 import logic.model.exceptions.TripNotCompletedException;
@@ -163,7 +163,7 @@ public class PlanTripGraphic implements GraphicController{
 	}
 	
 	//load suggestion in the GUI
-	private void loadSuggestion(Place place) { //TODO WTF PLACE BEAN!!!
+	private void loadSuggestion(PlaceBean place) {
 		SuggestionCardGraphic graphic = new SuggestionCardGraphic();
 		graphic.loadSuggestionCard(vbSuggestions, place);
 
@@ -224,7 +224,7 @@ public class PlanTripGraphic implements GraphicController{
 //			});			
 //			loadSuggestions.start();
 			
-			List<Place> places;
+			List<PlaceBean> places;
 			try {
 				places = PlanTripController.getInstance().getNearbyPlaces(planTripBean.getDayLocation(), planTripBean.getTripBean().getCategory1());
 				for (int i = 0; i < places.size(); i++) {

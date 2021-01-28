@@ -7,7 +7,7 @@ import java.util.List;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import logic.model.Location;
-import logic.model.Place;
+import logic.model.PlaceBean;
 import logic.model.apis.HereImplementation;
 import logic.model.exceptions.APIException;
 import logic.model.interfaces.LocationFinder;
@@ -31,7 +31,7 @@ public class HereAPIAdapter implements LocationFinder{
 	
 
 	@Override
-	public List<Place> getNearbyPlaces(String coordinates, String category) throws APIException {	
+	public List<PlaceBean> getNearbyPlaces(String coordinates, String category) throws APIException {	
 		category = categoryHash.get(category.toUpperCase());		
 		JSONObject response;
 		String placeName;
@@ -40,7 +40,7 @@ public class HereAPIAdapter implements LocationFinder{
 		String openingHours;
 		try {
 			response = hereAPI.getNearbyPlaces(coordinates, category);
-			List<Place> nearbyPlaces = new ArrayList<>();
+			List<PlaceBean> nearbyPlaces = new ArrayList<>();
 			JSONArray items = response.getJSONObject("results").getJSONArray("items");
 			//parse every item in response to Place objects
 			for (int i = 0; i < items.length(); i++) {
@@ -55,7 +55,7 @@ public class HereAPIAdapter implements LocationFinder{
 					openingHours = "";
 				}
 				
-				Place newPlace = new Place(placeName, placeAddress, openingHours, iconRef);
+				PlaceBean newPlace = new PlaceBean(placeName, placeAddress, openingHours, iconRef);
 				nearbyPlaces.add(newPlace);	
 			}
 			return nearbyPlaces;

@@ -1,13 +1,13 @@
 package logic.model;
 
-public class Place {
+public class PlaceBean {
 	
 	private String name;
 	private String address;
 	private String openingHours;
 	private String icCategoryRef;
 	
-	public Place(String name, String address, String openingHours, String icCategoryRef) {
+	public PlaceBean(String name, String address, String openingHours, String icCategoryRef) {
 		this.name = name;
 		this.address = address;
 		this.openingHours = openingHours;

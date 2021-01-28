@@ -82,9 +82,9 @@ public class TripDao {
 				TripCategory cat1 = TripCategory.valueOf(rs.getString(CATEGORY1_COLUMN));
 				TripCategory cat2 = TripCategory.valueOf(rs.getString(CATEGORY2_COLUMN));
 				String organizer = rs.getString(ORG_COLUMN);
-				String tripDesc = rs.getString(DESC_COLUMN);
-				int minAge = rs.getInt(MIN_AGE_COLUMN);
-				int maxAge = rs.getInt(MAX_AGE_COLUMN);
+				String tripDescription = rs.getString(DESC_COLUMN);
+				int tripMinAge = rs.getInt(MIN_AGE_COLUMN);
+				int tripMaxAge = rs.getInt(MAX_AGE_COLUMN);
 				int maxPart = rs.getInt(MAX_PART_COLUMN);
 				trip.setTitle(tripTitle);
 				trip.setPrice(price);
@@ -92,10 +92,10 @@ public class TripDao {
 				trip.setCategory2(cat2);
 				trip.setDepartureDate(dep);
 				trip.setReturnDate(ret);
-				trip.setDescription(tripDesc);
-				trip.setMaxAge(maxAge);
+				trip.setDescription(tripDescription);
+				trip.setMaxAge(tripMaxAge);
 				trip.setMaxParticipants(maxPart);
-				trip.setMinAge(minAge);
+				trip.setMinAge(tripMinAge);
 				trip.setOrganizer(UserDaoDB.getInstance().get(organizer));
 			}
 			

@@ -29,7 +29,6 @@ public class JoinTripBean {
 	
 	public void setObjects(List<TripBean> objects) {
 		this.objects = objects;
-		System.out.println("Join trip objects:"+this.getObjects());
 	}
 	
 	public TripBean getTrip() {

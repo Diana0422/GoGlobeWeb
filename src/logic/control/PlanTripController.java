@@ -17,7 +17,7 @@ import logic.persistence.exceptions.DBConnectionException;
 import logic.persistence.exceptions.DatabaseException;
 import logic.model.Day;
 import logic.model.Location;
-import logic.model.Place;
+import logic.model.PlaceBean;
 import logic.model.Trip;
 import logic.model.TripCategory;
 import logic.model.exceptions.APIException;
@@ -106,7 +106,7 @@ public class PlanTripController {
 	}
 	
 	//Use HereAPI to get nearby places suggestions
-	public List<Place> getNearbyPlaces(String locationName, String category) throws APIException{
+	public List<PlaceBean> getNearbyPlaces(String locationName, String category) throws APIException{
 		LocationFinder adapterAPI = HereAdapterFactory.getInstance().createHereAdapter();
 		Location dayLocation = adapterAPI.getLocationInfo(locationName);
 		return adapterAPI.getNearbyPlaces(dayLocation.getCoordinates(), category);		

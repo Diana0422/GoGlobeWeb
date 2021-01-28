@@ -135,7 +135,7 @@ public class JoinTripGraphic implements Initializable {
 	
 	@FXML
 	public void priceBtnClick(MouseEvent event) {
-		
+		//empty
 	}
 	
 
