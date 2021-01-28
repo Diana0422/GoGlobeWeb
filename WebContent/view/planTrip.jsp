@@ -1,7 +1,9 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
     
-<%@page import="java.util.List"%>      
+<%@page import="java.util.List"%> 
+<%@page import="java.awt.Desktop"%>      
+<%@page import="java.net.URL"%>      
 <%@page import="java.util.Iterator"%> 
 <%@page import="logic.model.Trip"%>
 <%@page import="logic.model.Day"%>
@@ -9,7 +11,6 @@
 <%@page import="logic.control.PlanTripController"%>
 <%@page import="logic.persistence.exceptions.DatabaseException"%>
 <%@page import="logic.model.exceptions.TripNotCompletedException"%>
-    
 <jsp:useBean id="planTripBean" scope="session" class="logic.bean.PlanTripBean"/>
 <jsp:useBean id="tripBean" scope="session" class="logic.bean.TripBean"/>
 <jsp:useBean id="activityBean" scope="request" class="logic.bean.ActivityBean"/> 
@@ -35,6 +36,8 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.min.js"></script>
 </head>
 <body id="bootstrap-override">
+
+	<% List<Place> suggestions = null; %>
     
 	<%@ include file="html/loggedNavbar.html" %>
     
@@ -227,13 +230,14 @@
 <%
 		if (!(planTripBean.checkDay())){
 					
-			List<Place> suggestions = PlanTripController.getInstance().getNearbyPlaces(planTripBean.getDayLocation(), tripBean.getCategory1());
+			suggestions = PlanTripController.getInstance().getNearbyPlaces(planTripBean.getDayLocation(), tripBean.getCategory1());
 			for (int i = 0; i < suggestions.size(); i++){
 %>
 				
 				<!--  INSERIRE LAYOUT SUGGESTION QUI -->
 				
 		        <div class = "suggestion-card">
+		        <form>
 		            <div class="ic-container">
 		                <img class="suggestion-icon" src=<%= suggestions.get(i).getIcCategoryRef() %> alt=""> 
 		            </div>
@@ -242,6 +246,10 @@
 		                <p><%= suggestions.get(i).getAddress() %></p>
 		                <p><%= suggestions.get(i).getOpeningHours() %></p>
 		            </div>
+		            <div class="center suggestion-btn">
+		            	<button type="submit" name="btn-lookup-place" value=<%= i%> ></button>
+		           	</div>
+		       </form>
 		       </div>
 <% 			
 			}
@@ -251,6 +259,14 @@
 		}
 %>
 	   </div>
+	   
+<%
+	if (request.getParameter("btn-lookup-place") != null){
+		Place suggestion = suggestions.get(Integer.parseInt(request.getParameter("btn-lookup-place")));
+    	String url = "https://maps.google.com/?q=" + suggestion.getName().replace(" ", "+");
+		Desktop.getDesktop().browse(new URL(url).toURI());
+	}
+%>
 	  
     
 </body>

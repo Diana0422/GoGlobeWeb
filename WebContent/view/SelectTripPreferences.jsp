@@ -1,9 +1,10 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
     <%@page import="logic.control.PlanTripController"%>
-    <%@page import="logic.control.ConversionController"%>
     <%@page import="java.util.Date"%>    
     <%@page import="logic.bean.TripBean"%>
+     <%@page import="java.text.SimpleDateFormat"%>
+    
     <%@page import="logic.model.exceptions.FormInputException"%>
     
    <jsp:useBean id="planTripBean" scope="session" class="logic.bean.PlanTripBean"/>    
@@ -11,6 +12,8 @@
    <jsp:setProperty name="tripBean" property="*"/>
    
 <% 
+
+	final String DATE_FORMAT = "dd/MM/yyyy";
    if (request.getParameter("back-btn")!= null){
 %>
 	   <jsp:forward page="home.jsp"/>
@@ -47,8 +50,8 @@
 		try{	
 			planTripBean.setTripBean(tripBean);
 			if (planTripBean.validateForm()){
-				Date depDate = ConversionController.getInstance().parseDate(tripBean.getDepartureDate());
-				Date retDate = ConversionController.getInstance().parseDate(tripBean.getReturnDate());
+				Date depDate = new SimpleDateFormat(DATE_FORMAT).parse(tripBean.getDepartureDate());
+				Date retDate = new SimpleDateFormat(DATE_FORMAT).parse(tripBean.getReturnDate());
 				long tripLength = PlanTripController.getInstance().calculateTripLength(depDate, retDate) + 1;
 				tripBean.setTripLength(tripLength);
 				tripBean.createDays();				
