@@ -6,7 +6,6 @@ import java.util.logging.Logger;
 
 import logic.bean.RequestBean;
 import logic.bean.SessionBean;
-import logic.bean.UserBean;
 import logic.persistence.dao.RequestDao;
 import logic.persistence.dao.TripDao;
 import logic.persistence.dao.UserDaoDB;
@@ -14,9 +13,7 @@ import logic.persistence.exceptions.DBConnectionException;
 import logic.persistence.exceptions.DatabaseException;
 import logic.model.Request;
 import logic.model.User;
-import logic.model.utils.converters.BeanConverter;
 import logic.model.utils.converters.RequestBeanConverter;
-import logic.model.utils.converters.UserBeanConverter;
 
 public class ManageRequestController {
 
@@ -35,18 +32,6 @@ public class ManageRequestController {
 		
 		return instance;
 	} 
-	
-	
-	public UserBean getSenderBean(RequestBean requestBean) throws DatabaseException {
-		User sender;//TODO levare
-		BeanConverter<User,UserBean> userConverter = new UserBeanConverter();
-		try {
-			sender = UserDaoDB.getInstance().get(requestBean.getSenderEmail());
-			return userConverter.convertToBean(sender);
-		} catch (DBConnectionException | SQLException e) {
-			throw new DatabaseException(e.getMessage(), e.getCause());
-		}
-	}
 	
 	public synchronized boolean acceptRequest(RequestBean requestBean) throws DatabaseException {
 		// get request from persistence

@@ -38,4 +38,9 @@ public class FormatManager {
 		return formatter.format(date);
 	}
 	
+	public static String formatDateSQL(Date date) {
+		DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+		return formatter.format(date);
+	}
+	
 }

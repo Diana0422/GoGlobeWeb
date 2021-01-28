@@ -5,8 +5,10 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.Date;
+import java.sql.Date;
 import java.util.List;
+
+import logic.control.FormatManager;
 import logic.model.Review;
 import logic.model.RoleType;
 import logic.model.User;
@@ -87,7 +89,7 @@ public class ReviewDao {
 			stmt.setString(1, t.getReviewer().getEmail());
 			stmt.setString(2, target);
 			stmt.setString(3, t.getComment());
-			stmt.setDate(4, new java.sql.Date(t.getDate().getTime()));
+			stmt.setDate(4, Date.valueOf(FormatManager.formatDateSQL(t.getDate())));
 			stmt.setString(5, t.getType().toString());
 			stmt.setString(6, t.getTitle());
 			stmt.setDouble(7, t.getVote());

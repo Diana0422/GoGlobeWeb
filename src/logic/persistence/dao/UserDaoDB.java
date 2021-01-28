@@ -4,9 +4,10 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.Date;
+import java.sql.Date;
 import java.util.List;
 
+import logic.control.FormatManager;
 import logic.model.User;
 import logic.persistence.ConnectionManager;
 import logic.persistence.exceptions.DBConnectionException;
@@ -86,7 +87,7 @@ public class UserDaoDB {
 			stmt.setString(2, t.getPassword());
 			stmt.setString(3, t.getName());
 			stmt.setString(4, t.getSurname());
-			stmt.setDate(5, new java.sql.Date(t.getBirthday().getTime()));
+			stmt.setDate(5, Date.valueOf(FormatManager.formatDateSQL(t.getBirthday())));
 			stmt.execute();
 			return true;
 		} catch (SQLException e) {

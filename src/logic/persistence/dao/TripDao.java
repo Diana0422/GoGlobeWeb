@@ -8,6 +8,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import logic.control.FormatManager;
 import logic.model.Trip;
 import logic.model.TripCategory;
 import logic.persistence.ConnectionManager;
@@ -52,8 +53,8 @@ public class TripDao {
 			stmt.setString(2, t.getTitle());
 			stmt.setString(3, t.getCategory1().toString());
 			stmt.setString(4, t.getCategory2().toString());
-			stmt.setDate(5, new java.sql.Date(t.getDepartureDate().getTime()));
-			stmt.setDate(6, new java.sql.Date(t.getReturnDate().getTime()));
+			stmt.setDate(5, Date.valueOf(FormatManager.formatDateSQL(t.getDepartureDate())));
+			stmt.setDate(6, Date.valueOf(FormatManager.formatDateSQL(t.getReturnDate())));
 			stmt.setString(7, t.getOrganizer().getEmail());
 			stmt.setString(8, t.getDescription());
 			stmt.setInt(9, t.getMinAge());
@@ -171,9 +172,9 @@ public class TripDao {
 					TripCategory category2 = TripCategory.valueOf(rs.getString(CATEGORY2_COLUMN));
 					int price = rs.getInt(PRICE_COLUMN);
 					String desc = rs.getString(DESC_COLUMN);
-					int minAge = rs.getInt(MIN_AGE_COLUMN);
-					int maxAge = rs.getInt(MAX_AGE_COLUMN);
-					int maxParticipants = rs.getInt(MAX_PART_COLUMN);
+					int ageMin = rs.getInt(MIN_AGE_COLUMN);
+					int ageMax = rs.getInt(MAX_AGE_COLUMN);
+					int maxPart = rs.getInt(MAX_PART_COLUMN);
 					
 					// Instantiate new trip
 					Trip t = new Trip();
@@ -184,9 +185,9 @@ public class TripDao {
 					t.setDepartureDate(depart);
 					t.setReturnDate(ret);
 					t.setPrice(price);
-					t.setMaxParticipants(maxParticipants);
-					t.setMaxAge(maxAge);
-					t.setMinAge(minAge);
+					t.setMaxParticipants(maxPart);
+					t.setMaxAge(ageMax);
+					t.setMinAge(ageMin);
 					t.setDescription(desc);
 					t.setShared(true);
 					
