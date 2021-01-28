@@ -3,6 +3,8 @@
     
    <%@page import="logic.control.PlanTripController"%>
    <%@page import="logic.persistence.exceptions.DatabaseException"%>
+      <%@page import="logic.model.exceptions.FormInputException"%>
+   
     
    <jsp:useBean id="planTripBean" scope="session" class="logic.bean.PlanTripBean"/> 
    <jsp:useBean id="tripBean" scope="session" class="logic.bean.TripBean"/> 
@@ -42,7 +44,7 @@
 				
 				<jsp:forward page="home.jsp"/>
 	
-				<p style="color: red"><jsp:getProperty name="planTripBean" property="errorMsg"/></p>
+				
 	<%
 		} catch (DatabaseException e) {
 			request.setAttribute("errType", e.getMessage());
@@ -50,9 +52,17 @@
 			%>
 			 <jsp:forward page="error.jsp"/>
 			<%
+		} catch (FormInputException e){
+%>
+			<p style="color: red"><%= e.getMessage() %></p>
+<% 
+			planTripBean.getTripBean().setMaxParticipants("");
+			planTripBean.getTripBean().setMaxAge("");
+			planTripBean.getTripBean().setMinAge("");
+			planTripBean.getTripBean().setDescription("");
 		}
 	}
-	%>
+%>
             <form method="POST" action="shareTrip.jsp">
             
             		

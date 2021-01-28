@@ -85,4 +85,12 @@ public class ProfileController {
 			throw new DatabaseException(e.getMessage(), e.getCause());
 		}
 	}
+	
+	public void updateUserBio (String userEmail, String newUserBio) throws DatabaseException {
+		try {
+			UserDaoDB.getInstance().updateUserBio(userEmail, newUserBio);
+		} catch (DBConnectionException | SQLException e ) {
+			throw new DatabaseException(e.getMessage(), e.getCause());
+		}
+	}
 }

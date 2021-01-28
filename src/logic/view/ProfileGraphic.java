@@ -5,10 +5,10 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
-
 import org.controlsfx.control.Rating;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
@@ -83,13 +83,21 @@ public class ProfileGraphic implements GraphicController {
     
     @FXML
     private Button btnBack;
-    
-
+   
     @FXML
     private Rating ratingTra;
 
     @FXML
     private Rating ratingOrg;
+    
+    @FXML 
+    private TextArea taBio;
+    
+    @FXML 
+    private Button btnSaveBio;
+    
+    @FXML
+    private Label lblUserBio;
     
     private Object bundle;
     
@@ -102,6 +110,16 @@ public class ProfileGraphic implements GraphicController {
     @FXML
     void back(MouseEvent event) {
     	DesktopSessionContext.getGuiLoader().loadGUI(null, this.bundle, null);
+    }	
+    
+    @FXML
+    void saveBio(MouseEvent event) {
+    	try {
+			ProfileController.getInstance().updateUserBio(DesktopSessionContext.getInstance().getSession().getSessionEmail(), taBio.getText());
+		} catch (DatabaseException e) {
+			AlertGraphic alert = new AlertGraphic();
+			alert.display(GUIType.PROFILE, GUIType.HOME, null, DesktopSessionContext.getInstance().getSession(), e.getMessage(), e.getCause().toString());
+		}
     }
     
     @FXML
@@ -205,10 +223,30 @@ public class ProfileGraphic implements GraphicController {
 		
 		txtNameSurname.setText(target.getName()+" "+target.getSurname());
 		txtAge.setText(Integer.toString(target.getAge()));
+		String targetBio = target.getBio();
+		if (targetBio == null || targetBio.equals("")) {
+			targetBio = "User has no Bio.";
+		}
+		
+		
+		//check if loaded profile is logged user's profile
+		if (!target.getEmail().equals(DesktopSessionContext.getInstance().getSession().getSessionEmail())) {
+			
+			taBio.setVisible(false);
+			btnSaveBio.setVisible(false);			
+			lblUserBio.setText(targetBio);
+
+		}else{
+			
+			taBio.setText(targetBio);
+			lblUserBio.setVisible(false);
+			
+		}
 		
 		// Display ratings
 		displayOrganizerRating(target.getStatsBean().getOrgRating());
 		displayTravelerRating(target.getStatsBean().getTravRating());
+		
 		
 		// Fetch bean reviews and display them
 		displayReviews(target.getReviews());

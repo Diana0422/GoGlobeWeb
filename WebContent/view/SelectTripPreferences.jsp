@@ -4,8 +4,9 @@
     <%@page import="java.util.Date"%>    
     <%@page import="logic.bean.TripBean"%>
      <%@page import="java.text.SimpleDateFormat"%>
-    
     <%@page import="logic.model.exceptions.FormInputException"%>
+    <%@page import="logic.control.FormatManager"%>
+    
     
    <jsp:useBean id="planTripBean" scope="session" class="logic.bean.PlanTripBean"/>    
    <jsp:useBean id="tripBean" scope="session" class="logic.bean.TripBean"/>
@@ -50,8 +51,8 @@
 		try{	
 			planTripBean.setTripBean(tripBean);
 			if (planTripBean.validateForm()){
-				Date depDate = new SimpleDateFormat(DATE_FORMAT).parse(tripBean.getDepartureDate());
-				Date retDate = new SimpleDateFormat(DATE_FORMAT).parse(tripBean.getReturnDate());
+				Date depDate = FormatManager.parseDate(tripBean.getDepartureDate());
+				Date retDate = FormatManager.parseDate(tripBean.getReturnDate());
 				long tripLength = PlanTripController.getInstance().calculateTripLength(depDate, retDate) + 1;
 				tripBean.setTripLength(tripLength);
 				tripBean.createDays();				
@@ -78,8 +79,8 @@
                     <!-- Trip name-->
                     <div class="form-group col-md-6">
                         <label for="inputDepDate" ><h4>Trip Title</h4></label>
-                        <input type="text" class="form-control" name="title" id="tripName" maxlength="25">
-                        <!-- placeholder="Enter trip name..." --> 
+                        <input type="text" class="form-control" name="title" id="tripName" maxlength="25" placeholder="Enter trip name...">
+                
                     </div>
                 </div>
 

@@ -33,9 +33,19 @@
                            <content>
                               <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="471.0" prefWidth="1066.0">
                                  <children>
-                                    <Label alignment="TOP_LEFT" prefHeight="472.0" prefWidth="754.0" style="-fx-padding: 15px;" text="THIS IS A GOOD LABEL">
+                                    <TextArea fx:id="taBio" layoutX="14.0" layoutY="14.0" prefHeight="348.0" prefWidth="868.0" promptText="Tell other users something about yourself!">
                                        <font>
-                                          <Font size="16.0" />
+                                          <Font size="27.0" />
+                                       </font>
+                                    </TextArea>
+                                    <Button fx:id="btnSaveBio" layoutX="13.0" layoutY="370.0" mnemonicParsing="false" onMouseClicked="#saveBio" prefHeight="50.0" prefWidth="869.0" text="Save bio">
+                                       <font>
+                                          <Font size="21.0" />
+                                       </font>
+                                    </Button>
+                                    <Label fx:id="lblUserBio" alignment="TOP_LEFT" contentDisplay="CENTER" layoutX="13.0" layoutY="6.0" prefHeight="182.0" prefWidth="870.0">
+                                       <font>
+                                          <Font size="27.0" />
                                        </font>
                                     </Label>
                                  </children>
