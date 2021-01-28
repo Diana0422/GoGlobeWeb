@@ -12,7 +12,7 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 
-import logic.control.ConversionController;
+import logic.control.FormatManager;
 import logic.model.Trip;
 import logic.persistence.dao.TripDao;
 import logic.persistence.exceptions.DBConnectionException;
@@ -240,7 +240,7 @@ public class TestTripInfoSelenium {
 		
 		try {
 			Trip trip = TripDao.getInstance().getTripByTitle(TRIP_TITLE);
-			String dep = ConversionController.getInstance().formatDate(trip.getDepartureDate());
+			String dep = FormatManager.formatDate(trip.getDepartureDate());
 			assertEquals(dep, resDeparture);
 		} catch (DBConnectionException | SQLException e) {
 			Logger.getGlobal().log(Level.SEVERE, ERROR_MSG);
@@ -268,7 +268,7 @@ public class TestTripInfoSelenium {
 		
 		try {
 			Trip trip = TripDao.getInstance().getTripByTitle(TRIP_TITLE);
-			String dep = ConversionController.getInstance().formatDate(trip.getReturnDate());
+			String dep = FormatManager.formatDate(trip.getReturnDate());
 			assertEquals(dep, resReturn);
 		} catch (DBConnectionException | SQLException e) {
 			Logger.getGlobal().log(Level.SEVERE, ERROR_MSG);

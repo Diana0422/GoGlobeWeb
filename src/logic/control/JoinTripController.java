@@ -78,13 +78,16 @@ public class JoinTripController {
 			if (userEmail == null) throw new UnloggedException();
 			trip = TripDao.getInstance().getTripByTitle(tripTitle);
 			User appliant = Cookie.getInstance().getLoggedUser(userEmail);
-			int userAge = appliant.calculateUserAge();
-			
-			// Fetch trip organizer from database
-			trip.setOrganizer(UserDaoDB.getInstance().getTripOrganizer(tripTitle));
-			if (trip.getOrganizer().getEmail().equals(appliant.getEmail())) check = false;
-			if (userAge<trip.getMinAge() || userAge>trip.getMaxAge()) check = false;
-			return check;
+			if (appliant != null) {
+				int userAge = appliant.calculateUserAge();
+				// Fetch trip organizer from database
+				trip.setOrganizer(UserDaoDB.getInstance().getTripOrganizer(tripTitle));
+				if (trip.getOrganizer().getEmail().equals(appliant.getEmail())) check = false;
+				if (userAge<trip.getMinAge() || userAge>trip.getMaxAge()) check = false;
+				return check;
+			} else {
+				throw new UnloggedException();
+			}
 		} catch (DBConnectionException | SQLException e) {
 			throw new DatabaseException(e.getMessage(), e.getCause());
 		}
@@ -109,15 +112,16 @@ public class JoinTripController {
 				receiverUser.addToIncRequests(request);
 				
 				// Save the request in persistence
-				if (RequestDao.getInstance().getRequest(request.getTarget().getTitle(), appliantEmail)== null) return RequestDao.getInstance().save(request, appliantEmail);
+				return RequestDao.getInstance().save(request, appliantEmail);
 			} catch (DBConnectionException | SQLException e) {
 				throw new DatabaseException(e.getMessage(), e.getCause());
 			}
+		} else {
+			return false;
 		}
-		return true;
 	}
 	
-	public boolean joinTrip(String tripTitle, String userEmail) throws DatabaseException {
+	public boolean joinTrip(String tripTitle, String userEmail) throws DatabaseException{
 		
 		// Pick the trip corresponding to the tripBean from persistence
 		Trip trip;

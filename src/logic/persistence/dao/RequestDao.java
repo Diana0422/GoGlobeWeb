@@ -134,10 +134,10 @@ public class RequestDao {
 		}
 	}
 
-	public boolean delete(Request t, String senderEmail) throws DBConnectionException, SQLException {
+	public boolean delete(String tripTitle, String senderEmail) throws DBConnectionException, SQLException {
 		try (Connection conn = ConnectionManager.getInstance().getConnection();
 				CallableStatement stmt = conn.prepareCall(DELETE_REQUEST)) {
-			stmt.setString(1, t.getTarget().getTitle());
+			stmt.setString(1, tripTitle);
 			stmt.setString(2, senderEmail);
 			stmt.execute();
 			return true;

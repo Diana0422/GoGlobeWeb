@@ -52,15 +52,10 @@ public class ManageRequestController {
 		// get request from persistence
 		Request req;
 		try {
-			System.out.println(requestBean.getSenderEmail());
 			req = RequestDao.getInstance().getRequest(requestBean.getSenderEmail(), requestBean.getTripTitle());
-			System.out.println(req);
 			
 			// Get request sender and receiver
-			System.out.println(requestBean.getSenderEmail());
-			System.out.println(req.getTarget());
 			User receiver = UserDaoDB.getInstance().getRequestReceiver(requestBean.getSenderEmail(), req.getTarget().getTitle());
-			System.out.println(receiver.getIncRequests());
 			
 			// Add sender user to trip participants
 			req.getTarget().addParticipant(req.getSender());
@@ -68,13 +63,9 @@ public class ManageRequestController {
 			Logger.getGlobal().info(logStr);
 			
 			// Update trip's participant users in persistence
-			System.out.println(receiver.getIncRequests());
-			System.out.println(req.getSender().getSentRequests());
 			receiver.deleteIncomingRequest(req);
 			req.getSender().deleteSentRequest(req);
-			System.out.println(receiver.getIncRequests());
-			System.out.println(req.getSender().getSentRequests());
-			return TripDao.getInstance().saveParticipant(req.getSender().getEmail(), req.getTarget().getTitle()) && RequestDao.getInstance().delete(req, req.getSender().getEmail());
+			return TripDao.getInstance().saveParticipant(req.getSender().getEmail(), req.getTarget().getTitle()) && RequestDao.getInstance().delete(req.getTarget().getTitle(), req.getSender().getEmail());
 		} catch (DBConnectionException | SQLException e) {
 			throw new DatabaseException(e.getMessage(), e.getCause());
 		}
@@ -85,7 +76,7 @@ public class ManageRequestController {
 			// get request from persistence
 			Request r = RequestDao.getInstance().getRequest(requestBean.getSenderEmail(), requestBean.getTripTitle());
 			// Delete request
-			return RequestDao.getInstance().delete(r, requestBean.getSenderEmail());
+			return RequestDao.getInstance().delete(r.getTarget().getTitle(), requestBean.getSenderEmail());
 		} catch (DBConnectionException | SQLException e) {
 			throw new DatabaseException(e.getMessage(), e.getCause());
 		}
@@ -93,7 +84,7 @@ public class ManageRequestController {
 	
 	public List<RequestBean> getUserIncomingRequests(SessionBean session) throws DatabaseException {
 		List<Request> incRequests;
-		try { // Qua serve il sender
+		try {
 			User sessionUser = UserDaoDB.getInstance().get(session.getSessionEmail());
 			incRequests = RequestDao.getInstance().getRequestsByReceiver(sessionUser.getEmail());
 			return converter.convertToListBean(incRequests);
@@ -104,7 +95,7 @@ public class ManageRequestController {
 	
 	
 	public List<RequestBean> getUserSentRequests(SessionBean session) throws DatabaseException{
-		try { // Qua non serve perché l'utente è il sender
+		try { 
 			List<Request> sentRequests = RequestDao.getInstance().getRequestsBySender(session.getSessionEmail());
 			return converter.convertToListBean(sentRequests);
 		} catch (DBConnectionException | SQLException e) {

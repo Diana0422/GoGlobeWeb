@@ -21,6 +21,7 @@ import logic.bean.UserBean;
 import logic.control.FlightController;
 import logic.control.JoinTripController;
 import logic.model.exceptions.LoadGraphicException;
+import logic.model.exceptions.UnloggedException;
 import logic.persistence.exceptions.DatabaseException;
 
 public class TripInfoGraphic implements GraphicController {
@@ -200,7 +201,7 @@ public class TripInfoGraphic implements GraphicController {
 					AlertGraphic alert = new AlertGraphic();
 					alert.display(GUIType.INFO, GUIType.REQUESTS, null, getTripBean(), "You are not eligible to join.", "Choose an option.");
 				}
-			} catch (DatabaseException e) {
+			} catch (DatabaseException | UnloggedException e) {
 				AlertGraphic alert = new AlertGraphic();
 				alert.display(GUIType.INFO, GUIType.HOME, null, DesktopSessionContext.getInstance().getSession(), e.getMessage(), e.getCause().toString());
 			}
