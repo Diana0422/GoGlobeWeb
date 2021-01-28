@@ -63,7 +63,6 @@ public class AlertGraphic {
 			
 		} catch (IOException e1) {
 			Logger.getGlobal().log(Level.WARNING, e1.getMessage());
-			e1.printStackTrace();
 		}
 		 
 	 }

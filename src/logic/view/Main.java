@@ -32,7 +32,8 @@ public class Main extends Application {
 			primaryStage.setScene(scene);
 			primaryStage.show();
 		} catch(Exception e) {
-			e.printStackTrace();
+			AlertGraphic alert = new AlertGraphic();
+			alert.display(null, null, null, null, e.getMessage(), e.getCause().toString());
 		}
 	}
 	
