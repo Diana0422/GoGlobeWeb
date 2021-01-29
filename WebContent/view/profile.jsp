@@ -142,7 +142,7 @@
 
                     <form method="POST" action="profile.jsp">
                         <button type="submit" name="change-btn" class="btn btn-light">
-                            <img src="../res/images/icons8-edit-50.png" id="change-icon" style="width: 20px; height: 20px; margin-right: 1%;">
+                            <img src="../res/images/icons8-edit-50.png" id="change-icon" style="width: 20px; height: 20px; margin-right: 1%;" alt="edit-icon">
                             <label for="change-icon">Change Info</label>
                         </button>
                     </form>
@@ -297,8 +297,6 @@
                         <!-- previous trips list-->
                         <div class="previous-trips scrollable">
                         </div>
-
-                        <div class="filler center"><h4>No previous trips.</h4></div>
                     </div>
 
                     <div class="tab-pane" role="tabpanel" id="up-trips">

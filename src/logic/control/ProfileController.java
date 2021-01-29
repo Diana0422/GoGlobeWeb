@@ -1,6 +1,8 @@
 package logic.control;
 
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -33,34 +35,63 @@ public class ProfileController {
     	return instance;
     }
    
-   public List<TripBean> getRecentTrips() throws DatabaseException {
+   public List<TripBean> getRecentTrips(String userEmail) throws DatabaseException {
 	   List<Trip> trips;
+	   User profile;
+	   List<TripBean> recent = new ArrayList<>();
 	   TripBeanConverter tripConverter = new TripBeanConverter();
 	   try {
+		   profile = UserDaoDB.getInstance().get(userEmail);
 		   trips = TripDao.getInstance().getTrips();
-		   return tripConverter.convertToListBean(trips);
+		   for (Trip t: trips) {
+			   t.setParticipants(UserDaoDB.getInstance().getTripParticipants(t.getTitle()));
+			   t.setOrganizer(UserDaoDB.getInstance().getTripOrganizer(t.getTitle()));
+			   if (t.getReturnDate().before(new Date()) && (t.getParticipants().contains(profile) || t.getOrganizer().getEmail().equals(profile.getEmail()))) {
+				   recent.add(tripConverter.convertToBean(t));
+			   }
+		   }
+		   return recent;
 	   } catch (DBConnectionException | SQLException e) {
 		   throw new DatabaseException(e.getMessage(), e.getCause());
 	   }
    }
    
-	public List<TripBean> getUpcomingTrips() throws DatabaseException {
+	public List<TripBean> getUpcomingTrips(String userEmail) throws DatabaseException {
 	   List<Trip> trips;
+	   User profile;
+	   List<TripBean> upcoming = new ArrayList<>();
 	   TripBeanConverter tripConverter = new TripBeanConverter();
 	   try {
+		   profile = UserDaoDB.getInstance().get(userEmail);
 		   trips = TripDao.getInstance().getTrips();
-		   return tripConverter.convertToListBean(trips);
+		   for (Trip t: trips) {
+			   t.setParticipants(UserDaoDB.getInstance().getTripParticipants(t.getTitle()));
+			   t.setOrganizer(UserDaoDB.getInstance().getTripOrganizer(t.getTitle()));
+			   if (t.getDepartureDate().after(new Date()) && (t.getParticipants().contains(profile) || t.getOrganizer().getEmail().equals(profile.getEmail()))) {
+				   upcoming.add(tripConverter.convertToBean(t));
+			   }
+		   }
+		   return upcoming;
 	   } catch (DBConnectionException | SQLException e) {
 		   throw new DatabaseException(e.getMessage(), e.getCause());
 	   }
 	}
 	
-	public List<TripBean> getMyTrips() throws DatabaseException {
+	public List<TripBean> getMyTrips(String userEmail) throws DatabaseException {
 	   List<Trip> trips;
+	   User profile;
+	   List<TripBean> myTrips = new ArrayList<>();
 	   TripBeanConverter tripConverter = new TripBeanConverter();
 	   try {
+		   profile = UserDaoDB.getInstance().get(userEmail);
 		   trips = TripDao.getInstance().getTrips();
-		   return tripConverter.convertToListBean(trips);
+		   for (Trip t: trips) {
+			   t.setOrganizer(UserDaoDB.getInstance().getTripOrganizer(t.getTitle()));
+			   if (t.getOrganizer().getEmail().equals(profile.getEmail())) {
+				   myTrips.add(tripConverter.convertToBean(t));
+			   }
+		   }
+		   return myTrips;
 	   } catch (DBConnectionException | SQLException e) {
 		   throw new DatabaseException(e.getMessage(), e.getCause());
 	   }
@@ -110,7 +141,6 @@ public class ProfileController {
 			throw new DatabaseException(e.getMessage(), e.getCause());
 		}
 		Map<TripCategory, Integer> attitude = user.getAttitude();
-		System.out.println(attitude);
 		for (Map.Entry<TripCategory, Integer> entry: attitude.entrySet()) {
 			total += entry.getValue();
 		}

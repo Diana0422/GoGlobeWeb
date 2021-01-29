@@ -130,7 +130,6 @@ public class TripDao {
 					
 					// Instantiate new trip
 					Trip t = new Trip();
-					
 					t.setTitle(title);
 					t.setCategory1(categ1);
 					t.setCategory2(categ2);
@@ -190,7 +189,6 @@ public class TripDao {
 					t.setMinAge(ageMin);
 					t.setDescription(desc);
 					t.setShared(true);
-					
 					trips.add(t);
 				} while(rs.next());
 			}

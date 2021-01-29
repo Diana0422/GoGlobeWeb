@@ -5,6 +5,8 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
+
 import org.controlsfx.control.Rating;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -80,6 +82,18 @@ public class ProfileGraphic implements GraphicController {
 
     @FXML
     private ImageView ivProfilePic;
+    
+    @FXML
+    private Label lblFun;
+
+    @FXML
+    private Label lblAdv;
+
+    @FXML
+    private Label lblCult;
+
+    @FXML
+    private Label lblRelax;
     
     @FXML
     private Button btnBack;
@@ -206,16 +220,23 @@ public class ProfileGraphic implements GraphicController {
 		
 		// Display trips planned by user
 		try {
-			myTripBeans = ProfileController.getInstance().getMyTrips();
+			myTripBeans = ProfileController.getInstance().getMyTrips(target.getEmail());
 			cc.loadCardGrid(myTripsGrid, myTripBeans);
 		
 			// Display target user's upcoming trips
-			upcomingTripBeans = ProfileController.getInstance().getUpcomingTrips();
+			upcomingTripBeans = ProfileController.getInstance().getUpcomingTrips(target.getEmail());
 			cc.loadCardGrid(upcomingGrid, upcomingTripBeans);
 			
 			// Display target user's passed trips
-			previousTripBeans = ProfileController.getInstance().getRecentTrips();
+			previousTripBeans = ProfileController.getInstance().getRecentTrips(target.getEmail());
 			cc.loadCardGrid(previousGrid, previousTripBeans);
+			
+			//Display user attitude
+			Map<String, Integer> attitude = ProfileController.getInstance().getPercentageAttitude(target.getEmail());
+			lblFun.setText(attitude.get("FUN")+"%");
+			lblAdv.setText(attitude.get("ADVENTURE")+"%");
+			lblCult.setText(attitude.get("CULTURE")+"%");
+			lblRelax.setText(attitude.get("RELAX")+"%");
 		} catch (DatabaseException e) {
 			AlertGraphic alert = new AlertGraphic();
 			alert.display(GUIType.PROFILE, GUIType.HOME, null, DesktopSessionContext.getInstance().getSession(), e.getMessage(), e.getCause().toString());

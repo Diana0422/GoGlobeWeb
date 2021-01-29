@@ -158,7 +158,7 @@
                                     <Image url="@images/icons8-mountain-50.png" />
                                  </image>
                               </ImageView>
-                              <ImageView id="ivCultureAttitude" fx:id="ivCultureAttitude" fitHeight="36.0" fitWidth="36.0" layoutX="114.0" layoutY="98.0" pickOnBounds="true" preserveRatio="true">
+                              <ImageView id="ivCultureAttitude" fx:id="ivCultureAttitude" fitHeight="36.0" fitWidth="36.0" layoutX="110.0" layoutY="98.0" pickOnBounds="true" preserveRatio="true">
                                  <image>
                                     <Image url="@images/icons8-greek-pillar-capital-50.png" />
                                  </image>
@@ -180,6 +180,25 @@
                               </Text>
                               <Rating fx:id="ratingTra" layoutX="15.0" layoutY="208.0" rating="0.0" />
                               <Rating fx:id="ratingOrg" layoutX="15.0" layoutY="296.0" rating="0.0" />
+                              <Label fx:id="lblFun" layoutX="19.0" layoutY="145.0" text="fun%">
+                                 <font>
+                                    <Font size="13.0" />
+                                 </font></Label>
+                              <Label fx:id="lblAdv" layoutX="65.0" layoutY="145.0" text="adv%">
+                                 <font>
+                                    <Font size="13.0" />
+                                 </font>
+                              </Label>
+                              <Label fx:id="lblCult" layoutX="114.0" layoutY="145.0" text="cult%">
+                                 <font>
+                                    <Font size="13.0" />
+                                 </font>
+                              </Label>
+                              <Label fx:id="lblRelax" layoutX="164.0" layoutY="145.0" text="relax%">
+                                 <font>
+                                    <Font size="13.0" />
+                                 </font>
+                              </Label>
                            </children>
                         </AnchorPane>
                      </content>
