@@ -60,6 +60,10 @@ public class Trip {
 		this.days.add(d);
 	}
 	
+	public int getAvailableSpots() {
+		return this.maxParticipants-this.participants.size();
+	}
+	
 	public String getTitle() {
 		return title;
 	}

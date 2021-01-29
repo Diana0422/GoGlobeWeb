@@ -103,24 +103,10 @@ public class User {
 		}
 	}
 	
-	public Map<TripCategory, Integer> recalculateAttitude(TripCategory category1, TripCategory category2) {
-		// Calculate user's traveling attitude (in percentage)
-		Map<TripCategory, Integer> percAttitude = new EnumMap<>(TripCategory.class);
-		int total = 0;
-		int percent = 0;
+	public void recalculateAttitude(TripCategory category1, TripCategory category2) {
+		// Calculate user's traveling attitude
 		this.setAttitude(category1);
 		this.setAttitude(category2);
-		for (Map.Entry<TripCategory, Integer> entry: attitude.entrySet()) {
-			total += entry.getValue();
-		}
-		if (total != 0) {
-			for (Map.Entry<TripCategory, Integer> entry: attitude.entrySet()) {
-				percent = entry.getValue()*100/total;
-				percAttitude.putIfAbsent(entry.getKey(), percent);
-			}
-		}
-		
-		return percAttitude;
 	}
 
 	

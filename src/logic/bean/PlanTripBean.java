@@ -1,3 +1,5 @@
+
+
 package logic.bean;
 
 import java.text.DateFormat;

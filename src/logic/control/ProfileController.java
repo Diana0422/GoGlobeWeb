@@ -1,12 +1,15 @@
 package logic.control;
 
 import java.sql.SQLException;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import logic.bean.TripBean;
 import logic.bean.UserBean;
 import logic.bean.UserStatsBean;
 import logic.model.Trip;
+import logic.model.TripCategory;
 import logic.model.User;
 import logic.model.UserStats;
 import logic.model.utils.converters.ReviewBeanConverter;
@@ -92,5 +95,36 @@ public class ProfileController {
 		} catch (DBConnectionException | SQLException e ) {
 			throw new DatabaseException(e.getMessage(), e.getCause());
 		}
+	}
+	
+	public Map<String, Integer> getPercentageAttitude(String userEmail) throws DatabaseException {
+		/* Calculate user's traveling attitude (in percentage) */
+		Map<String, Integer> percAttitude = new HashMap<>();
+		int total = 0;
+		int percent = 0;
+		// Find user attitude
+		User user;
+		try {
+			user = UserDaoDB.getInstance().get(userEmail);
+		} catch (DBConnectionException | SQLException e) {
+			throw new DatabaseException(e.getMessage(), e.getCause());
+		}
+		Map<TripCategory, Integer> attitude = user.getAttitude();
+		System.out.println(attitude);
+		for (Map.Entry<TripCategory, Integer> entry: attitude.entrySet()) {
+			total += entry.getValue();
+		}
+
+		for (Map.Entry<TripCategory, Integer> entry: attitude.entrySet()) {
+			if (total != 0) {
+				percent = entry.getValue()*100/total;
+			} else {
+				percent = 0;
+			}
+			percAttitude.putIfAbsent(entry.getKey().toString(), percent);
+		}
+
+		
+		return percAttitude;
 	}
 }

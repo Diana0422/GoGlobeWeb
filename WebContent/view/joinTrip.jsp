@@ -170,7 +170,7 @@
     							request.setAttribute("price", trip.getPrice());
     							request.setAttribute("minAge", trip.getMinAge());
     							request.setAttribute("maxAge", trip.getMaxAge());
-    							request.setAttribute("spots", trip.getMaxParticipants());
+    							request.setAttribute("spots", trip.getAvailability());
     							request.setAttribute("cat1", trip.getCategory1());
     							request.setAttribute("cat2", trip.getCategory2());
     							request.setAttribute("btninfoid", idx);

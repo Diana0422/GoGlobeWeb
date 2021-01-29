@@ -1,6 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-    
+<%@ page autoFlush="true" buffer="1094kb"%>
 <!-- declaration of a join trip bean -->
 <jsp:useBean id="joinTripBean" scope="session" class="logic.bean.JoinTripBean"/>
 <jsp:useBean id="sessionBean" scope="session" class="logic.bean.SessionBean"/>

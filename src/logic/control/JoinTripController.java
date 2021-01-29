@@ -35,7 +35,7 @@ public class JoinTripController {
 			List<Trip> trips = TripDao.getInstance().getSharedTrips();
 			if (value == null) return converter.convertToListBean(trips);
 			for (Trip trip: trips) {
-				if (trip.getTitle().toLowerCase().contains(value.toLowerCase())) filteredTrips.add(trip);
+				if (trip.getTitle().toLowerCase().contains(value.toLowerCase()) && trip.getAvailableSpots() != 0) filteredTrips.add(trip);
 				
 			}
 			/* Convert List<Trip> into List<TripBean> */
@@ -84,6 +84,7 @@ public class JoinTripController {
 				trip.setOrganizer(UserDaoDB.getInstance().getTripOrganizer(tripTitle));
 				if (trip.getOrganizer().getEmail().equals(appliant.getEmail())) check = false;
 				if (userAge<trip.getMinAge() || userAge>trip.getMaxAge()) check = false;
+				if (trip.getParticipants().contains(appliant)) check = false;
 				return check;
 			} else {
 				throw new UnloggedException();
@@ -135,4 +136,5 @@ public class JoinTripController {
 			throw new DatabaseException(e.getMessage(), e.getCause());
 		}
 	}
+
 }

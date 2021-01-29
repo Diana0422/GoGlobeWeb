@@ -54,6 +54,7 @@
 				Date depDate = FormatManager.parseDate(tripBean.getDepartureDate());
 				Date retDate = FormatManager.parseDate(tripBean.getReturnDate());
 				long tripLength = PlanTripController.getInstance().calculateTripLength(depDate, retDate) + 1;
+				System.out.println(tripLength);
 				tripBean.setTripLength(tripLength);
 				tripBean.createDays();				
 				planTripBean.setPlanningDay(0);

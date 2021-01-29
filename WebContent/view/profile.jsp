@@ -9,7 +9,7 @@
 <%@page import="logic.control.ReviewUserController"%>
 <%@page import="logic.control.ProfileController"%>
 <%@page import="logic.persistence.exceptions.DatabaseException"%>
-
+<%@page import="java.util.Map"%>
 <jsp:setProperty name="profileBean" property="comment"/>
 <jsp:setProperty name="profileBean" property="title"/>
 
@@ -21,7 +21,7 @@
 %>
 
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
 <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -74,25 +74,29 @@
 
                     <div class="travel-attitude profile-element">
                         <h4>Traveler Attitude</h4>
+                        <%
+                        Map<String, Integer> attitude = ProfileController.getInstance().getPercentageAttitude(userBean.getEmail());
+                        System.out.println(attitude);
+                        %>
                         <ul>
                             <li class="adventure">
-                                <label for="adv-img">x%</label>
-                                <img src="../res/images/icons8-mountain-50.png" id="adv-img">
+                                <label for="adv-img"><%= attitude.get("ADVENTURE") %>%</label>
+                                <img src="../res/images/icons8-mountain-50.png" id="adv-img" alt="advIcon">
                                 <label for="adv-img">Adventure</label>
                             </li>
                             <li class="relax">
-                                <label for="rel-img">x%</label>
-                                <img src="../res/images/icons8-holiday-50.png" id="rel-img">
+                                <label for="rel-img"><%= attitude.get("RELAX") %>%</label>
+                                <img src="../res/images/icons8-holiday-50.png" id="rel-img" alt="relIcon">
                                 <label for="rel-img">Relax</label>
                             </li>
                             <li class="fun">
-                                <label for="fun-img">x%</label>
-                                <img src="../res/images/icons8-cocktail-50.png" id="fun-img">
+                                <label for="fun-img"><%= attitude.get("FUN") %>%</label>
+                                <img src="../res/images/icons8-cocktail-50.png" id="fun-img" alt="funIcon">
                                 <label for="fun-img">Fun</label>
                             </li>
                             <li class="culture">
-                                <label for="cult-img">x%</label>
-                                <img src="../res/images/icons8-greek-pillar-capital-50.png" id="cult-img">
+                                <label for="cult-img"><%= attitude.get("CULTURE") %>%</label>
+                                <img src="../res/images/icons8-greek-pillar-capital-50.png" id="cult-img" alt="cultIcon">
                                 <label for="cult-img">Culture</label>
                             </li>
                         </ul>
@@ -167,15 +171,11 @@
 
                 <div class="tab-content">
                     <div class="tab-pane active" role="tabpanel" id="bio">
-                        <!--<div class="filler center"><h4>No bio.</h4></div>-->
-
                         <!-- biography -->
                         <p class="bio-text"><%= userBean.getBio() %></p>
                     </div>
 
                     <div class="tab-pane" role="tabpanel" id="reviews">
-                        <!--<div class="filler center"><h4>No reviews.</h4></div>-->
-
                         <!-- review form-->
                         <div class="review-form card">
                             <h3>Post a review</h3>
@@ -315,8 +315,6 @@
                     </div>
                 </div>
             </div>
-
-
         </div>
     </div>
 </body>

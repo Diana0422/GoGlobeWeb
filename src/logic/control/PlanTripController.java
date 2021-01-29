@@ -86,6 +86,7 @@ public class PlanTripController {
 			if (!TripDao.getInstance().saveTrip(trip, tripBean.isShared())) return false;
 			
 			/* update the user traveling attitude */
+			trip.getOrganizer().recalculateAttitude(trip.getCategory1(), trip.getCategory2());
 			UserStatsDao.getInstance().updateAttitude(trip.getOrganizer().getEmail(), 
 					trip.getOrganizer().getAttitudeValue(TripCategory.FUN),
 					trip.getOrganizer().getAttitudeValue(TripCategory.CULTURE), 

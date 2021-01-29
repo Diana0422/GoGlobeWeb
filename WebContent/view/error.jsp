@@ -4,7 +4,7 @@
 <jsp:useBean id="sessionBean" scope="session" class="logic.bean.SessionBean"/>
 
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
 <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">

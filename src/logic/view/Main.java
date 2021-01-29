@@ -3,7 +3,6 @@ package logic.view;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.stage.Stage;
-import javafx.util.Callback;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 
@@ -15,12 +14,7 @@ public class Main extends Application {
 			FXMLLoader loader = new FXMLLoader();
 			loader.setLocation(getClass().getResource("/logic/view/Stage.fxml"));
 			
-			loader.setControllerFactory((Callback<Class<?>, Object>) new Callback<Class<?>, Object>(){
-				@Override
-				public Object call(Class<?> arg0) {
-					return DesktopSessionContext.getInstance();
-				}
-			});
+			loader.setControllerFactory(arg0-> DesktopSessionContext.getInstance());
 			Parent root = loader.load();
 			
 			/* Set the scene */

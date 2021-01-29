@@ -7,7 +7,7 @@
 <%@page import="java.util.Iterator"%> 
 <%@page import="logic.model.Trip"%>
 <%@page import="logic.model.Day"%>
-<%@page import="logic.model.Place"%>
+<%@page import="logic.model.PlaceBean"%>
 <%@page import="logic.control.PlanTripController"%>
 <%@page import="logic.persistence.exceptions.DatabaseException"%>
 <%@page import="logic.model.exceptions.TripNotCompletedException"%>
@@ -37,7 +37,7 @@
 </head>
 <body id="bootstrap-override">
 
-	<% List<Place> suggestions = null; %>
+	<% List<PlaceBean> suggestions = null; %>
     
 	<%@ include file="html/loggedNavbar.html" %>
     
@@ -262,7 +262,7 @@
 	   
 <%
 	if (request.getParameter("btn-lookup-place") != null){
-		Place suggestion = suggestions.get(Integer.parseInt(request.getParameter("btn-lookup-place")));
+		PlaceBean suggestion = suggestions.get(Integer.parseInt(request.getParameter("btn-lookup-place")));
     	String url = "https://maps.google.com/?q=" + suggestion.getName().replace(" ", "+");
 		Desktop.getDesktop().browse(new URL(url).toURI());
 	}

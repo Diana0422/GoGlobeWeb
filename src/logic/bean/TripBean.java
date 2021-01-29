@@ -7,7 +7,6 @@ import logic.model.exceptions.TripNotCompletedException;
 
 public class TripBean {
 	
-	private int planningDay = 0;
 	private int id;
 	private boolean shared;
 	private String title;
@@ -15,17 +14,17 @@ public class TripBean {
 	private int ticketPrice;
 	private String category1;
 	private String category2;
-	private String imgSrc;
 	private String departureDate;
 	private String returnDate;	
-	private long tripLength;
 	private List<DayBean> days;
+	private long tripLength;
 	private String description;
 	private String minAge;
 	private String maxAge;
 	private String maxParticipants;
 	private UserBean organizer;
 	private List<UserBean> participants;
+	private int availability;
 	
 	
 	public void addActivity(int day, ActivityBean activity) {
@@ -121,14 +120,6 @@ public class TripBean {
 		this.days = days;
 	}
 
-	public String getImgSrc() {
-		return imgSrc;
-	}
-
-	public void setImgSrc(String imgSrc) {
-		this.imgSrc = imgSrc;
-	}
-
 	public boolean isShared() {
 		return shared;
 	}
@@ -193,12 +184,12 @@ public class TripBean {
 		this.ticketPrice = ticketPrice;
 	}
 
-	public int getPlanningDay() {
-		return planningDay;
+	public int getAvailability() {
+		return availability;
 	}
 
-	public void setPlanningDay(int planningDay) {
-		this.planningDay = planningDay;
+	public void setAvailability(int availability) {
+		this.availability = availability;
 	}
 	
 	
