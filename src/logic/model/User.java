@@ -235,7 +235,10 @@ public class User {
 	}
 
 	public void setStats(UserStats stats) {
-		this.stats = stats;
+		this.stats = new UserStats();
+		this.stats.setOrganizerRating(stats.getOrganizerRating());
+		this.stats.setTravelerRating(stats.getTravelerRating());
+		this.stats.setPoints(stats.getPoints());
 	}
 
 	public List<Request> getIncRequests() {

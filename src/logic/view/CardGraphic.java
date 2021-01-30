@@ -68,6 +68,7 @@ public class CardGraphic implements Initializable {
 	/* Action methods */
 	@FXML
     void loadTripInfo(MouseEvent event) {
+		btnMore.setDisable(false);
 		DesktopSessionContext.getGuiLoader().loadGUI(null, getTripBean(), GUIType.INFO);
     }
     
