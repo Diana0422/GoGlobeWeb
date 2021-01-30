@@ -41,7 +41,7 @@ public class Trip {
 	}
 	
 	public void addParticipant(User participant) {
-		if (!getParticipants().contains(participant)) getParticipants().add(participant);
+		getParticipants().add(participant);
 		participant.recalculateAttitude(this.category1, this.category2);
 	}
 	

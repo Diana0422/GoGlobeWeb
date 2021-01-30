@@ -82,9 +82,14 @@ public class JoinTripController {
 				int userAge = appliant.calculateUserAge();
 				// Fetch trip organizer from database
 				trip.setOrganizer(UserDaoDB.getInstance().getTripOrganizer(tripTitle));
+				
+				// Do the checks
+				check = checkAvailableSpots(trip);
 				if (trip.getOrganizer().getEmail().equals(appliant.getEmail())) check = false;
 				if (userAge<trip.getMinAge() || userAge>trip.getMaxAge()) check = false;
-				if (trip.getParticipants().contains(appliant)) check = false;
+				for (User part: trip.getParticipants()) {
+					if (part.getEmail().equals(appliant.getEmail())) check = false;
+				}
 				return check;
 			} else {
 				throw new UnloggedException();
@@ -95,6 +100,12 @@ public class JoinTripController {
 	}
 	
 	
+	private boolean checkAvailableSpots(Trip trip) {
+		boolean check = true;
+		if (trip.getAvailableSpots() == 0) check = false;
+		return check;
+	}
+
 	public boolean sendRequest(String tripTitle, String appliantEmail) throws DatabaseException, UnloggedException {
 		if (checkIfUserIsCompliant(appliantEmail, tripTitle)) {
 			// Instantiate a new request

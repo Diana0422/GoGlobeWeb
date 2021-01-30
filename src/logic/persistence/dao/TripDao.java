@@ -98,6 +98,7 @@ public class TripDao {
 				trip.setMaxParticipants(maxPart);
 				trip.setMinAge(tripMinAge);
 				trip.setOrganizer(UserDaoDB.getInstance().get(organizer));
+				trip.setParticipants(UserDaoDB.getInstance().getTripParticipants(tripTitle));
 			}
 			
 			return trip;

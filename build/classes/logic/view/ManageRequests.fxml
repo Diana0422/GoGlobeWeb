@@ -28,7 +28,7 @@
                      <children>
                         <ScrollPane prefHeight="470.0" prefWidth="1336.0">
                            <content>
-                              <VBox fx:id="incResults" alignment="CENTER" prefHeight="469.0" prefWidth="763.0" spacing="20.0" stylesheets="@application.css">
+                              <VBox fx:id="incResults" prefHeight="469.0" prefWidth="763.0" spacing="10.0" stylesheets="@application.css">
                                  <padding>
                                     <Insets left="10.0" right="10.0" />
                                  </padding>
@@ -45,7 +45,7 @@
                      <children>
                         <ScrollPane prefHeight="470.0" prefWidth="1336.0">
                            <content>
-                              <VBox fx:id="sentResults" alignment="CENTER" prefHeight="406.0" prefWidth="763.0" spacing="20.0">
+                              <VBox fx:id="sentResults" prefHeight="406.0" prefWidth="763.0" spacing="10.0">
                                  <padding>
                                     <Insets left="10.0" right="10.0" />
                                  </padding>
