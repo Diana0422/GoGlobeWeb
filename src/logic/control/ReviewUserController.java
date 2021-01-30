@@ -15,6 +15,7 @@ import logic.bean.UserBean;
 import logic.model.Review;
 import logic.model.RoleType;
 import logic.model.User;
+import logic.model.exceptions.UnloggedException;
 import logic.model.interfaces.Observer;
 import logic.model.utils.converters.ReviewBeanConverter;
 
@@ -32,9 +33,10 @@ public class ReviewUserController {
 		return instance;
 	}
 	
-	public boolean postReview(String type, double rating, String comment, String title, String reviewerEmail, String targetEmail, Observer o) throws DatabaseException {
+	public boolean postReview(String type, double rating, String comment, String title, String reviewerEmail, String targetEmail, Observer o) throws DatabaseException, UnloggedException {
 		User reviewer;
 		try {
+			if (reviewerEmail == null) throw new UnloggedException();
 			reviewer = UserDaoDB.getInstance().get(reviewerEmail);
 			User target = UserDaoDB.getInstance().get(targetEmail);
 			target.setReviews(ReviewDao.getInstance().getUserReviews(targetEmail));

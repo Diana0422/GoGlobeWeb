@@ -51,7 +51,22 @@
 }
 
 .review {
-    padding: 5%;
+    display:flex;
+    border: 2px solid lightgrey;
+    border-radius: 5px;
+}
+
+.review-header {
+	background-color: ghostwhite;
+	padding: 2%;
+}
+
+.review-header h5 {
+	font-family: BarlowSemi;
+}
+
+.review-text {
+	padding: 2%;
 }
 
 .review-text p {

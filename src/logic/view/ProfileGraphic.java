@@ -1,7 +1,5 @@
 package logic.view;
 
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -24,9 +22,11 @@ import logic.bean.ReviewBean;
 import logic.bean.SessionBean;
 import logic.bean.TripBean;
 import logic.bean.UserBean;
+import logic.control.FormatManager;
 import logic.control.ProfileController;
 import logic.control.ReviewUserController;
 import logic.model.exceptions.LoadGraphicException;
+import logic.model.exceptions.UnloggedException;
 import logic.persistence.exceptions.DatabaseException;
 
 public class ProfileGraphic implements GraphicController {
@@ -52,6 +52,9 @@ public class ProfileGraphic implements GraphicController {
     
     @FXML
     private TextField txtTitle;
+    
+    @FXML
+    private Label lblError;
 
     @FXML
     private GridPane upcomingGrid;
@@ -141,36 +144,41 @@ public class ProfileGraphic implements GraphicController {
     	double d = (double) getVote();
     	
     	Date today = Calendar.getInstance().getTime();
-    	DateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
-    	String date = formatter.format(today);
-    	
+    	String date = FormatManager.formatDate(today);
     	ReviewBean bean = new ReviewBean();
     	bean.setTitle(txtTitle.getText());
     	bean.setVote(d);
     	bean.setDate(date);
     	bean.setComment(txtComment.getText());
-    	bean.setReviewerName(DesktopSessionContext.getInstance().getSession().getSessionName());
-    	bean.setReviewerSurname(DesktopSessionContext.getInstance().getSession().getSessionSurname());
     	
-    	try {
-        	if (rdTraveler.isSelected()) {
-    			ReviewUserController.getInstance().postReview("TRAVELER", d, txtComment.getText(), txtTitle.getText(), DesktopSessionContext.getInstance().getSession().getSessionEmail(), target.getEmail(), target);
-        	} else {
-    			ReviewUserController.getInstance().postReview("ORGANIZER", d, txtComment.getText(), txtTitle.getText(), DesktopSessionContext.getInstance().getSession().getSessionEmail(), target.getEmail(), target);
-        	}
-    	} catch (DatabaseException e) {
-			AlertGraphic alert = new AlertGraphic();
-			alert.display(GUIType.PROFILE, GUIType.HOME, null, DesktopSessionContext.getInstance().getSession(), e.getMessage(), e.getCause().toString());
-		}
-    	
-    	ReviewItemGraphic graphic = new ReviewItemGraphic();
-		try {
-			AnchorPane anchor = (AnchorPane) graphic.initializeNode(bean);
-			vbReviews.getChildren().add(anchor);
-		} catch (LoadGraphicException e) {
-			AlertGraphic alert = new AlertGraphic();
-			alert.display(GUIType.PROFILE, GUIType.HOME, null, DesktopSessionContext.getInstance().getSession(), WIDGET_ERROR, "Something unexpected occurred displaying review.");
-		}
+    	if (DesktopSessionContext.getInstance().getSession() != null) {
+        	bean.setReviewerName(DesktopSessionContext.getInstance().getSession().getSessionName());
+        	bean.setReviewerSurname(DesktopSessionContext.getInstance().getSession().getSessionSurname());
+        	
+        	try {
+            	if (rdTraveler.isSelected()) {
+        			ReviewUserController.getInstance().postReview("TRAVELER", d, txtComment.getText(), txtTitle.getText(), DesktopSessionContext.getInstance().getSession().getSessionEmail(), target.getEmail(), target);
+            	} else {
+        			ReviewUserController.getInstance().postReview("ORGANIZER", d, txtComment.getText(), txtTitle.getText(), DesktopSessionContext.getInstance().getSession().getSessionEmail(), target.getEmail(), target);
+            	}
+        	} catch (DatabaseException e) {
+    			AlertGraphic alert = new AlertGraphic();
+    			alert.display(GUIType.PROFILE, GUIType.HOME, null, DesktopSessionContext.getInstance().getSession(), e.getMessage(), e.getCause().toString());
+    		} catch (UnloggedException e) {
+    			lblError.setText(e.getMessage());
+			} 
+       
+        	ReviewItemGraphic graphic = new ReviewItemGraphic();
+    		try {
+    			AnchorPane anchor = (AnchorPane) graphic.initializeNode(bean);
+    			vbReviews.getChildren().add(anchor);
+    		} catch (LoadGraphicException e) {
+    			AlertGraphic alert = new AlertGraphic();
+    			alert.display(GUIType.PROFILE, GUIType.HOME, null, DesktopSessionContext.getInstance().getSession(), WIDGET_ERROR, "Something unexpected occurred displaying review.");
+    		}
+    	} else {
+    		lblError.setText("You need to log in first");
+    	}
     }
 
     /* Beans */
@@ -251,17 +259,15 @@ public class ProfileGraphic implements GraphicController {
 		
 		
 		//check if loaded profile is logged user's profile
-		if (!target.getEmail().equals(DesktopSessionContext.getInstance().getSession().getSessionEmail())) {
-			
+		if (DesktopSessionContext.getInstance().getSession() == null || !target.getEmail().equals(DesktopSessionContext.getInstance().getSession().getSessionEmail())) {
 			taBio.setVisible(false);
 			btnSaveBio.setVisible(false);			
 			lblUserBio.setText(targetBio);
-
+			btnPost.setDisable(false);
 		}else{
-			
+			btnPost.setDisable(true);
 			taBio.setText(targetBio);
 			lblUserBio.setVisible(false);
-			
 		}
 		
 		// Display ratings

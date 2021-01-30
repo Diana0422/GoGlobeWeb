@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
+<%@ page autoFlush="true" buffer="1094kb"%>
     
 <jsp:useBean id="profileBean" scope="session" class="logic.bean.ProfileBean"/>
 <jsp:useBean id="userBean" scope="session" class="logic.bean.UserBean"/>
@@ -9,6 +10,7 @@
 <%@page import="logic.control.ReviewUserController"%>
 <%@page import="logic.control.ProfileController"%>
 <%@page import="logic.persistence.exceptions.DatabaseException"%>
+<%@page import="logic.model.exceptions.UnloggedException"%>
 <%@page import="java.util.Map"%>
 <jsp:setProperty name="profileBean" property="comment"/>
 <jsp:setProperty name="profileBean" property="title"/>
@@ -216,7 +218,17 @@
                                     </div>
                                 </div>
                                 
-                                <button type="submit" class="btn btn-primary" name="reviewbtn">Post</button>
+                                <%
+                                	if (!userBean.getEmail().equals(sessionBean.getSessionEmail())) {
+                                		%>
+                                		<button type="submit" class="btn btn-primary" name="reviewbtn">Post</button>
+                                		<%
+                                	} else {
+                                		%>
+                                		<button type="submit" class="btn btn-primary" name="reviewbtn" disabled>Post</button>
+                                		<%
+                                	}
+                                %>
                                 
                                 <%
                                 	if (request.getParameter("reviewbtn") != null) {
@@ -230,9 +242,9 @@
                                     		review.setDate(profileBean.getDate());
                                     		review.setReviewerName(sessionBean.getSessionName());
                                     		review.setReviewerSurname(sessionBean.getSessionSurname());
-                                    		review.setVote(profileBean.getVote());
-                                    		userBean.getReviews().add(review);                  
+                                    		review.setVote(profileBean.getVote());                  
                                     		ReviewUserController.getInstance().postReview(request.getParameter("type-radio"), profileBean.getVote(), profileBean.getComment(), profileBean.getTitle(), sessionBean.getSessionEmail(), userBean.getEmail(), userBean);
+                                    		userBean.getReviews().add(review);
                                     		System.out.println("web view: org rating:"+profileBean.getUser().getStatsBean().getOrgRating()+" trav rating:"+profileBean.getUser().getStatsBean().getTravRating());
                                     		response.setIntHeader("Refresh",0);
                                 		} catch (DatabaseException e) {
@@ -240,9 +252,12 @@
                                 			if (e.getCause()!=null) {
                                 				request.setAttribute("errLog", e.getCause().toString());
                                 			}
-                                			
                                 			%>
                                 			<jsp:forward page="error.jsp"/>
+                                			<%
+                                		} catch (UnloggedException e) {
+                                			%>
+                                			<p style="color: red"><%= e.getMessage() %></p>
                                 			<%
                                 		}
                                 	}
@@ -258,24 +273,32 @@
                             	for (ReviewBean bean: userBean.getReviews()) {
                             		%>
                             		<!--SINGLE REVIEW CARD (repeatable)-->
-                            		<div class="review card">
-                                		<h4 id="user"><%= bean.getReviewerName()+" "+bean.getReviewerSurname() %></h4>
-                               			<div class="stars">
-                                   			<%
-                    							int max = 5;
-                    							for (double d=0; d<bean.getVote(); d++) {
-                    								max--;
-                    						%>
-                    							<span class="fa fa-star checked"></span>
-                    						<% 
-                    							}
-                    		
-                    							for (int i=0; i<max; i++) {
-                    							%>
-                    								<span class="fa fa-star"></span>
-                    							<%
-                    							}
-                    						%>
+                            		<div class="review">
+                                		<div class="review-header">
+	                                		<h4 id="user"><%= bean.getReviewerName()+" "+bean.getReviewerSurname() %></h4>
+	                               			<div class="stars">
+	                                   			<%
+	                    							int max = 5;
+	                    							for (double d=0; d<bean.getVote(); d++) {
+	                    								max--;
+	                    						%>
+	                    							<span class="fa fa-star checked"></span>
+	                    						<% 
+	                    							}
+	                    		
+	                    							for (int i=0; i<max; i++) {
+	                    							%>
+	                    								<span class="fa fa-star"></span>
+	                    							<%
+	                    							}
+	                    						%>
+	                                		</div>
+	                                		<div class="review-date">
+	                                			<p>Reviewed on date <%= bean.getDate() %></p>
+	                                		</div>
+	                                		<div class="review-title">
+	                                			<h5 style="font-style: italic;"><%= bean.getTitle() %></h5>
+	                                		</div>
                                 		</div>
                                 		<div class="review-text">
                                     		<p><%= bean.getComment() %></p>
