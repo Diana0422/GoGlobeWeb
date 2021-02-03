@@ -6,6 +6,7 @@
 <%@page import="logic.control.GainPointsController"%>
 <%@page import="logic.bean.TripBean"%>
 <%@page import="logic.persistence.exceptions.DatabaseException"%>
+<%@page import="logic.util.Cookie"%>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -33,7 +34,7 @@
 			TripBean todayTrip = GainPointsController.getInstance().getTripOfTheDay(sessionBean.getSessionEmail());
 			
 			if (request.getParameter("gainpoints") != null) {
-				if (GainPointsController.getInstance().verifyParticipation(sessionBean, todayTrip)) {
+				if (GainPointsController.getInstance().verifyParticipation(sessionBean.getSessionEmail(), todayTrip)) {
 					request.setAttribute("mess", "Trip successfully validated. You gained 100 points.");
 				} else {
 					request.setAttribute("mess", "Cannot validate trip. You don't gain any points.");
@@ -47,7 +48,7 @@
 				request.setAttribute("title", todayTrip.getTitle());
 				request.setAttribute("departure", todayTrip.getDepartureDate());
 				request.setAttribute("return_date", todayTrip.getReturnDate());
-				request.setAttribute("points", sessionBean.getSessionPoints());
+				request.setAttribute("points", Cookie.getInstance().getSession(sessionBean.getSessionEmail()).getUserPoints());
 			%>
 				<%@ include file="html/currentTripCard.html" %>
 			<%

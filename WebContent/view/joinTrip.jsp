@@ -78,6 +78,7 @@
 					if (joinTripBean.getSearchVal() != null) {
 						System.out.println(joinTripBean.getSearchVal());
 						joinTripBean.setObjects(controller.searchTrips(joinTripBean.getSearchVal()));
+						joinTripBean.setSearchVal(null);
 					} else {
 						System.out.println(joinTripBean.getSearchVal());
 						joinTripBean.setObjects(controller.getSuggestedTrips(sessionBean.getSessionEmail()));
@@ -187,7 +188,6 @@
         	    	<!-- map class attributes to values of the form -->
 					<jsp:setProperty name="joinTripBean" property="searchVal"/>      
       	 			<%
-      	 			response.setIntHeader("Refresh", 0);
       	 			System.out.println(joinTripBean.getSearchVal());
         		}
         	%>

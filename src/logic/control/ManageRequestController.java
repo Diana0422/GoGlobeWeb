@@ -5,7 +5,6 @@ import java.util.List;
 import java.util.logging.Logger;
 
 import logic.bean.RequestBean;
-import logic.bean.SessionBean;
 import logic.bean.UserBean;
 import logic.persistence.dao.RequestDao;
 import logic.persistence.dao.TripDao;
@@ -81,10 +80,10 @@ public class ManageRequestController {
 		}
 	}
 	
-	public List<RequestBean> getUserIncomingRequests(SessionBean session) throws DatabaseException {
+	public List<RequestBean> getUserIncomingRequests(String userEmail) throws DatabaseException {
 		List<Request> incRequests;
 		try {
-			User sessionUser = UserDaoDB.getInstance().get(session.getSessionEmail());
+			User sessionUser = UserDaoDB.getInstance().get(userEmail);
 			incRequests = RequestDao.getInstance().getRequestsByReceiver(sessionUser.getEmail());
 			return converter.convertToListBean(incRequests);
 		} catch (DBConnectionException | SQLException e) {
@@ -93,9 +92,9 @@ public class ManageRequestController {
 	}
 	
 	
-	public List<RequestBean> getUserSentRequests(SessionBean session) throws DatabaseException{
+	public List<RequestBean> getUserSentRequests(String userEmail) throws DatabaseException{
 		try { 
-			List<Request> sentRequests = RequestDao.getInstance().getRequestsBySender(session.getSessionEmail());
+			List<Request> sentRequests = RequestDao.getInstance().getRequestsBySender(userEmail);
 			return converter.convertToListBean(sentRequests);
 		} catch (DBConnectionException | SQLException e) {
 			throw new DatabaseException(e.getMessage(), e.getCause());

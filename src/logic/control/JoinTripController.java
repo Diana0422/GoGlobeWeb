@@ -10,12 +10,18 @@ import logic.persistence.dao.TripDao;
 import logic.persistence.dao.UserDaoDB;
 import logic.persistence.exceptions.DBConnectionException;
 import logic.persistence.exceptions.DatabaseException;
+import logic.util.Cookie;
+import logic.util.Session;
+import logic.model.Day;
 import logic.model.Request;
 import logic.model.Trip;
 import logic.model.TripCategory;
 import logic.model.User;
+import logic.model.adapters.CityAdapter;
+import logic.model.apis.SkyscannerAPI;
+import logic.model.exceptions.APIException;
 import logic.model.exceptions.UnloggedException;
-import logic.model.utils.Cookie;
+import logic.model.interfaces.CityGeolocation;
 import logic.model.utils.converters.BeanConverter;
 import logic.model.utils.converters.TripBeanConverter;
  
@@ -27,7 +33,7 @@ public class JoinTripController {
 		this.converter = new TripBeanConverter();
 	}
 
-	public List<TripBean> searchTrips(String value) throws DatabaseException {
+	public List<TripBean> searchTrips(String value) throws DatabaseException, APIException {
 		String logStr = "Search trips by value started.\n";
 		Logger.getGlobal().info(logStr);
 		List<Trip> filteredTrips = new ArrayList<>();
@@ -35,8 +41,12 @@ public class JoinTripController {
 			List<Trip> trips = TripDao.getInstance().getSharedTrips();
 			if (value == null) return converter.convertToListBean(trips);
 			for (Trip trip: trips) {
-				if (trip.getTitle().toLowerCase().contains(value.toLowerCase()) && trip.getAvailableSpots() != 0) filteredTrips.add(trip);
-				
+				boolean cond1 = trip.getAvailableSpots() != 0;
+				boolean cond2 = trip.getTitle().toLowerCase().contains(value.toLowerCase());
+				for (Day day: trip.getDays()) {
+					boolean cond3 = checkCountry(day.getLocation().getCity(), value);
+					if (cond1 && (cond2 || cond3)) filteredTrips.add(trip);
+				}
 			}
 			/* Convert List<Trip> into List<TripBean> */
 			return converter.convertToListBean(filteredTrips);			
@@ -46,16 +56,23 @@ public class JoinTripController {
 
 	}
 	
+	private boolean checkCountry(String cityName, String inputCountry) throws APIException {
+		CityGeolocation service = new CityAdapter(new SkyscannerAPI());
+		String countryName = service.getCountryName(cityName);
+		return countryName.equalsIgnoreCase(inputCountry);
+	}
+	
 	public List<TripBean> getSuggestedTrips(String userEmail) throws DatabaseException {
 		// Fetch user from cookie
 		TripCategory favourite = null;
 		Integer topValue = 0;
 		try {
 			if (userEmail != null) {
-				User logged = Cookie.getInstance().getLoggedUser(userEmail);
+				Session logged = Cookie.getInstance().getSession(userEmail);
+				User user = UserDaoDB.getInstance().get(logged.getUserEmail());
 				
 				// Get user favorite category
-				Map<TripCategory, Integer> attitude = logged.getAttitude();
+				Map<TripCategory, Integer> attitude = user.getAttitude();
 				for (Map.Entry<TripCategory, Integer> entry: attitude.entrySet()) {
 					if (topValue <= entry.getValue()) {
 						topValue = entry.getValue();
@@ -77,18 +94,19 @@ public class JoinTripController {
 		try {
 			if (userEmail == null) throw new UnloggedException();
 			trip = TripDao.getInstance().getTripByTitle(tripTitle);
-			User appliant = Cookie.getInstance().getLoggedUser(userEmail);
-			if (appliant != null) {
-				int userAge = appliant.calculateUserAge();
+			Session logged = Cookie.getInstance().getSession(userEmail);
+			User applicant = UserDaoDB.getInstance().get(logged.getUserEmail());
+			if (applicant != null) {
+				int userAge = applicant.calculateUserAge();
 				// Fetch trip organizer from database
 				trip.setOrganizer(UserDaoDB.getInstance().getTripOrganizer(tripTitle));
 				
 				// Do the checks
 				check = checkAvailableSpots(trip);
-				if (trip.getOrganizer().getEmail().equals(appliant.getEmail())) check = false;
+				if (trip.getOrganizer().getEmail().equals(applicant.getEmail())) check = false;
 				if (userAge<trip.getMinAge() || userAge>trip.getMaxAge()) check = false;
 				for (User part: trip.getParticipants()) {
-					if (part.getEmail().equals(appliant.getEmail())) check = false;
+					if (part.getEmail().equals(applicant.getEmail())) check = false;
 				}
 				return check;
 			} else {
@@ -106,25 +124,21 @@ public class JoinTripController {
 		return check;
 	}
 
-	public boolean sendRequest(String tripTitle, String appliantEmail) throws DatabaseException, UnloggedException {
-		if (checkIfUserIsCompliant(appliantEmail, tripTitle)) {
+	public boolean sendRequest(String tripTitle, String applicantEmail) throws DatabaseException, UnloggedException {
+		if (checkIfUserIsCompliant(applicantEmail, tripTitle)) {
 			// Instantiate a new request
 			Request request = new Request();
 			try {
 				request.setTarget(TripDao.getInstance().getTripByTitle(tripTitle));
 				request.setAccepted(false);
-				User senderUser = Cookie.getInstance().getLoggedUser(appliantEmail);
-				User receiverUser;
-				if (Cookie.getInstance().getLoggedUser(request.getTarget().getOrganizer().getEmail()) == null) {
-					receiverUser = request.getTarget().getOrganizer();
-				} else {
-					receiverUser = Cookie.getInstance().getLoggedUser(request.getTarget().getOrganizer().getEmail());
-				}
+				Session logged = Cookie.getInstance().getSession(applicantEmail);
+				User senderUser = UserDaoDB.getInstance().get(logged.getUserEmail());
+				User receiverUser = request.getTarget().getOrganizer();
 				senderUser.addToSentRequests(request);
 				receiverUser.addToIncRequests(request);
 				
 				// Save the request in persistence
-				return RequestDao.getInstance().save(request, appliantEmail);
+				return RequestDao.getInstance().save(request, applicantEmail);
 			} catch (DBConnectionException | SQLException e) {
 				throw new DatabaseException(e.getMessage(), e.getCause());
 			}
@@ -137,11 +151,13 @@ public class JoinTripController {
 		
 		// Pick the trip corresponding to the tripBean from persistence
 		Trip trip;
-		User appliant;
+		User applicant;
+		Session session;
 		try {
 			trip = TripDao.getInstance().getTripByTitle(tripTitle);
-			appliant = Cookie.getInstance().getLoggedUser(userEmail);
-			trip.addParticipant(appliant);
+			session = Cookie.getInstance().getSession(userEmail);
+			applicant = UserDaoDB.getInstance().get(session.getUserEmail());
+			trip.addParticipant(applicant);
 			return TripDao.getInstance().saveParticipant(userEmail, tripTitle);
 		} catch (DBConnectionException | SQLException e) {
 			throw new DatabaseException(e.getMessage(), e.getCause());

@@ -5,20 +5,62 @@
 <jsp:useBean id="profileBean" scope="session" class="logic.bean.ProfileBean"/>
 <jsp:useBean id="userBean" scope="session" class="logic.bean.UserBean"/>
 <jsp:useBean id="sessionBean" scope="session" class="logic.bean.SessionBean"/>
+<jsp:useBean id="joinTripBean" scope="session" class="logic.bean.JoinTripBean"/>
 
 <%@page import="logic.bean.ReviewBean"%>
+<%@page import="logic.bean.TripBean"%>
 <%@page import="logic.control.ReviewUserController"%>
 <%@page import="logic.control.ProfileController"%>
 <%@page import="logic.persistence.exceptions.DatabaseException"%>
 <%@page import="logic.model.exceptions.UnloggedException"%>
+<%@page import="java.util.List"%>
 <%@page import="java.util.Map"%>
 <jsp:setProperty name="profileBean" property="comment"/>
 <jsp:setProperty name="profileBean" property="title"/>
 
-<%
+
+<% 
 	userBean = profileBean.getUser();
 	if (userBean == null) {
 		userBean = ProfileController.getInstance().getProfileUser(sessionBean.getSessionEmail());
+	}
+	
+	List<TripBean> myTripBeans = null;
+	List<TripBean> upcomingTripBeans = null;
+	List<TripBean> previousTripBeans = null;
+	
+	upcomingTripBeans = ProfileController.getInstance().getUpcomingTrips(userBean.getEmail());
+	previousTripBeans = ProfileController.getInstance().getRecentTrips(userBean.getEmail());
+	myTripBeans = ProfileController.getInstance().getMyTrips(userBean.getEmail());
+	
+	if (request.getParameter("prevBtn") != null){
+		System.out.println("qualcosa");
+		int idx = Integer.parseInt(request.getParameter("prevBtn"));
+			joinTripBean.setTrip(previousTripBeans.get(idx));
+%>
+		<jsp:forward page="tripInfo.jsp" />
+<% 
+		
+	}
+	
+	if (request.getParameter("upcomBtn") != null){
+		System.out.println("qualcosa");
+
+		int idx = Integer.parseInt(request.getParameter("upcomBtn"));
+		joinTripBean.setTrip(upcomingTripBeans.get(idx));
+%>
+		<jsp:forward page="tripInfo.jsp" />
+<% 	
+	}
+	
+	if (request.getParameter("myinfoBtn") != null){
+		System.out.println("qualcosa");
+
+		int idx = Integer.parseInt(request.getParameter("myinfoBtn"));
+		joinTripBean.setTrip(myTripBeans.get(idx));
+%>
+		<jsp:forward page="tripInfo.jsp" />
+<% 	
 	}
 %>
 
@@ -245,7 +287,7 @@
                                     		review.setVote(profileBean.getVote());                  
                                     		ReviewUserController.getInstance().postReview(request.getParameter("type-radio"), profileBean.getVote(), profileBean.getComment(), profileBean.getTitle(), sessionBean.getSessionEmail(), userBean.getEmail(), userBean);
                                     		userBean.getReviews().add(review);
-                                    		System.out.println("web view: org rating:"+profileBean.getUser().getStatsBean().getOrgRating()+" trav rating:"+profileBean.getUser().getStatsBean().getTravRating());
+                                    		//System.out.println("web view: org rating:"+profileBean.getUser().getStatsBean().getOrgRating()+" trav rating:"+profileBean.getUser().getStatsBean().getTravRating());
                                     		response.setIntHeader("Refresh",0);
                                 		} catch (DatabaseException e) {
                                 			request.setAttribute("errType", e.getMessage());
@@ -312,13 +354,38 @@
                             %>
 
                         </div>
+                        
+                        <% profileBean.setUser(null); %>
 
                     </div>
+                    
+                    <%
+					upcomingTripBeans = ProfileController.getInstance().getUpcomingTrips(userBean.getEmail());
+					previousTripBeans = ProfileController.getInstance().getRecentTrips(userBean.getEmail());
+                    %>
 
                     <div class="tab-pane" role="tabpanel" id="prev-trips">
 
                         <!-- previous trips list-->
                         <div class="previous-trips scrollable">
+                        	<form method="POST" action="profile.jsp" >
+							<%                     	
+							for (int i = 0; i < previousTripBeans.size(); i++){
+								request.setAttribute("tripName", previousTripBeans.get(i).getTitle());
+								request.setAttribute("depDate",  previousTripBeans.get(i).getDepartureDate());
+								request.setAttribute("retDate",  previousTripBeans.get(i).getReturnDate());
+								request.setAttribute("category1",  previousTripBeans.get(i).getCategory1());
+								request.setAttribute("category2", previousTripBeans.get(i).getCategory2());
+								request.setAttribute("price", previousTripBeans.get(i).getPrice());
+								request.setAttribute("moreinfo", "prevBtn");
+								request.setAttribute("btnVal", i );
+							%>                      				
+                        		<%@include file="html/hzTripCard.html" %>
+							<%
+                        	}
+							%>                       	                      	
+                        	</form>
+                        
                         </div>
                     </div>
 
@@ -326,13 +393,49 @@
 
                         <!-- upcoming trips list-->
                         <div class="upcoming-trips scrollable">
-                        </div>
+                        	<form method="POST" action="profile.jsp" >
+ 							<%                     	
+                       		for (int i = 0; i < upcomingTripBeans.size(); i++){
+                       			request.setAttribute("tripName", upcomingTripBeans.get(i).getTitle());
+                       			request.setAttribute("depDate",  upcomingTripBeans.get(i).getDepartureDate());
+                       			request.setAttribute("retDate",  upcomingTripBeans.get(i).getReturnDate());
+                       			request.setAttribute("category1",  upcomingTripBeans.get(i).getCategory1());
+                       			request.setAttribute("category2", upcomingTripBeans.get(i).getCategory2());
+                       			request.setAttribute("price", upcomingTripBeans.get(i).getPrice());
+								request.setAttribute("moreinfo", "upcomBtn");
 
-                        <div class="filler center"><h4>No upcoming trips.</h4></div>
+                       			request.setAttribute("btnVal", i );
+							%>                      				
+                       			<%@include file="html/hzTripCard.html" %>
+							<%
+                        	}
+ 							%>                       	                      	
+                        	</form>
+                        
+                        </div>
                     </div>
                     
                     <div class="tab-pane" role="tabpanel" id="my-trips">
-                    	<div class="filler center"><h4>No trips planned.</h4></div>
+                  		<div class="my-trips scrollable">
+                        
+                       	    <form method="POST" action="profile.jsp" >
+ 							<%                     	
+                       		for (int i = 0; i < myTripBeans.size(); i++){
+                       			request.setAttribute("tripName",  myTripBeans.get(i).getTitle());
+                       			request.setAttribute("depDate",  myTripBeans.get(i).getDepartureDate());
+                       			request.setAttribute("retDate",  myTripBeans.get(i).getReturnDate());
+                       			request.setAttribute("category1",  myTripBeans.get(i).getCategory1());
+                       			request.setAttribute("category2",  myTripBeans.get(i).getCategory2());
+                       			request.setAttribute("price",  myTripBeans.get(i).getPrice());
+								request.setAttribute("moreinfo", "myinfoBtn");
+                       			request.setAttribute("btnVal", i );
+							%>                      				
+                       			<%@include file="html/hzTripCard.html" %>
+							<%
+                        	}
+ 							%>                       	                      	
+                        	</form>
+                        </div>    
                     </div>
                 </div>
             </div>
