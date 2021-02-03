@@ -54,9 +54,8 @@
 				Date depDate = FormatManager.parseDate(tripBean.getDepartureDate());
 				Date retDate = FormatManager.parseDate(tripBean.getReturnDate());
 				long tripLength = PlanTripController.getInstance().calculateTripLength(depDate, retDate) + 1;
-				System.out.println(tripLength);
 				tripBean.setTripLength(tripLength);
-				tripBean.createDays();				
+				PlanTripController.getInstance().addDays(tripBean);				
 				planTripBean.setPlanningDay(0);
 %>			
 				<jsp:forward page="planTrip.jsp"/>			

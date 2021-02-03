@@ -11,6 +11,7 @@
 <%@page import="logic.control.PlanTripController"%>
 <%@page import="logic.persistence.exceptions.DatabaseException"%>
 <%@page import="logic.model.exceptions.TripNotCompletedException"%>
+<%@page import="logic.model.exceptions.FormInputException"%>
 <jsp:useBean id="planTripBean" scope="session" class="logic.bean.PlanTripBean"/>
 <jsp:useBean id="tripBean" scope="session" class="logic.bean.TripBean"/>
 <jsp:useBean id="activityBean" scope="request" class="logic.bean.ActivityBean"/> 
@@ -132,6 +133,7 @@
 		 if (request.getParameter("save-location-btn") != null){
 			 if (planTripBean.validateLocation()){
 				planTripBean.saveLocation();
+				planTripBean.setLocation("");
 			 }
 			}
  
@@ -156,7 +158,7 @@
  		}else{
  %>            
                
-             	<h3>Location: <%=planTripBean.getDayLocation() %></h3>
+             	<h3>Location: <%=planTripBean.getTripBean().getDays().get(planTripBean.getPlanningDay()).getLocationCity() %></h3>
              </div>
                 <div class="day-plan">
                 	<!-- NEW ACTIVITY FORM -->
@@ -164,19 +166,24 @@
                   		<div class="activity-form">
 <%
 		if (request.getParameter("save-activity-btn") != null){
-			if (activityBean.validateActivity()){
-				//planTripBean.addActivity(activityBean);	
-				PlanTripController.getInstance().addActivity(planTripBean, activityBean);
-			}else{
-				activityBean.setDescription("");
-				activityBean.setTitle("");
-				activityBean.setEstimatedCost("");
-				activityBean.setTime("");
+			try{
+				if (activityBean.validateActivity()){	
+					PlanTripController.getInstance().addActivity(planTripBean.getTripBean(), planTripBean.getPlanningDay(), activityBean);
+				}else{
+					activityBean.setDescription("");
+					activityBean.setTitle("");
+					activityBean.setEstimatedCost("");
+					activityBean.setTime("");
 %>
-				<p style="color: red">ERRORE</p>
+					<p style="color: red">ERRORE</p>
 <% 
-			}
-		}		                    
+				}
+			}catch(FormInputException e){
+%>
+				<p style="color: red"><%=e.getMessage() %></p>	
+<% 
+		}
+	}		                    
 %>
                         	<div class = "flex-form-row">
                         		<h4>Title</h4>
@@ -230,27 +237,27 @@
 <%
 		if (!(planTripBean.checkDay())){
 					
-			suggestions = PlanTripController.getInstance().getNearbyPlaces(planTripBean.getDayLocation(), tripBean.getCategory1());
+			suggestions = PlanTripController.getInstance().getNearbyPlaces(planTripBean.getTripBean().getDays().get(planTripBean.getPlanningDay()).getLocationCity(),
+															tripBean.getCategory1());
 			for (int i = 0; i < suggestions.size(); i++){
 %>
 				
 				<!--  INSERIRE LAYOUT SUGGESTION QUI -->
-				
-		        <div class = "suggestion-card">
-		        <form>
-		            <div class="ic-container">
-		                <img class="suggestion-icon" src=<%= suggestions.get(i).getIcCategoryRef() %> alt=""> 
-		            </div>
-		            <div class="suggestion-info">
-		                <p><%= suggestions.get(i).getName() %></p>
-		                <p><%= suggestions.get(i).getAddress() %></p>
-		                <p><%= suggestions.get(i).getOpeningHours() %></p>
-		            </div>
-		            <div class="center suggestion-btn">
-		            	<button type="submit" name="btn-lookup-place" value=<%= i%> ></button>
-		           	</div>
-		       </form>
-		       </div>
+		       		      
+<%
+				request.setAttribute("ic_src" , suggestions.get(i).getIcCategoryRef());
+				request.setAttribute("placeName" , suggestions.get(i).getName());
+				request.setAttribute("placeAddress" , suggestions.get(i).getAddress());
+				request.setAttribute("placeOH" , suggestions.get(i).getOpeningHours());
+				request.setAttribute("suggestion_id" , i);
+%>			
+				 <form>
+				 
+					<%@ include file="html/suggestionCard.html" %>
+	       
+		         </form>
+
+
 <% 			
 			}
 %>		  		  

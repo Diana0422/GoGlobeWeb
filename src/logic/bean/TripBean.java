@@ -1,6 +1,5 @@
 package logic.bean;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import logic.model.exceptions.TripNotCompletedException;
@@ -26,19 +25,6 @@ public class TripBean {
 	private List<UserBean> participants;
 	private int availability;
 	
-	
-	public void addActivity(int day, ActivityBean activity) {
-		this.getDays().get(day).getActivities().add(activity);
-	}
-	
-	//Creates dayBean instances
-	public void createDays(){
-		days = new ArrayList<>();
-		for (int i = 0; i < this.tripLength; i++){
-			DayBean day = new DayBean();
-			this.days.add(day);
-		}
-	}
 	
 	public void validateTrip() throws TripNotCompletedException{
 		for (int i = 0; i < days.size(); i++) {

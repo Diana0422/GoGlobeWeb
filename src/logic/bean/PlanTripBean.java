@@ -174,10 +174,6 @@ public class PlanTripBean {
 		return (locationCheck == null || locationCheck.equals(""));
 	}	
 	
-	//Gets the location for the current planning day
-	public String getDayLocation() {
-		return this.tripBean.getDays().get(planningDay).getLocationCity();
-	}
 	
 	public String getLocation() {
 		return location;

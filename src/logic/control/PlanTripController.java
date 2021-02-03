@@ -1,13 +1,13 @@
 package logic.control;
 
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 import java.util.logging.Logger;
 import logic.bean.ActivityBean;
 import logic.bean.DayBean;
-import logic.bean.PlanTripBean;
 import logic.bean.SessionBean;
 import logic.bean.TripBean;
 import logic.persistence.dao.TripDao;
@@ -47,11 +47,26 @@ public class PlanTripController {
 	}
 	
 	
-	public void addActivity(PlanTripBean planTripBean, ActivityBean newActivityBean) {
+	public boolean addActivity(TripBean tripBean, int planningDay, ActivityBean newActivityBean) {
 		
-		DayBean currentDayBean = planTripBean.getTripBean().getDays().get(planTripBean.getPlanningDay());
-		currentDayBean.addActivity(newActivityBean);		
+		DayBean currentDayBean = tripBean.getDays().get(planningDay);		
+		List<ActivityBean> activities = currentDayBean.getActivities();
+		activities.add(newActivityBean);
+		currentDayBean.setActivities(activities);
+		
+		return true;
 	}
+	
+	public void addDays(TripBean tripBean) {
+		List<DayBean> newDaysList = new ArrayList<>();
+		for (int i = 0; i< tripBean.getTripLength(); i++) {
+			DayBean newDay = new DayBean();
+			newDay.setActivities(new ArrayList<>());
+			newDaysList.add(newDay);
+		}	
+		tripBean.setDays(newDaysList);
+	}
+	
 	
 	public boolean saveTrip(TripBean tripBean, SessionBean organizerBean) throws DatabaseException{
 		Trip trip = TripFactory.getInstance().createModel();
@@ -70,8 +85,8 @@ public class PlanTripController {
 			//Setting dates
 			trip.setDepartureDate(depDate);
 			trip.setReturnDate(retDate);
-			Logger.getGlobal().info("departure date: "+trip.getDepartureDate());
-			Logger.getGlobal().info("return date: "+trip.getReturnDate());
+			Logger.getGlobal().info("departure date: " + trip.getDepartureDate());
+			Logger.getGlobal().info("return date: " + trip.getReturnDate());
 			
 			// Setting shared trip preferences
 			if (tripBean.isShared()) {
