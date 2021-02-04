@@ -16,7 +16,7 @@ public class TestPlanTripSelenium {
 	private static final String DRIVER_PATH = "Drivers/chromedriverMacOS";
 	
 	private static final String USERNAME = "lorenzo@gmail.com";
-	private static final String PASSWORD = "ciao";
+	private static final String PASS = "ciao";
 	private static final String TRIPNAME = "Test Trip";
 	private static final String DEP_DATE = "16/03/2021";
 	private static final String RET_DATE = "16/03/2021";
@@ -53,7 +53,7 @@ public class TestPlanTripSelenium {
 		 
 		 //Inserts email and password and logs in
 			driver.findElement(By.xpath(XPATH_EMAIL_TF)).sendKeys(USERNAME);
-			driver.findElement(By.xpath(XPATH_PASSWORD_TF)).sendKeys(PASSWORD);
+			driver.findElement(By.xpath(XPATH_PASSWORD_TF)).sendKeys(PASS);
 			driver.findElement(By.xpath(XPATH_SIGNIN_BTN)).click();
 			
 		//Opens plan trip 

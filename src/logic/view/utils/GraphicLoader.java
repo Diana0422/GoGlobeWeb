@@ -32,7 +32,6 @@ public class GraphicLoader {
 				return new Scene(pane);
 			}
 		} catch (IOException e) {
-			e.printStackTrace();
 			showAlert(AlertType.ERROR, "view not found.");
 			return new Scene(new BorderPane());
 		}
@@ -52,7 +51,6 @@ public class GraphicLoader {
 				return new Scene(pane);
 			}
 		} catch (IOException e) {
-			e.printStackTrace();
 			showAlert(AlertType.ERROR, "view not found.");
 			return new Scene(new BorderPane());
 		}
