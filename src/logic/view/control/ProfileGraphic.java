@@ -127,19 +127,23 @@ public class ProfileGraphic implements GraphicControl {
     private UserBean target;
     private TripBean trip;
     private Number vote;
-    private Session session; 
+    private Session session;
+    private ProfileController controller;
+    private ReviewUserController reviewCtrl;
     
     public ProfileGraphic(UserBean bean) {
     	this.target = bean;
+    	this.controller = new ProfileController();
     }
     
     public ProfileGraphic(UserBean bean, TripBean trip) {
     	this.target = bean;
     	this.trip = trip;
+    	this.controller = new ProfileController();
     }
 
     @FXML
-    void back(MouseEvent event) { 
+    void back(MouseEvent event) {
     	Stage stage = (Stage) lblUserBio.getScene().getWindow();
     	if (session != null) stage.setScene(GraphicLoader.switchView(session.getPrevView(), session.getPrevGraphicControl(), session));
     	if (session == null) stage.setScene(GraphicLoader.switchView(GUIType.INFO, new TripInfoGraphic(this.trip)));
@@ -148,7 +152,7 @@ public class ProfileGraphic implements GraphicControl {
     @FXML
     void saveBio(MouseEvent event) {
     	try {
-			ProfileController.getInstance().updateUserBio(session.getUserEmail(), taBio.getText());
+			controller.updateUserBio(session.getUserEmail(), taBio.getText());
 		} catch (DatabaseException e) {
 			AlertGraphic alert = new AlertGraphic();
 			alert.display(e.getMessage(), e.getCause().toString());
@@ -173,9 +177,9 @@ public class ProfileGraphic implements GraphicControl {
         	
         	try {
             	if (rdTraveler.isSelected()) {
-        			ReviewUserController.getInstance().postReview("TRAVELER", d, txtComment.getText(), txtTitle.getText(), session.getUserEmail(), target.getEmail(), target);
+        			reviewCtrl.postReview("TRAVELER", d, txtComment.getText(), txtTitle.getText(), session.getUserEmail(), target.getEmail(), target);
             	} else {
-        			ReviewUserController.getInstance().postReview("ORGANIZER", d, txtComment.getText(), txtTitle.getText(), session.getUserEmail(), target.getEmail(), target);
+        			reviewCtrl.postReview("ORGANIZER", d, txtComment.getText(), txtTitle.getText(), session.getUserEmail(), target.getEmail(), target);
             	}
         	} catch (DatabaseException e) {
 				AlertGraphic alert = new AlertGraphic();
@@ -238,7 +242,7 @@ public class ProfileGraphic implements GraphicControl {
 	@Override
 	public void initialize(URL url, ResourceBundle resource) {
 		try {
-			this.target = ProfileController.getInstance().getProfileUser(target.getEmail());
+			this.target = controller.getProfileUser(target.getEmail());
 		} catch (DatabaseException e) {
 			AlertGraphic alert = new AlertGraphic();
 			alert.display(e.getMessage(), e.getCause().toString());
@@ -252,19 +256,19 @@ public class ProfileGraphic implements GraphicControl {
 		
 		// Display trips planned by user
 		try {
-			myTripBeans = ProfileController.getInstance().getMyTrips(target.getEmail());
+			myTripBeans = controller.getMyTrips(target.getEmail());
 			cc.loadCardGrid(myTripsGrid, myTripBeans, session);
 		
 			// Display target user's upcoming trips
-			upcomingTripBeans = ProfileController.getInstance().getUpcomingTrips(target.getEmail());
+			upcomingTripBeans = controller.getUpcomingTrips(target.getEmail());
 			cc.loadCardGrid(upcomingGrid, upcomingTripBeans, session);
 			
 			// Display target user's passed trips
-			previousTripBeans = ProfileController.getInstance().getRecentTrips(target.getEmail());
+			previousTripBeans = controller.getRecentTrips(target.getEmail());
 			cc.loadCardGrid(previousGrid, previousTripBeans, session);
 			
 			//Display user attitude
-			Map<String, Integer> attitude = ProfileController.getInstance().getPercentageAttitude(target.getEmail());
+			Map<String, Integer> attitude = controller.getPercentageAttitude(target.getEmail());
 			lblFun.setText(attitude.get("FUN")+"%");
 			lblAdv.setText(attitude.get("ADVENTURE")+"%");
 			lblCult.setText(attitude.get("CULTURE")+"%");

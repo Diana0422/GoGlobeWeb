@@ -7,6 +7,9 @@ import java.util.Date;
 import java.util.EnumMap;
 import java.util.List;
 import java.util.Map;
+
+import logic.persistence.dao.ReviewDao;
+import logic.persistence.dao.UserDaoDB;
 import logic.persistence.dao.UserStatsDao;
 import logic.persistence.exceptions.DBConnectionException;
 import logic.persistence.exceptions.DatabaseException;
@@ -69,7 +72,11 @@ public class User {
 	public boolean addReview(Review rev) throws DatabaseException {
 		reviews.add(rev);
 		calculateAverageRating(rev.getType());
-		return false;
+		try {
+			return ReviewDao.getInstance().save(rev, this.email);
+		} catch (DBConnectionException | SQLException e) {
+			throw new DatabaseException(e.getMessage(), e.getCause());
+		}
 		
 	}
 	
@@ -122,12 +129,13 @@ public class User {
 		this.incRequests.add(incRequest);
 	}
 	
-	public void addToSentRequests(Request r) {
+	public boolean addToSentRequests(Request r) throws DatabaseException {
 		Request sentRequest = new Request();
 		sentRequest.setAccepted(r.getAccepted());
 		sentRequest.setId(r.getId());
 		sentRequest.setTarget(r.getTarget());
 		this.sentRequests.add(sentRequest);
+		return sentRequest.storeRequest(this.email);
 	}
 	
 	
@@ -137,7 +145,7 @@ public class User {
 		}
 	}
 	
-	public void setSentRequests(List<Request> sentRequests) {
+	public void setSentRequests(List<Request> sentRequests) throws DatabaseException {
 		for (Request r: sentRequests) {
 			this.addToSentRequests(r);
 		}
@@ -231,7 +239,9 @@ public class User {
 	}
 
 	public void setReviews(List<Review> reviews) {
-		this.reviews = reviews;
+		for (Review r: reviews) {
+			this.reviews.add(r);
+		}
 	}
 
 	public UserStats getStats() {
@@ -253,4 +263,39 @@ public class User {
 		return sentRequests;
 	}
 
+	public boolean storeUser() throws DatabaseException {
+		try {
+			return UserDaoDB.getInstance().save(this);
+		} catch (DBConnectionException | SQLException e) {
+			throw new DatabaseException(e.getMessage(), e.getCause());
+		}
+	}
+	
+	public static User getUserByEmail(String email) throws DatabaseException {
+		try {
+			return UserDaoDB.getInstance().get(email);
+		} catch (DBConnectionException | SQLException e) {
+			throw new DatabaseException(e.getMessage(), e.getCause());
+		}
+	}
+	
+	public boolean updateUserInfo(String newName, String newSurname, String newBio) throws DatabaseException {
+		try {
+			return UserDaoDB.getInstance().update(this, newName, newSurname, newBio);
+		} catch (DBConnectionException | SQLException e) {
+			throw new DatabaseException(e.getMessage(), e.getCause());
+		}
+	}
+	
+	public boolean updateStats() throws DatabaseException {
+		return this.stats.updateUserStats(this.email);
+	}
+	
+	public static User getRequestReceiver(String sender, String title) throws DatabaseException {
+		try {
+			return UserDaoDB.getInstance().getRequestReceiver(sender, title);
+		} catch (DBConnectionException | SQLException e) {
+			throw new DatabaseException(e.getMessage(), e.getCause());
+		}
+	}
 }

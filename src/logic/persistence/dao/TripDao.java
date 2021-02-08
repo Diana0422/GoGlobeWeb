@@ -140,6 +140,7 @@ public class TripDao {
 					t.setShared(false);
 					t.setPrice(price);
 					t.setDays(DayDao.getInstance().getTripDays(title));
+					t.setOrganizer(UserDaoDB.getInstance().getTripOrganizer(title));
 					t.setParticipants(UserDaoDB.getInstance().getTripParticipants(title));
 					trips.add(t);
 				} while(rs.next());

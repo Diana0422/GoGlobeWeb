@@ -47,15 +47,17 @@
         <div id="preferences-form">
         <h2>Insert information about your trip!</h2>
 <%
+	PlanTripController controller = new PlanTripController();	
+
 	if (request.getParameter("next-btn") != null){
 		try{	
 			planTripBean.setTripBean(tripBean);
 			if (planTripBean.validateForm()){
 				Date depDate = FormatManager.parseDate(tripBean.getDepartureDate());
 				Date retDate = FormatManager.parseDate(tripBean.getReturnDate());
-				long tripLength = PlanTripController.getInstance().calculateTripLength(depDate, retDate) + 1;
+				long tripLength = controller.calculateTripLength(depDate, retDate) + 1;
 				tripBean.setTripLength(tripLength);
-				PlanTripController.getInstance().addDays(tripBean);				
+				controller.addDays(tripBean);				
 				planTripBean.setPlanningDay(0);
 %>			
 				<jsp:forward page="planTrip.jsp"/>			

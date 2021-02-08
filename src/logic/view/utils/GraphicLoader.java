@@ -3,7 +3,6 @@ package logic.view.utils;
 import java.io.IOException;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
-import javafx.scene.control.Alert.AlertType;
 import javafx.scene.layout.BorderPane;
 import logic.util.Session;
 import logic.view.control.AlertGraphic;
@@ -32,7 +31,8 @@ public class GraphicLoader {
 				return new Scene(pane);
 			}
 		} catch (IOException e) {
-			showAlert(AlertType.ERROR, e.getMessage());
+			showAlert(e.getMessage(), e.toString());
+			e.printStackTrace();
 			return new Scene(new BorderPane());
 		}
 	}
@@ -51,7 +51,8 @@ public class GraphicLoader {
 				return new Scene(pane);
 			}
 		} catch (IOException e) {
-			showAlert(AlertType.ERROR, e.getMessage());
+			showAlert(e.getMessage(), e.toString());
+			e.printStackTrace();
 			return new Scene(new BorderPane());
 		}
 	}
@@ -123,9 +124,9 @@ public class GraphicLoader {
 		}
 	}
 
-	public static void showAlert(AlertType error, String message) {
+	public static void showAlert(String error, String message) {
 		AlertGraphic alert = new AlertGraphic();
-		alert.display(error.toString(), message);
+		alert.display(error, message);
 	}
 
 }

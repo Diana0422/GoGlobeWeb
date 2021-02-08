@@ -1,6 +1,5 @@
 package logic.control;
 
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -8,18 +7,14 @@ import java.util.concurrent.TimeUnit;
 import java.util.logging.Logger;
 import logic.bean.ActivityBean;
 import logic.bean.DayBean;
-import logic.bean.SessionBean;
 import logic.bean.TripBean;
-import logic.persistence.dao.TripDao;
-import logic.persistence.dao.UserDaoDB;
-import logic.persistence.dao.UserStatsDao;
-import logic.persistence.exceptions.DBConnectionException;
 import logic.persistence.exceptions.DatabaseException;
 import logic.model.Day;
 import logic.model.Location;
 import logic.model.PlaceBean;
 import logic.model.Trip;
 import logic.model.TripCategory;
+import logic.model.User;
 import logic.model.exceptions.APIException;
 import logic.model.factories.HereAdapterFactory;
 import logic.model.factories.TripFactory;
@@ -27,19 +22,7 @@ import logic.model.interfaces.LocationFinder;
 import logic.model.utils.converters.DayBeanConverter;
 
 public class PlanTripController {
-		
-	private static PlanTripController instance;
 	
-	private PlanTripController(){
-		
-	}
-	
-	public static synchronized PlanTripController getInstance() {
-		if (instance == null) {
-			instance = new PlanTripController();
-		}
-		return instance;
-	}
 	
 	public long calculateTripLength(Date depDate, Date retDate) {
 		long diff = retDate.getTime() - depDate.getTime();
@@ -68,57 +51,48 @@ public class PlanTripController {
 	}
 	
 	
-	public boolean saveTrip(TripBean tripBean, SessionBean organizerBean) throws DatabaseException{
+	public boolean saveTrip(TripBean tripBean, String orgEmail) throws DatabaseException{
 		Trip trip = TripFactory.getInstance().createModel();
-		try {
-			trip.setOrganizer(UserDaoDB.getInstance().get(organizerBean.getSessionEmail()));
-			trip.setTitle(tripBean.getTitle());
+		trip.setOrganizer(User.getUserByEmail(orgEmail));
+		trip.setTitle(tripBean.getTitle());
 			
-			//parsing and setting categories
-			trip.setCategory1(parseTripCategory(tripBean.getCategory1()));
-			trip.setCategory2(parseTripCategory(tripBean.getCategory2()));
+		//parsing and setting categories
+		trip.setCategory1(parseTripCategory(tripBean.getCategory1()));
+		trip.setCategory2(parseTripCategory(tripBean.getCategory2()));
 			
-			//Converting dates
-			Date depDate = FormatManager.parseDate(tripBean.getDepartureDate()); 
-			Date retDate = FormatManager.parseDate(tripBean.getReturnDate());
+		//Converting dates
+		Date depDate = FormatManager.parseDate(tripBean.getDepartureDate()); 
+		Date retDate = FormatManager.parseDate(tripBean.getReturnDate());
 	
-			//Setting dates
-			trip.setDepartureDate(depDate);
-			trip.setReturnDate(retDate);
-			Logger.getGlobal().info("departure date: " + trip.getDepartureDate());
-			Logger.getGlobal().info("return date: " + trip.getReturnDate());
+		//Setting dates
+		trip.setDepartureDate(depDate);
+		trip.setReturnDate(retDate);
+		Logger.getGlobal().info("departure date: " + trip.getDepartureDate());
+		Logger.getGlobal().info("return date: " + trip.getReturnDate());
 			
-			// Setting shared trip preferences
-			if (tripBean.isShared()) {
-				trip.setShared(true);
-				trip.setDescription(tripBean.getDescription());
-				trip.setMinAge(Integer.parseInt(tripBean.getMinAge()));
-				trip.setMaxAge(Integer.parseInt(tripBean.getMaxAge()));
-				trip.setMaxParticipants(Integer.parseInt(tripBean.getMaxParticipants()));
-			}	
+		// Setting shared trip preferences
+		if (tripBean.isShared()) {
+			trip.setShared(true);
+			trip.setDescription(tripBean.getDescription());
+			trip.setMinAge(Integer.parseInt(tripBean.getMinAge()));
+			trip.setMaxAge(Integer.parseInt(tripBean.getMaxAge()));
+			trip.setMaxParticipants(Integer.parseInt(tripBean.getMaxParticipants()));
+		}	
 				
-			/* save trip on persistence */
-			if (!TripDao.getInstance().saveTrip(trip, tripBean.isShared())) return false;
+		/* save trip on persistence */
+		if (!trip.storeTrip()) return false;
 			
-			/* update the user traveling attitude */
-			trip.getOrganizer().recalculateAttitude(trip.getCategory1(), trip.getCategory2());
-			UserStatsDao.getInstance().updateAttitude(trip.getOrganizer().getEmail(), 
-					trip.getOrganizer().getAttitudeValue(TripCategory.FUN),
-					trip.getOrganizer().getAttitudeValue(TripCategory.CULTURE), 
-					trip.getOrganizer().getAttitudeValue(TripCategory.RELAX),
-					trip.getOrganizer().getAttitudeValue(TripCategory.ADVENTURE));
+		/* update the user traveling attitude */
+		trip.getOrganizer().recalculateAttitude(trip.getCategory1(), trip.getCategory2());
 		
-			/*Converting and setting Days list (and activities)*/
-			List<Day> days;
-			DayBeanConverter dayConverter = new DayBeanConverter(trip.getTitle());
-			if ((days = dayConverter.convertFromListBean(tripBean.getDays())) != null) {
-				trip.setDays(days); 
-				return true;
-			}
-			return false;
-		} catch (DBConnectionException | SQLException e) {
-			throw new DatabaseException(e.getMessage(), e.getCause());
+		/*Converting and setting Days list (and activities)*/
+		List<Day> days;
+		DayBeanConverter dayConverter = new DayBeanConverter(trip.getTitle());
+		if ((days = dayConverter.convertFromListBean(tripBean.getDays())) != null) {
+			trip.setDays(days); 
+			return true;
 		}
+		return false;
 	}
 	
 	//Use HereAPI to get nearby places suggestions

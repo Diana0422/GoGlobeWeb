@@ -100,14 +100,17 @@ public class PlanTripGraphic implements GraphicControl {
 	private Session session;
 	private SessionBean sessionBean;
 	private PlanTripBean planTripBean;
+	private PlanTripController controller;
 	
 	public PlanTripGraphic(PlanTripBean bean, SessionBean sessionBean) {
 		this.planTripBean = bean;
 		this.sessionBean = sessionBean;
+		controller = new PlanTripController();
 	}
 
     public PlanTripGraphic(PlanTripBean bean) {
     	this.planTripBean = bean;
+    	controller = new PlanTripController();
 	}
 
 	@FXML
@@ -121,7 +124,7 @@ public class PlanTripGraphic implements GraphicControl {
  
     	try {
 			if (newActivity.validateActivity()) {
-				PlanTripController.getInstance().addActivity(this.planTripBean.getTripBean(), planTripBean.getPlanningDay(), newActivity);
+				controller.addActivity(this.planTripBean.getTripBean(), planTripBean.getPlanningDay(), newActivity);
 				loadActivity(newActivity);
 				lblErrorMsg.setText("");
 			}
@@ -156,7 +159,7 @@ public class PlanTripGraphic implements GraphicControl {
     void onSaveTripClick(ActionEvent event) {
     	 try {
 			planTripBean.validateTrip();
-			PlanTripController.getInstance().saveTrip(planTripBean.getTripBean(), sessionBean);
+			controller.saveTrip(planTripBean.getTripBean(), session.getUserEmail());
 			Stage stage = (Stage) lblErrorMsg.getScene().getWindow();
 			stage.setScene(GraphicLoader.switchView(GUIType.HOME, null, session));
 		} catch (TripNotCompletedException e) {
@@ -253,7 +256,7 @@ public class PlanTripGraphic implements GraphicControl {
 			try {
 				int planningDay = planTripBean.getPlanningDay();
 				String location = planTripBean.getTripBean().getDays().get(planningDay).getLocationCity();
-				places = PlanTripController.getInstance().getNearbyPlaces(location, planTripBean.getTripBean().getCategory1());
+				places = controller.getNearbyPlaces(location, planTripBean.getTripBean().getCategory1());
 				for (int i = 0; i < places.size(); i++) {
 					this.loadSuggestion(places.get(i));
 				}

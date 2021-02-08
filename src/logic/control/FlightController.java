@@ -1,6 +1,4 @@
 package logic.control;
-
-import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -14,8 +12,6 @@ import logic.model.exceptions.FlightNotFoundException;
 import logic.model.exceptions.IPNotFoundException;
 import logic.model.exceptions.LocationNotFoundException;
 import logic.model.utils.GeolocationPicker;
-import logic.persistence.dao.TripDao;
-import logic.persistence.exceptions.DBConnectionException;
 import logic.persistence.exceptions.DatabaseException;
 
 public class FlightController {
@@ -49,17 +45,13 @@ public class FlightController {
 	
 	private void retrieveFlightPrice(TripBean bean) throws DatabaseException {
 		// Adding variable flight ticket price
-		Trip trip = null;
 		int ticketPrice = 0;
-		//get trip
 		try {
-			trip = TripDao.getInstance().getTripByTitle(bean.getTitle());
+			Trip trip = Trip.getTrip(bean.getTitle());
 			String destination = trip.getDays().get(0).getLocation().getCity();
 			
 			ticketPrice = new FlightFinderAdapter(new SkyscannerAPI()).getFlightPrice(userLocation, destination, trip.getDepartureDate());
 			bean.getFlight().setPrice(ticketPrice);
-		} catch (DBConnectionException | SQLException e1) {
-			throw new DatabaseException(e1.getMessage(), e1.getCause());
 		} catch (FlightNotFoundException | APIException e) {
 			Logger.getGlobal().log(Level.WARNING, e.getMessage());
 			e.printStackTrace();
@@ -71,7 +63,7 @@ public class FlightController {
 		// Retrieve flight origin airport name
 		String origin;
 		try {
-			Trip trip = TripDao.getInstance().getTripByTitle(bean.getTitle()); 
+			Trip trip = Trip.getTrip(bean.getTitle()); 
 			String destination = trip.getDays().get(0).getLocation().getCity();
 			origin = new FlightFinderAdapter(new SkyscannerAPI()).getFlightOrigin(userLocation, destination, trip.getDepartureDate());
 			bean.getFlight().setOriginAirport(origin);
@@ -79,8 +71,6 @@ public class FlightController {
 			Logger.getGlobal().log(Level.WARNING, e.getMessage());
 			e.printStackTrace();
 			bean.getFlight().setOriginAirport(ND);
-		} catch (DBConnectionException | SQLException e) {
-			throw new DatabaseException(e.getMessage(), e.getCause());
 		}
 	}
 	
@@ -88,7 +78,7 @@ public class FlightController {
 		// Retrieve flight destination airport name
 		String destAirport;
 		try {
-			Trip trip = TripDao.getInstance().getTripByTitle(bean.getTitle());
+			Trip trip = Trip.getTrip(bean.getTitle());
 			String destination = trip.getDays().get(0).getLocation().getCity();
 			destAirport = new FlightFinderAdapter(new SkyscannerAPI()).getFlightDestination(userLocation, destination, trip.getDepartureDate());
 			bean.getFlight().setDestAirport(destAirport);
@@ -96,8 +86,6 @@ public class FlightController {
 			Logger.getGlobal().log(Level.WARNING, e.getMessage());
 			e.printStackTrace();
 			bean.getFlight().setDestAirport(ND);
-		} catch (DBConnectionException | SQLException e) {
-			throw new DatabaseException(e.getMessage(), e.getCause());
 		}
 	}
 	
@@ -105,7 +93,7 @@ public class FlightController {
 		// Retrieve flight carrier name
 		String carrier;
 		try {
-			Trip trip = TripDao.getInstance().getTripByTitle(bean.getTitle());
+			Trip trip =Trip.getTrip(bean.getTitle());
 			String destination = trip.getDays().get(0).getLocation().getCity();
 			carrier =  new FlightFinderAdapter(new SkyscannerAPI()).getFlightCarrier(userLocation, destination, trip.getDepartureDate());
 			bean.getFlight().setCarrier(carrier);
@@ -113,8 +101,6 @@ public class FlightController {
 			Logger.getGlobal().log(Level.WARNING, e.getMessage());
 			e.printStackTrace();
 			bean.getFlight().setCarrier(ND);
-		} catch (DBConnectionException | SQLException e) {
-			throw new DatabaseException(e.getMessage(), e.getCause());
 		}
 	}
 }

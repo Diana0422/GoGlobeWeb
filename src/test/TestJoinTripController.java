@@ -23,6 +23,8 @@ import logic.persistence.dao.RequestDao;
 import logic.persistence.dao.UserDaoDB;
 import logic.persistence.exceptions.DBConnectionException;
 import logic.persistence.exceptions.DatabaseException;
+import logic.util.Cookie;
+import logic.util.Session;
 
 /**
  * @author diana pasquali
@@ -81,11 +83,10 @@ public class TestJoinTripController {
 	void testSendRequestNotSuccessfulUnloggedUser() {
 		// If the user isn't logged
 		String tripTitle = TRIP_TITLE;
-		String userEmail = PARTICIPANT;
 		TripBean trip = new TripBean();
 		trip.setTitle(tripTitle);
 		SessionBean session = new SessionBean();
-		session.setSessionEmail(userEmail);
+		session.setSessionEmail(null);
 		
 		try {
 			boolean result = controller.sendRequest(trip.getTitle(), session.getSessionEmail());
@@ -105,11 +106,12 @@ public class TestJoinTripController {
 		String email = NOT_ORGANIZER_ID;
 		TripBean trip = new TripBean();
 		trip.setTitle(title);
-		SessionBean userSession = new SessionBean();
-		userSession.setSessionEmail(email);
+		Session userSession = new Session();
+		userSession.setUserEmail(email);
+		Cookie.getInstance().addSession(userSession);
 		
 		try {
-			boolean result = controller.sendRequest(trip.getTitle(), userSession.getSessionEmail());
+			boolean result = controller.sendRequest(trip.getTitle(), userSession.getUserEmail());
 			assertEquals(false, result);
 		} catch (DatabaseException | UnloggedException e) {
 			String logStr = "No exception has occurred during testJoinTripNotSuccessfulAgeNotInRange";
@@ -125,11 +127,12 @@ public class TestJoinTripController {
 		String userEmail = ORGANIZER_ID;
 		TripBean trip = new TripBean();
 		trip.setTitle(tripTitle);
-		SessionBean session = new SessionBean();
-		session.setSessionEmail(userEmail);
+		Session userSession = new Session();
+		userSession.setUserEmail(userEmail);
+		Cookie.getInstance().addSession(userSession);
 		
 		try {
-			boolean result = controller.sendRequest(trip.getTitle(), session.getSessionEmail());
+			boolean result = controller.sendRequest(trip.getTitle(), userSession.getUserEmail());
 			assertEquals(false, result);
 		} catch (DatabaseException | UnloggedException e) {
 			String logStr = "No exception has occurred during testJoinTripNotSuccessfulUserOganizer";

@@ -49,6 +49,7 @@ public class SelectTripPreferencesGraphic implements GraphicControl {
     private Button btnNext;
     
     private Session session;
+    private PlanTripController controller;
 
     @FXML
     void onCancelClick(ActionEvent event) {
@@ -67,9 +68,9 @@ public class SelectTripPreferencesGraphic implements GraphicControl {
     	tripBean.setCategory2(cbCategory2.getValue());
     	Date depDate = FormatManager.parseDate(tripBean.getDepartureDate());
 		Date retDate = FormatManager.parseDate(tripBean.getReturnDate());
-    	long tripLength = PlanTripController.getInstance().calculateTripLength(depDate, retDate) + 1;
+    	long tripLength = controller.calculateTripLength(depDate, retDate) + 1;
     	tripBean.setTripLength(tripLength);
-    	PlanTripController.getInstance().addDays(tripBean);
+    	controller.addDays(tripBean);
     	planTripBean.setTripBean(tripBean);
     	
     	//Validate form and load next GUI

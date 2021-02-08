@@ -38,7 +38,9 @@
 </head>
 <body id="bootstrap-override">
 
-	<% List<PlaceBean> suggestions = null; %>
+	<% List<PlaceBean> suggestions = null;
+	   PlanTripController controller = new PlanTripController();
+	%>
     
 	<%@ include file="html/loggedNavbar.html" %>
     
@@ -89,7 +91,7 @@
 				if (request.getParameter("save-trip-btn") != null){
 					try {
 						planTripBean.validateTrip();
-				    		PlanTripController.getInstance().saveTrip(tripBean, sessionBean); 
+				    		controller.saveTrip(tripBean, sessionBean.getSessionEmail()); 
 							%>
 							<jsp:forward page="home.jsp"/>
 							<% 
@@ -168,7 +170,7 @@
 		if (request.getParameter("save-activity-btn") != null){
 			try{
 				if (activityBean.validateActivity()){	
-					PlanTripController.getInstance().addActivity(planTripBean.getTripBean(), planTripBean.getPlanningDay(), activityBean);
+					controller.addActivity(planTripBean.getTripBean(), planTripBean.getPlanningDay(), activityBean);
 				}else{
 					activityBean.setDescription("");
 					activityBean.setTitle("");
@@ -237,7 +239,7 @@
 <%
 		if (!(planTripBean.checkDay())){
 					
-			suggestions = PlanTripController.getInstance().getNearbyPlaces(planTripBean.getTripBean().getDays().get(planTripBean.getPlanningDay()).getLocationCity(),
+			suggestions = controller.getNearbyPlaces(planTripBean.getTripBean().getDays().get(planTripBean.getPlanningDay()).getLocationCity(),
 															tripBean.getCategory1());
 			for (int i = 0; i < suggestions.size(); i++){
 %>

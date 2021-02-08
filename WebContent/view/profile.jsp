@@ -20,18 +20,21 @@
 
 
 <% 
+	ProfileController controller = new ProfileController();
+	ReviewUserController reviewCtrl = new ReviewUserController();
+
 	userBean = profileBean.getUser();
 	if (userBean == null) {
-		userBean = ProfileController.getInstance().getProfileUser(sessionBean.getSessionEmail());
+		userBean = controller.getProfileUser(sessionBean.getSessionEmail());
 	}
 	
 	List<TripBean> myTripBeans = null;
 	List<TripBean> upcomingTripBeans = null;
 	List<TripBean> previousTripBeans = null;
 	
-	upcomingTripBeans = ProfileController.getInstance().getUpcomingTrips(userBean.getEmail());
-	previousTripBeans = ProfileController.getInstance().getRecentTrips(userBean.getEmail());
-	myTripBeans = ProfileController.getInstance().getMyTrips(userBean.getEmail());
+	upcomingTripBeans = controller.getUpcomingTrips(userBean.getEmail());
+	previousTripBeans = controller.getRecentTrips(userBean.getEmail());
+	myTripBeans = controller.getMyTrips(userBean.getEmail());
 	
 	if (request.getParameter("prevBtn") != null){
 		System.out.println("qualcosa");
@@ -66,7 +69,7 @@
 	
 	if (request.getParameter("save-bio") != null){
 		System.out.println(userBean.getBio());
-		ProfileController.getInstance().updateUserBio(sessionBean.getSessionEmail(), userBean.getBio());
+		controller.updateUserBio(sessionBean.getSessionEmail(), userBean.getBio());
 	}
 %>
 
@@ -125,7 +128,7 @@
                     <div class="travel-attitude profile-element">
                         <h4>Traveler Attitude</h4>
                         <%
-                        Map<String, Integer> attitude = ProfileController.getInstance().getPercentageAttitude(userBean.getEmail());
+                        Map<String, Integer> attitude = controller.getPercentageAttitude(userBean.getEmail());
                         System.out.println(attitude);
                         %>
                         <ul>
@@ -311,7 +314,7 @@
                                     		review.setReviewerName(sessionBean.getSessionName());
                                     		review.setReviewerSurname(sessionBean.getSessionSurname());
                                     		review.setVote(profileBean.getVote());                  
-                                    		ReviewUserController.getInstance().postReview(request.getParameter("type-radio"), profileBean.getVote(), profileBean.getComment(), profileBean.getTitle(), sessionBean.getSessionEmail(), userBean.getEmail(), userBean);
+                                    		reviewCtrl.postReview(request.getParameter("type-radio"), profileBean.getVote(), profileBean.getComment(), profileBean.getTitle(), sessionBean.getSessionEmail(), userBean.getEmail(), userBean);
                                     		userBean.getReviews().add(review);
                                     		//System.out.println("web view: org rating:"+profileBean.getUser().getStatsBean().getOrgRating()+" trav rating:"+profileBean.getUser().getStatsBean().getTravRating());
                                     		response.setIntHeader("Refresh",0);
@@ -386,8 +389,8 @@
                     </div>
                     
                     <%
-					upcomingTripBeans = ProfileController.getInstance().getUpcomingTrips(userBean.getEmail());
-					previousTripBeans = ProfileController.getInstance().getRecentTrips(userBean.getEmail());
+					upcomingTripBeans = controller.getUpcomingTrips(userBean.getEmail());
+					previousTripBeans = controller.getRecentTrips(userBean.getEmail());
                     %>
 
                     <div class="tab-pane" role="tabpanel" id="prev-trips">

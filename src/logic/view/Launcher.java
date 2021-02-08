@@ -2,7 +2,6 @@ package logic.view;
 
 import javafx.application.Application;
 import javafx.scene.Scene;
-import javafx.scene.control.Alert.AlertType;
 import javafx.scene.image.Image;
 import javafx.stage.Stage;
 import logic.view.exceptions.UnavailableConfigurationException;
@@ -19,7 +18,7 @@ public class Launcher extends Application {
  		try {
 			initStage(stage, scene);
 		} catch (UnavailableConfigurationException e) {
-			GraphicLoader.showAlert(AlertType.ERROR, e.getMessage());
+			GraphicLoader.showAlert(e.getMessage(), e.getCause().toString());
 		}
 		stage.show();	
 	}

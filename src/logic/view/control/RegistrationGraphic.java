@@ -54,13 +54,14 @@ public class RegistrationGraphic {
 		String name = txtName.getText();
 		String surname = txtSurname.getText();
 		String birthday = txtBirthday.getText();
+		RegistrationController controller = new RegistrationController();
 		
 		if (email.equals("") || password.equals("") || name.equals("") || surname.equals("") || birthday.equals("")) {
 			lblMessage.setText("Input values not valid.");
 		} else {
 			/* Call the controller to register the user */
 			try {
-				if ((setSessionBean(RegistrationController.getInstance().register(email, password, name, surname, birthday)))!= null) {
+				if ((setSessionBean(controller.register(email, password, name, surname, birthday)))!= null) {
 					Stage stage = (Stage) lblMessage.getScene().getWindow();
 					stage.setScene(GraphicLoader.switchView(GUIType.HOME, null, new Session()));
 				} else {

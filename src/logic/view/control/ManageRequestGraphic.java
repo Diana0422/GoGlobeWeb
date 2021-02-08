@@ -51,8 +51,9 @@ public class ManageRequestGraphic implements GraphicControl {
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
 		List<RequestBean> inc;
+		ManageRequestController controller = new ManageRequestController();
 		try {
-			inc = ManageRequestController.getInstance().getUserIncomingRequests(session.getUserEmail());
+			inc = controller.getUserIncomingRequests(session.getUserEmail());
 			
 			if (inc != null) {
 				for (int i=0; i<inc.size(); i++) {
@@ -60,7 +61,7 @@ public class ManageRequestGraphic implements GraphicControl {
 				}
 			}
 			
-			List<RequestBean> sent = ManageRequestController.getInstance().getUserSentRequests(session.getUserEmail());
+			List<RequestBean> sent = controller.getUserSentRequests(session.getUserEmail());
 				
 			if (sent != null) {
 				for (int i=0; i<sent.size(); i++) {

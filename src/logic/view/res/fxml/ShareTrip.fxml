@@ -13,7 +13,7 @@
    <center>
       <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="1024.0">
          <children>
-            <AnchorPane id="form" layoutX="45.0" layoutY="16.0" prefHeight="549.0" prefWidth="938.0" style="-fx-background-color: white;" stylesheets="@css/application.css">
+            <AnchorPane id="form" layoutX="45.0" layoutY="16.0" prefHeight="549.0" prefWidth="938.0" style="-fx-background-color: white;">
                <children>
                   <Text layoutX="49.0" layoutY="72.0" strokeType="OUTSIDE" strokeWidth="0.0" text="To share your trip insert the following info.">
                      <font>

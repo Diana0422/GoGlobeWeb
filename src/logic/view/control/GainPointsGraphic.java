@@ -38,6 +38,7 @@ public class GainPointsGraphic implements GraphicControl {
 
     @FXML
     private Button btnBack;
+    private GainPointsController controller;
    
 
     @FXML
@@ -49,7 +50,7 @@ public class GainPointsGraphic implements GraphicControl {
 	@FXML
 	void onGainPoints(MouseEvent event) {
 		try {
-			if (GainPointsController.getInstance().verifyParticipation(session.getUserEmail(), getTrip())) {
+			if (controller.verifyParticipation(session.getUserEmail(), getTrip())) {
 				AlertGraphic alert = new AlertGraphic();
 				alert.display("Trip validated successfully.", "You gained 100 points");
 			} else {
@@ -76,7 +77,7 @@ public class GainPointsGraphic implements GraphicControl {
 	
 	public void loadTrip() {
 		try {
-			setTrip(GainPointsController.getInstance().getTripOfTheDay(session.getUserEmail()));
+			setTrip(controller.getTripOfTheDay(session.getUserEmail()));
 		} catch (DatabaseException e) {
 			AlertGraphic alert = new AlertGraphic();
 			alert.display(e.getMessage(), e.getCause().toString());
@@ -112,6 +113,7 @@ public class GainPointsGraphic implements GraphicControl {
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
 		loadTrip();
+		this.controller = new GainPointsController();
 		lblPoints.setText("You have "+session.getUserPoints()+" points.");
 	}
 

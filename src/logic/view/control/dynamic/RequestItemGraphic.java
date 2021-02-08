@@ -42,6 +42,7 @@ public class RequestItemGraphic implements Initializable {
     private Label lblStatus;
     
     private RequestBean request;
+    private ManageRequestController controller;
     
     public RequestBean getRequest() {
 		return request;
@@ -70,7 +71,7 @@ public class RequestItemGraphic implements Initializable {
     @FXML
     public void accept(MouseEvent event) {
     	try {
-			ManageRequestController.getInstance().acceptRequest(getRequest());
+			controller.acceptRequest(getRequest());
 	    	lblStatus.setVisible(true);
 	    	lblStatus.setText("Accepted");
 	    	lblStatus.setStyle("-fx-text-fill: green;");
@@ -83,7 +84,7 @@ public class RequestItemGraphic implements Initializable {
     @FXML
     public void viewProfile(MouseEvent event) {
     	try {
-			ManageRequestController.getInstance().declineRequest(getRequest());
+			controller.declineRequest(getRequest());
 		} catch (DatabaseException e) {
 			AlertGraphic alert = new AlertGraphic();
 			alert.display(e.getMessage(), e.getCause().toString());
@@ -93,7 +94,7 @@ public class RequestItemGraphic implements Initializable {
     @FXML
     public void decline(MouseEvent event) {
     	try {
-			ManageRequestController.getInstance().declineRequest(getRequest());
+			controller.declineRequest(getRequest());
 	    	lblStatus.setVisible(true);
 	    	lblStatus.setText("Declined");
 	    	lblStatus.setStyle("-fx-text-fill: red;");
@@ -120,6 +121,6 @@ public class RequestItemGraphic implements Initializable {
 
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
-		// empty
+		this.controller = new ManageRequestController();
 	}
 }

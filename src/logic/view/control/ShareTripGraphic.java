@@ -62,10 +62,12 @@ public class ShareTripGraphic implements GraphicControl {
 	private Session session;
 	private SessionBean sessionBean;
 	private PlanTripBean planBean;
+	private PlanTripController controller;
 	
 	public ShareTripGraphic(SessionBean sessionBean, PlanTripBean planBean) {
 		this.sessionBean = sessionBean;
 		this.planBean = planBean;
+		this.controller = new PlanTripController();
 	}
 
     @FXML
@@ -84,10 +86,9 @@ public class ShareTripGraphic implements GraphicControl {
     		
     	try {
 				planBean.validateSharingPref();
-				
-				PlanTripController.getInstance().saveTrip(planBean.getTripBean(), sessionBean); 
+				controller.saveTrip(planBean.getTripBean(), session.getUserEmail()); 
 				Stage stage = (Stage) lblErrorMsg.getScene().getWindow();
-				stage.setScene(GraphicLoader.switchView(GUIType.HOME, null, session));
+				stage.setScene(GraphicLoader.switchView(GUIType.HOME, new HomeGraphic(), session));
 			
 		} catch (FormInputException e) {
 	    	planBean.getTripBean().setShared(false);
@@ -127,7 +128,7 @@ public class ShareTripGraphic implements GraphicControl {
 
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
-    	Image icAddImage = new Image("/logic/view/images/" + IC_ADDIMAGE);
+    	Image icAddImage = new Image("/logic/view/res/images/" + IC_ADDIMAGE);
 		ImageView imgView = new ImageView(icAddImage);
 		btnChooseFile.setGraphic(imgView);
 		

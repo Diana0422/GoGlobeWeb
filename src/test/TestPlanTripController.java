@@ -34,7 +34,7 @@ class TestPlanTripController {
 	PlanTripController controller;
 	
 	public TestPlanTripController() {
-		controller = PlanTripController.getInstance();
+		controller = new PlanTripController();
 	}
 
 	@Test
@@ -80,7 +80,7 @@ class TestPlanTripController {
 		SessionBean session = new SessionBean();
 		session.setSessionEmail("lorenzo@gmail.com");
 		try {
-			boolean b = controller.saveTrip(tripBean, session);
+			boolean b = controller.saveTrip(tripBean, session.getSessionEmail());
 			assertEquals(true, b);
 		} catch (DatabaseException e) {			
 			String logStr = "testGetNearbyPlaces() SHOULD NOT throw exception "+e;
@@ -88,8 +88,4 @@ class TestPlanTripController {
 		}		
 	}
 	
-	@Test()
-	void testSaveTripFailureTripAlreadyExist() {
-		
-	}
 }
