@@ -33,7 +33,6 @@ public class GraphicLoader {
 			}
 		} catch (IOException e) {
 			showAlert(AlertType.ERROR, e.getMessage());
-			e.printStackTrace();
 			return new Scene(new BorderPane());
 		}
 	}
@@ -53,7 +52,6 @@ public class GraphicLoader {
 			}
 		} catch (IOException e) {
 			showAlert(AlertType.ERROR, e.getMessage());
-			e.printStackTrace();
 			return new Scene(new BorderPane());
 		}
 	}
