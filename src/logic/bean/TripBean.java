@@ -10,7 +10,6 @@ public class TripBean {
 	private boolean shared;
 	private String title;
 	private int price;
-	private int ticketPrice;
 	private String category1;
 	private String category2;
 	private String departureDate;
@@ -24,6 +23,7 @@ public class TripBean {
 	private UserBean organizer;
 	private List<UserBean> participants;
 	private int availability;
+	private FlightBean flight;
 	
 	
 	public void validateTrip() throws TripNotCompletedException{
@@ -162,20 +162,20 @@ public class TripBean {
 		this.participants = participants;
 	}
 
-	public int getTicketPrice() {
-		return ticketPrice;
-	}
-
-	public void setTicketPrice(int ticketPrice) {
-		this.ticketPrice = ticketPrice;
-	}
-
 	public int getAvailability() {
 		return availability;
 	}
 
 	public void setAvailability(int availability) {
 		this.availability = availability;
+	}
+
+	public FlightBean getFlight() {
+		return flight;
+	}
+
+	public void setFlight(FlightBean flight) {
+		this.flight = flight;
 	}
 	
 	

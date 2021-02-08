@@ -47,10 +47,6 @@
                      <font>
                         <Font name="System Bold" size="12.0" />
                      </font></Button>
-                  <Button id="custom-btn" fx:id="btnPrizes" mnemonicParsing="false" onMouseClicked="#displayPrizes" prefHeight="59.0" prefWidth="93.0" text="Prizes">
-                     <font>
-                        <Font name="System Bold" size="12.0" />
-                     </font></Button>
                   <Button id="custom-btn" fx:id="btnRequests" mnemonicParsing="false" onMouseClicked="#displayRequests" prefHeight="59.0" prefWidth="93.0" text="Requests">
                      <font>
                         <Font name="System Bold" size="12.0" />

@@ -33,6 +33,7 @@ public class GraphicLoader {
 			}
 		} catch (IOException e) {
 			showAlert(AlertType.ERROR, "view not found.");
+			e.printStackTrace();
 			return new Scene(new BorderPane());
 		}
 	}
@@ -52,6 +53,7 @@ public class GraphicLoader {
 			}
 		} catch (IOException e) {
 			showAlert(AlertType.ERROR, "view not found.");
+			e.printStackTrace();
 			return new Scene(new BorderPane());
 		}
 	}

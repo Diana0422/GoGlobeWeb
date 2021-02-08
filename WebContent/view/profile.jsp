@@ -42,6 +42,7 @@
 <% 
 		
 	}
+
 	
 	if (request.getParameter("upcomBtn") != null){
 		System.out.println("qualcosa");
@@ -61,6 +62,11 @@
 %>
 		<jsp:forward page="tripInfo.jsp" />
 <% 	
+	}
+	
+	if (request.getParameter("save-bio") != null){
+		System.out.println(userBean.getBio());
+		ProfileController.getInstance().updateUserBio(sessionBean.getSessionEmail(), userBean.getBio());
 	}
 %>
 
@@ -214,9 +220,29 @@
                 </ul>
 
                 <div class="tab-content">
-                    <div class="tab-pane active" role="tabpanel" id="bio">
-                        <!-- biography -->
-                        <p class="bio-text"><%= userBean.getBio() %></p>
+					<div class="tab-pane active" role="tabpanel" id="bio">
+                        <%
+							String profileBio = userBean.getBio();
+                            		
+                            if (profileBio == null || profileBio.equals("")){
+                            	profileBio = "User has no bio";
+                            }
+                            
+							if (!sessionBean.getSessionEmail().equals(userBean.getEmail())){
+%>
+								<h1><%= profileBio%></h1>
+<% 
+							}else{
+															
+								request.setAttribute("bio" , profileBio);
+								
+%>								
+								<form  method="post" action="profile.jsp" >
+									<%@ include file="html/profileBioTab.html" %>	
+								</form>							
+<% 							
+							}
+%>
                     </div>
 
                     <div class="tab-pane" role="tabpanel" id="reviews">

@@ -154,18 +154,18 @@ public class TripInfoGraphic implements GraphicControl {
 	
 	private void displayFlightInfo() {
 		String notDefined = "N/D";
-		int price; 
-		
+		FlightController flightCtrl = new FlightController();
 		try {
-			if ((price = FlightController.getInstance().retrieveFlightPrice(tripBean)) == 0) {
+			flightCtrl.loadFlightInfo(tripBean);
+			if ((tripBean.getFlight().getPrice()) == 0) {
 				lblTicketPrice.setText(notDefined);
 			} else {
-				lblTicketPrice.setText(price+"€");
+				lblTicketPrice.setText(tripBean.getFlight().getPrice()+"€");
 			}
 			
-			lblOrigin.setText(FlightController.getInstance().retrieveFlightOrigin(tripBean));
-			lblDestination.setText(FlightController.getInstance().retrieveFlightDestination(tripBean));
-			lblCarrier.setText(FlightController.getInstance().retrieveFlightCarrier(tripBean));
+			lblOrigin.setText(tripBean.getFlight().getOriginAirport());
+			lblDestination.setText(tripBean.getFlight().getDestAirport());
+			lblCarrier.setText(tripBean.getFlight().getCarrier());
 		} catch (DatabaseException e) {
 			AlertGraphic graphic = new AlertGraphic();
 			graphic.display(e.getMessage(), e.getCause().toString());

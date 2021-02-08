@@ -76,7 +76,7 @@ public class JoinTripGraphic implements GraphicControl {
 			cc.loadCardGrid(cardsLayout, this.tripBeans, session);
 		} catch (DatabaseException | APIException e) {
 			AlertGraphic alert = new AlertGraphic();
-			alert.display(e.getMessage(), e.getCause().toString());
+			alert.display(e.getMessage(), e.toString());
 		}
 	}
 	

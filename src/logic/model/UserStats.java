@@ -35,8 +35,6 @@ public class UserStats implements Subject{
 	
 	@Override
 	public void notifyState() {
-		String logStr = "Notifing to observers.";
-		Logger.getGlobal().log(Level.INFO, logStr);
 		ReviewChangeManager.getInstance().notifySubject(this);
 		
 	}

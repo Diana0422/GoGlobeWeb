@@ -86,7 +86,7 @@ public class CardGraphic implements Initializable {
     void loadTripInfo(MouseEvent event) {
 		Stage stage = (Stage) container.getScene().getWindow();
 		if (session == null) stage.setScene(GraphicLoader.switchView(GUIType.INFO, new TripInfoGraphic(getTripBean())));
-		stage.setScene(GraphicLoader.switchView(GUIType.INFO, new TripInfoGraphic(getTripBean()), session));
+		if (session != null) stage.setScene(GraphicLoader.switchView(GUIType.INFO, new TripInfoGraphic(getTripBean()), session));
     }
     
 
@@ -100,7 +100,6 @@ public class CardGraphic implements Initializable {
     	setTripBean(tripBean);
     	lblTitle.setText(tripBean.getTitle());
     	lblPrice.setText(tripBean.getPrice()+"€");
-    	lblTicketPrice.setText(tripBean.getTicketPrice()+"€");
     	Image catImg = new Image(getClass().getResourceAsStream("/logic/view/res/images/icons8-greek-pillar-capital-50.png"));
     	imgCat1.setImage(catImg);
     	imgCat2.setImage(catImg);

@@ -105,14 +105,16 @@
  			request.setAttribute("retDate", joinTripBean.getTrip().getReturnDate());
  			
  			try {
- 				request.setAttribute("flightOri", FlightController.getInstance().retrieveFlightOrigin(joinTripBean.getTrip()));
- 				request.setAttribute("flightArr", FlightController.getInstance().retrieveFlightDestination(joinTripBean.getTrip()));
- 				request.setAttribute("carrier", FlightController.getInstance().retrieveFlightCarrier(joinTripBean.getTrip()));
- 				int ticket = FlightController.getInstance().retrieveFlightPrice(joinTripBean.getTrip());
+ 				FlightController flightCtrl = new FlightController();
+ 				flightCtrl.loadFlightInfo(joinTripBean.getTrip());
+ 				request.setAttribute("flightOri", joinTripBean.getTrip().getFlight().getOriginAirport());
+ 				request.setAttribute("flightArr", joinTripBean.getTrip().getFlight().getDestAirport());
+ 				request.setAttribute("carrier", joinTripBean.getTrip().getFlight().getCarrier());
+ 				int ticket = joinTripBean.getTrip().getFlight().getPrice();
  				if (ticket == 0) {
  					request.setAttribute("ticket", "N/D");
  				} else {
- 					request.setAttribute("ticket", FlightController.getInstance().retrieveFlightPrice(joinTripBean.getTrip()));
+ 					request.setAttribute("ticket", ticket);
  				}
  			} catch (DatabaseException e) {
  				request.setAttribute("errType", e.getMessage());

@@ -20,8 +20,18 @@
 <%@page import="logic.view.filterstrategies.CultureCategoryStrategy"%>
 <%@page import="logic.view.filterstrategies.RelaxCategoryStrategy"%>
 <%@page import="logic.persistence.exceptions.DatabaseException"%>
+<%@page import="logic.model.exceptions.APIException"%>
 <%@page import="logic.view.filterstrategies.TripFilterManager"%>
-
+<%
+	if (request.getParameter("search") != null ) {
+    %>
+    	<!-- map class attributes to values of the form -->
+    	<jsp:setProperty name="joinTripBean" property="searchVal"/>     
+    <%
+      	 System.out.println(joinTripBean.getSearchVal());
+      	 /*response.setIntHeader("refresh", 0);*/
+   }
+%>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -76,14 +86,16 @@
         		
 				try {
 					if (joinTripBean.getSearchVal() != null) {
+						System.out.println("Searchval is not null.");
 						System.out.println(joinTripBean.getSearchVal());
 						joinTripBean.setObjects(controller.searchTrips(joinTripBean.getSearchVal()));
 						joinTripBean.setSearchVal(null);
 					} else {
+						System.out.println("Searchval is null.");
 						System.out.println(joinTripBean.getSearchVal());
 						joinTripBean.setObjects(controller.getSuggestedTrips(sessionBean.getSessionEmail()));
 					}
-				} catch(DatabaseException e) {
+				} catch(DatabaseException | APIException e) {
 					request.setAttribute("errType", e.getMessage());
 					if (e.getCause()!=null)request.setAttribute("errLog", e.getCause().toString());
 					%>
@@ -182,14 +194,6 @@
     					}
     				}
     			}
-				
-        		if (request.getParameter("search") != null ) {
-        			%>
-        	    	<!-- map class attributes to values of the form -->
-					<jsp:setProperty name="joinTripBean" property="searchVal"/>      
-      	 			<%
-      	 			System.out.println(joinTripBean.getSearchVal());
-        		}
         	%>
         	</div>
         	
