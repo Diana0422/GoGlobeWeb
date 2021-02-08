@@ -127,7 +127,7 @@ public class ProfileGraphic implements GraphicControl {
     private UserBean target;
     private TripBean trip;
     private Number vote;
-    private Session session;
+    private Session session; 
     
     public ProfileGraphic(UserBean bean) {
     	this.target = bean;
@@ -139,7 +139,7 @@ public class ProfileGraphic implements GraphicControl {
     }
 
     @FXML
-    void back(MouseEvent event) {
+    void back(MouseEvent event) { 
     	Stage stage = (Stage) lblUserBio.getScene().getWindow();
     	if (session != null) stage.setScene(GraphicLoader.switchView(session.getPrevView(), session.getPrevGraphicControl(), session));
     	if (session == null) stage.setScene(GraphicLoader.switchView(GUIType.INFO, new TripInfoGraphic(this.trip)));

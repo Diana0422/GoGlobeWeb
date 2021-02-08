@@ -14,11 +14,6 @@
 <%@page import="logic.bean.TripBean"%>
 <%@page import="logic.bean.DayBean"%>
 <%@page import="logic.view.filterstrategies.StrategyContext"%>
-<%@page import="logic.view.filterstrategies.AlphabeticalFilterStrategy"%>
-<%@page import="logic.view.filterstrategies.AdventureCategoryStrategy"%>
-<%@page import="logic.view.filterstrategies.FunCategoryStrategy"%>
-<%@page import="logic.view.filterstrategies.CultureCategoryStrategy"%>
-<%@page import="logic.view.filterstrategies.RelaxCategoryStrategy"%>
 <%@page import="logic.persistence.exceptions.DatabaseException"%>
 <%@page import="logic.model.exceptions.APIException"%>
 <%@page import="logic.view.filterstrategies.TripFilterManager"%>
