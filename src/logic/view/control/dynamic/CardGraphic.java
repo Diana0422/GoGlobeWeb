@@ -99,7 +99,7 @@ public class CardGraphic implements Initializable {
 	private void setData(TripBean tripBean) {
     	setTripBean(tripBean);
     	lblTitle.setText(tripBean.getTitle());
-    	lblPrice.setText(tripBean.getPrice()+"€");
+    	lblPrice.setText(tripBean.getPrice()+"â‚¬");
     	Image catImg = new Image(getClass().getResourceAsStream("/logic/view/res/images/icons8-greek-pillar-capital-50.png"));
     	imgCat1.setImage(catImg);
     	imgCat2.setImage(catImg);

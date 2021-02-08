@@ -160,7 +160,7 @@ public class TripInfoGraphic implements GraphicControl {
 			if ((tripBean.getFlight().getPrice()) == 0) {
 				lblTicketPrice.setText(notDefined);
 			} else {
-				lblTicketPrice.setText(tripBean.getFlight().getPrice()+"€");
+				lblTicketPrice.setText(tripBean.getFlight().getPrice()+"ï¿½");
 			}
 			
 			lblOrigin.setText(tripBean.getFlight().getOriginAirport());
@@ -246,7 +246,7 @@ public class TripInfoGraphic implements GraphicControl {
 		initializeParticipants(this.tripBean);
 		displayOrganizer(this.tripBean);
 		lblTitle.setText(this.tripBean.getTitle());
-		lblPrice.setText(this.tripBean.getPrice()+"€");
+		lblPrice.setText(this.tripBean.getPrice()+"â‚¬");
 		lblDescription.setText(this.tripBean.getDescription());
 		lblDeparture.setText(this.tripBean.getDepartureDate());
 		lblReturn.setText(this.tripBean.getReturnDate());
