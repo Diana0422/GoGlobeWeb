@@ -38,6 +38,9 @@ public class PlanTripGraphic implements GraphicControl {
 
     @FXML
     private Text txtTripTitle;
+    
+    @FXML
+    private Text txtCountry;
 
     @FXML
     private Text txtDayNumber;
@@ -144,12 +147,17 @@ public class PlanTripGraphic implements GraphicControl {
 
     @FXML
     void saveLocation(ActionEvent event) {
-    	planTripBean.setLocation(tfLocation.getText());
     	try {
-			if (planTripBean.validateLocation())
-				planTripBean.saveLocation();
-			refresh();
-		} catch (FormInputException e) {
+        	// validate location name
+        	if (controller.checkLocationValidity(tfLocation.getText(), this.planTripBean.getTripBean())) {
+            	planTripBean.setLocation(tfLocation.getText());
+    			if (planTripBean.validateLocation())
+    				planTripBean.saveLocation();
+    			refresh();
+        	} else {
+        		lblErrorMsg.setText("This city is not in country "+planTripBean.getTripBean().getCountry());
+        	}
+		} catch (FormInputException | APIException e) {
 			lblErrorMsg.setText(e.getMessage());
 		}
     	
@@ -207,6 +215,7 @@ public class PlanTripGraphic implements GraphicControl {
 			
 		//set GUI elements visibility
 		txtTripTitle.setText(planTripBean.getTripBean().getTitle());
+		txtCountry.setText(planTripBean.getTripBean().getCountry());
 		txtDayNumber.setText(Integer.toString(planTripBean.getPlanningDay() + 1));
 		if (planTripBean.checkDay()) {
 			logStr = "THIS DAY HAS NO LOCATION";

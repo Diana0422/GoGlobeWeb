@@ -95,6 +95,17 @@ public class PlanTripController {
 		return false;
 	}
 	
+	public boolean checkLocationValidity(String locationName, TripBean bean) throws APIException {
+		LocationFinder adapterAPI = HereAdapterFactory.getInstance().createHereAdapter();
+		Location dayLocation;
+		try {
+			dayLocation = adapterAPI.getLocationInfo(locationName);
+			return bean.getCountry().equals(dayLocation.getCountry());
+		} catch (APIException e) {
+			throw new APIException(e, "This location doesn't exist.");
+		}
+	}
+	
 	//Use HereAPI to get nearby places suggestions
 	public List<PlaceBean> getNearbyPlaces(String locationName, String category) throws APIException{
 		LocationFinder adapterAPI = HereAdapterFactory.getInstance().createHereAdapter();

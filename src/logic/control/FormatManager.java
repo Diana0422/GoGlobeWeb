@@ -43,4 +43,7 @@ public class FormatManager {
 		return formatter.format(date);
 	}
 	
+	public static String prepareToURL(String s) {
+		return s.replace(" ", "+");
+	}
 }

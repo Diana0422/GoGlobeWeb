@@ -15,6 +15,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
+import logic.control.FormatManager;
 import logic.model.PlaceBean;
 import logic.model.exceptions.LoadGraphicException;
 import logic.view.control.AlertGraphic;
@@ -42,7 +43,7 @@ public class SuggestionCardGraphic {
     
     @FXML 
     public void lookupPlace(MouseEvent event){
-    	String url = "https://maps.google.com/?q=" + placeName.replace(" ", "+");
+    	String url = "https://maps.google.com/?q=" + FormatManager.prepareToURL(placeName);
     	try {
 			Desktop.getDesktop().browse(new URL(url).toURI());
 		} catch (URISyntaxException | IOException e) {

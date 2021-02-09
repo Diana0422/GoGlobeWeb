@@ -11,7 +11,6 @@ import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
 import logic.bean.TripBean;
 import logic.control.JoinTripController;
-import logic.model.exceptions.APIException;
 import logic.persistence.exceptions.DatabaseException;
 import logic.util.Session;
 import logic.view.control.dynamic.CardGraphic;
@@ -74,7 +73,7 @@ public class JoinTripGraphic implements GraphicControl {
 			}
 			CardGraphic cc = new CardGraphic();
 			cc.loadCardGrid(cardsLayout, this.tripBeans, session);
-		} catch (DatabaseException | APIException e) {
+		} catch (DatabaseException e) {
 			AlertGraphic alert = new AlertGraphic();
 			alert.display(e.getMessage(), e.toString());
 		}
@@ -84,9 +83,9 @@ public class JoinTripGraphic implements GraphicControl {
 	public void search(MouseEvent event) {
 		try {
 			this.tripBeans = controller.searchTrips(txtSearch.getText());
-		} catch (DatabaseException | APIException e) {
+		} catch (DatabaseException e) {
 			AlertGraphic alert = new AlertGraphic();
-			alert.display(e.getMessage(), e.getCause().toString());
+			alert.display(e.getMessage(), e.getMessage());
 		}
 		CardGraphic cc = new CardGraphic();
 		cc.loadCardGrid(cardsLayout, this.tripBeans, session);

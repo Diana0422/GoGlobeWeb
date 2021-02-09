@@ -28,7 +28,7 @@ public class JoinTripController {
 		this.converter = new TripBeanConverter();
 	}
 
-	public List<TripBean> searchTrips(String value) throws DatabaseException, APIException {
+	public List<TripBean> searchTrips(String value) throws DatabaseException {
 		String logStr = "Search trips by value started.\n";
 		Logger.getGlobal().info(logStr);
 		List<Trip> filteredTrips = new ArrayList<>();
@@ -50,10 +50,14 @@ public class JoinTripController {
 		return converter.convertToListBean(filteredTrips);			
 	}
 	
-	private boolean checkCountry(String cityName, String inputCountry) throws APIException {
-		CityGeolocation service = new CityAdapter(new SkyscannerAPI());
-		String countryName = service.getCountryName(cityName);
-		return countryName.equalsIgnoreCase(inputCountry);
+	private boolean checkCountry(String cityName, String inputCountry) {
+		try {
+			CityGeolocation service = new CityAdapter(new SkyscannerAPI());
+			String countryName = service.getCountryName(cityName);
+			return countryName.equalsIgnoreCase(inputCountry);
+		} catch (APIException e) {
+			return false;
+		}
 	}
 	
 	public List<TripBean> getSuggestedTrips(String userEmail) throws DatabaseException {

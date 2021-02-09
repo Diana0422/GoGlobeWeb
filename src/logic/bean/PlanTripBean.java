@@ -66,7 +66,6 @@ public class PlanTripBean {
 	}
 
 	//Validates the whole trip 
-	//TODO - mettere in tripBean
 	public void validateTrip() throws TripNotCompletedException{	
 		tripBean.validateTrip();
 	}

@@ -14,6 +14,7 @@ public class TripBean {
 	private String category2;
 	private String departureDate;
 	private String returnDate;	
+	private String country;
 	private List<DayBean> days;
 	private long tripLength;
 	private String description;
@@ -176,6 +177,14 @@ public class TripBean {
 
 	public void setFlight(FlightBean flight) {
 		this.flight = flight;
+	}
+
+	public String getCountry() {
+		return country;
+	}
+
+	public void setCountry(String country) {
+		this.country = country;
 	}
 	
 	

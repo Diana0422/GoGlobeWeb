@@ -28,6 +28,9 @@ public class SelectTripPreferencesGraphic implements GraphicControl {
     private TextField tfTripTitle;
     
     @FXML
+    private TextField tfCountry;
+    
+    @FXML
     private Label lblErrorMsg;
 
     @FXML
@@ -62,6 +65,7 @@ public class SelectTripPreferencesGraphic implements GraphicControl {
     	PlanTripBean planTripBean = new PlanTripBean();
     	TripBean tripBean = new TripBean();
     	tripBean.setTitle(tfTripTitle.getText());
+    	tripBean.setCountry(tfCountry.getText());
     	tripBean.setDepartureDate(tfDepartureDate.getText());
     	tripBean.setReturnDate(tfReturnDate.getText());
     	tripBean.setCategory1(cbCategory1.getValue());
@@ -91,6 +95,7 @@ public class SelectTripPreferencesGraphic implements GraphicControl {
 
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
+		controller = new PlanTripController();
 		TripCategory[] categories = TripCategory.values();
 		for (int i = 0; i < categories.length; i++) {
 			cbCategory1.getItems().add((categories[i].toString()));

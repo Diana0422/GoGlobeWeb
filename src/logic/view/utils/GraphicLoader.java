@@ -107,8 +107,10 @@ public class GraphicLoader {
 		switch(item) {
 		case NAVBAR:
 			return new FXMLLoader(GraphicLoader.class.getResource(ITEMPATH + "UpperNavbar.fxml"));
-		case CARD:
+		case CARD_SHARED:
 			return new FXMLLoader(GraphicLoader.class.getResource(DYNITEMPATH + "TripCard.fxml"));
+		case CARD:
+			return new FXMLLoader(GraphicLoader.class.getResource(DYNITEMPATH + "TripCardNotShared.fxml"));
 		case ACTIVITY:
 			return new FXMLLoader(GraphicLoader.class.getResource(DYNITEMPATH + "ActivityCard.fxml"));
 		case USER:

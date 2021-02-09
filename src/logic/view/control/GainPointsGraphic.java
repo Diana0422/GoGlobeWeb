@@ -89,7 +89,7 @@ public class GainPointsGraphic implements GraphicControl {
 			CardGraphic cc = new CardGraphic();
 			AnchorPane anchor;
 			try {
-				anchor = (AnchorPane) cc.initializeNode(trip, cardsLayout, session);
+				anchor = (AnchorPane) cc.initializeNode(trip, cardsLayout, session, trip.isShared());
 				cardsLayout.add(anchor, column, row);
 				GridPane.setMargin(anchor, new Insets(20));
 			} catch (LoadGraphicException e) {
@@ -112,8 +112,8 @@ public class GainPointsGraphic implements GraphicControl {
 
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
-		loadTrip();
 		this.controller = new GainPointsController();
+		loadTrip();
 		lblPoints.setText("You have "+session.getUserPoints()+" points.");
 	}
 
