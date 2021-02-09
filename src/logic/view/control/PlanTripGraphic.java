@@ -27,6 +27,8 @@ import logic.persistence.exceptions.DatabaseException;
 import logic.util.Session;
 import logic.view.control.dynamic.ActivityCardGraphic;
 import logic.view.control.dynamic.SuggestionCardGraphic;
+import logic.view.threads.LoadSuggestionsFX;
+import logic.view.threads.LoadVBox;
 import logic.view.utils.GUIType;
 import logic.view.utils.GraphicControl;
 import logic.view.utils.GraphicLoader;
@@ -266,9 +268,13 @@ public class PlanTripGraphic implements GraphicControl {
 				int planningDay = planTripBean.getPlanningDay();
 				String location = planTripBean.getTripBean().getDays().get(planningDay).getLocationCity();
 				places = controller.getNearbyPlaces(location, planTripBean.getTripBean().getCategory1());
-				for (int i = 0; i < places.size(); i++) {
-					this.loadSuggestion(places.get(i));
-				}
+//				for (int i = 0; i < places.size(); i++) {
+//					this.loadSuggestion(places.get(i));
+//				}
+				LoadVBox suggestionLoader = new LoadVBox(this.vbSuggestions, places);
+				Thread thread = new LoadSuggestionsFX(suggestionLoader);
+				thread.setDaemon(true);
+				thread.start();
 			} catch (APIException e) {
 				lblNoSugg.setText(e.getMessage());
 			}

@@ -21,8 +21,7 @@ public class LoadVBox implements Runnable{
 			loadSuggestion(places.get(i));
 		}
 	}
-	
-	
+		
 	//load suggestion in the GUI
 	private void loadSuggestion(PlaceBean place) {
 		SuggestionCardGraphic graphic = new SuggestionCardGraphic();
