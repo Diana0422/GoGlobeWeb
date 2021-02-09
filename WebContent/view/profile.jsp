@@ -1,5 +1,5 @@
-<%@ page language="java" contentType="text/html; charset=ISO-8859-1"
-    pageEncoding="ISO-8859-1"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
 <%@ page autoFlush="true" buffer="1094kb"%>
     
 <jsp:useBean id="profileBean" scope="session" class="logic.bean.ProfileBean"/>
@@ -15,6 +15,7 @@
 <%@page import="logic.model.exceptions.UnloggedException"%>
 <%@page import="java.util.List"%>
 <%@page import="java.util.Map"%>
+<%@page import="logic.bean.DayBean"%>
 <jsp:setProperty name="profileBean" property="comment"/>
 <jsp:setProperty name="profileBean" property="title"/>
 
@@ -344,7 +345,7 @@
                             	for (ReviewBean bean: userBean.getReviews()) {
                             		%>
                             		<!--SINGLE REVIEW CARD (repeatable)-->
-                            		<div class="review">
+                            		<div class="review card">
                                 		<div class="review-header">
 	                                		<h4 id="user"><%= bean.getReviewerName()+" "+bean.getReviewerSurname() %></h4>
 	                               			<div class="stars">
@@ -396,7 +397,7 @@
                     <div class="tab-pane" role="tabpanel" id="prev-trips">
 
                         <!-- previous trips list-->
-                        <div class="previous-trips scrollable">
+                        <div class="trips scrollable">
                         	<form method="POST" action="profile.jsp" >
 							<%                     	
 							for (int i = 0; i < previousTripBeans.size(); i++){
@@ -405,7 +406,11 @@
 								request.setAttribute("retDate",  previousTripBeans.get(i).getReturnDate());
 								request.setAttribute("category1",  previousTripBeans.get(i).getCategory1());
 								request.setAttribute("category2", previousTripBeans.get(i).getCategory2());
-								request.setAttribute("price", previousTripBeans.get(i).getPrice());
+								String locations="";
+								for (DayBean day: previousTripBeans.get(i).getDays()) {
+									locations = locations.concat(day.getLocationCity()+" • ");
+								}
+								request.setAttribute("locationList", locations);
 								request.setAttribute("moreinfo", "prevBtn");
 								request.setAttribute("btnVal", i );
 							%>                      				
@@ -421,7 +426,7 @@
                     <div class="tab-pane" role="tabpanel" id="up-trips">
 
                         <!-- upcoming trips list-->
-                        <div class="upcoming-trips scrollable">
+                        <div class="trips scrollable">
                         	<form method="POST" action="profile.jsp" >
  							<%                     	
                        		for (int i = 0; i < upcomingTripBeans.size(); i++){
@@ -430,7 +435,11 @@
                        			request.setAttribute("retDate",  upcomingTripBeans.get(i).getReturnDate());
                        			request.setAttribute("category1",  upcomingTripBeans.get(i).getCategory1());
                        			request.setAttribute("category2", upcomingTripBeans.get(i).getCategory2());
-                       			request.setAttribute("price", upcomingTripBeans.get(i).getPrice());
+								String locations="";
+								for (DayBean day: upcomingTripBeans.get(i).getDays()) {
+									locations = locations.concat(day.getLocationCity()+"•");
+								}
+								request.setAttribute("locationList", locations);
 								request.setAttribute("moreinfo", "upcomBtn");
 
                        			request.setAttribute("btnVal", i );
@@ -445,7 +454,7 @@
                     </div>
                     
                     <div class="tab-pane" role="tabpanel" id="my-trips">
-                  		<div class="my-trips scrollable">
+                  		<div class="trips scrollable">
                         
                        	    <form method="POST" action="profile.jsp" >
  							<%                     	
@@ -455,7 +464,11 @@
                        			request.setAttribute("retDate",  myTripBeans.get(i).getReturnDate());
                        			request.setAttribute("category1",  myTripBeans.get(i).getCategory1());
                        			request.setAttribute("category2",  myTripBeans.get(i).getCategory2());
-                       			request.setAttribute("price",  myTripBeans.get(i).getPrice());
+								String locations="";
+								for (DayBean day: myTripBeans.get(i).getDays()) {
+									locations = locations.concat(day.getLocationCity()+"•");
+								}
+								request.setAttribute("locationList", locations);
 								request.setAttribute("moreinfo", "myinfoBtn");
                        			request.setAttribute("btnVal", i );
 							%>                      				
