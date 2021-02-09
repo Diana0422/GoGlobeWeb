@@ -12,6 +12,7 @@
 <%@page import="logic.persistence.exceptions.DatabaseException"%>
 <%@page import="logic.model.exceptions.TripNotCompletedException"%>
 <%@page import="logic.model.exceptions.FormInputException"%>
+<%@page import="logic.model.exceptions.APIException"%>
 <jsp:useBean id="planTripBean" scope="session" class="logic.bean.PlanTripBean"/>
 <jsp:useBean id="tripBean" scope="session" class="logic.bean.TripBean"/>
 <jsp:useBean id="activityBean" scope="request" class="logic.bean.ActivityBean"/> 
@@ -84,7 +85,10 @@
             
             <div class="day" id="day">
             	<div class="form">
-	            <h1 id="trip-title"><%= tripBean.getTitle() %></h1>
+					<div id="header">
+						<h1 id="trip-title"><%= tripBean.getTitle() %></h1>
+	            		<h1 id="country"><%= tripBean.getCountry() %></h1>
+					</div>
 	           
 	           <!--  IF SAVE TRIP IS CLICKED -->  
 				<%
@@ -133,11 +137,19 @@
   		
  <%		
 		 if (request.getParameter("save-location-btn") != null){
-			 if (planTripBean.validateLocation()){
-				planTripBean.saveLocation();
-				planTripBean.setLocation("");
-			 }
+			try {
+				 if (controller.checkLocationValidity(planTripBean.getLocation(), planTripBean.getTripBean())) {
+					 if (planTripBean.validateLocation()){
+							planTripBean.saveLocation();
+							planTripBean.setLocation("");
+						 }
+				 } else {
+					 request.setAttribute("locErr", "the location is not in country "+planTripBean.getTripBean().getCountry());
+				 }
+			} catch (APIException e) {
+				request.setAttribute("locErr", "the location doesn't exist");
 			}
+		}
  
  		if (planTripBean.checkDay()){
  			
@@ -146,10 +158,11 @@
                	<!--  Location Form -->
 			   <form method="POST" action="planTrip.jsp">
 			   	 <div class="location-form form">
+			   	 	  <h6 style="color: red">${locErr}</h6>
 				   	  <div class="form-group row">
-					    <label for="inputPassword" class="col-sm-2 col-form-label"><h6>Location</h6></label>
+					    <label for="inputPassword" class="col-sm-2 col-form-label"><h6 style="width: fit-content;">Location</h6></label>
 					    <div class="col-sm-10">
-					      <input  type="text" name="location" class="form-control" id="inputLocation" placeholder="Insert Location...">
+					      <input type="text" name="location" class="form-control" id="inputLocation" style="width: 100%M" placeholder="Insert Location...">
 					    </div>
 					  </div>
                 	<button type="submit" class="btn btn-colors btn-lg btn-block" name="save-location-btn"  >Save Location</button>	               	                           	
