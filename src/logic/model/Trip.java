@@ -12,6 +12,7 @@ import logic.persistence.exceptions.DatabaseException;
 public class Trip {
 	
 	private String title;
+	private String country;
 	private int price;
 	private int ticketPrice;
 	private TripCategory category1;
@@ -219,6 +220,14 @@ public class Trip {
 		} catch (DBConnectionException | SQLException e) {
 			throw new DatabaseException(e.getMessage(), e.getCause());
 		}
+	}
+
+	public String getCountry() {
+		return country;
+	}
+
+	public void setCountry(String country) {
+		this.country = country;
 	}
 	
 }

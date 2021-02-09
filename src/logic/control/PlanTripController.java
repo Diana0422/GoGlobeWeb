@@ -55,10 +55,11 @@ public class PlanTripController {
 		Trip trip = TripFactory.getInstance().createModel();
 		trip.setOrganizer(User.getUserByEmail(orgEmail));
 		trip.setTitle(tripBean.getTitle());
+		trip.setCountry(tripBean.getCountry());
 			
 		//parsing and setting categories
-		trip.setCategory1(parseTripCategory(tripBean.getCategory1()));
-		trip.setCategory2(parseTripCategory(tripBean.getCategory2()));
+		trip.setCategory1(FormatManager.parseTripCategory(tripBean.getCategory1()));
+		trip.setCategory2(FormatManager.parseTripCategory(tripBean.getCategory2()));
 			
 		//Converting dates
 		Date depDate = FormatManager.parseDate(tripBean.getDepartureDate()); 
@@ -113,14 +114,7 @@ public class PlanTripController {
 		return adapterAPI.getNearbyPlaces(dayLocation.getCoordinates(), category);		
 	}
 	
-	private TripCategory parseTripCategory(String category) {
-		if (category.equalsIgnoreCase("Fun")) return TripCategory.FUN;	
-		if (category.equalsIgnoreCase("Culture")) return TripCategory.CULTURE;	
-		if (category.equalsIgnoreCase("Relax")) return TripCategory.RELAX;
-		if (category.equalsIgnoreCase("Adventure")) return TripCategory.ADVENTURE;
-			
-		return TripCategory.NONE;
-	}
+
 }
 
 
