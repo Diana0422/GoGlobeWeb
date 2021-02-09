@@ -90,7 +90,7 @@
 						System.out.println(joinTripBean.getSearchVal());
 						joinTripBean.setObjects(controller.getSuggestedTrips(sessionBean.getSessionEmail()));
 					}
-				} catch(DatabaseException | APIException e) {
+				} catch(DatabaseException e) {
 					request.setAttribute("errType", e.getMessage());
 					if (e.getCause()!=null)request.setAttribute("errLog", e.getCause().toString());
 					%>
