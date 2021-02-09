@@ -78,17 +78,17 @@
         		JoinTripController controller = new JoinTripController();
         		TripFilterManager filterManager = new TripFilterManager();
         		List<TripBean> trips = null;
-        		
 				try {
 					if (joinTripBean.getSearchVal() != null) {
 						System.out.println("Searchval is not null.");
 						System.out.println(joinTripBean.getSearchVal());
 						joinTripBean.setObjects(controller.searchTrips(joinTripBean.getSearchVal()));
-						joinTripBean.setSearchVal(null);
+		        		System.out.println(joinTripBean.getObjects());
 					} else {
 						System.out.println("Searchval is null.");
 						System.out.println(joinTripBean.getSearchVal());
 						joinTripBean.setObjects(controller.getSuggestedTrips(sessionBean.getSessionEmail()));
+		        		System.out.println(joinTripBean.getObjects());
 					}
 				} catch(DatabaseException e) {
 					request.setAttribute("errType", e.getMessage());
@@ -98,7 +98,6 @@
 					<%
 				}
 				
-        		System.out.println(joinTripBean.getObjects());
         		//If ADVENTURE filter button is clicked
         		if (request.getParameter("btn-adv-filter")!= null){
         			filterManager.setAdventureFilter();
@@ -199,6 +198,7 @@
 		  if(request.getParameter("viewinfo") != null) {
        	  	int tripNum = Integer.parseInt(request.getParameter("viewinfo"));
         	System.out.println("Button pressed: "+request.getParameter("viewinfo"));
+        	System.out.println(joinTripBean.getObjects().size());
         	joinTripBean.setTrip(joinTripBean.getObjects().get(tripNum-1));
         	System.out.println(joinTripBean.getObjects().get(tripNum-1));
            %>

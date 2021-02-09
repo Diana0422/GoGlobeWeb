@@ -7,7 +7,6 @@ import logic.bean.TripBean;
 import logic.persistence.exceptions.DatabaseException;
 import logic.util.Cookie;
 import logic.util.Session;
-import logic.model.Day;
 import logic.model.Request;
 import logic.model.Trip;
 import logic.model.TripCategory;
@@ -30,20 +29,23 @@ public class JoinTripController {
 
 	public List<TripBean> searchTrips(String value) throws DatabaseException {
 		String logStr = "Search trips by value started.\n";
+		System.out.println(value);
 		Logger.getGlobal().info(logStr);
 		List<Trip> filteredTrips = new ArrayList<>();
 		List<Trip> trips = Trip.getTrips(true, null);
 		if (value == null) return converter.convertToListBean(trips);
+		System.out.println(trips);
 		for (Trip trip: trips) {
 			boolean cond1 = trip.getAvailableSpots() != 0;
+			System.out.println(trip.getTitle().toLowerCase()+" contains? "+value.toLowerCase());
 			boolean cond2 = trip.getTitle().toLowerCase().contains(value.toLowerCase());
 			boolean cond4 = true;
-			for (Day day: trip.getDays()) {
-				boolean cond3 = checkCountry(day.getLocation().getCity(), value);
-				if (cond1 && cond4 && (cond2 || cond3)) {
-					filteredTrips.add(trip);
-					cond4 = false;
-				}
+			boolean cond3 = checkCountry(trip.getDays().get(0).getLocation().getCity(), value);
+			System.out.println("("+cond1+"&&"+cond4+"&& ("+cond2+" || "+cond3+")");
+			System.out.println(cond1 && cond4 && (cond2 || cond3));
+			if (cond1 && cond4 && (cond2 || cond3)) {
+				filteredTrips.add(trip);
+				cond4 = false;
 			}
 		}
 		/* Convert List<Trip> into List<TripBean> */
@@ -54,6 +56,7 @@ public class JoinTripController {
 		try {
 			CityGeolocation service = new CityAdapter(new SkyscannerAPI());
 			String countryName = service.getCountryName(cityName);
+			System.out.println(countryName+"=="+inputCountry);
 			return countryName.equalsIgnoreCase(inputCountry);
 		} catch (APIException e) {
 			return false;
