@@ -17,7 +17,6 @@ import logic.bean.TripBean;
 import logic.control.JoinTripController;
 import logic.control.LoginController;
 import logic.model.User;
-import logic.model.exceptions.APIException;
 import logic.model.exceptions.UnloggedException;
 import logic.persistence.dao.RequestDao;
 import logic.persistence.dao.UserDaoDB;
@@ -54,7 +53,7 @@ public class TestJoinTripController {
 			List<TripBean> trips = controller.searchTrips(value);
 			TripBean onlyTrip = trips.get(0);
 			assertEquals(value, onlyTrip.getTitle());
-		} catch (DatabaseException | APIException e) {
+		} catch (DatabaseException e) {
 			String logStr = "testSearchTripsSuccessful() SHOULD NOT throw exception "+e;
 			Logger.getGlobal().log(Level.INFO, logStr);
 		}
@@ -71,7 +70,7 @@ public class TestJoinTripController {
 			String logStr = "Trips search result for value ="+value+"is ---"+empty;
 			Logger.getGlobal().log(Level.INFO, logStr);
 			assertEquals(false, empty.isEmpty());
-		} catch (DatabaseException | APIException e) {
+		} catch (DatabaseException e) {
 			String logStr = "testSearchTripsNoResults() SHOULD NOT THROW exception "+e;
 			Logger.getGlobal().log(Level.INFO, logStr);
 		}
