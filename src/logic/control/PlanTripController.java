@@ -13,7 +13,6 @@ import logic.model.Day;
 import logic.model.Location;
 import logic.model.PlaceBean;
 import logic.model.Trip;
-import logic.model.TripCategory;
 import logic.model.User;
 import logic.model.exceptions.APIException;
 import logic.model.factories.HereAdapterFactory;

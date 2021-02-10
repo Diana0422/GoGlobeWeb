@@ -26,7 +26,6 @@ import logic.model.exceptions.TripNotCompletedException;
 import logic.persistence.exceptions.DatabaseException;
 import logic.util.Session;
 import logic.view.control.dynamic.ActivityCardGraphic;
-import logic.view.control.dynamic.SuggestionCardGraphic;
 import logic.view.threads.LoadSuggestionsFX;
 import logic.view.threads.LoadVBox;
 import logic.view.utils.GUIType;
@@ -196,13 +195,7 @@ public class PlanTripGraphic implements GraphicControl {
 		ActivityCardGraphic graphic = new ActivityCardGraphic();
 		graphic.loadActivityCard(vbActivities, activityBean);
 	}
-	
-	//load suggestion in the GUI
-	private void loadSuggestion(PlaceBean place) {
-		SuggestionCardGraphic graphic = new SuggestionCardGraphic();
-		graphic.loadSuggestionCard(vbSuggestions, place);
 
-	}
 	
 	//refresh the scene
 	private void refresh() {
@@ -252,25 +245,11 @@ public class PlanTripGraphic implements GraphicControl {
 			}
 				
 				
-			//Call thread to load suggestions
-//			Thread loadSuggestions = new Thread(() -> {
-//				//Use ApiAdapter to request list of suggestions and add them to the GUI
-//				HereAPIAdapter hereAPI = HereAdapterFactory.getInstance().createHereAdapter();
-//				Location dayLocation = hereAPI.getLocationInfo(planTripBean.getDayLocation());
-//				List<Place> suggestions = hereAPI.getNearbyPlaces(dayLocation.getCoordinates(), planTripBean.getCategory1());
-//				Platform.runLater(new LoadVBox(vbSuggestions, suggestions));			
-//					
-//			});			
-//			loadSuggestions.start();
-				
 			List<PlaceBean> places;
 			try {
 				int planningDay = planTripBean.getPlanningDay();
 				String location = planTripBean.getTripBean().getDays().get(planningDay).getLocationCity();
 				places = controller.getNearbyPlaces(location, planTripBean.getTripBean().getCategory1());
-//				for (int i = 0; i < places.size(); i++) {
-//					this.loadSuggestion(places.get(i));
-//				}
 				LoadVBox suggestionLoader = new LoadVBox(this.vbSuggestions, places);
 				Thread thread = new LoadSuggestionsFX(suggestionLoader);
 				thread.setDaemon(true);

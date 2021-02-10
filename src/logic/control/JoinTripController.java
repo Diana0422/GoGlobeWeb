@@ -11,11 +11,7 @@ import logic.model.Request;
 import logic.model.Trip;
 import logic.model.TripCategory;
 import logic.model.User;
-import logic.model.adapters.CityAdapter;
-import logic.model.apis.SkyscannerAPI;
-import logic.model.exceptions.APIException;
 import logic.model.exceptions.UnloggedException;
-import logic.model.interfaces.CityGeolocation;
 import logic.model.utils.converters.BeanConverter;
 import logic.model.utils.converters.TripBeanConverter;
  
@@ -40,7 +36,7 @@ public class JoinTripController {
 			System.out.println(trip.getTitle().toLowerCase()+" contains? "+value.toLowerCase());
 			boolean cond2 = trip.getTitle().toLowerCase().contains(value.toLowerCase());
 			boolean cond4 = true;
-			boolean cond3 = checkCountry(trip.getDays().get(0).getLocation().getCity(), value);
+			boolean cond3 = trip.getCountry().equalsIgnoreCase(value);
 			System.out.println("("+cond1+"&&"+cond4+"&& ("+cond2+" || "+cond3+")");
 			System.out.println(cond1 && cond4 && (cond2 || cond3));
 			if (cond1 && cond4 && (cond2 || cond3)) {
@@ -51,17 +47,7 @@ public class JoinTripController {
 		/* Convert List<Trip> into List<TripBean> */
 		return converter.convertToListBean(filteredTrips);			
 	}
-	
-	private boolean checkCountry(String cityName, String inputCountry) {
-		try {
-			CityGeolocation service = new CityAdapter(new SkyscannerAPI());
-			String countryName = service.getCountryName(cityName);
-			System.out.println(countryName+"=="+inputCountry);
-			return countryName.equalsIgnoreCase(inputCountry);
-		} catch (APIException e) {
-			return false;
-		}
-	}
+
 	
 	public List<TripBean> getSuggestedTrips(String userEmail) throws DatabaseException {
 		// Fetch user from cookie
