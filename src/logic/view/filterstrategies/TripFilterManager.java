@@ -31,6 +31,11 @@ public class TripFilterManager {
 		context.setFilter(new CategoryStrategy(TripCategory.FUN));
 	}
 	
+	public void setPriceFilter() {
+		context.setFilter(new PriceFilterStrategy());
+		
+	}
+	
 	public List<TripBean> filterTrips(List<TripBean> trips){
 		return context.filter(trips);
 	}

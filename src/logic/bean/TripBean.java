@@ -184,6 +184,7 @@ public class TripBean {
 	}
 
 	public void setCountry(String country) {
+		System.out.println(country);
 		this.country = country;
 	}
 	

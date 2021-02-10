@@ -50,6 +50,7 @@ public class TripDao {
 	public boolean saveTrip(Trip t, boolean shared) throws DBConnectionException, SQLException {
 		try (Connection conn = ConnectionManager.getInstance().getConnection();
 			CallableStatement stmt = conn.prepareCall(STORE_TRIP)) {
+			System.out.println(t.getCategory1());
 			stmt.setBoolean(1, shared);
 			stmt.setString(2, t.getTitle());
 			stmt.setString(3, t.getCategory1().toString());

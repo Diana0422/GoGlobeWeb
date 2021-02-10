@@ -33,6 +33,7 @@ public class MainGraphic implements Initializable {
     @FXML
     void onGetStarted(MouseEvent event) {
     	Stage stage = (Stage) cbDestination.getScene().getWindow();
+    	System.out.println(cbDestination.getValue());
     	stage.setScene(GraphicLoader.switchView(GUIType.JOIN, new JoinTripGraphic(cbDestination.getValue())));
     }
 

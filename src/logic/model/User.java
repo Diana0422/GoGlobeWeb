@@ -8,6 +8,7 @@ import java.util.EnumMap;
 import java.util.List;
 import java.util.Map;
 
+import logic.model.exceptions.DuplicateException;
 import logic.persistence.dao.ReviewDao;
 import logic.persistence.dao.UserDaoDB;
 import logic.persistence.dao.UserStatsDao;
@@ -129,7 +130,7 @@ public class User {
 		this.incRequests.add(incRequest);
 	}
 	
-	public boolean addToSentRequests(Request r) throws DatabaseException {
+	public boolean addToSentRequests(Request r) throws DatabaseException, DuplicateException {
 		Request sentRequest = new Request();
 		sentRequest.setAccepted(r.getAccepted());
 		sentRequest.setId(r.getId());
@@ -145,7 +146,7 @@ public class User {
 		}
 	}
 	
-	public void setSentRequests(List<Request> sentRequests) throws DatabaseException {
+	public void setSentRequests(List<Request> sentRequests) throws DatabaseException, DuplicateException {
 		for (Request r: sentRequests) {
 			this.addToSentRequests(r);
 		}

@@ -23,6 +23,7 @@ import logic.bean.TripBean;
 import logic.bean.UserBean;
 import logic.control.FlightController;
 import logic.control.JoinTripController;
+import logic.model.exceptions.DuplicateException;
 import logic.model.exceptions.LoadGraphicException;
 import logic.model.exceptions.UnloggedException;
 import logic.persistence.exceptions.DatabaseException;
@@ -200,6 +201,9 @@ public class TripInfoGraphic implements GraphicControl {
 			} catch (DatabaseException | UnloggedException e) {
 				AlertGraphic alert = new AlertGraphic();
 				alert.display(e.getMessage(), e.getCause().toString());
+			} catch (DuplicateException e) {
+				AlertGraphic alert = new AlertGraphic();
+				alert.display(e.getMessage(), "Please wait. Your request still needs be accepted.");
 			}
 		} else {
 			AlertGraphic alert = new AlertGraphic();

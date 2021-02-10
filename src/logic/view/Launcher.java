@@ -29,7 +29,7 @@ public class Launcher extends Application {
 		stage.setWidth(Integer.valueOf(PropManager.getInstance().getProperty("width")));
 		stage.setHeight(Integer.valueOf(PropManager.getInstance().getProperty("height")));
 		stage.centerOnScreen();
-		stage.getIcons().add(new Image(getClass().getResourceAsStream("res/images/icons8-around-the-globe-50.png")));
+		stage.getIcons().add(new Image(getClass().getResourceAsStream("res/images/goglobe-logo.png")));
 		scene.getStylesheets().addAll(
 				getClass().getResource("/logic/view/res/css/navbar.css").toExternalForm(),
 				getClass().getResource("/logic/view/res/css/application.css").toExternalForm());

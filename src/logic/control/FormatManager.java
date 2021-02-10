@@ -14,10 +14,10 @@ public class FormatManager {
 	/* Controller METHODS */
 	
 	public static TripCategory parseTripCategory(String category) {
-		if (category.equals("Fun")) return TripCategory.FUN;	
-		if (category.equals("Culture")) return TripCategory.CULTURE;	
-		if (category.equals("Relax")) return TripCategory.RELAX;
-		if (category.equals("Adventure")) return TripCategory.ADVENTURE;
+		if (category.equalsIgnoreCase("Fun")) return TripCategory.FUN;	
+		if (category.equalsIgnoreCase("Culture")) return TripCategory.CULTURE;	
+		if (category.equalsIgnoreCase("Relax")) return TripCategory.RELAX;
+		if (category.equalsIgnoreCase("Adventure")) return TripCategory.ADVENTURE;
 			
 		return TripCategory.NONE;
 	}

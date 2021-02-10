@@ -7,10 +7,13 @@ import logic.bean.TripBean;
 import logic.persistence.exceptions.DatabaseException;
 import logic.util.Cookie;
 import logic.util.Session;
+import logic.view.filterstrategies.TripFilterManager;
+import logic.model.FilterType;
 import logic.model.Request;
 import logic.model.Trip;
 import logic.model.TripCategory;
 import logic.model.User;
+import logic.model.exceptions.DuplicateException;
 import logic.model.exceptions.UnloggedException;
 import logic.model.utils.converters.BeanConverter;
 import logic.model.utils.converters.TripBeanConverter;
@@ -46,6 +49,40 @@ public class JoinTripController {
 		}
 		/* Convert List<Trip> into List<TripBean> */
 		return converter.convertToListBean(filteredTrips);			
+	}
+	
+	public List<TripBean> applyFilterToTrips(List<TripBean> trips, FilterType type, TripCategory category) {
+		List<TripBean> def = new ArrayList<>();
+		TripFilterManager filterManager = new TripFilterManager();
+		if (category != null) {
+			switch(category) {
+			case ADVENTURE:
+				filterManager.setAdventureFilter();
+				return filterManager.filterTrips(trips);
+			case CULTURE:
+				filterManager.setCultureFilter();
+				return filterManager.filterTrips(trips);
+			case RELAX:
+				filterManager.setRelaxFilter();
+				return filterManager.filterTrips(trips);
+			case FUN:
+				filterManager.setFunFilter();
+				return filterManager.filterTrips(trips);
+			default:
+				return def;
+			}
+		} else {
+			switch (type) {
+			case PRICE:
+				filterManager.setPriceFilter();
+				return filterManager.filterTrips(trips);
+			case ALPHABETIC:
+				filterManager.setAlphabeticFilter();
+				return filterManager.filterTrips(trips);
+			default:
+				return def;
+			}
+		}
 	}
 
 	
@@ -100,7 +137,7 @@ public class JoinTripController {
 		return check;
 	}
 
-	public boolean sendRequest(String tripTitle, String applicantEmail) throws DatabaseException, UnloggedException {
+	public boolean sendRequest(String tripTitle, String applicantEmail) throws DatabaseException, UnloggedException, DuplicateException {
 		if (checkIfUserIsCompliant(applicantEmail, tripTitle)) {
 			// Instantiate a new request
 			Request request = new Request();

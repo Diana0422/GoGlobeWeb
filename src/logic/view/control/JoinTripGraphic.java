@@ -11,6 +11,8 @@ import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
 import logic.bean.TripBean;
 import logic.control.JoinTripController;
+import logic.model.FilterType;
+import logic.model.TripCategory;
 import logic.persistence.exceptions.DatabaseException;
 import logic.util.Session;
 import logic.view.control.dynamic.CardGraphic;
@@ -93,54 +95,52 @@ public class JoinTripGraphic implements GraphicControl {
 	
 	@FXML 
 	public void filterByAdventure(MouseEvent event) {
-		filterManager.setAdventureFilter();
-		filteredTripBeans = filterManager.filterTrips(tripBeans);
+		filteredTripBeans = controller.applyFilterToTrips(tripBeans, null, TripCategory.ADVENTURE);
 		CardGraphic cc = new CardGraphic();
 		cc.loadCardGrid(cardsLayout, this.filteredTripBeans, session);
 	}
 	
 	@FXML 
 	public void filterByFun(MouseEvent event) {
-		filterManager.setFunFilter();
-		filteredTripBeans = filterManager.filterTrips(tripBeans);
+		filteredTripBeans = controller.applyFilterToTrips(tripBeans, null, TripCategory.FUN);
 		CardGraphic cc = new CardGraphic();
 		cc.loadCardGrid(cardsLayout, this.filteredTripBeans, session);
 	}
 	
 	@FXML 
 	public void filterByCulture(MouseEvent event) {
-		filterManager.setCultureFilter();
-		filteredTripBeans = filterManager.filterTrips(tripBeans);
+		filteredTripBeans = controller.applyFilterToTrips(tripBeans, null, TripCategory.CULTURE);
 		CardGraphic cc = new CardGraphic();
 		cc.loadCardGrid(cardsLayout, this.filteredTripBeans, session);
 	}
 	
 	@FXML 
 	public void filterByRelax(MouseEvent event) {
-		filterManager.setRelaxFilter();
-		filteredTripBeans = filterManager.filterTrips(tripBeans);
+		filteredTripBeans = controller.applyFilterToTrips(tripBeans, null, TripCategory.RELAX);
 		CardGraphic cc = new CardGraphic();
 		cc.loadCardGrid(cardsLayout, this.filteredTripBeans, session);
 	}
 	
 	@FXML 
 	public void filterFromAToZ(MouseEvent event) {
-		filterManager.setAlphabeticFilter();
-		filteredTripBeans = filterManager.filterTrips(tripBeans);
+		filteredTripBeans = controller.applyFilterToTrips(tripBeans, FilterType.ALPHABETIC, null);
 		CardGraphic cc = new CardGraphic();
 		cc.loadCardGrid(cardsLayout, this.filteredTripBeans, session);
 	}
 	
 	@FXML
 	public void priceBtnClick(MouseEvent event) {
-		//empty
+		filteredTripBeans = controller.applyFilterToTrips(tripBeans, FilterType.PRICE, null);
+		CardGraphic cc = new CardGraphic();
+		cc.loadCardGrid(cardsLayout, this.filteredTripBeans, session);
 	}
 	
 
     @FXML
     void onPlanTrip(MouseEvent event) {
     	Stage stage = (Stage) txtSearch.getScene().getWindow();
-    	stage.setScene(GraphicLoader.switchView(GUIType.PREFTRIP, new SelectTripPreferencesGraphic(), session));
+    	if (session == null) stage.setScene(GraphicLoader.switchView(GUIType.LOGIN, null));
+    	if (session != null) stage.setScene(GraphicLoader.switchView(GUIType.PREFTRIP, new SelectTripPreferencesGraphic(), session));
     }
 
 	@Override

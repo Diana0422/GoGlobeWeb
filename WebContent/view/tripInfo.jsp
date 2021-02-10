@@ -14,6 +14,7 @@
 <%@page import="logic.control.FlightController"%>
 <%@page import="logic.persistence.exceptions.DatabaseException"%>
 <%@page import="logic.model.exceptions.UnloggedException"%>
+<%@page import="logic.model.exceptions.DuplicateException"%>
 
 
 <!DOCTYPE html>
@@ -56,15 +57,18 @@
     		try {
     			if (request.getParameter("jointrip") != null ){
      				JoinTripController controller = new JoinTripController();
-     				controller.sendRequest(joinTripBean.getTrip().getTitle(), sessionBean.getSessionEmail());
+     				if (controller.sendRequest(joinTripBean.getTrip().getTitle(), sessionBean.getSessionEmail())) {
+     					request.setAttribute("message", "Request to join sent to the organizer.");
+     				} else {
+     					request.setAttribute("message", "You cannot join this trip, please choose another trip.");
+     				}
     			}
-			} catch (UnloggedException e) {
+			} catch (UnloggedException | DuplicateException e) {
  				System.out.println(e.getMessage());
- 				%>
- 				<h6 style="color: red"><%= e.getMessage() %> Please log in to join this trip.</h6>
- 				<%
+				request.setAttribute("message", e.getMessage());
 			}
     		%>
+    		<h6 style="color: red">${message}</h6>
     	</div>
     	
     		<ul class="nav nav-tabs">

@@ -7,23 +7,22 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.MethodOrderer.OrderAnnotation;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestMethodOrder;
-
 import logic.bean.SessionBean;
 import logic.bean.TripBean;
 import logic.control.JoinTripController;
 import logic.control.LoginController;
 import logic.model.User;
+import logic.model.exceptions.DuplicateException;
 import logic.model.exceptions.UnloggedException;
 import logic.persistence.dao.RequestDao;
 import logic.persistence.dao.UserDaoDB;
 import logic.persistence.exceptions.DBConnectionException;
 import logic.persistence.exceptions.DatabaseException;
-import logic.util.Cookie;
-import logic.util.Session;
 
 /**
  * @author diana pasquali
@@ -86,15 +85,7 @@ public class TestJoinTripController {
 		trip.setTitle(tripTitle);
 		SessionBean session = new SessionBean();
 		session.setSessionEmail(null);
-		
-		try {
-			boolean result = controller.sendRequest(trip.getTitle(), session.getSessionEmail());
-			assertEquals(false, result);
-		} catch (DatabaseException | UnloggedException e) {
-			String logStr = "testSendRequestNotSuccessfulUnloggedUser() threw exception "+e;
-			Logger.getGlobal().log(Level.INFO, logStr);
-		}
-		
+		Assertions.assertThrows(UnloggedException.class, ()->controller.sendRequest(trip.getTitle(), session.getSessionEmail()));		
 	}
 	
 	@Test
@@ -105,15 +96,14 @@ public class TestJoinTripController {
 		String email = NOT_ORGANIZER_ID;
 		TripBean trip = new TripBean();
 		trip.setTitle(title);
-		Session userSession = new Session();
-		userSession.setUserEmail(email);
-		Cookie.getInstance().addSession(userSession);
-		
 		try {
-			boolean result = controller.sendRequest(trip.getTitle(), userSession.getUserEmail());
+			/* User is logged */
+			User logged = UserDaoDB.getInstance().get(email);
+			loginCtrl.login(logged.getEmail(), logged.getPassword());
+			boolean result = controller.sendRequest(trip.getTitle(), logged.getEmail());
 			assertEquals(false, result);
-		} catch (DatabaseException | UnloggedException e) {
-			String logStr = "No exception has occurred during testJoinTripNotSuccessfulAgeNotInRange";
+		} catch (DatabaseException | UnloggedException | DuplicateException | DBConnectionException | SQLException e) {
+			String logStr = "testJoinTripNotSuccessfulAgeNotInRange() SHOULD NOT THROW exception"+e;
 			Logger.getGlobal().log(Level.INFO, logStr);
 		}
 	}
@@ -123,18 +113,17 @@ public class TestJoinTripController {
 	void testSendRequestNotSuccessfulUserOrganizer() {
 		// If the user is the organizer
 		String tripTitle = TRIP_TITLE;
-		String userEmail = ORGANIZER_ID;
+		String email = ORGANIZER_ID;
 		TripBean trip = new TripBean();
 		trip.setTitle(tripTitle);
-		Session userSession = new Session();
-		userSession.setUserEmail(userEmail);
-		Cookie.getInstance().addSession(userSession);
-		
 		try {
-			boolean result = controller.sendRequest(trip.getTitle(), userSession.getUserEmail());
+			/* User is logged */
+			User logged = UserDaoDB.getInstance().get(email);
+			loginCtrl.login(logged.getEmail(), logged.getPassword());
+			boolean result = controller.sendRequest(trip.getTitle(), logged.getEmail());
 			assertEquals(false, result);
-		} catch (DatabaseException | UnloggedException e) {
-			String logStr = "No exception has occurred during testJoinTripNotSuccessfulUserOganizer";
+		} catch (DatabaseException | UnloggedException | DuplicateException | DBConnectionException | SQLException e) {
+			String logStr = "testSendRequestNotSuccessfulUserOrganizer() SHOULD NOT THROW exception"+e;
 			Logger.getGlobal().log(Level.INFO, logStr);
 		}
 	}
@@ -155,7 +144,7 @@ public class TestJoinTripController {
 			if (RequestDao.getInstance().getRequest(userEmail, tripTitle) != null) RequestDao.getInstance().delete(tripTitle, userEmail);
 			boolean result = controller.sendRequest(trip.getTitle(), logged.getEmail());
 			assertEquals(true, result);
-		} catch (DatabaseException | UnloggedException | DBConnectionException | SQLException e) {
+		} catch (DatabaseException | UnloggedException | DBConnectionException | SQLException | DuplicateException e) {
 			String logStr = "testSendRequestSuccessful() SHOULD NOT THROW exception "+e;
 			Logger.getGlobal().log(Level.INFO, logStr);
 		}
@@ -174,10 +163,9 @@ public class TestJoinTripController {
 			// user is logged
 			User logged = UserDaoDB.getInstance().get(userEmail);
 			loginCtrl.login(logged.getEmail(), logged.getPassword());
-			controller.sendRequest(trip.getTitle(), logged.getEmail());
-		} catch (DatabaseException | UnloggedException | DBConnectionException | SQLException e) {
-			String logStr = "testSendRequestNotSuccessfulRequestAlreadySent() threw exception "+e;
-			assertEquals("Cannot save request on database.", e.getMessage());
+			Assertions.assertThrows(DuplicateException.class, () ->controller.sendRequest(trip.getTitle(), logged.getEmail()));
+		} catch (DatabaseException | DBConnectionException | SQLException e) {
+			String logStr = "testSendRequestNotSuccessfulRequestAlreadySent() SHOULD NOT THROW exception "+e;
 			Logger.getGlobal().log(Level.INFO, logStr);
 		}
 		

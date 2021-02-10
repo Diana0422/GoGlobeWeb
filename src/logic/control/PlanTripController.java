@@ -100,6 +100,7 @@ public class PlanTripController {
 		Location dayLocation;
 		try {
 			dayLocation = adapterAPI.getLocationInfo(locationName);
+			dayLocation.setCountry(dayLocation.getCountry().replace("ú", "ù"));
 			return bean.getCountry().equals(dayLocation.getCountry());
 		} catch (APIException e) {
 			throw new APIException(e, "This location doesn't exist.");
