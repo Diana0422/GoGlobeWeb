@@ -72,6 +72,10 @@
 		System.out.println(userBean.getBio());
 		controller.updateUserBio(sessionBean.getSessionEmail(), userBean.getBio());
 	}
+
+	if (request.getParameter("delete") != null) {
+		myTripBeans.remove(Integer.parseInt(request.getParameter("delete")));
+	}
 %>
 
 <!DOCTYPE html>
@@ -439,9 +443,9 @@
 								request.setAttribute("moreinfo", "upcomBtn");
 
                        			request.setAttribute("btnVal", i );
-							%>                      				
+                       			%>
                        			<%@include file="html/hzTripCard.html" %>
-							<%
+                       			<%
                         	}
  							%>                       	                      	
                         	</form>
@@ -467,9 +471,15 @@
 								request.setAttribute("locationList", locations);
 								request.setAttribute("moreinfo", "myinfoBtn");
                        			request.setAttribute("btnVal", i );
-							%>                      				
-                       			<%@include file="html/hzTripCard.html" %>
-							<%
+								if (myTripBeans.get(i).getOrganizer().getEmail().equals(sessionBean.getSessionEmail())) {
+									%>                      				
+	                       			<%@include file="html/hzTripCardOwned.html" %>
+									<%
+								} else {
+									%>                      				
+	                       			<%@include file="html/hzTripCard.html" %>
+									<%
+								}
                         	}
  							%>                       	                      	
                         	</form>

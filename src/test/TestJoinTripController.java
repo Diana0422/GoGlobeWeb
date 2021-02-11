@@ -33,7 +33,6 @@ public class TestJoinTripController {
 	
 	private static final String TRIP_TITLE = "TestViaggio";
 	private static final String ORGANIZER_ID = "organizer@gmail.com";
-	private static final String NOT_ORGANIZER_ID = "notorganizer@gmail.com";
 	private static final String PARTICIPANT = "participant@gmail.com";
 	private JoinTripController controller;
 	private LoginController loginCtrl;
@@ -90,26 +89,6 @@ public class TestJoinTripController {
 	
 	@Test
 	@Order(4)
-	void testJoinTripNotSuccessfulAgeNotInRange() {
-		// If the user age is not in trip's range
-		String title = TRIP_TITLE;
-		String email = NOT_ORGANIZER_ID;
-		TripBean trip = new TripBean();
-		trip.setTitle(title);
-		try {
-			/* User is logged */
-			User userLogged = UserDaoDB.getInstance().get(email);
-			loginCtrl.login(userLogged.getEmail(), userLogged.getPassword());
-			boolean result = controller.sendRequest(trip.getTitle(), userLogged.getEmail());
-			assertEquals(false, result);
-		} catch (DatabaseException | UnloggedException | DuplicateException | DBConnectionException | SQLException e) {
-			String logStr = "testJoinTripNotSuccessfulAgeNotInRange() SHOULD NOT THROW exception"+e;
-			Logger.getGlobal().log(Level.INFO, logStr);
-		}
-	}
-	
-	@Test
-	@Order(5)
 	void testSendRequestNotSuccessfulUserOrganizer() {
 		// If the user is the organizer
 		String tripTitle = TRIP_TITLE;
@@ -129,7 +108,7 @@ public class TestJoinTripController {
 	}
 	
 	@Test
-	@Order(6)
+	@Order(5)
 	void testSendRequestSuccessful() {
 		// If the user isn't the organizer and its age is in the accepted age range
 		String tripTitle = TRIP_TITLE;
@@ -152,7 +131,7 @@ public class TestJoinTripController {
 	}
 	
 	@Test
-	@Order(7)
+	@Order(6)
 	void testSendRequestNotSuccessfulRequestAlreadySent() {
 		// If the user already sent the request for the trip
 		String tripTitle = TRIP_TITLE;
@@ -163,7 +142,10 @@ public class TestJoinTripController {
 			// user is logged
 			User logged = UserDaoDB.getInstance().get(userEmail);
 			loginCtrl.login(logged.getEmail(), logged.getPassword());
-			Assertions.assertThrows(DuplicateException.class, () ->controller.sendRequest(trip.getTitle(), logged.getEmail()));
+			Assertions.assertThrows(DuplicateException.class, () -> {
+				controller.sendRequest(trip.getTitle(), logged.getEmail());
+				RequestDao.getInstance().delete(tripTitle, userEmail);
+			});
 		} catch (DatabaseException | DBConnectionException | SQLException e) {
 			String logStr = "testSendRequestNotSuccessfulRequestAlreadySent() SHOULD NOT THROW exception "+e;
 			Logger.getGlobal().log(Level.INFO, logStr);
@@ -173,6 +155,7 @@ public class TestJoinTripController {
 	
 	/* JOIN TRIP TESTS*/
 	@Test
+	@Order(7)
 	void testJoinTripSuccessful() {
 		// trip organizer accepted user request
 		String tripTitle = TRIP_TITLE;
