@@ -74,9 +74,6 @@ public class RequestItemGraphic implements Initializable {
 	    	lblStatus.setVisible(true);
 	    	lblStatus.setText("Accepted");
 	    	lblStatus.setStyle("-fx-text-fill: green;");
-	    	System.out.println(container);
-	    	System.out.println(container.getChildren());
-	    	System.out.println(btnAccept.getParent());
 	    	container.getChildren().remove(btnAccept.getParent().getParent());
 		} catch (DatabaseException e) {
 			AlertGraphic alert = new AlertGraphic();

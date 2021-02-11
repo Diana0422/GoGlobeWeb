@@ -30,7 +30,6 @@ public class ManageRequestGraphic implements GraphicControl {
 		RequestItemGraphic graphic = new RequestItemGraphic();
 		if (type == RequestType.INCOMING) {
 			try {
-				System.out.println(this.incResults);
 				anchor = (AnchorPane) graphic.initializeNode(bean, this.incResults, type);
 				incResults.getChildren().add(anchor);
 			} catch (LoadGraphicException e) {

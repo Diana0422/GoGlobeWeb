@@ -32,7 +32,6 @@ import logic.view.utils.GraphicLoader;
 
 public class CardGraphic implements Initializable {
 	
-
     @FXML
     private Label lblTitle;
 
@@ -208,18 +207,22 @@ public class CardGraphic implements Initializable {
 					AlertGraphic alert = new AlertGraphic();
 					alert.display(e.getMessage(), e.getCause().toString());
 				}
-						
-				// Set grid height
-				cardGrid.setMaxHeight(Region.USE_PREF_SIZE);
-				cardGrid.setPrefHeight(Region.USE_COMPUTED_SIZE);
-				cardGrid.setMinHeight(Region.USE_COMPUTED_SIZE);
-						
-				// Set grid width
-				cardGrid.setMaxWidth(Region.USE_PREF_SIZE);
-				cardGrid.setPrefWidth(Region.USE_COMPUTED_SIZE);
-				cardGrid.setMinWidth(Region.USE_COMPUTED_SIZE);
+				
+				setCardGridSize(cardGrid);
 			}	
 		}
+	}
+	
+	private void setCardGridSize(GridPane grid) {
+		// Set grid height
+		grid.setMaxHeight(Region.USE_PREF_SIZE);
+		grid.setPrefHeight(Region.USE_COMPUTED_SIZE);
+		grid.setMinHeight(Region.USE_COMPUTED_SIZE);
+				
+		// Set grid width
+		grid.setMaxWidth(Region.USE_PREF_SIZE);
+		grid.setPrefWidth(Region.USE_COMPUTED_SIZE);
+		grid.setMinWidth(Region.USE_COMPUTED_SIZE);
 	}
 
 }
