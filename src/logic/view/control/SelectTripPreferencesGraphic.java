@@ -79,7 +79,8 @@ public class SelectTripPreferencesGraphic implements GraphicControl {
     	
     	//Validate form and load next GUI
     	try {
-	    	if (planTripBean.validateForm()) {
+	    	if (planTripBean.validateForm() && controller.verifyDuplicateTitle(tfTripTitle.getText())) {
+	    		
 	    		Stage stage = (Stage) btnNext.getScene().getWindow();
 	    		stage.setScene(GraphicLoader.switchView(GUIType.PLAN, new PlanTripGraphic(planTripBean), session));
 	    	} 

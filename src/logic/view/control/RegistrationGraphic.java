@@ -63,7 +63,7 @@ public class RegistrationGraphic {
 			try {
 				if ((setSessionBean(controller.register(email, password, name, surname, birthday)))!= null) {
 					Stage stage = (Stage) lblMessage.getScene().getWindow();
-					stage.setScene(GraphicLoader.switchView(GUIType.HOME, null, new Session()));
+					stage.setScene(GraphicLoader.switchView(GUIType.HOME, new HomeGraphic(), new Session()));
 				} else {
 					lblMessage.setText("User already registered with this email.");
 				}

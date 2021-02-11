@@ -52,7 +52,7 @@
 	if (request.getParameter("next-btn") != null){
 		try{	
 			planTripBean.setTripBean(tripBean);
-			if (planTripBean.validateForm()){
+			if (planTripBean.validateForm() && controller.verifyDuplicateTitle(tripBean.getTitle())){
 				Date depDate = FormatManager.parseDate(tripBean.getDepartureDate());
 				Date retDate = FormatManager.parseDate(tripBean.getReturnDate());
 				long tripLength = controller.calculateTripLength(depDate, retDate) + 1;

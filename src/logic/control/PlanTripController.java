@@ -15,6 +15,7 @@ import logic.model.PlaceBean;
 import logic.model.Trip;
 import logic.model.User;
 import logic.model.exceptions.APIException;
+import logic.model.exceptions.FormInputException;
 import logic.model.factories.HereAdapterFactory;
 import logic.model.factories.TripFactory;
 import logic.model.interfaces.LocationFinder;
@@ -114,7 +115,20 @@ public class PlanTripController {
 		return adapterAPI.getNearbyPlaces(dayLocation.getCoordinates(), category);		
 	}
 	
-
+	public boolean verifyDuplicateTitle(String tripTitle) throws FormInputException {
+		Trip searchedTrip;
+		try {
+			searchedTrip = Trip.getTrip(tripTitle);
+			if (searchedTrip == null) {
+				return true;
+			} 
+			
+			throw new FormInputException("A trip with the same title already exists");			
+				
+		} catch (DatabaseException e) {
+			return true;
+		}			
+	}
 }
 
 
