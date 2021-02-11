@@ -25,7 +25,7 @@ class TestPlanTripController {
 	
 	private static final String CATEGORY1 = "ADVENTURE";
 	private static final String CATEGORY2 = "ADVENTURE";
-
+	private static final String ORGANIZER_ID = "organizer@gmail.com";
 	private static final String LOCATION_NAME = "NewYork";
 	private static final String DEP_DATE = "16/03/2021";
 	private static final String RET_DATE = "16/03/2021";
@@ -78,7 +78,7 @@ class TestPlanTripController {
 		controller.addActivity(tripBean, 0, activityBean);
 		tripBean.setShared(false);
 		SessionBean session = new SessionBean();
-		session.setSessionEmail("lorenzo@gmail.com");
+		session.setSessionEmail(ORGANIZER_ID);
 		try {
 			boolean b = controller.saveTrip(tripBean, session.getSessionEmail());
 			assertEquals(true, b);

@@ -74,7 +74,7 @@ public class HereAPIAdapter implements LocationFinder{
 	public Location getLocationInfo(String locationName) throws APIException {
 		JSONObject json;
 		try {
-			json = hereAPI.getLocationInfo(FormatManager.prepareToURL(locationName));
+			json = hereAPI.getLocationInfo(FormatManager.prepareToURL(locationName), FormatManager.formatLocale());
 			JSONArray items = json.getJSONArray("items");           
 	     	String countryName = items.getJSONObject(0).getJSONObject("address").getString("countryName");
 	     	String cityName = items.getJSONObject(0).getJSONObject("address").getString("city");

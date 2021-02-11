@@ -28,7 +28,6 @@ public class ManageRequestController {
 	public synchronized boolean acceptRequest(RequestBean requestBean) throws DatabaseException {
 		// get request from persistence
 		Request req = Request.getRequest(requestBean.getSenderEmail(), requestBean.getTripTitle());
-		
 		// Get request sender and receiver
 		User receiver = User.getRequestReceiver(requestBean.getSenderEmail(), req.getTarget().getTitle());
 			

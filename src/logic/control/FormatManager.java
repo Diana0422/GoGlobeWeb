@@ -3,6 +3,7 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Locale;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import logic.model.TripCategory;
@@ -45,5 +46,10 @@ public class FormatManager {
 	
 	public static String prepareToURL(String s) {
 		return s.replace(" ", "+");
+	}
+	
+	public static String formatLocale() {
+		Locale userLocale = Locale.getDefault();
+		return userLocale.getLanguage()+"-"+userLocale.getCountry();
 	}
 }

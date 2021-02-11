@@ -92,6 +92,7 @@
 						System.out.println(joinTripBean.getSearchVal());
 						joinTripBean.setObjects(controller.searchTrips(joinTripBean.getSearchVal()));
 		        		System.out.println(joinTripBean.getObjects());
+		        		joinTripBean.setSearchVal(null);
 					} else {
 						System.out.println("Searchval is null.");
 						System.out.println(joinTripBean.getSearchVal());

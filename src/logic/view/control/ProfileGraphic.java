@@ -134,12 +134,14 @@ public class ProfileGraphic implements GraphicControl {
     public ProfileGraphic(UserBean bean) {
     	this.target = bean;
     	this.controller = new ProfileController();
+    	this.reviewCtrl = new ReviewUserController();
     }
     
     public ProfileGraphic(UserBean bean, TripBean trip) {
     	this.target = bean;
     	this.trip = trip;
     	this.controller = new ProfileController();
+    	this.reviewCtrl = new ReviewUserController();
     }
 
     @FXML
@@ -162,7 +164,6 @@ public class ProfileGraphic implements GraphicControl {
     @FXML
     void postReview(MouseEvent event) {
     	double d = (double) getVote();
-    	
     	Date today = Calendar.getInstance().getTime();
     	String date = FormatManager.formatDate(today);
     	ReviewBean bean = new ReviewBean();

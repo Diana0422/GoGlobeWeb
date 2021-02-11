@@ -3,7 +3,7 @@
 <%@ page autoFlush="true" buffer="1094kb"%>
     
 <jsp:useBean id="profileBean" scope="session" class="logic.bean.ProfileBean"/>
-<jsp:useBean id="userBean" scope="session" class="logic.bean.UserBean"/>
+<jsp:useBean id="userBean" scope="request" class="logic.bean.UserBean"/>
 <jsp:useBean id="sessionBean" scope="session" class="logic.bean.SessionBean"/>
 <jsp:useBean id="joinTripBean" scope="session" class="logic.bean.JoinTripBean"/>
 
@@ -305,8 +305,6 @@
                                 <%
                                 	if (request.getParameter("reviewbtn") != null) {
                                 		profileBean.setVote(Double.parseDouble(request.getParameter("star")));
-                                		// Date
-                                		
                                 		try {
                                     		ReviewBean review = new ReviewBean();
                                     		review.setTitle(profileBean.getTitle());
@@ -384,8 +382,6 @@
                             %>
 
                         </div>
-                        
-                        <% profileBean.setUser(null); %>
 
                     </div>
                     

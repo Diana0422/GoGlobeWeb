@@ -73,7 +73,7 @@
 						try {
 							if (request.getParameter("accept") != null) {
 	                			System.out.println("Accepting request.");
-	                			controller.acceptRequest(req);
+	                			System.out.println(controller.acceptRequest(req));
 	                			response.setIntHeader("Refresh",0);
 	                		}
 						} catch (DatabaseException e) {

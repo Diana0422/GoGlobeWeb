@@ -28,23 +28,17 @@ public class JoinTripController {
 
 	public List<TripBean> searchTrips(String value) throws DatabaseException {
 		String logStr = "Search trips by value started.\n";
-		System.out.println(value);
 		Logger.getGlobal().info(logStr);
 		List<Trip> filteredTrips = new ArrayList<>();
 		List<Trip> trips = Trip.getTrips(true, null);
 		if (value == null) return converter.convertToListBean(trips);
-		System.out.println(trips);
 		for (Trip trip: trips) {
 			boolean cond1 = trip.getAvailableSpots() != 0;
-			System.out.println(trip.getTitle().toLowerCase()+" contains? "+value.toLowerCase());
 			boolean cond2 = trip.getTitle().toLowerCase().contains(value.toLowerCase());
-			boolean cond4 = true;
 			boolean cond3 = trip.getCountry().equalsIgnoreCase(value);
-			System.out.println("("+cond1+"&&"+cond4+"&& ("+cond2+" || "+cond3+")");
-			System.out.println(cond1 && cond4 && (cond2 || cond3));
-			if (cond1 && cond4 && (cond2 || cond3)) {
+			boolean cond4 = !filteredTrips.contains(trip);
+			if (cond1 && cond4 &&(cond2 || cond3)) {
 				filteredTrips.add(trip);
-				cond4 = false;
 			}
 		}
 		/* Convert List<Trip> into List<TripBean> */

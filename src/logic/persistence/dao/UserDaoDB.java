@@ -231,6 +231,7 @@ public class UserDaoDB {
 				u.setName(name);
 				u.setSurname(surname);
 				u.setBirthday(birth);
+				u.setIncRequests(RequestDao.getInstance().getRequestsByReceiver(email));
 				u.setStats(UserStatsDao.getInstance().getUserStats(email));
 				u.copyAttitude(UserStatsDao.getInstance().getUserAttitude(email));
 				u.setBio(bio);

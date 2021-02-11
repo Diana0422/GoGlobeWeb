@@ -127,6 +127,7 @@ public class User {
 		incRequest.setAccepted(r.getAccepted());
 		incRequest.setId(r.getId());
 		incRequest.setTarget(r.getTarget());
+		incRequest.setSender(r.getSender());
 		this.incRequests.add(incRequest);
 	}
 	
@@ -135,6 +136,7 @@ public class User {
 		sentRequest.setAccepted(r.getAccepted());
 		sentRequest.setId(r.getId());
 		sentRequest.setTarget(r.getTarget());
+		sentRequest.setSender(r.getSender());
 		this.sentRequests.add(sentRequest);
 		return sentRequest.storeRequest(this.email);
 	}
@@ -152,10 +154,9 @@ public class User {
 		}
 	}
 	
-	public void deleteIncomingRequest(Request req) {
-		for (Request r: this.getIncRequests()) {
-			if (r.getTarget().getTitle().equals(req.getTarget().getTitle()) && (r.getSender().equals(req.getSender()))) this.getIncRequests().remove(r);
-		}
+	public void deleteIncomingRequest(Request req) throws DatabaseException {
+		req.deleteRequest();
+		this.getIncRequests().remove(req);
 		
 	}
 	

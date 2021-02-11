@@ -210,22 +210,20 @@
                               </VBox>
                               <Pane layoutX="487.0" layoutY="387.0" prefHeight="61.0" prefWidth="183.0" style="-fx-background-color: #fff; -fx-border-color: grey;">
                                  <children>
-                                    <Label fx:id="lblCategory2" alignment="CENTER" layoutX="92.0" layoutY="18.0" prefHeight="26.0" prefWidth="76.0" text="Category 2">
+                                    <Label fx:id="lblCategory2" alignment="CENTER" layoutX="13.0" layoutY="18.0" prefHeight="26.0" prefWidth="155.0" text="Category 2">
                                        <font>
-                                          <Font size="14.0" />
+                                          <Font size="16.0" />
                                        </font>
                                     </Label>
-                                    <ImageView fx:id="imgCategory2" fitHeight="50.0" fitWidth="50.0" layoutX="14.0" layoutY="6.0" pickOnBounds="true" preserveRatio="true" />
                                  </children>
                               </Pane>
                               <Pane layoutX="488.0" layoutY="312.0" prefHeight="59.0" prefWidth="181.0" style="-fx-background-color: #fff; -fx-border-color: grey;">
                                  <children>
-                                    <Label fx:id="lblCategory1" alignment="CENTER" layoutX="93.0" layoutY="20.0" prefHeight="17.0" prefWidth="72.0" text="Category 1">
+                                    <Label fx:id="lblCategory1" alignment="CENTER" layoutX="16.0" layoutY="17.0" prefHeight="20.0" prefWidth="150.0" text="Category 1">
                                        <font>
-                                          <Font size="14.0" />
+                                          <Font size="16.0" />
                                        </font>
                                     </Label>
-                                    <ImageView fx:id="imgCategory1" fitHeight="50.0" fitWidth="50.0" layoutX="14.0" layoutY="5.0" pickOnBounds="true" preserveRatio="true" />
                                  </children>
                               </Pane>
                               <VBox layoutX="479.0" layoutY="154.0" prefHeight="74.0" prefWidth="262.0">
