@@ -138,11 +138,11 @@ public class TestJoinTripController {
 		trip.setTitle(tripTitle);
 		try {
 			/* User is logged */
-			User logged = UserDaoDB.getInstance().get(userEmail);
-			loginCtrl.login(logged.getEmail(), logged.getPassword());
+			User loggedUser = UserDaoDB.getInstance().get(userEmail);
+			loginCtrl.login(loggedUser.getEmail(), loggedUser.getPassword());
 			/* Delete if another request exists */
 			if (RequestDao.getInstance().getRequest(userEmail, tripTitle) != null) RequestDao.getInstance().delete(tripTitle, userEmail);
-			boolean result = controller.sendRequest(trip.getTitle(), logged.getEmail());
+			boolean result = controller.sendRequest(trip.getTitle(), loggedUser.getEmail());
 			assertEquals(true, result);
 		} catch (DatabaseException | UnloggedException | DBConnectionException | SQLException | DuplicateException e) {
 			String logStr = "testSendRequestSuccessful() SHOULD NOT THROW exception "+e;
