@@ -221,6 +221,16 @@ public class Trip {
 			throw new DatabaseException(e.getMessage(), e.getCause());
 		}
 	}
+	
+	public static boolean deleteTrip(String tripTitle) throws DatabaseException {
+		try {
+			return TripDao.getInstance().deleteTrip(tripTitle);
+			
+		} catch (SQLException | DBConnectionException e) {
+
+			throw new DatabaseException(e.getMessage(), e.getCause());		
+		}
+	}
 
 	public String getCountry() {
 		return country;

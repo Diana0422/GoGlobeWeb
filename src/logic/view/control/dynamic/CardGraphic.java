@@ -20,7 +20,9 @@ import javafx.scene.layout.Region;
 import javafx.stage.Stage;
 import logic.bean.DayBean;
 import logic.bean.TripBean;
+import logic.control.ProfileController;
 import logic.model.exceptions.LoadGraphicException;
+import logic.persistence.exceptions.DatabaseException;
 import logic.util.Session;
 import logic.view.control.AlertGraphic;
 import logic.view.control.TripInfoGraphic;
@@ -53,10 +55,15 @@ public class CardGraphic implements Initializable {
     private Button btnMore;
     
     @FXML 
+    private Button btnDelete;
+    
+    @FXML 
     private Label lblLocations;
     
     @FXML
     private Label lblDates;
+    
+    
     
     /* Beans */
     
@@ -87,6 +94,17 @@ public class CardGraphic implements Initializable {
 		Stage stage = (Stage) container.getScene().getWindow();
 		if (session == null) stage.setScene(GraphicLoader.switchView(GUIType.INFO, new TripInfoGraphic(getTripBean())));
 		if (session != null) stage.setScene(GraphicLoader.switchView(GUIType.INFO, new TripInfoGraphic(getTripBean()), session));
+    }
+	
+	@FXML
+    void deleteTrip(MouseEvent event) {
+		try {
+			new ProfileController().deleteTrip(tripBean.getTitle());
+			container.getChildren().remove(lblTitle.getParent().getParent());
+		} catch (DatabaseException e) {
+			AlertGraphic alert = new AlertGraphic();
+			alert.display(e.getMessage(), e.getCause().toString());
+		}
     }
     
 
@@ -119,23 +137,38 @@ public class CardGraphic implements Initializable {
     	lblDates.setText(tripBean.getDepartureDate()+" - "+tripBean.getReturnDate());
 	}
 	
-	public Node initializeNode(TripBean bean, GridPane container, Session session, boolean shared) throws LoadGraphicException {
+	public Node initializeNode(TripBean bean, GridPane container, Session session, GraphicItem type) throws LoadGraphicException {
 		Node node = null;
+		FXMLLoader loader;
+		CardGraphic cc;
 		try {
-			if (shared) {
-				FXMLLoader loader = GraphicLoader.loadFXML(GraphicItem.CARD_SHARED);
+			switch(type) {
+			case CARD_SHARED:
+				loader = GraphicLoader.loadFXML(GraphicItem.CARD_SHARED);
 				node = loader.load();
-				CardGraphic cc = loader.getController();
+				cc = loader.getController();
 				cc.setContainer(container);
 				cc.setSession(session);
 				cc.setSharedData(bean);
-			} else {
-				FXMLLoader loader = GraphicLoader.loadFXML(GraphicItem.CARD);
+				break;
+			case CARD:
+				loader = GraphicLoader.loadFXML(GraphicItem.CARD);
 				node = loader.load();
-				CardGraphic cc = loader.getController();
+				cc = loader.getController();
 				cc.setContainer(container);
 				cc.setSession(session);
 				cc.setData(bean);
+				break;
+			case CARD_OWNED:
+				loader = GraphicLoader.loadFXML(GraphicItem.CARD_OWNED);
+				node = loader.load();
+				cc = loader.getController();
+				cc.setContainer(container);
+				cc.setSession(session);
+				cc.setData(bean);
+				break;
+			default:
+				break;
 			}
 			return node;
 		} catch (IOException e) {
@@ -162,7 +195,13 @@ public class CardGraphic implements Initializable {
 						column = 0;
 					}
 					this.setContainer(cardGrid);
-					anchor = (AnchorPane) this.initializeNode(trips.get(i), cardGrid, session, trips.get(i).isShared());
+					if (trips.get(i).getOrganizer().getEmail().equals(session.getUserEmail()) && session.getCurrentView().equals(GUIType.PROFILE)) {
+						anchor = (AnchorPane) this.initializeNode(trips.get(i), cardGrid, session, GraphicItem.CARD_OWNED);
+					}else if(trips.get(i).isShared()){
+						anchor = (AnchorPane) this.initializeNode(trips.get(i), cardGrid, session, GraphicItem.CARD_SHARED);					
+					}else {    
+						anchor = (AnchorPane) this.initializeNode(trips.get(i), cardGrid, session, GraphicItem.CARD);
+					}
 					cardGrid.add(anchor, column++, row);
 					GridPane.setMargin(anchor, new Insets(20));
 				} catch (LoadGraphicException e) {

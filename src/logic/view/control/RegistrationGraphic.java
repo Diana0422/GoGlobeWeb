@@ -9,7 +9,7 @@ import javafx.stage.Stage;
 import logic.bean.SessionBean;
 import logic.control.RegistrationController;
 import logic.persistence.exceptions.DatabaseException;
-import logic.util.Session;
+import logic.util.Cookie;
 import logic.view.utils.GUIType;
 import logic.view.utils.GraphicLoader;
 
@@ -63,7 +63,7 @@ public class RegistrationGraphic {
 			try {
 				if ((setSessionBean(controller.register(email, password, name, surname, birthday)))!= null) {
 					Stage stage = (Stage) lblMessage.getScene().getWindow();
-					stage.setScene(GraphicLoader.switchView(GUIType.HOME, new HomeGraphic(), new Session()));
+					stage.setScene(GraphicLoader.switchView(GUIType.HOME, new HomeGraphic(), Cookie.getInstance().getSession(email)));
 				} else {
 					lblMessage.setText("User already registered with this email.");
 				}

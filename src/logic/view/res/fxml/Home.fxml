@@ -12,7 +12,7 @@
    <center>
       <AnchorPane prefHeight="600.0" prefWidth="1336.0">
          <children>
-            <Label fx:id="lblWelcome" layoutX="58.0" layoutY="49.0" prefHeight="53.0" prefWidth="1021.0" textAlignment="CENTER">
+            <Label id ="lblWelcome" fx:id="lblWelcome" style="-fx-text-fill: white" layoutX="58.0" layoutY="49.0" prefHeight="53.0" prefWidth="1021.0" textAlignment="CENTER">
                <font>
                   <Font name="System Bold" size="36.0" />
                </font>

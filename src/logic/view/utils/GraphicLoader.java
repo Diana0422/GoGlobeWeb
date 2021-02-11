@@ -106,9 +106,11 @@ public class GraphicLoader {
 		case NAVBAR:
 			return new FXMLLoader(GraphicLoader.class.getResource(ITEMPATH + "UpperNavbar.fxml"));
 		case CARD_SHARED:
-			return new FXMLLoader(GraphicLoader.class.getResource(DYNITEMPATH + "TripCard.fxml"));
+			return new FXMLLoader(GraphicLoader.class.getResource(DYNITEMPATH + "TripCardShared.fxml"));
 		case CARD:
-			return new FXMLLoader(GraphicLoader.class.getResource(DYNITEMPATH + "TripCardNotShared.fxml"));
+			return new FXMLLoader(GraphicLoader.class.getResource(DYNITEMPATH + "TripCard.fxml"));
+		case CARD_OWNED:
+			return new FXMLLoader(GraphicLoader.class.getResource(DYNITEMPATH + "TripCardOwned.fxml"));
 		case ACTIVITY:
 			return new FXMLLoader(GraphicLoader.class.getResource(DYNITEMPATH + "ActivityCard.fxml"));
 		case USER:

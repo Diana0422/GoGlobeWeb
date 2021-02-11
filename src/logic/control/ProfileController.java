@@ -27,7 +27,7 @@ public class ProfileController {
 	   profile = User.getUserByEmail(userEmail);
 	   trips = Trip.getTrips(false, null);
 	   for (Trip t: trips) {
-		   if (t.getReturnDate().before(new Date()) && (t.getParticipants().contains(profile) || t.getOrganizer().getEmail().equals(profile.getEmail()))) {
+		   if (t.getReturnDate().before(new Date()) && (isParticipant(profile, t) || t.getOrganizer().getEmail().equals(profile.getEmail()))) {
 			   recent.add(tripConverter.convertToBean(t));
 		   }
 	   }
@@ -42,7 +42,7 @@ public class ProfileController {
 	   profile = User.getUserByEmail(userEmail);
 	   trips = Trip.getTrips(false, null);
 	   for (Trip t: trips) {
-		   if (t.getDepartureDate().after(new Date()) && (t.getParticipants().contains(profile) || t.getOrganizer().getEmail().equals(profile.getEmail()))) {
+		   if (t.getDepartureDate().after(new Date()) && (isParticipant(profile, t) || t.getOrganizer().getEmail().equals(profile.getEmail()))) {
 			   upcoming.add(tripConverter.convertToBean(t));
 		   }
 	   }
@@ -62,6 +62,13 @@ public class ProfileController {
 		   }
 	   }
 	   return myTrips;
+	}
+	
+	private boolean isParticipant(User user, Trip trip) {
+		for (User u: trip.getParticipants()) {
+			if (u.getEmail().equals(user.getEmail())) return true;
+		}
+		return false;
 	}
 	
 	public UserBean getProfileUser(String userEmail) throws DatabaseException {
@@ -111,5 +118,13 @@ public class ProfileController {
 
 		
 		return percAttitude;
+	}
+	
+	public void deleteTrip (String tripTitle) throws DatabaseException {
+		try {
+			Trip.deleteTrip(tripTitle);
+		} catch (DatabaseException e) {
+			throw new DatabaseException(e.getMessage(), e.getCause());
+		}
 	}
 }

@@ -21,6 +21,7 @@ public class TripDao {
 	public static final String GET_TRIPS = "call fetch_trips()";
 	public static final String GET_SHARED_TRIPS = "call fetch_shared_trips()";
 	public static final String GET_FOR_CATEGORY = "call fetch_trips_category(?)";
+	public static final String DELETE_TRIP = "call delete_trip(?)";
 	public static final String STORE_PARTICIPANT = "call register_trip_participation(?, ?)";
 	public static final String TITLE_COLUMN = "title";
 	public static final String PRICE_COLUMN = "price";
@@ -34,6 +35,7 @@ public class TripDao {
 	public static final String MAX_PART_COLUMN = "max_participants";
 	public static final String DESC_COLUMN = "description";
 	public static final String COUNTRY_COLUMN = "country";
+	
 	
 	
 	private static TripDao instance = null;
@@ -280,5 +282,19 @@ public class TripDao {
 			throw new SQLException("Cannot get trips for category: "+favourite+" from database.", e);
 		}
 	}
+	
+	public boolean deleteTrip(String tripTitle) throws SQLException, DBConnectionException {
+		
+		try (Connection conn = ConnectionManager.getInstance().getConnection();
+				CallableStatement stmt = conn.prepareCall(DELETE_TRIP)){
+			stmt.setString(1, tripTitle);
+			stmt.execute();
+			return true;
+		}catch( SQLException e) {
+			throw new SQLException ("Cannot delete trip with name: " + tripTitle);
+		}
+	}
+	
+	
 	
 }

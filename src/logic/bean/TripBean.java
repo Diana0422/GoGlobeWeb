@@ -184,7 +184,9 @@ public class TripBean {
 	}
 
 	public void setCountry(String country) {
-		this.country = country;
+		String country1 = country.substring(0,1).toUpperCase();
+		String country2 = country.substring(1).toLowerCase();
+		this.country = country1 + country2;
 	}
 	
 	

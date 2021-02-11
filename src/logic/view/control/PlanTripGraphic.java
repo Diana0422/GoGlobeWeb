@@ -170,7 +170,7 @@ public class PlanTripGraphic implements GraphicControl {
 			planTripBean.validateTrip();
 			controller.saveTrip(planTripBean.getTripBean(), session.getUserEmail());
 			Stage stage = (Stage) lblErrorMsg.getScene().getWindow();
-			stage.setScene(GraphicLoader.switchView(GUIType.HOME, null, session));
+			stage.setScene(GraphicLoader.switchView(GUIType.HOME, new HomeGraphic(), session));
 		} catch (TripNotCompletedException e) {
 			lblErrorMsg.setText(e.getMessage());
 		} catch (DatabaseException e) {

@@ -3,5 +3,12 @@
 .root {
 	-fx-background-image: url("/logic/view/res/images/japan-kyoto-toji-pagoda.jpg");
 	-fx-font-family: "Barlow Medium";
+	
 }
+
+#lblWelcome {
+	 -fx-text-fill: white;
+}
+
+
 

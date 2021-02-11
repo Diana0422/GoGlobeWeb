@@ -20,6 +20,7 @@ import logic.util.Session;
 import logic.view.control.dynamic.CardGraphic;
 import logic.view.utils.GUIType;
 import logic.view.utils.GraphicControl;
+import logic.view.utils.GraphicItem;
 import logic.view.utils.GraphicLoader;
 
 public class GainPointsGraphic implements GraphicControl {
@@ -89,7 +90,7 @@ public class GainPointsGraphic implements GraphicControl {
 			CardGraphic cc = new CardGraphic();
 			AnchorPane anchor;
 			try {
-				anchor = (AnchorPane) cc.initializeNode(trip, cardsLayout, session, trip.isShared());
+				anchor = (AnchorPane) cc.initializeNode(trip, cardsLayout, session, GraphicItem.CARD_SHARED);
 				cardsLayout.add(anchor, column, row);
 				GridPane.setMargin(anchor, new Insets(20));
 			} catch (LoadGraphicException e) {

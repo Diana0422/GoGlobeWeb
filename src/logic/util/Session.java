@@ -38,6 +38,10 @@ public class Session {
 		this.viewQueue.add(currView);
 	}
 	
+	public GUIType getCurrentView() {
+		return this.currView;
+	}
+	
 	public String getUserEmail() {
 		return userEmail;
 	}

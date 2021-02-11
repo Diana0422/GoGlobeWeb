@@ -63,13 +63,6 @@
 						<%@ include file="html/incRequest.html" %>
 						<%
 						
-						if (request.getParameter("viewprofile") != null) {
-                			profileBean.setUser(controller.getSenderBean(req));
-                			%>
-                				<jsp:forward page="profile.jsp"/>
-                			<%
-                		}
-						
 						try {
 							if (request.getParameter("accept") != null) {
 	                			System.out.println("Accepting request.");
