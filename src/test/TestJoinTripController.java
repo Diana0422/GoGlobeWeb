@@ -98,9 +98,9 @@ public class TestJoinTripController {
 		trip.setTitle(title);
 		try {
 			/* User is logged */
-			User logged = UserDaoDB.getInstance().get(email);
-			loginCtrl.login(logged.getEmail(), logged.getPassword());
-			boolean result = controller.sendRequest(trip.getTitle(), logged.getEmail());
+			User userLogged = UserDaoDB.getInstance().get(email);
+			loginCtrl.login(userLogged.getEmail(), userLogged.getPassword());
+			boolean result = controller.sendRequest(trip.getTitle(), userLogged.getEmail());
 			assertEquals(false, result);
 		} catch (DatabaseException | UnloggedException | DuplicateException | DBConnectionException | SQLException e) {
 			String logStr = "testJoinTripNotSuccessfulAgeNotInRange() SHOULD NOT THROW exception"+e;

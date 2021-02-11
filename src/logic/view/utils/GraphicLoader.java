@@ -32,7 +32,6 @@ public class GraphicLoader {
 			}
 		} catch (IOException e) {
 			showAlert(e.getMessage(), e.toString());
-			e.printStackTrace();
 			return new Scene(new BorderPane());
 		}
 	}
@@ -52,7 +51,6 @@ public class GraphicLoader {
 			}
 		} catch (IOException e) {
 			showAlert(e.getMessage(), e.toString());
-			e.printStackTrace();
 			return new Scene(new BorderPane());
 		}
 	}
