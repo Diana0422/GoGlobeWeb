@@ -25,8 +25,7 @@
 
 .btn-colors{
     color: #fff;
-    background-color: #bc986a;
-    border-color: #bc986a ;
+    background-color:blue;
 
 }
 
@@ -214,7 +213,7 @@ html, body{
 
 /* SUGGESTION LIST */
 
-.place-suggestions{
+/*.place-suggestions{
 	width: 35%;
 	padding: 10px;
 	height: 700px;
@@ -252,6 +251,58 @@ html, body{
 
 .suggestion-btn {
 	float:left;
+}*/
+
+.place-suggestions{
+	width: 35%;
+	padding: 10px;
+	height: 700px;
+}
+
+.suggestion-card {
+    width: 100%;
+    margin: 0 auto;
+    height: fit-content; 
+    border-radius: 20px;
+    border-color: black; 
+    background: white;
+    display: flex;
+    padding: 10px;
+    margin-top: 10px;
+}
+
+.ic-container{
+    width: 20%;
+    display: flex;
+    align-items: center;
+}
+
+.suggestion-icon{
+    margin:0 auto;
+    width: 50%;
+}
+
+.suggestion-info{
+    width: 60%;
+    display: flex ;
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+.sugg-btn-container{
+    float: right;
+    width: 20%;
+    display: flex;
+    align-items: center;
+}
+
+.btn-sgst-lookup {
+ background:none;
+ border:none;
+}
+
+.sgst-redirect-img {
+    width: 100%;
 }
 
 

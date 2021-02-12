@@ -73,7 +73,7 @@ public class PlanTripBean {
 	//Validate all the inputs in the form
 	public boolean validateForm()throws FormInputException{
 		
-		Boolean res = validateData(tripBean.getTitle(), tripBean.getDepartureDate(), tripBean.getReturnDate(), tripBean.getCategory1(), tripBean.getCategory2());
+		Boolean res = validateData(tripBean.getTitle(), tripBean.getDepartureDate(), tripBean.getReturnDate(), tripBean.getCategory1(), tripBean.getCategory2(), tripBean.getCountry());
 		if (Boolean.TRUE.equals(res)){
 			try {
 				validateDates(tripBean.getDepartureDate(), tripBean.getReturnDate());
@@ -118,7 +118,7 @@ public class PlanTripBean {
 	}
 	
 	//Check if all the inputs have been inserted 
-	private Boolean validateData(String tripName, String departureDate, String returnDate, String category1, String category2) throws FormInputException {
+	private Boolean validateData(String tripName, String departureDate, String returnDate, String category1, String category2, String country) throws FormInputException {
 		
 		if (tripName == null || tripName.equals("")) {
 			throw new FormInputException("Insert trip name");
@@ -140,6 +140,10 @@ public class PlanTripBean {
 		} 
 		if (category1.equals("NONE") || category2.equals("NONE")) {
 			throw new FormInputException("Both categories must be selected");
+		}
+		
+		if (country == null || country.equals("")) {
+			throw new FormInputException("Insert a destination country");
 		}
 		return true;
 	}

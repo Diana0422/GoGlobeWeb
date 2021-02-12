@@ -58,17 +58,20 @@
             	
             	<button type="submit" name="share-trip-btn" class="btn btn-primary btn-lg btn-block">Share Trip</button>
             	
+            	<p> Days: </p>
+            	
 <% 
 			if (planTripBean.getTripBean().getDays() != null){
 				int i = 0;
 				while(i < planTripBean.getTripBean().getDays().size()){
 %>				
-	                <button type="submit" class="btn btn-colors btn-lg btn-block" name="daybtn" value=<%= i%> >Day <%= i + 1 %></button>	               	    
+	                <button type="submit" class="btn btn-primary btn-lg btn-block" name="daybtn" value=<%= i%> >Day <%= i + 1 %></button>	               	    
 <%
 					i++;
 				}
 			}
-%>
+%>			
+			
 <%
 			if (request.getParameter("daybtn") != null){
 				planTripBean.setPlanningDay(Integer.parseInt(request.getParameter("daybtn")));
@@ -165,7 +168,7 @@
 					      <input type="text" name="location" class="form-control" id="inputLocation" style="width: 100%M" placeholder="Insert Location...">
 					    </div>
 					  </div>
-                	<button type="submit" class="btn btn-colors btn-lg btn-block" name="save-location-btn"  >Save Location</button>	               	                           	
+                	<button type="submit" class="btn btn-primary btn-lg btn-block" name="save-location-btn"  >Save Location</button>	               	                           	
                    </div> 
                </form>
                
@@ -220,7 +223,7 @@
                                <textarea class="activity-plan" name="description" style="resize:none;"></textarea>
                         		
                         	</div>
-                        	<button type="submit" class="btn btn-colors btn-lg btn-block" name="save-activity-btn"  >Add activity</button>	               	                           	
+                        	<button type="submit" class="btn btn-primary btn-lg btn-block" name="save-activity-btn"  >Add activity</button>	               	                           	
                         </div> 
                     </form>
                     <div>

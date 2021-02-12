@@ -51,6 +51,21 @@ h4 {
     padding: 5%;
 }
 
+/* bio */
+
+.tab-container {
+    display: block;
+    width: 100%;
+    height: 100%;
+    padding: 20px;
+}
+
+.ta-bio {
+    width: 100%;
+    height: 20vh;
+    resize: none;
+}
+
 /* tabs */
 .content-tabs {
     width: 100%;

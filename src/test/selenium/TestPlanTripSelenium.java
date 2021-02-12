@@ -20,6 +20,7 @@ public class TestPlanTripSelenium {
 	private static final String TRIPNAME = "Test Trip";
 	private static final String DEP_DATE = "16/03/2021";
 	private static final String RET_DATE = "16/03/2021";
+	private static final String COUNTRY = "Italia";
 	
 	//Login Xpaths
 	private static final String LOGIN_PAGE_URL = "http://localhost:8080/ISPWProject20-21/view/login.jsp";
@@ -38,11 +39,10 @@ public class TestPlanTripSelenium {
 	private static final String XPATH_CATEGORY1_BOX = "//*[@id=\"selectCategory1\"]";
 	private static final String XPATH_CATEGORY2_BOX = "//*[@id=\"selectCategory2\"]";
 	private static final String XPATH_NEXT_BTN = "//*[@id=\"form-btns\"]/button[2]";
+	private static final String XPATH_COUNTRY_TF = "//*[@id=\"tripCountry\"]";
 	
 	//PlanTripView Xpaths
 	private static final String XPATH_TRIPNAME = "//*[@id=\"trip-title\"]";
-
-
 
 	@Test
 	void test() {
@@ -63,6 +63,7 @@ public class TestPlanTripSelenium {
 			driver.findElement(By.xpath(XPATH_TRIPNAME_TF)).sendKeys(TRIPNAME);
 			driver.findElement(By.xpath(XPATH_DEPDATE_TF)).sendKeys(DEP_DATE);
 			driver.findElement(By.xpath(XPATH_RETDATE_TF)).sendKeys(RET_DATE);
+			driver.findElement(By.xpath(XPATH_COUNTRY_TF)).sendKeys(COUNTRY);
 			Select category1 = new Select(driver.findElement(By.xpath(XPATH_CATEGORY1_BOX)));
 			category1.selectByVisibleText("Adventure");
 			Select category2 = new Select(driver.findElement(By.xpath(XPATH_CATEGORY2_BOX)));

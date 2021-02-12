@@ -63,8 +63,7 @@ class TestPlanTripController {
 	void testSaveTripSuccessful() {
 		
 		try {
-			
-			
+						
 			TripBean tripBean = new TripBean();
 			tripBean.setTitle(TRIP_NAME);
 			tripBean.setCategory1(CATEGORY1);
