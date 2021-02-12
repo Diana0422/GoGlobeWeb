@@ -3,6 +3,9 @@ import java.net.URL;
 import java.util.List;
 import java.util.ResourceBundle;
 import java.util.logging.Logger;
+
+import org.json.JSONException;
+
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -158,7 +161,8 @@ public class PlanTripGraphic implements GraphicControl {
         	} else {
         		lblErrorMsg.setText("This city is not in country "+planTripBean.getTripBean().getCountry());
         	}
-		} catch (FormInputException | APIException e) {
+		} catch (FormInputException | JSONException | APIException e) {
+			planTripBean.setLocation("");
 			lblErrorMsg.setText(e.getMessage());
 		}
     	

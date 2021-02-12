@@ -13,6 +13,9 @@
 <%@page import="logic.model.exceptions.TripNotCompletedException"%>
 <%@page import="logic.model.exceptions.FormInputException"%>
 <%@page import="logic.model.exceptions.APIException"%>
+<%@page import="org.json.JSONException"%>
+
+
 <jsp:useBean id="planTripBean" scope="session" class="logic.bean.PlanTripBean"/>
 <jsp:useBean id="tripBean" scope="session" class="logic.bean.TripBean"/>
 <jsp:useBean id="activityBean" scope="request" class="logic.bean.ActivityBean"/> 
@@ -149,7 +152,8 @@
 				 } else {
 					 request.setAttribute("locErr", "the location is not in country "+planTripBean.getTripBean().getCountry());
 				 }
-			} catch (APIException e) {
+			} catch (APIException| JSONException e ) {
+				planTripBean.setLocation("");
 				request.setAttribute("locErr", "the location doesn't exist");
 			}
 		}
