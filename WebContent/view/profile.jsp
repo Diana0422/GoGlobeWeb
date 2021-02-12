@@ -19,10 +19,17 @@
 <jsp:setProperty name="profileBean" property="comment"/>
 <jsp:setProperty name="profileBean" property="title"/>
 
+ 
+
 
 <% 
 	ProfileController controller = new ProfileController();
 	ReviewUserController reviewCtrl = new ReviewUserController();
+	
+	if (request.getParameter("save-bio") != null){
+		System.out.println(userBean.getBio());
+		controller.updateUserBio(sessionBean.getSessionEmail(), userBean.getBio());
+	}
 
 	userBean = profileBean.getUser();
 	if (userBean == null) {
@@ -38,7 +45,6 @@
 	myTripBeans = controller.getMyTrips(userBean.getEmail());
 	
 	if (request.getParameter("prevBtn") != null){
-		System.out.println("qualcosa");
 		int idx = Integer.parseInt(request.getParameter("prevBtn"));
 			joinTripBean.setTrip(previousTripBeans.get(idx));
 %>
@@ -49,7 +55,6 @@
 
 	
 	if (request.getParameter("upcomBtn") != null){
-		System.out.println("qualcosa");
 
 		int idx = Integer.parseInt(request.getParameter("upcomBtn"));
 		joinTripBean.setTrip(upcomingTripBeans.get(idx));
@@ -59,18 +64,12 @@
 	}
 	
 	if (request.getParameter("myinfoBtn") != null){
-		System.out.println("qualcosa");
 
 		int idx = Integer.parseInt(request.getParameter("myinfoBtn"));
 		joinTripBean.setTrip(myTripBeans.get(idx));
 %>
 		<jsp:forward page="tripInfo.jsp" />
 <% 	
-	}
-	
-	if (request.getParameter("save-bio") != null){
-		System.out.println(userBean.getBio());
-		controller.updateUserBio(sessionBean.getSessionEmail(), userBean.getBio());
 	}
 
 	if (request.getParameter("delete") != null) {
@@ -229,7 +228,7 @@
 
                 <div class="tab-content">
 					<div class="tab-pane active" role="tabpanel" id="bio">
-                        <%
+                        <%                     
 							String profileBio = userBean.getBio();
                             		
                             if (profileBio == null || profileBio.equals("")){

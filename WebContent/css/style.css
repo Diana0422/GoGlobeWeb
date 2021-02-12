@@ -167,13 +167,13 @@ label.star:before {
 
 .activity{
 	
-	display: inline-block;
+	/*display: inline-block;*/
 	border-radius: 5px;
 	box-shadow: 2px 2px 5px #979ca5;		
 	padding:20px;
 	margin-top: 3%;
 	width: inherit;
-	overflow: scroll;
+	/*overflow: scroll;*/
 	text-align: left;
 	background: white;
 	
