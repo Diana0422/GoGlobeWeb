@@ -37,6 +37,7 @@ public class ProfileController {
 	public List<TripBean> getUpcomingTrips(String userEmail) throws DatabaseException {
 	   List<Trip> trips;
 	   User profile;
+	   System.out.println("get upcoming:"+userEmail);
 	   List<TripBean> upcoming = new ArrayList<>();
 	   TripBeanConverter tripConverter = new TripBeanConverter();
 	   profile = User.getUserByEmail(userEmail);

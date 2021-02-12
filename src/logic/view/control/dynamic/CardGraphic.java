@@ -176,11 +176,15 @@ public class CardGraphic implements Initializable {
 		
 	}
 	
-	public void loadCardGrid(GridPane cardGrid, List<TripBean> trips, Session session) {
-		
+	private void clearGrid(GridPane cardGrid) {
 		if (!cardGrid.getChildren().isEmpty()) {
 			cardGrid.getChildren().clear();
 		}
+	}
+	
+	public void loadCardGrid(GridPane cardGrid, List<TripBean> trips, Session session) {
+		
+		clearGrid(cardGrid);
 		
 		int column = 0;
 		int row = 1;
@@ -194,7 +198,7 @@ public class CardGraphic implements Initializable {
 						column = 0;
 					}
 					this.setContainer(cardGrid);
-					if (trips.get(i).getOrganizer().getEmail().equals(session.getUserEmail()) && session.getCurrentView().equals(GUIType.PROFILE)) {
+					if (session != null && trips.get(i).getOrganizer().getEmail().equals(session.getUserEmail()) && session.getCurrentView().equals(GUIType.PROFILE)) {
 						anchor = (AnchorPane) this.initializeNode(trips.get(i), cardGrid, session, GraphicItem.CARD_OWNED);
 					}else if(trips.get(i).isShared()){
 						anchor = (AnchorPane) this.initializeNode(trips.get(i), cardGrid, session, GraphicItem.CARD_SHARED);					
