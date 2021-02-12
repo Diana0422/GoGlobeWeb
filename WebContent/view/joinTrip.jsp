@@ -92,7 +92,6 @@
 						System.out.println(joinTripBean.getSearchVal());
 						joinTripBean.setObjects(controller.searchTrips(joinTripBean.getSearchVal()));
 		        		System.out.println(joinTripBean.getObjects());
-		        		joinTripBean.setSearchVal(null);
 					} else {
 						System.out.println("Searchval is null.");
 						System.out.println(joinTripBean.getSearchVal());
@@ -206,6 +205,7 @@
         	System.out.println(joinTripBean.getObjects().size());
         	joinTripBean.setTrip(joinTripBean.getObjects().get(tripNum-1));
         	System.out.println(joinTripBean.getObjects().get(tripNum-1));
+        	joinTripBean.setSearchVal(null);
            %>
            	<jsp:forward page="tripInfo.jsp"/>
            <%
