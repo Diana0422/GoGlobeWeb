@@ -117,15 +117,12 @@ public class PlanTripController {
 	
 	public boolean verifyDuplicateTitle(String tripTitle) throws FormInputException {
 		Trip searchedTrip;
-		boolean bool = false;
 		try {
 			searchedTrip = Trip.getTrip(tripTitle);
 			if (searchedTrip != null) {
 				throw new FormInputException("A trip with the same title already exists");
-			} else {
-				bool = true;
 			}
-			return bool;
+			return false;
 		} catch (DatabaseException e) {
 			return true;
 		}			
