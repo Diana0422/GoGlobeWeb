@@ -7,11 +7,11 @@ import java.util.concurrent.TimeUnit;
 import java.util.logging.Logger;
 import logic.bean.ActivityBean;
 import logic.bean.DayBean;
+import logic.bean.PlaceBean;
 import logic.bean.TripBean;
 import logic.persistence.exceptions.DatabaseException;
 import logic.model.Day;
 import logic.model.Location;
-import logic.model.PlaceBean;
 import logic.model.Trip;
 import logic.model.User;
 import logic.model.exceptions.APIException;
@@ -119,12 +119,10 @@ public class PlanTripController {
 		Trip searchedTrip;
 		try {
 			searchedTrip = Trip.getTrip(tripTitle);
-			if (searchedTrip == null) {
-				return true;
-			} 
-			
-			throw new FormInputException("A trip with the same title already exists");			
-				
+			if (searchedTrip != null) {
+				throw new FormInputException("A trip with the same title already exists");
+			}
+			return false;
 		} catch (DatabaseException e) {
 			return true;
 		}			

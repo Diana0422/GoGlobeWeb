@@ -7,7 +7,7 @@
 <%@page import="java.util.Iterator"%> 
 <%@page import="logic.model.Trip"%>
 <%@page import="logic.model.Day"%>
-<%@page import="logic.model.PlaceBean"%>
+<%@page import="logic.bean.PlaceBean"%>
 <%@page import="logic.control.PlanTripController"%>
 <%@page import="logic.persistence.exceptions.DatabaseException"%>
 <%@page import="logic.model.exceptions.TripNotCompletedException"%>

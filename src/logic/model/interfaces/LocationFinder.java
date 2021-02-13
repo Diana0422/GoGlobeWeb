@@ -2,8 +2,8 @@ package logic.model.interfaces;
 
 import java.util.List;
 
-import logic.model.PlaceBean;
 import logic.model.exceptions.APIException;
+import logic.bean.PlaceBean;
 import logic.model.Location;
 
 public interface LocationFinder {

@@ -7,9 +7,9 @@ import java.util.List;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import logic.bean.PlaceBean;
 import logic.control.FormatManager;
 import logic.model.Location;
-import logic.model.PlaceBean;
 import logic.model.apis.HereImplementation;
 import logic.model.exceptions.APIException;
 import logic.model.interfaces.LocationFinder;
