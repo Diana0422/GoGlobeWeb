@@ -9,11 +9,11 @@ import java.util.logging.Logger;
 import org.junit.jupiter.api.Test;
 
 import logic.bean.ActivityBean;
+import logic.bean.PlaceBean;
 import logic.bean.SessionBean;
 import logic.bean.TripBean;
 import logic.control.FormatManager;
 import logic.control.PlanTripController;
-import logic.model.PlaceBean;
 import logic.model.Trip;
 import logic.model.exceptions.APIException;
 import logic.persistence.exceptions.DatabaseException;

@@ -1,4 +1,4 @@
-package logic.model;
+package logic.bean;
 
 public class PlaceBean {
 	

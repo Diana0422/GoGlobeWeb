@@ -2,7 +2,7 @@ package logic.view.threads;
 
 import java.util.List;
 import javafx.scene.layout.VBox;
-import logic.model.PlaceBean;
+import logic.bean.PlaceBean;
 import logic.view.control.dynamic.SuggestionCardGraphic;
 
 public class LoadVBox implements Runnable{
