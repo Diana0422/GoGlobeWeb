@@ -235,7 +235,7 @@
                             	profileBio = "User has no bio";
                             }
                             
-							if (!sessionBean.getSessionEmail().equals(userBean.getEmail())){
+							if ((sessionBean.getSessionEmail() != null) && (!sessionBean.getSessionEmail().equals(userBean.getEmail()))){
 %>
 								<h1><%= profileBio%></h1>
 <% 
