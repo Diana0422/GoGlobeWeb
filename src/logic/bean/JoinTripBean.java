@@ -3,7 +3,7 @@ package logic.bean;
 import java.util.List;
 
 
-public class JoinTripBean {
+public class JoinTripBean { 
 	private String searchVal;
 	
 	private List<TripBean> objects;

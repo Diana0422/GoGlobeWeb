@@ -12,8 +12,8 @@ import logic.view.utils.PropManager;
 public class Launcher extends Application {
 	
 	@Override
-	public void start(Stage stage) {
-		
+	public void start(Stage stage) { 
+		 
 		Scene scene = GraphicLoader.switchView(GUIType.MAIN, null);
  		try {
 			initStage(stage, scene);
