@@ -215,7 +215,7 @@ public class TestTripInfoSelenium {
 		
 		try {
 			Trip trip = TripDao.getInstance().getTripByTitle(TRIP_TITLE);
-			String expected = trip.getPrice()+"€";
+			String expected = trip.getPrice()+"â‚¬";
 			assertEquals(expected, resPrice);
 		} catch (DBConnectionException | SQLException e) {
 			Logger.getGlobal().log(Level.SEVERE, ERROR_MSG);

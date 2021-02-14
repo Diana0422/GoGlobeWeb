@@ -152,22 +152,4 @@ public class TestJoinTripController {
 		}
 		
 	}
-	
-	/* JOIN TRIP TESTS*/
-	@Test
-	@Order(7)
-	void testJoinTripSuccessful() {
-		// trip organizer accepted user request
-		String tripTitle = TRIP_TITLE;
-		String userEmail = PARTICIPANT;
-		TripBean trip = new TripBean();
-		trip.setTitle(tripTitle);
-		try {
-			boolean result = controller.joinTrip(trip.getTitle(), userEmail);
-			assertEquals(true, result);
-		} catch (DatabaseException e) {
-			String logStr = "testSendRequestSuccessful() SHOULD NOT THROW exception "+e;
-			Logger.getGlobal().log(Level.INFO, logStr);
-		}
-	}
 }
