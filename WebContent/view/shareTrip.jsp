@@ -41,7 +41,6 @@
 				planTripBean.validateSharingPref();
 				tripBean.setShared(true);
 	    		controller.saveTrip(planTripBean.getTripBean(), sessionBean.getSessionEmail()); 
-				System.out.println("VIAGGIO SALVATO COME CONDIVISO");
 	%>		
 				
 				<jsp:forward page="home.jsp"/>

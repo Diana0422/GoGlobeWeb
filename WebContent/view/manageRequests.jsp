@@ -65,8 +65,7 @@
 						
 						try {
 							if (request.getParameter("accept") != null) {
-	                			System.out.println("Accepting request.");
-	                			System.out.println(controller.acceptRequest(req));
+	                			controller.acceptRequest(req);
 	                			response.setIntHeader("Refresh",0);
 	                		}
 						} catch (DatabaseException e) {
@@ -79,7 +78,6 @@
 						
 						try {
                        		if (request.getParameter("decline") != null) {
-                    			System.out.println("Declining request.");
                     			controller.declineRequest(req);
                     			response.setIntHeader("Refresh",0);
                     		}

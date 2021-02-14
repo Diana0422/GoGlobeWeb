@@ -12,11 +12,6 @@
 <%@page import="logic.control.LoginController"%>
 <%@page import="logic.persistence.exceptions.DatabaseException"%>
 
-<%
-	System.out.println(sessionBean.getSessionName());
-	System.out.println(sessionBean.getSessionSurname());
-%>
-
 <!DOCTYPE html>
 <html lang="en">
 <head>

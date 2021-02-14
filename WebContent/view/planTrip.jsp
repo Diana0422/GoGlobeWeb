@@ -235,7 +235,6 @@
  <%
 						int activitiesNum = planTripBean.getTripBean().getDays().get(planTripBean.getPlanningDay()).getActivities().size();
 					 	for ( int j = 0; j < activitiesNum; j++){ 
-					 		System.out.println("Activity Found!\n");
 	            		
 %>		
 	            			  

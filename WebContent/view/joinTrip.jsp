@@ -25,8 +25,6 @@
     	<!-- map class attributes to values of the form -->
     	<jsp:setProperty name="joinTripBean" property="searchVal"/>     
     <%
-      	 System.out.println(joinTripBean.getSearchVal());
-      	 /*response.setIntHeader("refresh", 0);*/
    }
 %>
 
@@ -88,15 +86,9 @@
         		List<TripBean> trips = null;
 				try {
 					if (joinTripBean.getSearchVal() != null) {
-						System.out.println("Searchval is not null.");
-						System.out.println(joinTripBean.getSearchVal());
 						joinTripBean.setObjects(controller.searchTrips(joinTripBean.getSearchVal()));
-		        		System.out.println(joinTripBean.getObjects());
 					} else {
-						System.out.println("Searchval is null.");
-						System.out.println(joinTripBean.getSearchVal());
 						joinTripBean.setObjects(controller.getSuggestedTrips(sessionBean.getSessionEmail()));
-		        		System.out.println(joinTripBean.getObjects());
 					}
 				} catch(DatabaseException e) {
 					request.setAttribute("errType", e.getMessage());
@@ -110,47 +102,37 @@
         		if (request.getParameter("btn-adv-filter")!= null){
         			joinTripBean.setFilteredTrips(controller.applyFilterToTrips(joinTripBean.getObjects(), null, TripCategory.ADVENTURE));
         			trips = joinTripBean.getFilteredTrips();
-        			System.out.println("# of filtered trips is: " + joinTripBean.getFilteredTrips().size());
         		}
         		//If CULTURE filter button is clicked
 				if (request.getParameter("btn-clt-filter")!= null ){
 	    			joinTripBean.setFilteredTrips(controller.applyFilterToTrips(joinTripBean.getObjects(), null, TripCategory.CULTURE));
 	    			trips = joinTripBean.getFilteredTrips();
-	    			System.out.println("# of filtered trips is: " + joinTripBean.getFilteredTrips().size());
         		}
 				//If RELAX filter button is clicked
 				if (request.getParameter("btn-rlx-filter")!= null){
 	    			joinTripBean.setFilteredTrips(controller.applyFilterToTrips(joinTripBean.getObjects(), null, TripCategory.RELAX));
 	    			trips = joinTripBean.getFilteredTrips();
-	    			System.out.println("# of filtered trips is: " + joinTripBean.getFilteredTrips().size());
         		}
 				//If FUN filter button is clicked
 				if (request.getParameter("btn-fun-filter")!= null){
 	    			joinTripBean.setFilteredTrips(controller.applyFilterToTrips(joinTripBean.getObjects(), null, TripCategory.FUN));
 	    			trips = joinTripBean.getFilteredTrips();
-	    			System.out.println("# of filtered trips is: " + joinTripBean.getFilteredTrips().size());
         		} 
 				//If ALPHABETICAL filter button is clicked
 				if (request.getParameter("btn-alphab-filter")!= null){
 	    			joinTripBean.setFilteredTrips(controller.applyFilterToTrips(joinTripBean.getObjects(), FilterType.ALPHABETIC, null));
 	    			trips = joinTripBean.getFilteredTrips();
-	    			System.out.println("# of filtered trips is: " + joinTripBean.getFilteredTrips().size());
         		}
 				//If PRICE filter button is clicked
 				if (request.getParameter("btn-price-filter")!= null){
 	    			joinTripBean.setFilteredTrips(controller.applyFilterToTrips(joinTripBean.getObjects(), FilterType.PRICE, null));
 	    			trips = joinTripBean.getFilteredTrips();
-	    			System.out.println("# of filtered trips is: " + joinTripBean.getFilteredTrips().size());
         		}
 			
 
     			if(!joinTripBean.getObjects().isEmpty()) {
     				if (trips == null){
     					trips = joinTripBean.getObjects();
-    				}
-    				
-    				for (TripBean trip: trips){
-    					System.out.println(trip.getTitle());
     				}
     				
     				if (trips != null){
@@ -175,8 +157,6 @@
     						}
     						if (!trip.getTitle().equals("")) {
     							elemsInRow++;
-    							System.out.println("elemsInRow: "+elemsInRow);
-    							System.out.println("jsp: trip= "+trip);
     							request.setAttribute("title", trip.getTitle());
     							request.setAttribute("price", trip.getPrice());
     							request.setAttribute("minAge", trip.getMinAge());
@@ -201,10 +181,7 @@
 		<%
 		  if(request.getParameter("viewinfo") != null) {
        	  	int tripNum = Integer.parseInt(request.getParameter("viewinfo"));
-        	System.out.println("Button pressed: "+request.getParameter("viewinfo"));
-        	System.out.println(joinTripBean.getObjects().size());
         	joinTripBean.setTrip(joinTripBean.getObjects().get(tripNum-1));
-        	System.out.println(joinTripBean.getObjects().get(tripNum-1));
         	joinTripBean.setSearchVal(null);
            %>
            	<jsp:forward page="tripInfo.jsp"/>

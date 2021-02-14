@@ -292,7 +292,6 @@
         	<%
         		if (request.getParameter("start") != null) {
         			Locale l = new Locale("", request.getParameter("country"));
-        			System.out.println(l.getDisplayCountry());
         			joinTripBean.setSearchVal(l.getDisplayCountry());
         			%>
         			<jsp:forward page="joinTrip.jsp"/>

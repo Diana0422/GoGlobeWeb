@@ -64,7 +64,6 @@
      				}
     			}
 			} catch (UnloggedException | DuplicateException e) {
- 				System.out.println(e.getMessage());
 				request.setAttribute("message", e.getMessage());
 			}
     		%>
@@ -79,12 +78,9 @@
     			<!--  one tab for each day of the trip -->
     			<%
     				List<DayBean> days = joinTripBean.getTrip().getDays();
-					System.out.println(days);
-    				System.out.println(days.size());
     					
     				for (int i=0; i<days.size(); i++) {
     					DayBean dayBean = days.get(i);
-    					System.out.println(dayBean);
     					%>
     					<li class="nav-item">
     						<a class="nav-link" href="#day<%= i+1 %>" data-toggle="tab">Day <%= i+1 %></a>
@@ -129,7 +125,6 @@
  			}
  			
 			if (request.getParameter("viewprofile") != null) {
-				System.out.println(joinTripBean.getTrip().getOrganizer().getName());
 				profileBean.setUser(joinTripBean.getTrip().getOrganizer());
 				%>
 				<jsp:forward page="profile.jsp"/>
@@ -138,8 +133,6 @@
     		
     		for (int i=0; i<days.size(); i++) {
     			DayBean dayBean = days.get(i);
-    			System.out.println(dayBean);
-    			System.out.println(days.size());
     		%>
     			<div class="tab-pane" role="tabpanel" id="day<%= i+1 %>">
 					<div class="day-location">
@@ -151,7 +144,6 @@
     				<%
         				for (int j=0; j<dayBean.getActivities().size(); j++) {
         					ActivityBean activityBean = dayBean.getActivities().get(j);
-        					System.out.println(activityBean.getTitle());
         					request.setAttribute("activityTitle", activityBean.getTitle());
         					request.setAttribute("activityTime", activityBean.getTime());
         					request.setAttribute("activityDesc", activityBean.getDescription());
@@ -188,7 +180,6 @@
 	        				request.setAttribute("userSurname", bean.getSurname());
 	        				
 							if (request.getParameter("viewparticipant") != null) {
-								System.out.println(bean.getName()+bean.getSurname());
 								profileBean.setUser(bean);
 								%>
 								<jsp:forward page="profile.jsp"/>

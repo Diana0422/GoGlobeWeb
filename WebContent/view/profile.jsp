@@ -27,7 +27,6 @@
 	ReviewUserController reviewCtrl = new ReviewUserController();
 	
 	if (request.getParameter("save-bio") != null){
-		System.out.println(userBean.getBio());
 		controller.updateUserBio(sessionBean.getSessionEmail(), userBean.getBio());
 	}
 
@@ -133,7 +132,6 @@
                         <h4>Traveler Attitude</h4>
                         <%
                         Map<String, Integer> attitude = controller.getPercentageAttitude(userBean.getEmail());
-                        System.out.println(attitude);
                         %>
                         <ul>
                             <li class="adventure">
@@ -318,7 +316,6 @@
                                     		review.setVote(profileBean.getVote());                  
                                     		reviewCtrl.postReview(request.getParameter("type-radio"), profileBean.getVote(), profileBean.getComment(), profileBean.getTitle(), sessionBean.getSessionEmail(), userBean.getEmail(), userBean);
                                     		userBean.getReviews().add(review);
-                                    		//System.out.println("web view: org rating:"+profileBean.getUser().getStatsBean().getOrgRating()+" trav rating:"+profileBean.getUser().getStatsBean().getTravRating());
                                     		response.setIntHeader("Refresh",0);
                                 		} catch (DatabaseException e) {
                                 			request.setAttribute("errType", e.getMessage());

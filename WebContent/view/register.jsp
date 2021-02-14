@@ -61,7 +61,6 @@
         					 <jsp:forward page="home.jsp"/>
 							<%
         					} else {
-        						System.out.println("No data.\n");
 							%>
 								<p style="color: red">This user is already registered.</p>
 							<%
