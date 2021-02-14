@@ -11,6 +11,10 @@ import org.openqa.selenium.support.ui.Select;
 
 public class TestPlanTripSelenium {
 	
+	/**
+	 * @author lorenzo tanzi
+	 */
+	
 	WebDriver driver;
 	private static final String DRIVER_PROPERTY = "webdriver.chrome.driver";
 	private static final String DRIVER_PATH = "Drivers/chromedriverMacOS";
