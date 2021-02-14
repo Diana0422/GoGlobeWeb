@@ -104,8 +104,8 @@ public class TripDao {
 				trip.setMinAge(tripMinAge);
 				trip.setCountry(country);
 				trip.setDays(DayDao.getInstance().getTripDays(tripTitle));
-				trip.setOrganizer(UserDaoDB.getInstance().get(organizer));
-				trip.setParticipants(UserDaoDB.getInstance().getTripParticipants(tripTitle));
+				trip.setOrganizer(UserDao.getInstance().get(organizer));
+				trip.setParticipants(UserDao.getInstance().getTripParticipants(tripTitle));
 			}
 			
 			return trip;
@@ -148,8 +148,8 @@ public class TripDao {
 					t.setPrice(price);
 					t.setCountry(country);
 					t.setDays(DayDao.getInstance().getTripDays(title));
-					t.setOrganizer(UserDaoDB.getInstance().getTripOrganizer(title));
-					t.setParticipants(UserDaoDB.getInstance().getTripParticipants(title));
+					t.setOrganizer(UserDao.getInstance().getTripOrganizer(title));
+					t.setParticipants(UserDao.getInstance().getTripParticipants(title));
 					trips.add(t);
 				} while(rs.next());
 			}
@@ -205,7 +205,7 @@ public class TripDao {
 					t.setShared(true);
 					t.setCountry(country);
 					t.setDays(DayDao.getInstance().getTripDays(title));
-					t.setParticipants(UserDaoDB.getInstance().getTripParticipants(title));
+					t.setParticipants(UserDao.getInstance().getTripParticipants(title));
 					trips.add(t);
 				} while(rs.next());
 			}
@@ -272,7 +272,7 @@ public class TripDao {
 					t.setShared(true);
 					t.setCountry(country);
 					t.setDays(DayDao.getInstance().getTripDays(title));
-					t.setParticipants(UserDaoDB.getInstance().getTripParticipants(title));
+					t.setParticipants(UserDao.getInstance().getTripParticipants(title));
 					
 					trips.add(t);
 				} while (rs.next());

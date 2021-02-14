@@ -53,7 +53,7 @@ public class RequestDao {
 				r = new Request();
 				r.setAccepted(state);
 				r.setTarget(TripDao.getInstance().getTripByTitle(tripTitle));
-				r.setSender(UserDaoDB.getInstance().get(senderEmail));
+				r.setSender(UserDao.getInstance().get(senderEmail));
 			}
 			return r;
 		} catch (SQLException e) {
@@ -78,7 +78,7 @@ public class RequestDao {
 					String tripTitle = rs.getString(TRIP_COLUMN);
 					String senderEmail = rs.getString("user_email");
 					Request r = RequestFactory.getInstance().createModel();
-					r.setSender(UserDaoDB.getInstance().get(senderEmail));
+					r.setSender(UserDao.getInstance().get(senderEmail));
 					r.setTarget(TripDao.getInstance().getTripByTitle(tripTitle));
 					r.setAccepted(state);
 					list.add(r);
@@ -109,7 +109,7 @@ public class RequestDao {
 					boolean state = rs.getBoolean(STATE_COLUMN);
 					String tripTitle = rs.getString(TRIP_COLUMN);
 					Request r = RequestFactory.getInstance().createModel();
-					r.setSender(UserDaoDB.getInstance().get(sendEmail));
+					r.setSender(UserDao.getInstance().get(sendEmail));
 					r.setTarget(TripDao.getInstance().getTripByTitle(tripTitle));
 					r.setAccepted(state);
 					list.add(r);

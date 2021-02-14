@@ -11,7 +11,7 @@ import logic.model.Trip;
 import logic.persistence.dao.ActivityDao;
 import logic.persistence.dao.DayDao;
 import logic.persistence.dao.TripDao;
-import logic.persistence.dao.UserDaoDB;
+import logic.persistence.dao.UserDao;
 import logic.persistence.exceptions.DBConnectionException;
 import logic.persistence.exceptions.DatabaseException;
 
@@ -29,8 +29,8 @@ public class TripBeanConverter implements BeanConverter<Trip,TripBean> {
 		DayBeanConverter dayConverter = new DayBeanConverter(o.getTitle());
 		try {
 			bean.setDays(dayConverter.convertToListBean(DayDao.getInstance().getTripDays(o.getTitle())));
-			bean.setOrganizer(userConverter.convertToBean(UserDaoDB.getInstance().getTripOrganizer(o.getTitle())));
-			bean.setParticipants(userConverter.convertToListBean(UserDaoDB.getInstance().getTripParticipants(o.getTitle())));
+			bean.setOrganizer(userConverter.convertToBean(UserDao.getInstance().getTripOrganizer(o.getTitle())));
+			bean.setParticipants(userConverter.convertToListBean(UserDao.getInstance().getTripParticipants(o.getTitle())));
 			bean.setDescription(o.getDescription());
 			bean.setTitle(o.getTitle());
 			bean.setPrice(o.getPrice());
@@ -63,7 +63,7 @@ public class TripBeanConverter implements BeanConverter<Trip,TripBean> {
 			for (Day d: trip.getDays()) {
 				d.setActivities(ActivityDao.getInstance().getActivitiesByTrip(trip.getTitle(), d.getId()));
 			}
-			trip.setOrganizer(UserDaoDB.getInstance().getTripOrganizer(trip.getTitle()));
+			trip.setOrganizer(UserDao.getInstance().getTripOrganizer(trip.getTitle()));
 			return trip;
 		} catch (DBConnectionException | SQLException e) {
 			throw new DatabaseException(e.getMessage(), e.getCause());

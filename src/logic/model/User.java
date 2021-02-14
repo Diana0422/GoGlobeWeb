@@ -10,7 +10,7 @@ import java.util.Map;
 
 import logic.model.exceptions.DuplicateException;
 import logic.persistence.dao.ReviewDao;
-import logic.persistence.dao.UserDaoDB;
+import logic.persistence.dao.UserDao;
 import logic.persistence.dao.UserStatsDao;
 import logic.persistence.exceptions.DBConnectionException;
 import logic.persistence.exceptions.DatabaseException;
@@ -267,7 +267,7 @@ public class User {
 
 	public boolean storeUser() throws DatabaseException {
 		try {
-			return UserDaoDB.getInstance().save(this);
+			return UserDao.getInstance().save(this);
 		} catch (DBConnectionException | SQLException e) {
 			throw new DatabaseException(e.getMessage(), e.getCause());
 		}
@@ -275,7 +275,7 @@ public class User {
 	
 	public static User getUserByEmail(String email) throws DatabaseException {
 		try {
-			return UserDaoDB.getInstance().get(email);
+			return UserDao.getInstance().get(email);
 		} catch (DBConnectionException | SQLException e) {
 			throw new DatabaseException(e.getMessage(), e.getCause());
 		}
@@ -283,7 +283,7 @@ public class User {
 	
 	public boolean updateUserInfo(String newName, String newSurname, String newBio) throws DatabaseException {
 		try {
-			return UserDaoDB.getInstance().update(this, newName, newSurname, newBio);
+			return UserDao.getInstance().update(this, newName, newSurname, newBio);
 		} catch (DBConnectionException | SQLException e) {
 			throw new DatabaseException(e.getMessage(), e.getCause());
 		}
@@ -295,7 +295,7 @@ public class User {
 	
 	public static User getRequestReceiver(String sender, String title) throws DatabaseException {
 		try {
-			return UserDaoDB.getInstance().getRequestReceiver(sender, title);
+			return UserDao.getInstance().getRequestReceiver(sender, title);
 		} catch (DBConnectionException | SQLException e) {
 			throw new DatabaseException(e.getMessage(), e.getCause());
 		}

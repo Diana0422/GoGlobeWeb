@@ -8,7 +8,7 @@ import logic.bean.UserBean;
 import logic.bean.UserStatsBean;
 import logic.model.User;
 import logic.persistence.dao.ReviewDao;
-import logic.persistence.dao.UserDaoDB;
+import logic.persistence.dao.UserDao;
 import logic.persistence.dao.UserStatsDao;
 import logic.persistence.exceptions.DBConnectionException;
 import logic.persistence.exceptions.DatabaseException;
@@ -46,7 +46,7 @@ public class UserBeanConverter implements BeanConverter<User,UserBean> {
 	@Override
 	public User convertFromBean(UserBean o) throws DatabaseException {
 		try {
-			return UserDaoDB.getInstance().get(o.getEmail());
+			return UserDao.getInstance().get(o.getEmail());
 		} catch (DBConnectionException | SQLException e) {
 			throw new DatabaseException(e.getMessage(), e.getCause());
 		}

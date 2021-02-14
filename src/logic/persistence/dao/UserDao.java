@@ -12,7 +12,7 @@ import logic.model.User;
 import logic.persistence.ConnectionManager;
 import logic.persistence.exceptions.DBConnectionException;
 
-public class UserDaoDB {
+public class UserDao {
 	
 	private static final String GET_USER = "call login_user(?)";
 	private static final String STORE_USER = "call register_user(?, ?, ?, ?, ?)";
@@ -28,13 +28,13 @@ public class UserDaoDB {
 	private static final String BIRTH_COLUMN = "birthday";
 	private static final String BIO_COLUMN = "bio";
 	
-	private static UserDaoDB instance = null;
+	private static UserDao instance = null;
 	
-	private UserDaoDB() {/*empty*/}
+	private UserDao() {/*empty*/}
 	
-	public static UserDaoDB getInstance() {
+	public static UserDao getInstance() {
 		if (instance == null) {
-			instance = new UserDaoDB();
+			instance = new UserDao();
 		}
 		return instance;
 	}

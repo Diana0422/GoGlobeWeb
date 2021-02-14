@@ -20,7 +20,7 @@ import logic.model.User;
 import logic.model.exceptions.DuplicateException;
 import logic.model.exceptions.UnloggedException;
 import logic.persistence.dao.RequestDao;
-import logic.persistence.dao.UserDaoDB;
+import logic.persistence.dao.UserDao;
 import logic.persistence.exceptions.DBConnectionException;
 import logic.persistence.exceptions.DatabaseException;
 
@@ -97,7 +97,7 @@ public class TestJoinTripController {
 		trip.setTitle(tripTitle);
 		try {
 			/* User is logged */
-			User logged = UserDaoDB.getInstance().get(email);
+			User logged = UserDao.getInstance().get(email);
 			loginCtrl.login(logged.getEmail(), logged.getPassword());
 			boolean result = controller.sendRequest(trip.getTitle(), logged.getEmail());
 			assertEquals(false, result);
@@ -117,7 +117,7 @@ public class TestJoinTripController {
 		trip.setTitle(tripTitle);
 		try {
 			/* User is logged */
-			User loggedUser = UserDaoDB.getInstance().get(userEmail);
+			User loggedUser = UserDao.getInstance().get(userEmail);
 			loginCtrl.login(loggedUser.getEmail(), loggedUser.getPassword());
 			/* Delete if another request exists */
 			if (RequestDao.getInstance().getRequest(userEmail, tripTitle) != null) RequestDao.getInstance().delete(tripTitle, userEmail);
@@ -140,7 +140,7 @@ public class TestJoinTripController {
 		trip.setTitle(tripTitle);
 		try {
 			// user is logged
-			User logged = UserDaoDB.getInstance().get(userEmail);
+			User logged = UserDao.getInstance().get(userEmail);
 			loginCtrl.login(logged.getEmail(), logged.getPassword());
 			Assertions.assertThrows(DuplicateException.class, () -> {
 				controller.sendRequest(trip.getTitle(), logged.getEmail());
