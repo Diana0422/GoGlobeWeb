@@ -200,7 +200,7 @@
                     <form method="POST" action="profile.jsp">
                         <button type="submit" name="change-btn" class="btn btn-light">
                             <img src="../res/images/icons8-edit-50.png" id="change-icon" style="width: 20px; height: 20px; margin-right: 1%;" alt="edit-icon">
-                            <label for="change-icon">Change Info</label>
+                            <p>Change Info</p>
                         </button>
                     </form>
                 </div>

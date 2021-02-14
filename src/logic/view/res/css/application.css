@@ -64,7 +64,8 @@
 /* Bold text for info */
 #info {
 	-fx-text-fill: #fff;
-}
+	}
+
 
 /* Tab pane */
 .tab .tab-label { 

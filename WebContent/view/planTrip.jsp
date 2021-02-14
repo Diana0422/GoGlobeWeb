@@ -167,7 +167,7 @@
 			   	 <div class="location-form form">
 			   	 	  <h6 style="color: red">${locErr}</h6>
 				   	  <div class="form-group row">
-					    <label for="inputPassword" class="col-sm-2 col-form-label"><h6 style="width: fit-content;">Location</h6></label>
+					    <h6 style="width: fit-content; margin:20px;">Location</h6>
 					    <div class="col-sm-10">
 					      <input type="text" name="location" class="form-control" id="inputLocation" style="width: 100%M" placeholder="Insert Location...">
 					    </div>
