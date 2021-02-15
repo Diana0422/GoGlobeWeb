@@ -30,6 +30,8 @@ public class LoginController {
 				loginBean.setNome(tempUser.getName());
 				loginBean.setCognome(tempUser.getSurname());
 				loginBean.setPoints(tempUser.getStats().getPoints());			
+			} else {
+				loginBean = null;
 			}
 		} else {
 			loginBean = null;

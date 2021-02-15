@@ -59,7 +59,7 @@
 				<%
 				} else {
 					%>
-					<p style="color: red"> Dati Errati</p>
+					<p style="color: red"> User data is not valid.</p>
 					<% 
 				}
 			} catch (DatabaseException e) {

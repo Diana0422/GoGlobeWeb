@@ -50,7 +50,7 @@ public class LoginGraphic {
 					Stage stage = (Stage) lblError.getScene().getWindow();
 					stage.setScene(GraphicLoader.switchView(GUIType.HOME, new HomeGraphic(), Cookie.getInstance().getSession(loginBean.getUsername())));
 				} else {
-					lblError.setText("This user isn't registered.");
+					lblError.setText("User data not valid.");
 					lblError.setVisible(true);
 				}
 			} catch (DatabaseException e) {
